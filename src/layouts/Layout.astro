@@ -1,6 +1,5 @@
 ---
-import Header from "../components/header.astro";
-import STDImage from "../assets/std.png";
+import Header from "../components/header/header.astro";
 import { Font } from "astro:assets";
 import "../styles/global.scss";
 
@@ -10,7 +9,11 @@ interface Props {
   haveBG?: boolean;
 }
 
-const { havePadding = true, haveBG = false, havePaddingBottom = false } = Astro.props;
+const {
+  havePadding = true,
+  haveBG = false,
+  havePaddingBottom = false,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -18,11 +21,11 @@ const { havePadding = true, haveBG = false, havePaddingBottom = false } = Astro.
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon-dark-mode.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon-dark-mode.png" />
     <link
       rel="icon"
       type="image/svg+xml"
-      href="/favicon-light-mode.svg"
+      href="/favicon-light-mode.png"
       media="(prefers-color-scheme: light)"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,19 +33,19 @@ const { havePadding = true, haveBG = false, havePaddingBottom = false } = Astro.
     <link rel="sitemap" href="/sitemap-index.xml" />
     <Font cssVariable="--font-montserrat" preload />
     <meta name="generator" content={Astro.generator} />
-    <title>Reversim 2025</title>
+    <title>Reversim 2026</title>
 
-    <meta property="og:title" content="Reversim 2025" />
+    <meta property="og:title" content="Reversim 2026" />
     <meta
       property="og:description"
-      content="Reversim Summit 2025 is Israel’s leading community-driven tech conference, bringing together developers, product managers, and data scientists for top-tier content and networking."
+      content="Reversim Summit 2026 is Israel’s leading community-driven tech conference, bringing together developers, product managers, and data scientists for top-tier content and networking."
     />
-    <meta
+    <!-- <meta
       property="og:image"
       content={`https://summit2025.reversim.com${STDImage.src}`}
-    />
+    /> -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://summit2025.reversim.com/" />
+    <!-- <meta property="og:url" content="https://summit2026.reversim.com/" /> -->
 
     <!-- Google tag (gtag.js) -->
     <script
@@ -68,4 +71,3 @@ const { havePadding = true, haveBG = false, havePaddingBottom = false } = Astro.
     </div>
   </body>
 </html>
-

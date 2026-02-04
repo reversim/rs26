@@ -5,10 +5,10 @@ import computerRetroImage from "../assets/computer-retro.png";
 import hamsterImage from "../assets/hamster.png";
 import MainBanner from "../components/mainBanner.astro";
 import Member from "../components/memberCard.astro";
-import PastEvents from "../components/pastEvents.astro";
+import PastEvents from "../components/pastEventsSection.astro";
 import PrimaryButton from "../components/primaryButton.astro";
 import Title from "../components/title.astro";
-import Venue from "../components/venue.astro";
+import VenueSection from "../components/venueSection.astro";
 import { getSpeakers } from "../helpers/getSpeakers";
 import Layout from "../layouts/Layout.astro";
 const speakers = await getSpeakers();
@@ -35,37 +35,12 @@ const speakers = await getSpeakers();
 <Layout havePadding={false}>
   <MainBanner />
 
-  <div class="card">
-    <Title style="color: black" title="Speakers" id="speakers" />
-
-    <div class="team-member-container">
-      {
-        speakers
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 18)
-          .map((speaker) => (
-          <Member
-            pageBase="speaker"
-            slug={`${speaker.slug}`}
-            name={speaker.fullName}
-            title={speaker.tagLine}
-            company={""}
-            image={speaker.profilePicture}
-            bio={speaker.bio}
-          />
-        ))
-      }
-    </div>
-    <PrimaryButton variant="speakers" buttonText="View All Speakers" link="/speakers" />
-
-  </div>
-
   <div class="past-events-card card">
     <PastEvents />
   </div>
 
   <div class="card venue-card">
-    <Venue />
+    <VenueSection />
   </div>
 
   <footer>
@@ -91,15 +66,8 @@ const speakers = await getSpeakers();
       <a class="header-link" href={"/coc"}>Code of conduct</a>
       <a class="header-link attributions" href={"/attributions"}>Attributions</a
       >
-      <p>All rights reserved Reversim 2025</p>
+      <p>All rights reserved Reversim 2026</p>
     </div>
-    <p class="site-credits">
-      Implementation by <a href="https://www.linkedin.com/in/inbar-danieli/"
-        >Inbar Danieli</a
-      > & <a href="https://opherv.com">Opher Vishnia</a> / Design by <a
-        href="https://opherv.com">Opher Vishnia</a
-      >
-    </p>
   </footer>
 </Layout>
 
@@ -135,7 +103,7 @@ const speakers = await getSpeakers();
     bottom: auto;
     right: 0px;
     width: 100%;
-    padding: 18px 0px 10px 0;
+    padding: 18px 0px;
 
     .hamster-container {
       position: absolute;

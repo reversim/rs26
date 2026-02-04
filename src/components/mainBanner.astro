@@ -1,12 +1,10 @@
 ---
-import { getImage, Picture } from "astro:assets";
-import Asterisk from "../assets/asterisk.svg";
+import { getImage, Image } from "astro:assets";
 import rs24Image from "../assets/reversim24-image.png";
 import { getSponsors } from "../helpers/getSponsors";
+import Highlight from "./highlight.astro";
 import SponsorDialog from "./sponsorDialog.astro";
 import Title from "./title.astro";
-import { Image } from "astro:assets";
-import PrimaryButton from "./primaryButton.astro";
 
 const optimizedRS24ImageMobile = await getImage({
   src: rs24Image,
@@ -28,50 +26,12 @@ const cssVars = `
     }`;
 ---
 
-<script src="https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js"
-></script>
-<script
-  src="https://cdn.jsdelivr.net/npm/reversim-machine/dist/reversim-machine.umd.js"
-></script>
-<!--<script src="http://localhost:8080/dist/reversim-machine.umd.js"></script>-->
 <script is:inline>
   const minMachineWidth = 1000;
   document.documentElement.style.setProperty(
     "--minMachineWidth",
     `${minMachineWidth}px`,
   );
-  let machineStarted = false;
-
-  function startMachine() {
-    ReversimMachine.init(document.querySelector("#machine"), {
-      debug: false,
-      browserTargetBoundingBox: document.getElementById("machine-stage"),
-      frameTopLeft: { x: 0, y: 0 },
-      frameBottomRight: { x: 1000, y: 1000 },
-      onAirMachineStart: () => {
-        const asterisk = document.querySelector(".asteriskContainer");
-        if (asterisk) {
-          asterisk.classList.add("spinning");
-        }
-      },
-    });
-    machineStarted = true;
-  }
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    if (window.innerWidth >= minMachineWidth) {
-      startMachine();
-    }
-  });
-
-  window.addEventListener("resize", () => {
-    if (machineStarted && window.innerWidth < minMachineWidth) {
-      ReversimMachine.destroy();
-      machineStarted = false;
-    } else if (!machineStarted && window.innerWidth >= minMachineWidth) {
-      startMachine();
-    }
-  });
 
   // Dialog functionality for community sponsors
   document.addEventListener("DOMContentLoaded", () => {
@@ -109,40 +69,28 @@ const cssVars = `
   });
 </script>
 
-<div id="machine"></div>
 <div class="main-banner">
-  <div class="machine-layout">
-    <div id="machine-stage"></div>
-    <div class="hero-container">
-      <div class="hero-content">
-        <div class="title-container">
-          <h2 class="title green">REVERSIM</h2>
-          <h2 class="title orange">AUTUMN</h2>
-          <h2 class="title blue">
-            SUMMIT<p class="title pink asteriskContainer">
-              <Asterisk class="asterisk" />
-              <Asterisk class="asterisk" />
-            </p>
-          </h2>
-        </div>
-        <div class="event-date">
-          <p>October 27-28, 2025</p>
-        </div>
-        <p class="next-year-text">See you next year!</p>
-      </div>
+  <div class="hero-container">
+    <div class="title-container">
+      <h2 class="title green">REVERSIM</h2>
+      <h2 class="title blue">
+        SUMMIT
 
-      <PrimaryButton
-        variant="no-border"
-        buttonText="Watch all Reversim Summit 2025 sessions"
-        link="https://www.youtube.com/playlist?list=PLqXy0aX6TzQqBTdWTLnN--urikR5CFIaz"
-      />
+        <span class="title orange">2026</span>
+      </h2>
+    </div>
+
+    <div class="event-date-container">
+      <p class="event-date">30.11-1.12, 2026</p>
+      <!-- <Highlight class="highlight" /> -->
+      <Highlight />
     </div>
   </div>
 
   <div class="sponsors card-background card">
     <div class="description-container">
       <p class="event-description" id="about">
-        Reversim Summit 2025 (RS25) is a community driven event in Israel for
+        Reversim Summit 2026 (RS26) is a community driven event in Israel for
         software developers, product managers, data scientists and everyone else
         in the software industry. With an enthusiastic team of volunteers we've
         been creating a content-first software conferences since 2013 and
@@ -238,78 +186,14 @@ const cssVars = `
 
 <style set:html={cssVars}></style>
 
-<style is:global>
-  #machine {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    aspect-ratio: 1.5;
-    canvas {
-      width: 100%;
-      height: 100%;
-    }
-  }
-</style>
-
 <style lang="scss">
   .main-banner {
-    .machine-layout {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      align-items: flex-start;
-      view-timeline: --sponsorsReveal block;
-      // margin: 0 12%;
-
-      @media screen and (max-width: 1300px) {
-        height: 600px;
-      }
-
-      @media (max-width: 768px) {
-        height: 480px;
-      }
-
-      #machine-stage {
-        aspect-ratio: 1;
-        height: 600px;
-
-        @media screen and (max-width: 1300px) {
-          height: 500px;
-        }
-
-        @media screen and (max-width: 1000px) {
-          display: none;
-        }
-      }
-
-      .hero-container {
-        margin-left: 143px;
-        padding-top: 75px;
-
-        @media screen and (max-width: 1000px) {
-          margin-left: 0;
-        }
-      }
-
-      .asteriskContainer.spinning {
-        animation: spin 6s linear infinite;
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      }
-    }
-
     .hero-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       pointer-events: none;
+      padding: 72px;
 
       .title-container {
         font-size: 80px;
@@ -324,17 +208,17 @@ const cssVars = `
 
           &.green {
             color: var(--green);
-            transform: translateX(-0.7em);
+            // transform: translateX(-0.7em);
             text-shadow: -6px -4px 0px var(--textShadow);
           }
 
           &.orange {
             color: var(--orange);
-            transform: translateX(0.3em);
+            // transform: translateX(0.3em);
             text-shadow: -6px 4px 0px var(--textShadow);
 
             @media screen and (min-width: 1200px) {
-              transform: translateX(1.71em);
+              // transform: translateX(1.71em);
             }
           }
 
@@ -344,32 +228,10 @@ const cssVars = `
             align-items: center;
             gap: 12px;
             color: var(--blue);
-            transform: translateX(-1em);
             text-shadow: -4px -6px 0px var(--textShadow);
 
             @media screen and (min-width: 1200px) {
               transform: translateX(-1.47em);
-            }
-          }
-
-          &.pink {
-            position: relative;
-            width: 0.8em;
-            aspect-ratio: 1;
-            svg {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              fill: var(--pink);
-            }
-
-            svg:nth-child(2) {
-              left: -6px;
-              top: -4px;
-              fill: var(--textShadow);
-              z-index: -1;
             }
           }
         }
@@ -383,17 +245,24 @@ const cssVars = `
         }
       }
 
-      .event-date {
-        margin-top: 40px;
-        font-weight: 600;
-        font-size: 24px;
-        color: var(--dark-gray);
-        p {
+      .event-date-container {
+        .event-date {
+          position: relative;
+          width: max-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin: auto;
+          margin-top: 40px;
+          font-weight: 600;
+          font-size: 48px;
+          color: var(--pink);
           text-align: center;
-        }
 
-        @media (max-width: 768px) {
-          font-size: 18px;
+          @media (max-width: 768px) {
+            font-size: 18px;
+          }
         }
       }
 
@@ -532,70 +401,6 @@ const cssVars = `
         .logo-container {
           display: flex;
           height: 48px;
-
-          &.tenable {
-            height: 55px;
-            transform: translateY(-5px);
-          }
-
-          &.plus500 {
-            height: 44px;
-            transform: translateY(-7px);
-          }
-          &.workday {
-            height: 86px;
-            transform: translateY(-20px);
-          }
-          &.cyera {
-            height: 34px;
-          }
-          &.titan {
-            height: 40px;
-          }
-          &.wsc-sports {
-            height: 39px;
-          }
-          &.elementor {
-            height: 52px;
-          }
-          &.arpeely {
-            height: 58px;
-          }
-          &.mobileye {
-            height: 40px;
-            transform: translateY(-2px);
-          }
-          &.honeybook {
-            height: 60px;
-          }
-          &.ai21 {
-            height: 30px;
-          }
-          &.intuit {
-            height: 28px;
-          }
-          &.monday {
-            height: 58px;
-          }
-          &.riverside {
-            height: 44px;
-          }
-          &.zenity {
-            height: 44px;
-          }
-          &.connecteam {
-            height: 28px;
-          }
-          &.papaya {
-            height: 34px;
-          }
-          &.millennium {
-            height: 31px;
-            transform: translateY(-3px);
-          }
-          &.phasev {
-            height: 43px;
-          }
         }
         .sponsor-logo {
           filter: brightness(0) invert(1);

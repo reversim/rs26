@@ -4,12 +4,11 @@ import type { GetStaticPaths } from "astro";
 import { getImage, Image, Picture } from "astro:assets";
 import "glightbox/dist/css/glightbox.css";
 import Slider from "../../components/slider.astro";
-import SocialLink from "../../components/socialLink.astro";
+import SocialLinks from "../../components/socialLinks.astro";
 import BackgroundMask from "../../components/sponsorsBackgroundMask.astro";
 import Title from "../../components/title.astro";
 import { getSponsors } from "../../helpers/getSponsors";
 import Layout from "../../layouts/Layout.astro";
-import SocialLinks from "../../components/socialLinks.astro";
 
 export const getStaticPaths = (async () => {
   const sponsors = await getSponsors();
