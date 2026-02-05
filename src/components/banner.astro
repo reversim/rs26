@@ -1,18 +1,24 @@
+---
+const {
+  title,
+  message,
+  closeBtnText = "Close",
+  hideBtnText = "Never show again",
+} = Astro.props;
+---
+
 <div id="registration-banner" class="banner-container" style="display: none">
   <div class="banner-content">
     <div class="banner-message">
-      <strong>Registration Opens September 3rd!</strong>
-      <span
-        >Get ready to secure your spot at Reversim Summit 2025. Stay tuned for
-        more details</span
-      >
+      <strong>{title}</strong>
+      <span>{message}</span>
     </div>
     <div class="banner-actions">
       <button id="never-show-again-btn" class="never-show-btn">
-        Never show again
+        {hideBtnText}
       </button>
       <button id="close-banner-btn" class="close-btn" aria-label="Close banner">
-        Close
+        {closeBtnText}
       </button>
     </div>
   </div>

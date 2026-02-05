@@ -1,7 +1,7 @@
 ---
 import HeaderLink from "./header-link.astro";
-import Logo from "../assets/reversim-25-icon.svg";
-import { getAgendaCurrentDay } from "../helpers/getAgendaCurrentDay";
+import Logo from "../../assets/reversim-25-icon.svg";
+import { getAgendaCurrentDay } from "../../helpers/getAgendaCurrentDay";
 
 const currentDayUrl = await getAgendaCurrentDay();
 
@@ -14,10 +14,10 @@ interface HeaderLink {
 
 const navbarLinks: HeaderLink[] = [
   { link: "/", label: "Home", iconColor: "#7ebec8" },
-  { link: "/#sponsors", label: "Sponsors", iconColor: "var(--orange)" },
-  { link: currentDayUrl, label: "Agenda", iconColor: "#506592" },
-  { link: "/speakers", label: "Speakers", iconColor: "var(--green)" },
-  { link: "/about", label: "Team", iconColor: "var(--pink)" },
+  // { link: "/#sponsors", label: "Sponsors", iconColor: "var(--orange)" },
+  // { link: currentDayUrl, label: "Agenda", iconColor: "#506592" },
+  // { link: "/speakers", label: "Speakers", iconColor: "var(--green)" },
+  // { link: "/about", label: "Team", iconColor: "var(--pink)" },
 ];
 ---
 
@@ -79,9 +79,6 @@ const navbarLinks: HeaderLink[] = [
 
 <div class="header">
   <div class="inner-container">
-    <a data-astro-prefetch href="/">
-      <Logo class="rv-icon" fill="currentColor" />
-    </a>
     <div class="navbar-container">
       {
         navbarLinks.map((link) => (
