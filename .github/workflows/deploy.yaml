@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # Specify the version of Node.js your Astro app requires
+          node-version: 24 # Specify the version of Node.js your Astro app requires
           cache: "yarn"
 
       # Install dependencies
