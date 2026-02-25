@@ -4,14 +4,11 @@ import { Picture } from "astro:assets";
 import computerRetroImage from "../assets/computer-retro.png";
 import hamsterImage from "../assets/hamster.png";
 import MainBanner from "../components/mainBanner.astro";
-import Member from "../components/memberCard.astro";
 import PastEvents from "../components/pastEventsSection.astro";
-import PrimaryButton from "../components/primaryButton.astro";
-import Title from "../components/title.astro";
+import TeamMembersSection from "../components/teamMembersSection.astro";
 import VenueSection from "../components/venueSection.astro";
-import { getSpeakers } from "../helpers/getSpeakers";
 import Layout from "../layouts/Layout.astro";
-const speakers = await getSpeakers();
+
 ---
 
 <style is:global>
@@ -35,6 +32,10 @@ const speakers = await getSpeakers();
 <Layout havePadding={false}>
   <MainBanner />
 
+  <div class="team-members-card card">
+    <TeamMembersSection />
+  </div>
+  
   <div class="past-events-card card">
     <PastEvents />
   </div>
