@@ -1,3 +1,5 @@
+// Identifier values for supported social platforms.
+// The `SocialPlatform` type lives in src/types/social.ts.
 export const supportedSocials = {
   linkedin: "linkedin",
   twitter: "twitter",
@@ -9,5 +11,3 @@ export const supportedSocials = {
   medium: "medium",
   youtube: "youtube",
 } as const;
-
-export type supportedSocials = keyof typeof supportedSocials;

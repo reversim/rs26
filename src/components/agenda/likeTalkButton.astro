@@ -12,7 +12,7 @@ const { sessionId } = Astro.props;
 </button>
 
 <script>
-  import { handleToggle, toggleLike } from "../../helpers/agendaHelpers";
+  import { handleToggle, toggleLike } from "../../helpers/agenda/agendaHelpers";
 
   document.addEventListener("DOMContentLoaded", () => {
     const likeBtns = document.querySelectorAll(".like-btn");

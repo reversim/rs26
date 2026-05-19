@@ -1,4 +1,4 @@
-import type { AgendaSession, Cell } from "./getAgenda";
+import type { AgendaSession } from "../../types/agenda";
 import slugify from "slug";
 
 // Helper function for getting category color (server-side version)

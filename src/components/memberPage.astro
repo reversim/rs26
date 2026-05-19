@@ -1,11 +1,11 @@
 ---
 import SocialLink from "./socialLink.astro";
-import type { teamMember } from "../helpers/getTeam";
+import type { TeamMember } from "../types/team";
 import BackButton from "./backButton.astro";
 import { Picture } from "astro:assets";
 import SocialLinks from "./socialLinks.astro";
 
-interface Props extends Partial<teamMember> {
+interface Props extends Partial<TeamMember> {
   socialList: Record<string, string | undefined>;
   type?: "about" | "speaker";
 }

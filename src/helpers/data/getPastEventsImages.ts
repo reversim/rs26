@@ -1,5 +1,5 @@
 import { getImage } from "astro:assets";
-import type { ICarouselImage } from "../components/slider.astro";
+import type { CarouselImage } from "../../types/slider";
 
 const pastEventAltTexts: Record<string, string> = {
   "image-1": "image of the conference people",
@@ -10,16 +10,15 @@ const pastEventAltTexts: Record<string, string> = {
 };
 
 const pastEventImageModules = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/past-events/*.png",
+  "../../assets/past-events/*.png",
   { eager: true },
 );
 
-export async function getPastEventsImages(): Promise<ICarouselImage[]> {
-  const images: ICarouselImage[] = await Promise.all(
+export async function getPastEventsImages(): Promise<CarouselImage[]> {
+  const images: CarouselImage[] = await Promise.all(
     Object.entries(pastEventImageModules)
       .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
       .map(async ([path, mod]) => {
-        const name = path
         const processed = await getImage({
           src: mod.default,
           width: 1000,
@@ -27,7 +26,7 @@ export async function getPastEventsImages(): Promise<ICarouselImage[]> {
         });
         return {
           src: processed.src,
-          alt: pastEventAltTexts[name] ?? `Past event - ${name}`,
+          alt: pastEventAltTexts[path] ?? `Past event - ${path}`,
         };
       }),
   );

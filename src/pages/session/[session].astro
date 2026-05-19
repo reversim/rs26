@@ -6,24 +6,26 @@ import Arrow from "../../assets/agenda/arrow.svg";
 import SessionCategory from "../../components/agenda/category.astro";
 import SessionSpeakers from "../../components/agenda/sessionSpeakers.astro";
 import BackButton from "../../components/backButton.astro";
-import { getTalkCategoryColor } from "../../helpers/agendaHelpers";
-import { getTrackName, type AgendaSpeaker } from "../../helpers/getAgenda";
-import { getSessions, type talk } from "../../helpers/getSessions";
-import { getSpeakerById } from "../../helpers/getSpeakers";
+import { getTalkCategoryColor } from "../../helpers/agenda/agendaHelpers";
+import { getTrackName } from "../../helpers/data/getAgenda";
+import { getSessions } from "../../helpers/data/getSessions";
+import { getSpeakerById } from "../../helpers/data/getSpeakers";
+import type { AgendaSpeaker } from "../../types/agenda";
+import type { Talk } from "../../types/session";
 import Layout from "../../layouts/Layout.astro";
 
 export const getStaticPaths = (async () => {
-  async function getPrevAndNextOfTrack(sessions: talk[], session: talk) {
+  async function getPrevAndNextOfTrack(sessions: Talk[], session: Talk) {
     const track = getTrackName(session);
 
     const sessionsOfTrack = sessions.filter(
-      (trackSession: talk) =>
+      (trackSession: Talk) =>
         getTrackName(trackSession) === track &&
         dayjs(trackSession.startsAt).isSame(dayjs(session.startsAt), "day"),
     );
 
     const index = sessionsOfTrack.findIndex(
-      (trackSession: talk) => session.id === trackSession.id,
+      (trackSession: Talk) => session.id === trackSession.id,
     );
     const prev = sessionsOfTrack[index - 1];
     const next = sessionsOfTrack[index + 1];

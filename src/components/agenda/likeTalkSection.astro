@@ -1,5 +1,5 @@
 ---
-import type { AgendaDay, AgendaSession } from "../../helpers/getAgenda";
+import type { AgendaDay, AgendaSession } from "../../types/agenda";
 
 interface Props {
   currentDay: AgendaDay;
@@ -268,7 +268,7 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
 </style>
 
 <script is:inline define:vars={{ allSessions, agendaDays }}>
-  import { findSessionById, formatTime, getSessionCategoryColor, LIKED_TALKS_KEY, storageHelpers } from "../../helpers/agendaHelpers";
+  import { findSessionById, formatTime, getSessionCategoryColor, LIKED_TALKS_KEY, storageHelpers } from "../../helpers/agenda/agendaHelpers";
   import slugify from "slug";
 
   // Pass sessions data to the client-side script

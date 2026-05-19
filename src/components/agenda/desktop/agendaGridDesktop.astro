@@ -1,10 +1,7 @@
 ---
-import { getSessionDuration } from "../../../helpers/agendaHelpers";
-import {
-  getTrackName,
-  type Cell,
-  type CurrentDay,
-} from "../../../helpers/getAgenda";
+import { getSessionDuration } from "../../../helpers/agenda/agendaHelpers";
+import { getTrackName } from "../../../helpers/data/getAgenda";
+import type { Cell, CurrentDay } from "../../../types/agenda";
 import AgendaCell from "./agendaCell.astro";
 import FullWidthRow from "./fullWidthRow.astro";
 import GridHeader from "./gridHeader.astro";

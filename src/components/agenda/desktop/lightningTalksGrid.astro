@@ -1,6 +1,6 @@
 ---
-import { createSessionUrl, createSpeakerUrl } from "../../../helpers/agendaHelpers";
-import type { AgendaSession, AgendaSpeaker } from "../../../helpers/getAgenda";
+import { createSessionUrl, createSpeakerUrl } from "../../../helpers/agenda/agendaHelpers";
+import type { AgendaSession, AgendaSpeaker } from "../../../types/agenda";
 const { lightningArr } = Astro.props;
 ---
 <div class="lightning-talk-list">
@@ -15,7 +15,7 @@ const { lightningArr } = Astro.props;
             session.speakers.map((speaker: AgendaSpeaker) => (
               <a
                 class="lightning-speaker"
-                href={createSpeakerUrl(speaker.name)}
+                href={createSpeakerUrl(speaker?.name || "")}
               >
                 {speaker.name}
               </a>

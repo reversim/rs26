@@ -3,12 +3,9 @@ import {
   createSessionUrl,
   getSessionDuration,
   getTalkCategoryColor,
-} from "../../../helpers/agendaHelpers";
-import {
-  getTrackName,
-  type AgendaSession,
-  type Cell,
-} from "../../../helpers/getAgenda";
+} from "../../../helpers/agenda/agendaHelpers";
+import { getTrackName } from "../../../helpers/data/getAgenda";
+import type { AgendaSession, Cell } from "../../../types/agenda";
 import Category from "../category.astro";
 import SessionCategoryIndicator from "../sessionCategoryIndicator.astro";
 import SessionSpeakers from "../sessionSpeakers.astro";

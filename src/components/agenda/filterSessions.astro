@@ -1,9 +1,6 @@
 ---
-import {
-  getTrackName,
-  type AgendaDay,
-  type AgendaSession,
-} from "../../helpers/getAgenda";
+import { getTrackName } from "../../helpers/data/getAgenda";
+import type { AgendaDay, AgendaSession } from "../../types/agenda";
 import Star from "../../assets/agenda/star.svg";
 interface Props {
   currentDay: AgendaDay;
@@ -97,7 +94,7 @@ const uniqueCategories = [
 </script>
 
 <script>
-  import { initializeFilters } from "../../helpers/filterHelpers";
+  import { initializeFilters } from "../../helpers/agenda/filterHelpers";
   window.addEventListener("load", () => {
     // Get sessions data from the inline script
     const sessionsData = (window as any).sessionsData || [];

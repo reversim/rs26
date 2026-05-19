@@ -1,10 +1,11 @@
 ---
 import "glightbox/dist/css/glightbox.css";
-import { getPastEventsImages } from "../helpers/getPastEventsImages";
-import Slider, { type ICarouselImage } from "./slider.astro";
+import { getPastEventsImages } from "../helpers/data/getPastEventsImages";
+import Slider from "./slider.astro";
 import Title from "./title.astro";
+import type { CarouselImage } from "../types/slider";
 
-const images: ICarouselImage[] = await getPastEventsImages();
+const images: CarouselImage[] = await getPastEventsImages();
 ---
 
 <div class="past-events-container">

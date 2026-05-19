@@ -1,6 +1,6 @@
 ---
-import type { AgendaSession } from "../../helpers/getAgenda";
-import type { CalendarSessionData } from "../../helpers/addToCalendar";
+import type { AgendaSession } from "../../types/agenda";
+import type { CalendarSessionData } from "../../types/calendar";
 import Calendar from "../../assets/agenda/calendar.svg";
 
 interface Props {
@@ -42,8 +42,8 @@ const sessionData = JSON.stringify(calendarData);
     createOutlookCalendarUrl,
     createYahooCalendarUrl,
     createICalContent,
-    type CalendarSessionData,
-  } from "../../helpers/addToCalendar";
+  } from "../../helpers/agenda/addToCalendar";
+  import type { CalendarSessionData } from "../../types/calendar";
 
   function setupAddToCalendar() {
     const buttons = document.querySelectorAll(".add-to-calendar-btn");

@@ -1,20 +1,24 @@
 import slug from "slug";
-import type { AgendaSpeaker } from "./getAgenda";
+import type { AgendaSpeaker } from "../../types/agenda";
 
-export async function getSpeakers() {
+export async function getSpeakers(): Promise<AgendaSpeaker[]> {
   const result = await fetch(
     "https://sessionize.com/api/v2/fan6lxrk/view/Speakers",
   );
 
   const data: AgendaSpeaker[] = await result.json();
-  const finalSpeakers = data.map((speaker) => ({
+  return data.map((speaker) => ({
     ...speaker,
     slug: slug(speaker?.fullName || ""),
   }));
-  return finalSpeakers;
 }
 
 export async function getSpeakerById(id: string): Promise<AgendaSpeaker> {
   const speakers = await getSpeakers();
-  return speakers.find((speaker: AgendaSpeaker) => speaker.id === id) || { id: "", name: "" };
+  return (
+    speakers.find((speaker: AgendaSpeaker) => speaker.id === id) || {
+      id: "",
+      name: "",
+    }
+  );
 }

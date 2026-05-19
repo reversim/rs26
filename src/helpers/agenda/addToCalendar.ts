@@ -1,21 +1,6 @@
-import type { AgendaSession } from "./getAgenda";
+import type { CalendarSessionData, CalendarType } from "../../types/calendar";
 
-/**
- * Minimal session data needed for calendar functionality
- */
-export interface CalendarSessionData {
-  id: string | number;
-  title: string;
-  startsAt: string;
-  endsAt: string;
-  room?: string;
-  speakers: Array<{ name: string }>;
-  description?: string | null;
-}
-
-/**
- * Format date for calendar URLs (YYYYMMDDTHHMMSSZ format)
- */
+// Format date for calendar URLs (YYYYMMDDTHHMMSSZ)
 function formatDateForCalendar(date: Date): string {
   return date
     .toISOString()
@@ -128,12 +113,10 @@ export function createICalUrl(session: CalendarSessionData): string {
   return URL.createObjectURL(blob);
 }
 
-export type CalendarType = "google" | "outlook" | "yahoo" | "ical";
-
-/**
- * Get calendar URL based on calendar type
- */
-export function getCalendarUrl(session: CalendarSessionData, type: CalendarType): string {
+export function getCalendarUrl(
+  session: CalendarSessionData,
+  type: CalendarType,
+): string {
   switch (type) {
     case "google":
       return createGoogleCalendarUrl(session);

@@ -1,79 +1,9 @@
-export interface AgendaSpeaker {
-  id: string | number;
-  name?: string;
-
-  firstName?: string;
-  lastName?: string;
-  fullName?: string;
-  tagLine?: string;
-  bio?: string;
-  profilePicture?: string;
-  slug?: string;
-  isTopSpeaker?: boolean;
-  sessions?: any[];
-  links?: { title: string; url: string; linkType: string }[];
-}
-
-export interface AgendaSession {
-  id: string | number;
-  title: string;
-  description?: string | null;
-  startsAt: string;
-  endsAt: string;
-  roomId?: number;
-  room?: string;
-  speakers: AgendaSpeaker[];
-  isServiceSession?: boolean;
-  isPlenumSession?: boolean;
-  categories?: any[];
-  // computed
-  lengthMinutes?: number;
-  isLightningGroup?: boolean; // synthetic grouping
-  lightningChildren?: AgendaSession[]; // original 5-min sessions
-  isLightning?: boolean; // mark real lightning session (ignite)
-}
-
-export interface AgendaRoom {
-  id: number;
-  name: string;
-  sort?: number; // not in API but keep for potential manual ordering
-  sessions: AgendaSession[];
-}
-
-// Raw day as returned by GridSmart endpoint (simplified)
-export interface RawGridDay {
-  date: string; // ISO with time e.g. 2025-10-27T00:00:00Z
-  isDefault?: boolean;
-  rooms: AgendaRoom[];
-  hasOnlyPlenumSessions?: boolean;
-}
-
-export interface AgendaDay extends RawGridDay {
-  slug: string; // date-only slug (yyyy-mm-dd)
-  label: string; // human readable date (e.g. Mon Oct 27)
-}
-
-export interface Cell {
-  key: string;
-  session?: AgendaSession;
-  span?: number;
-  hidden?: boolean;
-}
-
-export interface CurrentDay {
-  grid: {
-    startsAt: string;
-    endsAt: string;
-    cells: Cell[];
-    shortRow: boolean;
-  }[];
-  slug: string;
-  label: string;
-  date: string;
-  isDefault?: boolean;
-  rooms: AgendaRoom[];
-  hasOnlyPlenumSessions?: boolean;
-}
+import type {
+  AgendaDay,
+  AgendaSession,
+  Cell,
+  RawGridDay,
+} from "../../types/agenda";
 
 const AGENDA_URL = "https://sessionize.com/api/v2/fan6lxrk/view/GridSmart";
 
@@ -87,7 +17,6 @@ function formatDayLabel(dateStr: string) {
 }
 
 function dateSlug(dateStr: string) {
-  // Keep date part only (yyyy-mm-dd)
   return new Date(dateStr).toISOString().split("T")[0];
 }
 
@@ -96,7 +25,7 @@ export async function getAgendaDays(): Promise<AgendaDay[]> {
   if (!res.ok) throw new Error("Failed fetching agenda");
   const raw: RawGridDay[] = await res.json();
 
-  // stable desired order by room id (Main Hall, A2+A3, A4+A5, Dining Hall, Entrance)
+  // Stable desired order by room id (Main Hall, A2+A3, A4+A5, Dining Hall, Entrance)
   const ROOM_ORDER = [59470, 59471, 59472, 70835, 70834];
   const orderIndex = new Map(ROOM_ORDER.map((id, i) => [id, i] as const));
 
@@ -119,11 +48,10 @@ export async function getAgendaDays(): Promise<AgendaDay[]> {
   return days;
 }
 
-// Build grid rows based on distinct session start times across all rooms
 export function buildDayGrid(day: AgendaDay) {
   const rooms = day.rooms;
 
-  // Preprocess: compute length & mark lightning (Ignites track <=6min) and neutralize plenum flag
+  // Preprocess: compute length & mark lightning (Ignites track <=6min), neutralize plenum flag for grouping
   for (const room of rooms) {
     for (const s of room.sessions) {
       if (!s.lengthMinutes)
@@ -138,7 +66,7 @@ export function buildDayGrid(day: AgendaDay) {
       if (tName === "AI Apps" || tName === "AI Infra") tName = "AI";
       if (tName === "Ignites" && (s.lengthMinutes ?? 999) <= 6) {
         s.isLightning = true;
-        if (s.isPlenumSession) s.isPlenumSession = false; // prevent spanning so we can group
+        if (s.isPlenumSession) s.isPlenumSession = false;
       }
     }
   }
@@ -165,7 +93,6 @@ export function buildDayGrid(day: AgendaDay) {
       session: s,
     }));
 
-    // merge identical adjacent sessions
     for (let i = 0; i < cells.length; i++) {
       const s = cells[i].session;
       if (!s) continue;
@@ -179,7 +106,6 @@ export function buildDayGrid(day: AgendaDay) {
       cells[i].span = span;
     }
 
-    // plenum spanning (after neutralizing ignites above)
     const plenumIdx = cells.findIndex((c) => c.session?.isPlenumSession);
     if (plenumIdx !== -1) {
       const plenum = cells[plenumIdx].session!;
@@ -208,7 +134,6 @@ export function buildDayGrid(day: AgendaDay) {
     return { startsAt: startAt, endsAt: rowEnd, cells, shortRow };
   });
 
-  // find first consecutive block of lightning rows (>=2 rows) to group
   const lightningIndices = rows
     .map((r, i) => (r.shortRow ? i : -1))
     .filter((i) => i >= 0);

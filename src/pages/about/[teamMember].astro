@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro";
 import Layout from "../../layouts/Layout.astro";
-import { getTeamMembers } from "../../helpers/getTeam";
+import { getTeamMembers } from "../../helpers/data/getTeam";
 import MemberPage from "../../components/memberPage.astro";
 
 export const getStaticPaths = (async () => {

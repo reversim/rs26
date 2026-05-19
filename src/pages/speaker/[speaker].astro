@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getImage } from "astro:assets";
 import MemberPage from "../../components/memberPage.astro";
-import { getSpeakers } from "../../helpers/getSpeakers";
+import { getSpeakers } from "../../helpers/data/getSpeakers";
 import { supportedSocials } from "../../helpers/supportedSocials";
 import Layout from "../../layouts/Layout.astro";
 import slugify from "slug";
@@ -34,7 +34,7 @@ const {
 
 const socialLinks: Record<string, string> = {};
 
-links.map((link) => {
+(links || []).map((link) => {
   let finalLink = link.linkType.toLowerCase();
 
   if (finalLink === "blog") {
@@ -46,7 +46,7 @@ links.map((link) => {
   socialLinks[finalLink] = link.url;
 });
 
-const image = await getImage({ src: profilePicture, height: 500, width: 500 });
+const image = await getImage({ src: profilePicture || "", height: 500, width: 500 });
 ---
 
 <Layout havePaddingBottom={true}>
@@ -63,7 +63,7 @@ const image = await getImage({ src: profilePicture, height: 500, width: 500 });
     <h3 class="talks-title">Talks:</h3>
 
     {
-      sessions.map((talk) => {
+      (sessions || []).map((talk) => {
         return (
           <a href={`/session/${slugify(talk.name)}`} class="talk-name">
             {talk.name}

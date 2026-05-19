@@ -1,18 +1,10 @@
 ---
 import { Image } from "astro:assets";
-
-interface Video {
-  url: string;
-}
-
-export interface ICarouselImage {
-  src: string;
-  alt: string;
-}
+import type { CarouselImage, CarouselVideo } from "../types/slider";
 
 interface Props {
-  videos?: Video[];
-  images: ICarouselImage[];
+  videos?: CarouselVideo[];
+  images: CarouselImage[];
   enablePopup?: boolean;
 }
 
