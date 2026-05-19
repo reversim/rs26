@@ -1,11 +1,13 @@
 export interface TeamMember {
+  id: string;
+  picture: string;
   slug: string;
   name: string;
   title: string;
   company: string;
   bio: string;
   linkedin?: string;
-  twitter?: string;
+  x?: string;
   bluesky?: string;
   facebook?: string;
   instagram?: string;
@@ -13,5 +15,5 @@ export interface TeamMember {
   github?: string;
   medium?: string;
   website?: string;
-  image: any;
+  role?: string;
 }

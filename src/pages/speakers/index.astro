@@ -20,12 +20,13 @@ const speakers = await getSpeakers();
       speakers.map((speaker) => {
         return (
           <MemberCard
+            id={speaker.id.toString()}
             pageBase="speaker"
             slug={`${speaker.slug}`}
             name={speaker.fullName || ""}
             title={speaker.tagLine || ""}
             company={""}
-            image={speaker.profilePicture}
+            picture={speaker.profilePicture ?? ""}
             bio={speaker.bio || ""}
           />
         );

@@ -1,7 +1,6 @@
 export interface AgendaSpeaker {
   id: string | number;
   name?: string;
-
   firstName?: string;
   lastName?: string;
   fullName?: string;

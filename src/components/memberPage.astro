@@ -13,7 +13,7 @@ interface Props extends Partial<TeamMember> {
 const {
   socialList,
   name,
-  image,
+  picture,
   title,
   company,
   bio,
@@ -29,13 +29,17 @@ const {
 
   <div class="person-info">
     <div class="media-socials-container">
-      <Picture
-        formats={["avif", "webp"]}
-        src={image}
-        alt={name || ""}
-        width="500"
-        height={"500"}
-      />
+      {
+        picture !== "" && (
+          <Picture
+            formats={["avif", "webp"]}
+            src={picture || ""}
+            alt={name || ""}
+            width="500"
+            height={"500"}
+          />
+        )
+      }
 
       <SocialLinks
         variant="member-large"

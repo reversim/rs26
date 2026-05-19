@@ -6,19 +6,23 @@ interface Props extends TeamMember {
   pageBase?: string;
 }
 
-const { company, name, title, image, slug, pageBase = "about" } = Astro.props;
+const { company, name, title, picture, slug, pageBase = "about" } = Astro.props;
 ---
 
 <a data-astro-prefetch href={`/${pageBase}/${slug}`} class="member">
   <div class="image-container">
-    <Picture
-      formats={["avif", "webp"]}
-      class="image"
-      alt={name}
-      src={image}
-      width="240"
-      height="240"
-    />
+    {
+      picture !== "" && (
+        <Picture
+          formats={["avif", "webp"]}
+          class="image"
+          alt={name}
+          src={picture}
+          width="240"
+          height="240"
+        />
+      )
+    }
   </div>
   <h3 class="name">{name}</h3>
   <span class="title">{title}{" "}{company ? `@${company}` : ""}</span>

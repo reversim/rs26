@@ -20,10 +20,10 @@ const {
   title,
   company,
   bio,
-  image,
+  picture,
   slug,
   linkedin,
-  twitter,
+  x,
   bluesky,
   facebook,
   github,
@@ -35,7 +35,7 @@ const {
 
 const socialList: Record<string, string | undefined> = {
   linkedin,
-  twitter,
+  x,
   bluesky,
   facebook,
   github,
@@ -52,7 +52,7 @@ const socialList: Record<string, string | undefined> = {
     socialList={socialList}
     bio={bio}
     name={name}
-    image={image}
+    picture={picture || ""}
     title={title}
     company={company}
   />

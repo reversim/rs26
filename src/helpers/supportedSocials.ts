@@ -2,7 +2,7 @@
 // The `SocialPlatform` type lives in src/types/social.ts.
 export const supportedSocials = {
   linkedin: "linkedin",
-  twitter: "twitter",
+  x: "x",
   bluesky: "bluesky",
   facebook: "facebook",
   github: "github",
