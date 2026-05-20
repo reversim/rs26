@@ -1,0 +1,225 @@
+---
+import Arrow from "../assets/agenda/arrow.svg";
+
+interface Props {
+  /** Visible label. For variant="back" it's rendered as "Back to {text}". */
+  text: string;
+  /** When set, renders an <a>; otherwise a <button>. */
+  href?: string;
+  variant?: "primary" | "speakers" | "no-border" | "back";
+  size?: "sm" | "md" | "lg";
+  fullWidth?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const {
+  text,
+  href,
+  variant = "primary",
+  size = "md",
+  fullWidth = false,
+  id,
+  class: className = "",
+} = Astro.props;
+
+const isBack = variant === "back";
+const classes = [
+  "btn",
+  variant,
+  `size-${size}`,
+  fullWidth ? "full-width" : "",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag class={classes} id={id} href={href}>
+  {
+    isBack ? (
+      <>
+        <Arrow class="back-arrow" /> Back to {text}
+      </>
+    ) : (
+      <>
+        <span class="btn-label">{text}</span>
+        <div class="wave" />
+      </>
+    )
+  }
+</Tag>
+
+<style lang="scss">
+  .btn {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  // ---- Back link ----------------------------------------------------------
+  .btn.back {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: max-content;
+    height: max-content;
+    margin-bottom: 12px;
+    color: var(--dark-blue);
+    font-weight: 600;
+    background: none;
+    border: none;
+
+    .back-arrow {
+      height: 16px;
+      width: 16px;
+      transform: scaleX(-1);
+    }
+  }
+
+  // ---- Hero CTA family (primary / speakers / no-border) -------------------
+  .btn.primary,
+  .btn.speakers,
+  .btn.no-border {
+    position: relative;
+    display: inline-block;
+    border: none;
+    width: 286px;
+    border-radius: 50px;
+    background-color: var(--pink-dark);
+    box-shadow: 4px 4px 0px #c1c1c182;
+    transition: all 0.15s ease-in;
+
+    &.full-width {
+      width: 100%;
+    }
+
+    .btn-label {
+      color: white;
+      font-weight: bold;
+      display: block;
+      margin: auto;
+      position: relative;
+      z-index: 2;
+      pointer-events: all;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        background-color: white;
+        transition: right 0.5s ease;
+      }
+      &::before {
+        right: 100%;
+      }
+      &::after {
+        right: 0;
+      }
+    }
+
+    &:hover .btn-label {
+      &::before {
+        right: 0px;
+      }
+      &::after {
+        right: 100%;
+      }
+    }
+
+    .wave,
+    .wave::before,
+    .wave::after {
+      opacity: 1;
+      transition: all 0.15s ease-in;
+    }
+
+    &:hover .wave {
+      opacity: 0;
+    }
+
+    .wave {
+      position: absolute;
+      background-color: #d95579;
+      border-radius: 30px 30px 0;
+      width: 50%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+
+      &::after,
+      &::before {
+        content: "";
+        position: absolute;
+        width: 17px;
+        height: 100%;
+        top: 0px;
+        background-color: var(--pink-dark);
+        border-radius: 0px 500%;
+        rotate: -2deg;
+      }
+      &::after {
+        right: 0px;
+      }
+      &::before {
+        right: -5px;
+      }
+    }
+  }
+
+  // ---- Sizes (CTA family) -------------------------------------------------
+  .btn.primary,
+  .btn.speakers {
+    &.size-sm .btn-label {
+      font-size: 14px;
+      padding: 8px 32px;
+    }
+    &.size-md .btn-label {
+      font-size: 18px;
+      padding: 12px 54px;
+    }
+    &.size-lg .btn-label {
+      font-size: 20px;
+      padding: 16px 64px;
+    }
+  }
+
+  // ---- Speakers variant ---------------------------------------------------
+  .btn.speakers {
+    background-color: var(--blue);
+
+    .btn-label {
+      padding: 12px 24px;
+    }
+
+    .wave {
+      background-color: #485b7a;
+      &::after,
+      &::before {
+        background-color: var(--blue);
+      }
+    }
+  }
+
+  // ---- No-border variant --------------------------------------------------
+  .btn.no-border {
+    .btn-label {
+      padding: 12px;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 16px;
+        padding: 12px 24px;
+      }
+    }
+  }
+</style>

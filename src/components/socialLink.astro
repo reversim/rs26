@@ -9,7 +9,6 @@ import Link from "../assets/socials/link.svg";
 import Medium from "../assets/socials/medium.svg";
 import Youtube from "../assets/socials/youtube.svg";
 import Sessionize from "../assets/socials/sessionize.svg";
-import { renderableSocialTypes } from "../config/socials";
 
 interface Props {
   link?: string;
@@ -17,53 +16,34 @@ interface Props {
   variant?: "sponsor" | "member-large" | "member-medium";
 }
 
+const iconMap: Record<string, { Icon: any; sizeBump?: number }> = {
+  linkedin: { Icon: Linkedin },
+  twitter: { Icon: Twitter },
+  x: { Icon: Twitter },
+  bluesky: { Icon: Bluesky },
+  facebook: { Icon: Facebook },
+  github: { Icon: Github },
+  instagram: { Icon: Instagram },
+  website: { Icon: Link, sizeBump: 4 },
+  company_website: { Icon: Link, sizeBump: 4 },
+  medium: { Icon: Medium },
+  youtube: { Icon: Youtube },
+  sessionize: { Icon: Sessionize },
+};
+
 const { link, type, variant } = Astro.props;
-const iconsSize = variant === "member-medium" ? 20 : 24;
+const baseSize = variant === "member-medium" ? 20 : 24;
 const lowerCaseType = type.toLowerCase();
 
-const supportedTypes: readonly string[] = renderableSocialTypes;
+const entry = iconMap[lowerCaseType];
+const Icon = entry?.Icon;
+const iconWidth = baseSize + (entry?.sizeBump ?? 0);
 ---
 
 {
-  link && supportedTypes.includes(lowerCaseType) && (
+  link && Icon && (
     <a class={`${variant} ${lowerCaseType}`} target="_blank" href={link}>
-      {() => {
-        switch (lowerCaseType) {
-          case "linkedin":
-            return <Linkedin width={iconsSize} />;
-
-          case "twitter":
-          case "x":
-            return <Twitter width={iconsSize} />;
-
-          case "bluesky":
-            return <Bluesky width={iconsSize} />;
-
-          case "facebook":
-            return <Facebook width={iconsSize} />;
-
-          case "github":
-            return <Github width={iconsSize} />;
-
-          case "instagram":
-            return <Instagram width={iconsSize} />;
-
-          case "website":
-          case "company_website":
-            return <Link width={iconsSize + 4} />;
-
-          case "medium":
-            return <Medium width={iconsSize} />;
-
-          case "youtube":
-            return <Youtube width={iconsSize} />;
-          case "sessionize":
-            return <Sessionize width={iconsSize} />;
-
-          default:
-            return <Link width={iconsSize + 4} />;
-        }
-      }}
+      <Icon width={iconWidth} />
     </a>
   )
 }

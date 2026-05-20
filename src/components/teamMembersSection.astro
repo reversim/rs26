@@ -1,7 +1,7 @@
 ---
 import "glightbox/dist/css/glightbox.css";
 import { getTeamMembers } from "../helpers/data/getTeam";
-import MemberCard from "./memberCard.astro";
+import MemberGrid from "./memberGrid.astro";
 import Title from "./title.astro";
 
 const teamMembers = await getTeamMembers();
@@ -10,20 +10,8 @@ const teamMembers = await getTeamMembers();
 <div class="team-members-container">
   <Title
     title="Our Team"
-    style="color: black; margin: 100px 0 0"
+    style="color: black; margin: 100px 0 40px"
     id="past-events"
   />
-  <div class="team-members-grid">
-    {teamMembers.map((member) => <MemberCard {...member} />)}
-  </div>
+  <MemberGrid members={teamMembers} />
 </div>
-
-<style lang="scss">
-
-.team-members-grid {
-  margin-top: 40px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px 80px;
-}
-</style>

@@ -1,0 +1,95 @@
+---
+import Highlight from "./highlight.astro";
+import { event } from "../config/event";
+---
+
+<div class="hero-container">
+  <div class="title-container">
+    <h2 class="title green">{event.title.line1}</h2>
+    <h2 class="title blue">
+      {event.title.line2}
+
+      <span class="title orange">{event.title.year}</span>
+    </h2>
+  </div>
+
+  <div class="event-date-container">
+    <p class="event-date">{event.dates}</p>
+    <Highlight />
+  </div>
+</div>
+
+<style lang="scss">
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    pointer-events: none;
+    padding: 72px;
+
+    .title-container {
+      font-size: 80px;
+      font-weight: 700;
+      .title {
+        width: max-content;
+        font-size: 1em;
+        font-weight: inherit;
+        margin: 0 auto;
+        line-height: 1;
+        --textShadow: #c1c1c182;
+
+        &.green {
+          color: var(--green);
+          text-shadow: -6px -4px 0px var(--textShadow);
+        }
+
+        &.orange {
+          color: var(--orange);
+          text-shadow: -6px 4px 0px var(--textShadow);
+        }
+
+        &.blue {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 12px;
+          color: var(--blue);
+          text-shadow: -4px -6px 0px var(--textShadow);
+
+          @media screen and (min-width: 1200px) {
+            transform: translateX(-1.47em);
+          }
+        }
+      }
+
+      @media (max-width: 992px) {
+        font-size: 60px;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 36px;
+      }
+    }
+
+    .event-date-container {
+      .event-date {
+        position: relative;
+        width: max-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: auto;
+        margin-top: 40px;
+        font-weight: 600;
+        font-size: 48px;
+        color: var(--pink);
+        text-align: center;
+
+        @media (max-width: 768px) {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+</style>

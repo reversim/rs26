@@ -4,6 +4,7 @@ import type {
   Cell,
   RawGridDay,
 } from "../../types/agenda";
+import { resolveTrack } from "../agenda/trackName";
 
 const AGENDA_URL = "https://sessionize.com/api/v2/fan6lxrk/view/GridSmart";
 
@@ -192,12 +193,5 @@ export function buildDayGrid(day: AgendaDay) {
 }
 
 export function getTrackName(session: AgendaSession): string | undefined {
-  const trackCategory = (session as any).categories?.find(
-    (c: any) => c.name === "Track",
-  );
-  const item = trackCategory?.categoryItems?.[0];
-  if (!item) return undefined;
-  const raw = item.name;
-  if (raw === "AI Apps" || raw === "AI Infra") return "AI";
-  return raw;
+  return resolveTrack(session) ?? undefined;
 }

@@ -1,7 +1,6 @@
 ---
-import SocialLink from "./socialLink.astro";
 import type { TeamMember } from "../types/team";
-import BackButton from "./backButton.astro";
+import Button from "./button.astro";
 import { Picture } from "astro:assets";
 import SocialLinks from "./socialLinks.astro";
 
@@ -22,8 +21,9 @@ const {
 ---
 
 <div class="main-container">
-  <BackButton
-    backToText={type === "about" ? "Team" : "Speakers"}
+  <Button
+    variant="back"
+    text={type === "about" ? "Team" : "Speakers"}
     href={type === "about" ? `/about` : `/speakers`}
   />
 
@@ -41,13 +41,7 @@ const {
         )
       }
 
-      <SocialLinks
-        variant="member-large"
-        socialList={Object.entries(socialList || {}).map(([social, link]) => ({
-          social,
-          link: link || "",
-        }))}
-      />
+      <SocialLinks variant="member-large" socialList={socialList || {}} />
     </div>
     <div class="info-container">
       <h3 class="name">{name}</h3>

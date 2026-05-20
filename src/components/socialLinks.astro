@@ -1,18 +1,28 @@
 ---
 import SocialLink from "./socialLink.astro";
 
+type SocialEntry = { social: string; link: string };
+
 interface Props {
-  socialList: { social: string; link: string }[];
+  // Accepts either a { platform: url } record or a pre-shaped array.
+  socialList: Record<string, string | undefined> | SocialEntry[];
   variant?: "sponsor" | "member-large" | "member-medium";
 }
 const { socialList, variant = "sponsor" } = Astro.props;
+
+const entries: SocialEntry[] = Array.isArray(socialList)
+  ? socialList
+  : Object.entries(socialList).map(([social, link]) => ({
+      social,
+      link: link || "",
+    }));
 ---
 
 <div class={`social-links ${variant}`}>
   {
-    socialList.map(({ social, link }) => {
-      return <SocialLink variant={variant} type={social} link={link || ""} />;
-    })
+    entries.map(({ social, link }) => (
+      <SocialLink variant={variant} type={social} link={link || ""} />
+    ))
   }
 </div>
 

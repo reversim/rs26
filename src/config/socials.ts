@@ -12,21 +12,3 @@ export const supportedSocials = {
   youtube: "youtube",
 } as const;
 
-// Every type string socialLink.astro can render an icon for, including
-// aliases coming from external data (twitter≈x, company_website≈website).
-export const renderableSocialTypes = [
-  "linkedin",
-  "twitter",
-  "x",
-  "bluesky",
-  "facebook",
-  "github",
-  "instagram",
-  "website",
-  "company_website",
-  "medium",
-  "youtube",
-  "sessionize",
-] as const;
-
-export type RenderableSocialType = (typeof renderableSocialTypes)[number];

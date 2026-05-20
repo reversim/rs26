@@ -1,9 +1,20 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
-import MemberCard from "../../components/memberCard.astro";
+import MemberGrid from "../../components/memberGrid.astro";
+import type { TeamMember } from "../../types/team";
 
 const speakers = await getSpeakers();
+
+const speakerCards: TeamMember[] = speakers.map((speaker) => ({
+  id: speaker.id.toString(),
+  slug: speaker.slug ?? "",
+  name: speaker.fullName || "",
+  title: speaker.tagLine || "",
+  company: "",
+  picture: speaker.profilePicture ?? "",
+  bio: speaker.bio || "",
+}));
 ---
 
 <Layout havePaddingBottom={true}>
@@ -15,38 +26,10 @@ const speakers = await getSpeakers();
     engaging exploration of the latest trends and insights across the tech
     landscape!
   </p>
-  <div class="speakers-container">
-    {
-      speakers.map((speaker) => {
-        return (
-          <MemberCard
-            id={speaker.id.toString()}
-            pageBase="speaker"
-            slug={`${speaker.slug}`}
-            name={speaker.fullName || ""}
-            title={speaker.tagLine || ""}
-            company={""}
-            picture={speaker.profilePicture ?? ""}
-            bio={speaker.bio || ""}
-          />
-        );
-      })
-    }
-  </div>
+  <MemberGrid members={speakerCards} pageBase="speaker" />
 </Layout>
 
 <style lang="scss">
-  .speakers-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px 80px;
-
-    @media screen and (max-width: 576px) {
-      grid-template-columns: 1fr;
-      gap: 50px;
-    }
-  }
-
   .description {
     margin-bottom: 20px;
     font-weight: 300;

@@ -1,0 +1,29 @@
+---
+import MemberCard from "./memberCard.astro";
+import type { TeamMember } from "../types/team";
+
+interface Props {
+  members: TeamMember[];
+  // Route prefix for each card's link (e.g. "about" or "speaker").
+  pageBase?: string;
+}
+
+const { members, pageBase = "about" } = Astro.props;
+---
+
+<div class="member-grid">
+  {members.map((member) => <MemberCard {...member} pageBase={pageBase} />)}
+</div>
+
+<style lang="scss">
+  .member-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px 80px;
+
+    @media screen and (max-width: 576px) {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+  }
+</style>

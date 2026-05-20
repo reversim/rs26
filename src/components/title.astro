@@ -3,17 +3,17 @@ interface Props {
   title: string;
   titleColor?: string;
   style?: string;
-  type?: "sponsor-large" | "sponsor-medium" | "default";
+  variant?: "sponsor-large" | "sponsor-medium" | "default";
   id?: string;
 }
 
-const { title, titleColor, style, id, type = "default" } = Astro.props;
+const { title, titleColor, style, id, variant = "default" } = Astro.props;
 ---
 
 <a class="title-container" href={id ? `#${id}` : undefined}>
   <h3
     style={`color:${titleColor || "white"}; ${style}`}
-    class={`title-text ${type}`}
+    class={`title-text ${variant}`}
     id={id}
   >
     {title}

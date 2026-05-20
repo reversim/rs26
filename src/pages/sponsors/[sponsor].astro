@@ -77,14 +77,7 @@ const carouselImagesPromise = await Promise.all(
           width={500}
         />
 
-        <SocialLinks
-          socialList={Object.entries(socialList || {}).map(
-            ([social, link]) => ({
-              social,
-              link: link || "",
-            }),
-          )}
-        />
+        <SocialLinks socialList={socialList || {}} />
 
         <div class="sponsor-basic-info">
           <div class="who-we-are">

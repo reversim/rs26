@@ -1,5 +1,6 @@
 import type { AgendaSession } from "../../types/agenda";
 import { getTrackColor } from "../../config/trackColors";
+import { resolveTrack } from "./trackName";
 import slugify from "slug";
 
 // Category color from a full session (server-side version)
@@ -7,7 +8,8 @@ export function getTalkCategoryColor(session: AgendaSession): string {
   return getTrackColor(getTrackName(session));
 }
 
-// Helper function to get track name from session
+// Rich track name: maps special sessions to pseudo-tracks (used for coloring),
+// then falls back to the session's real Track category.
 export function getTrackName(session: AgendaSession): string | null {
   if (session.isLightningGroup) return "Ignites";
   if (session.title === "Opening Words") return "opening";
@@ -18,12 +20,7 @@ export function getTrackName(session: AgendaSession): string | null {
     session.title === "Keynote Placeholder"
   )
     return "keynote";
-  const trackCategory = session.categories?.find((c) => c.name === "Track");
-  const item = trackCategory?.categoryItems?.[0];
-  if (!item) return null;
-  const raw = item.name;
-  if (raw === "AI Apps" || raw === "AI Infra") return "AI";
-  return raw;
+  return resolveTrack(session);
 }
 
 // Helper function to create speaker URL
@@ -57,16 +54,9 @@ export function formatDate(dateString: string): string {
   });
 }
 
-// Helper function to get session track name (client-side version)
+// Plain track name (client-side version)
 export function getSessionTrackName(session: any): string | null {
-  const trackCategory = session.categories?.find(
-    (c: any) => c.name === "Track",
-  );
-  const item = trackCategory?.categoryItems?.[0];
-  if (!item) return null;
-  const raw = item.name;
-  if (raw === "AI Apps" || raw === "AI Infra") return "AI";
-  return raw;
+  return resolveTrack(session);
 }
 
 // Client-side helper functions for browser environment

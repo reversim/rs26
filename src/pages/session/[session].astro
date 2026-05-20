@@ -5,7 +5,7 @@ import slug from "slug";
 import Arrow from "../../assets/agenda/arrow.svg";
 import SessionCategory from "../../components/agenda/category.astro";
 import SessionSpeakers from "../../components/agenda/sessionSpeakers.astro";
-import BackButton from "../../components/backButton.astro";
+import Button from "../../components/button.astro";
 import { getTalkCategoryColor } from "../../helpers/agenda/agendaHelpers";
 import { getTrackName } from "../../helpers/data/getAgenda";
 import { getSessions } from "../../helpers/data/getSessions";
@@ -112,7 +112,7 @@ const track = getTrackName(session);
 ---
 
 <Layout>
-  <BackButton backToText="Agenda" href="/agenda" />
+  <Button variant="back" text="Agenda" href="/agenda" />
   <div class="session-container">
     <h2>{title}</h2>
     <p class="description">{description}</p>

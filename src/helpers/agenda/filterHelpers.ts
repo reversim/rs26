@@ -1,4 +1,5 @@
 import { findSessionById } from "./agendaHelpers";
+import { resolveTrack } from "./trackName";
 
 const LIKED_TALKS_KEY = "reversim-liked-talks";
 const FILTERS_KEY = "reversim-filters";
@@ -35,15 +36,7 @@ export function getLikedTalks(): string[] {
 
 export const getSessionTrackName = (session: any): string | null => {
   if (session?.isIgnites) return "Ignites";
-
-  const trackCategory = session.categories?.find(
-    (c: any) => c.name === "Track",
-  );
-  const item = trackCategory?.categoryItems?.[0];
-  if (!item) return null;
-  const raw = item.name;
-  if (raw === "AI Apps" || raw === "AI Infra") return "AI";
-  return raw;
+  return resolveTrack(session);
 };
 
 export function filterHandler({

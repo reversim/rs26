@@ -1,5 +1,5 @@
 ---
-import Member from "../../components/memberCard.astro";
+import MemberGrid from "../../components/memberGrid.astro";
 import { getTeamMembers } from "../../helpers/data/getTeam";
 import Layout from "../../layouts/Layout.astro";
 
@@ -16,23 +16,10 @@ const teamMembers = await getTeamMembers();
     attendees.
   </p>
 
-  <div class="team-member-container">
-    {teamMembers.map((member) => <Member {...member} />)}
-  </div>
+  <MemberGrid members={teamMembers} />
 </Layout>
 
 <style lang="scss">
-  .team-member-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px 80px;
-
-    @media screen and (max-width: 576px) {
-      grid-template-columns: 1fr;
-      gap: 1.5%;
-    }
-  }
-
   p {
     margin-bottom: 20px;
     font-weight: 300;
