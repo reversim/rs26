@@ -9,6 +9,7 @@ import Link from "../assets/socials/link.svg";
 import Medium from "../assets/socials/medium.svg";
 import Youtube from "../assets/socials/youtube.svg";
 import Sessionize from "../assets/socials/sessionize.svg";
+import { renderableSocialTypes } from "../config/socials";
 
 interface Props {
   link?: string;
@@ -20,20 +21,7 @@ const { link, type, variant } = Astro.props;
 const iconsSize = variant === "member-medium" ? 20 : 24;
 const lowerCaseType = type.toLowerCase();
 
-const supportedTypes = [
-  "linkedin",
-  "twitter",
-  "bluesky",
-  "facebook",
-  "github",
-  "x",
-  "instagram",
-  "website",
-  "company_website",
-  "medium",
-  "youtube",
-  "sessionize",
-];
+const supportedTypes: readonly string[] = renderableSocialTypes;
 ---
 
 {

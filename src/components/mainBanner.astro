@@ -5,6 +5,9 @@ import { getSponsors } from "../helpers/data/getSponsors";
 import Highlight from "./highlight.astro";
 import SponsorDialog from "./sponsorDialog.astro";
 import Title from "./title.astro";
+import { event } from "../config/event";
+import { MIN_MACHINE_WIDTH } from "../config/breakpoints";
+import { sponsorTiers } from "../config/sponsorTiers";
 
 const optimizedRS24ImageMobile = await getImage({
   src: rs24Image,
@@ -19,6 +22,9 @@ const organizingSponsor = await getSponsors("organizing");
 const communitySponsors = await getSponsors("community");
 const gameChangersSponsors = await getSponsors("game-changers");
 
+const tierLabel = (key: string) =>
+  sponsorTiers.find((tier) => tier.key === key)?.label ?? "";
+
 const cssVars = `
 .card-background {
     --optimizedRS24URLMobile: url(${optimizedRS24ImageMobile.src});
@@ -26,8 +32,7 @@ const cssVars = `
     }`;
 ---
 
-<script is:inline>
-  const minMachineWidth = 1000;
+<script is:inline define:vars={{ minMachineWidth: MIN_MACHINE_WIDTH }}>
   document.documentElement.style.setProperty(
     "--minMachineWidth",
     `${minMachineWidth}px`,
@@ -72,16 +77,16 @@ const cssVars = `
 <div class="main-banner">
   <div class="hero-container">
     <div class="title-container">
-      <h2 class="title green">REVERSIM</h2>
+      <h2 class="title green">{event.title.line1}</h2>
       <h2 class="title blue">
-        SUMMIT
+        {event.title.line2}
 
-        <span class="title orange">2026</span>
+        <span class="title orange">{event.title.year}</span>
       </h2>
     </div>
 
     <div class="event-date-container">
-      <p class="event-date">30.11-1.12, 2026</p>
+      <p class="event-date">{event.dates}</p>
       <!-- <Highlight class="highlight" /> -->
       <Highlight />
     </div>
@@ -89,21 +94,12 @@ const cssVars = `
 
   <div class="sponsors card-background card">
     <div class="description-container">
-      <p class="event-description" id="about">
-        Reversim Summit 2026 (RS26) is a community driven event in Israel for
-        software developers, product managers, data scientists and everyone else
-        in the software industry. With an enthusiastic team of volunteers we've
-        been creating a content-first software conferences since 2013 and
-        successfully leading the market. Reversim Summit (RS) is not for profit
-        and its sole purpose is to enrich the community with content and
-        networking. We are grateful to have such an excellent top of the
-        industry team of volunteer moderators and event organizers.
-      </p>
+      <p class="event-description" id="about">{event.description}</p>
 
       <Title
         type="sponsor-large"
         style="margin: 25px 0 24px"
-        title="Organizing Sponsor"
+        title={tierLabel("organizing")}
         id="sponsors"
       />
       <div class="sponsors-container organizer">
@@ -130,7 +126,7 @@ const cssVars = `
             <Title
               type="sponsor-medium"
               style="margin: 36px 0 18px"
-              title="Game Changers Sponsors"
+              title={tierLabel("game-changers")}
               id="sponsors"
             />
             <div class="sponsors-container game-changers">
@@ -158,7 +154,7 @@ const cssVars = `
             <Title
               type="sponsor-medium"
               style="margin: 42px 0 18px"
-              title="Community Sponsors"
+              title={tierLabel("community")}
               id="sponsors"
             />
             <div class="community sponsors-container">

@@ -1,34 +1,10 @@
 import type { AgendaSession } from "../../types/agenda";
+import { getTrackColor } from "../../config/trackColors";
 import slugify from "slug";
 
-// Helper function for getting category color (server-side version)
+// Category color from a full session (server-side version)
 export function getTalkCategoryColor(session: AgendaSession): string {
-  const track = getTrackName(session);
-
-  if (!track) return "#506592";
-
-  const categoryName = track.toLowerCase();
-  const colorMap: Record<string, string> = {
-    frontend: "#fd6a82",
-    front: "#fd6a82",
-    backend: "#f78750",
-    back: "#f78750",
-    ai: "#81c47a",
-    "artificial intelligence": "#81c47a",
-    data: "#81c47a",
-    mobile: "#506592",
-    devops: "#9d4edd",
-    security: "#e63946",
-    "ui/ux": "#f72585",
-    design: "#f72585",
-    ignites: "#f7ab22",
-    opening: "#7ebec8",
-    keynote: "#7ebec8",
-    registration: "#5065926e",
-    dining: "transparent",
-  };
-
-  return colorMap[categoryName] || "#506592";
+  return getTrackColor(getTrackName(session));
 }
 
 // Helper function to get track name from session
@@ -95,28 +71,9 @@ export function getSessionTrackName(session: any): string | null {
 
 // Client-side helper functions for browser environment
 
-// Helper function to get session category color (client-side version)
+// Category color from a raw session object (client-side version)
 export function getSessionCategoryColor(session: any): string {
-  const track = getSessionTrackName(session);
-  if (!track) return "#506592";
-
-  const categoryName = track.toLowerCase();
-  const colorMap: Record<string, string> = {
-    frontend: "#fd6a82",
-    front: "#fd6a82",
-    backend: "#f78750",
-    back: "#f78750",
-    ai: "#81c47a",
-    "artificial intelligence": "#81c47a",
-    data: "#81c47a",
-    mobile: "#506592",
-    devops: "#9d4edd",
-    security: "#e63946",
-    "ui/ux": "#f72585",
-    design: "#f72585",
-  };
-
-  return colorMap[categoryName] || "#506592";
+  return getTrackColor(getSessionTrackName(session));
 }
 
 // Toggle like status for a session

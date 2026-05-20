@@ -1,0 +1,11 @@
+// Compile-time breakpoint variables — usable inside @media queries
+// (CSS custom properties can't be). No CSS output, safe to @use anywhere:
+//   @use "../../styles/breakpoints" as *;
+//   @media (max-width: $breakpoint-medium) { ... }
+//
+// Keep these in sync with src/config/breakpoints.ts and the --breakpoint-*
+// custom properties in _variables.scss.
+$breakpoint-small: 576px;
+$breakpoint-medium: 768px;
+$breakpoint-large: 992px;
+$breakpoint-x-large: 1200px;
