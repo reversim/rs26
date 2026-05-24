@@ -26,7 +26,7 @@ const backgroundImageURL = `url(${optimizedImage.src})`;
     width: 100%;
     padding: 120px 8% 10%;
 
-    background-color: #171c3e;
+    background-color: var(--navy);
     background-image: radial-gradient(#313651b5 1px, transparent 1px);
     background-size: 23px 23px;
     background-position-y: -5px;
@@ -58,8 +58,8 @@ const backgroundImageURL = `url(${optimizedImage.src})`;
         radial-gradient(
           circle at 40% center,
           transparent 0%,
-          #171c3e 85%,
-          #171c3e 100%
+          var(--navy) 85%,
+          var(--navy) 100%
         ),
         var(--backgroundImageURL);
       mask-image: linear-gradient(to bottom, var(--white) 50% 0, transparent 100%);

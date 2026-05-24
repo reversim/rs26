@@ -37,7 +37,7 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
     padding: 25px;
     border-radius: 15px;
     margin-bottom: 30px;
@@ -62,7 +62,7 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
 
   .liked-talk-item {
     background: linear-gradient(135deg, var(--white) 0%, #fcfcfd 100%);
-    border: 2px solid #e9ecef;
+    border: 2px solid var(--gray-100);
     border-radius: 16px;
     padding: 24px;
     cursor: pointer;
@@ -95,7 +95,7 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
         0 20px 25px -5px rgba(0, 0, 0, 0.1),
         0 10px 10px -5px rgba(0, 0, 0, 0.04);
       border-color: var(--pink);
-      background: linear-gradient(135deg, var(--white) 0%, #f8f9fa 100%);
+      background: linear-gradient(135deg, var(--white) 0%, var(--gray-50) 100%);
     }
   }
 

@@ -69,7 +69,7 @@ const { cells, currentDay, desiredRooms } = Astro.props;
 <style lang="scss">
   .empty-cell {
     background: #fafafa;
-    border-right: 1px solid #e9ecef;
+    border-right: 1px solid var(--gray-100);
     grid-column: var(--col-index);
 
     &:last-child {
@@ -80,7 +80,7 @@ const { cells, currentDay, desiredRooms } = Astro.props;
   .session-cell {
     padding: 8px;
     vertical-align: top;
-    border-right: 1px solid #e9ecef;
+    border-right: 1px solid var(--gray-100);
     z-index: 1;
     grid-column: var(--col-index);
 
@@ -90,8 +90,8 @@ const { cells, currentDay, desiredRooms } = Astro.props;
 
     .session-content {
       height: 100%;
-      background: #f8f9fa;
-      border: 2px solid #e9ecef;
+      background: var(--gray-50);
+      border: 2px solid var(--gray-100);
       border-radius: 8px;
       padding: 15px;
 
@@ -120,7 +120,7 @@ const { cells, currentDay, desiredRooms } = Astro.props;
         font-weight: 700;
         line-height: 1.4;
         margin: 0 0 12px 0;
-        color: #2c3e50;
+        color: var(--slate);
         padding-right: 40px;
 
         a {

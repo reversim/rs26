@@ -117,7 +117,7 @@ const { session: sessions } = Astro.props;
       cursor: default;
       padding: 16px;
       background: white;
-      border: 2px solid #e9ecef;
+      border: 2px solid var(--gray-100);
       border-radius: 12px;
       position: relative;
       transition: all 0.3s ease;
@@ -125,14 +125,14 @@ const { session: sessions } = Astro.props;
 
       &:hover {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-        border-color: #e9ecef !important;
+        border-color: var(--gray-100) !important;
       }
 
       &:focus {
         outline: none;
         transform: none !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-        border-color: #e9ecef !important;
+        border-color: var(--gray-100) !important;
       }
 
       &:active {
@@ -145,7 +145,7 @@ const { session: sessions } = Astro.props;
       padding-right: 35px;
       line-height: 1.4;
       margin: 0 0 12px 0;
-      color: #2c3e50;
+      color: var(--slate);
     }
   }
 </style>

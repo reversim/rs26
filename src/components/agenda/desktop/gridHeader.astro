@@ -22,8 +22,8 @@ const { dayLabel, desiredRooms } = Astro.props;
   .grid-header {
     display: grid;
     grid-template-columns: 120px 1fr 1fr 1fr;
-    background: #f8f9fa;
-    border-bottom: 2px solid #e9ecef;
+    background: var(--gray-50);
+    border-bottom: 2px solid var(--gray-100);
     position: sticky;
     top: calc(var(--header-height) + 54px);
     z-index: 3;
@@ -34,7 +34,7 @@ const { dayLabel, desiredRooms } = Astro.props;
       text-align: center;
       font-weight: 700;
       color: var(--blue);
-      border-right: 1px solid #e9ecef;
+      border-right: 1px solid var(--gray-100);
 
       &:last-child {
         border-right: none;

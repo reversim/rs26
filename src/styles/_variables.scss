@@ -18,40 +18,34 @@
   --blue: #506592;
   --yellow: #f7ab22;
 
-  // Additional Color Variables
+  // Neutrals
   --white: #ffffff;
+  --gray-50: #f8f9fa; // lightest surface / hover background
+  --gray-100: #e9ecef; // subtle borders & dividers
   --light-gray: #d1cdcd;
-  --dark-gray: #3e3d3d;
   --gray: #6b7280;
+  --dark-gray: #3e3d3d;
+  --slate: #2c3e50; // dark text on agenda cards
+  --navy: #171c3e; // dark card background (sponsors)
   --dark-blue: #1d2244;
   --teal: #7eb9bf;
-  --background-opacity: rgba(255, 255, 255, 0.945);
   --secondary-text-color: #667;
+  --background-opacity: rgba(255, 255, 255, 0.945);
+
+  // Effects
+  --shadow-pop: #c1c1c182; // offset "sticker" shadow / text shadow
 
   // Typography
   --font-primary: var(--font-montserrat), sans-serif;
 
   // Spacing
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 48px;
 
   // Borders & Radius
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 16px;
   --border-radius-full: 50%;
 
-  // Shadows
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-
   // Transitions
-  --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
-  --transition-slow: 0.5s ease;
 }
