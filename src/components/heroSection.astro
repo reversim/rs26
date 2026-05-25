@@ -1,5 +1,6 @@
 ---
 import Highlight from "./highlight.astro";
+import Button from "./button.astro";
 import { event } from "../config/event";
 ---
 
@@ -16,6 +17,10 @@ import { event } from "../config/event";
   <div class="event-date-container">
     <p class="event-date">{event.dates}</p>
     <Highlight />
+  </div>
+
+  <div class="cfp-cta">
+    <Button variant="primary" size="lg" text={event.cfp.label} href={event.cfp.url} />
   </div>
 </div>
 
@@ -88,6 +93,21 @@ import { event } from "../config/event";
 
         @media (max-width: 768px) {
           font-size: 18px;
+        }
+      }
+    }
+
+    .cfp-cta {
+      margin-top: 48px;
+      display: flex;
+      justify-content: center;
+      pointer-events: auto;
+      text-align: center;
+
+      @media (max-width: 768px) {
+        :global(.btn.size-lg .btn-label) {
+          font-size: 14px;
+          padding: 8px 32px;
         }
       }
     }

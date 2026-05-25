@@ -25,4 +25,10 @@ export const event = {
     "and its sole purpose is to enrich the community with content and " +
     "networking. We are grateful to have such an excellent top of the " +
     "industry team of volunteer moderators and event organizers.",
+
+  // Hero call-to-action. Set `url` to the CFP submission link when ready.
+  cfp: {
+    label: "CFP Is Open!",
+    url: "https://sessionize.com/reversim-summit-2026/",
+  },
 } as const;
