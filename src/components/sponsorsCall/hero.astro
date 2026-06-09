@@ -1,0 +1,135 @@
+---
+import { sponsorsCall } from "../../config/sponsorsCall";
+import ContactPill from "./contactPill.astro";
+
+const { hero, contacts } = sponsorsCall;
+---
+
+<section class="hero">
+  <div class="dotbg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <h1>
+        {hero.headlineLead}<span class="o">{hero.headlineAccent}</span>
+      </h1>
+      <p class="why">{hero.why}</p>
+
+      <div class="contact-block">
+        <span class="lab">{hero.contactLabel}</span>
+        <div class="contact-pills">
+          <ContactPill
+            href={contacts.sponsors.email.href}
+            label={contacts.sponsors.email.display}
+            variant="filled"
+          />
+          <ContactPill
+            href={contacts.sponsors.phone.href}
+            label={contacts.sponsors.phone.display}
+            variant="dashed"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dotbg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.5;
+    background-image: radial-gradient(
+      rgba(108, 140, 199, 0.16) 1.1px,
+      transparent 1.1px
+    );
+    background-size: 30px 30px;
+    -webkit-mask-image: radial-gradient(
+      120% 90% at 50% 0%,
+      #000 35%,
+      transparent 80%
+    );
+    mask-image: radial-gradient(
+      120% 90% at 50% 0%,
+      #000 35%,
+      transparent 80%
+    );
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--rs26-maxw);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 56px);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: clamp(64px, 12vw, 140px) 0 clamp(40px, 7vw, 72px);
+  }
+
+  .eyebrow {
+    font-family: var(--rs26-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rs26-mint);
+    margin: 0;
+  }
+
+  h1 {
+    font-family: var(--rs26-display);
+    font-weight: 600;
+    font-size: clamp(2.7rem, 7vw, 5.2rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    color: var(--rs26-white);
+    margin: 0.24em 0 0;
+
+    .o {
+      color: var(--rs26-orange);
+    }
+  }
+
+  .why {
+    font-family: var(--rs26-body);
+    font-size: clamp(1.08rem, 2vw, 1.32rem);
+    line-height: 1.5;
+    color: var(--rs26-text);
+    margin: 1.1em auto 0;
+    text-wrap: pretty;
+  }
+
+  .contact-block {
+    margin-top: clamp(30px, 4vw, 44px);
+    text-align: center;
+
+    .lab {
+      display: block;
+      font-family: var(--rs26-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rs26-muted);
+      margin-bottom: 16px;
+    }
+  }
+
+  .contact-pills {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+</style>

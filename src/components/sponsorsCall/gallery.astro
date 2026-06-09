@@ -1,0 +1,65 @@
+---
+import PhotoCarousel from "./photoCarousel.astro";
+import { sponsorsCall } from "../../config/sponsorsCall";
+
+const { gallery } = sponsorsCall;
+---
+
+<section class="block band">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">{gallery.eyebrow}</p>
+        <h2>{gallery.heading}</h2>
+      </div>
+    </div>
+
+    <PhotoCarousel slides={gallery.slides} ariaLabel={gallery.ariaLabel} />
+  </div>
+</section>
+
+<style lang="scss">
+  .block {
+    padding: clamp(40px, 7vw, 88px) 0;
+  }
+
+  .band {
+    background: var(--rs26-navy-2);
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--rs26-maxw);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 56px);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .eyebrow {
+    font-family: var(--rs26-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rs26-mint);
+    margin: 0;
+  }
+
+  h2 {
+    font-family: var(--rs26-display);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    color: var(--rs26-white);
+    margin: 8px 0 0;
+  }
+</style>

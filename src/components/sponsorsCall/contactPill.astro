@@ -1,0 +1,54 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  variant?: "dashed" | "filled";
+}
+
+const { href, label, variant = "filled" } = Astro.props;
+---
+
+<a class={`contact-pill ${variant}`} href={href}>
+  <span class="label">{label}</span>
+</a>
+
+<style lang="scss">
+  .contact-pill {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    font-family: var(--rs26-mono);
+    font-size: 1rem;
+    color: var(--rs26-white);
+    padding: 0.7em 1.1em;
+    border-radius: 999px;
+    transition:
+      background 0.18s,
+      border-color 0.18s,
+      border-style 0.18s,
+      color 0.18s,
+      filter 0.18s;
+  }
+
+  .contact-pill.dashed {
+    border: 1px dashed var(--rs26-dashed);
+    background: rgba(108, 140, 199, 0.07);
+
+    &:hover {
+      border-style: solid;
+      border-color: var(--rs26-orange);
+      background: rgba(240, 122, 35, 0.28);
+      color: var(--rs26-orange);
+    }
+  }
+
+  .contact-pill.filled {
+    border: 1px solid transparent;
+    background: var(--rs26-orange);
+    color: var(--rs26-white);
+
+    &:hover {
+      filter: brightness(1.06);
+    }
+  }
+</style>

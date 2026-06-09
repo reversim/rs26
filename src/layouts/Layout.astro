@@ -7,12 +7,14 @@ interface Props {
   havePadding?: boolean;
   havePaddingBottom?: boolean;
   haveBG?: boolean;
+  displayHeader?: boolean;
 }
 
 const {
   havePadding = true,
   haveBG = false,
   havePaddingBottom = false,
+  displayHeader = true,
 } = Astro.props;
 ---
 
@@ -63,7 +65,7 @@ const {
     </script>
   </head>
   <body>
-    <Header />
+    {displayHeader && <Header />}
     <div
       class={`body-container ${havePadding ? "have-padding" : ""} ${haveBG ? "have-background" : ""} ${havePaddingBottom ? "have-padding-bottom" : ""}`}
     >

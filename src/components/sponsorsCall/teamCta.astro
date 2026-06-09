@@ -1,0 +1,82 @@
+---
+import { sponsorsCall } from "../../config/sponsorsCall";
+import ContactPill from "./contactPill.astro";
+
+const { teamCta, contacts } = sponsorsCall;
+---
+
+<section class="block">
+  <div class="wrap">
+    <div class="team-cta">
+      <div class="copy">
+        <h3>{teamCta.heading}</h3>
+        <p>{teamCta.subline}</p>
+      </div>
+      <div class="team-contacts">
+        <ContactPill
+          href={contacts.sponsors.email.href}
+          label={contacts.sponsors.email.display}
+          variant="filled"
+        />
+        <ContactPill
+          href={contacts.sponsors.phone.href}
+          label={contacts.sponsors.phone.display}
+          variant="dashed"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .block {
+    padding: clamp(40px, 7vw, 88px) 0;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--rs26-maxw);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 56px);
+  }
+
+  .team-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .copy {
+    h3 {
+      font-family: var(--rs26-display);
+      font-weight: 600;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--rs26-white);
+      letter-spacing: -0.01em;
+      line-height: 1.02;
+      margin: 0;
+    }
+
+    p {
+      font-family: var(--rs26-body);
+      color: var(--rs26-muted);
+      margin: 6px 0 0;
+      font-size: 0.95rem;
+      max-width: 48ch;
+      line-height: 1.5;
+    }
+  }
+
+  .team-contacts {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    :global(.contact-pill) {
+      font-size: 0.95rem;
+    }
+  }
+</style>
