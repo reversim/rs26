@@ -19,8 +19,19 @@ import { event } from "../config/event";
     <Highlight />
   </div>
 
-  <div class="cfp-cta">
-    <Button variant="primary" size="lg" text={event.cfp.label} href={event.cfp.url} />
+  <div class="action-cta">
+    <Button
+      variant="primary"
+      size="lg"
+      text={event.cfp.label}
+      href={event.cfp.url}
+    />
+    <Button
+      variant="speakers"
+      size="lg"
+      text={event.sponsor.label}
+      href={event.sponsor.url}
+    />
   </div>
 </div>
 
@@ -97,12 +108,19 @@ import { event } from "../config/event";
       }
     }
 
-    .cfp-cta {
+    .action-cta {
       margin-top: 48px;
       display: flex;
+      gap: 6%;
       justify-content: center;
       pointer-events: auto;
       text-align: center;
+
+      @media screen and (max-width: 992px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
 
       @media (max-width: 768px) {
         :global(.btn.size-lg .btn-label) {

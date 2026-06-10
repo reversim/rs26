@@ -31,4 +31,8 @@ export const event = {
     label: "CFP Is Open!",
     url: "https://sessionize.com/reversim-summit-2026/",
   },
+  sponsor:{
+    label: "Be A Sponsor!",
+    url: "/sponsors",
+  }
 } as const;
