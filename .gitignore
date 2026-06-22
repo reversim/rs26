@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # test functions
 common-scripts/
+
+claude-design-artifacts/
