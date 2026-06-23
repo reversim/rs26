@@ -8,14 +8,16 @@ interface Props {
 }
 
 const { title, titleColor, style, id, variant = "default" } = Astro.props;
+
+// Default color comes from CSS (.title-text) so dark-theme variants can win;
+// only force an inline color when a caller explicitly passes titleColor.
+const inlineStyle = [titleColor ? `color:${titleColor}` : "", style]
+  .filter(Boolean)
+  .join("; ");
 ---
 
 <a class="title-container" href={id ? `#${id}` : undefined}>
-  <h3
-    style={`color:${titleColor || "white"}; ${style}`}
-    class={`title-text ${variant}`}
-    id={id}
-  >
+  <h3 style={inlineStyle} class={`title-text ${variant}`} id={id}>
     {title}
   </h3>
 </a>
@@ -28,6 +30,7 @@ const { title, titleColor, style, id, variant = "default" } = Astro.props;
       position: relative;
       width: 46%;
       margin: 100px 0 60px;
+      color: var(--white);
 
       background-image: linear-gradient(
         to right,
@@ -52,11 +55,14 @@ const { title, titleColor, style, id, variant = "default" } = Astro.props;
 
       &.sponsor-large,
       &.sponsor-medium {
+        font-family: var(--font-mono);
         font-size: 0.7em;
         background: none;
         margin: 40px 0 16px 0;
-        color: #b3b4c3;
+        color: var(--text-muted);
         font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
 
         &::before {
           display: none;

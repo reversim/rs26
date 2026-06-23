@@ -9,11 +9,29 @@ h6 {
   margin: 0;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
 h2 {
   font-size: 36px;
   margin-bottom: var(--spacing-md);
-  font-weight: 100;
+  font-weight: 600;
   text-align: center;
+}
+
+// Mono eyebrow / label used across dark sections
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--green);
 }
 
 a {
@@ -22,19 +40,45 @@ a {
 }
 
 // Text Utilities
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
 
-.font-light { font-weight: 300; }
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
+.font-light {
+  font-weight: 300;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
 
 // Color Text Utilities
-.text-pink { color: var(--pink); }
-.text-orange { color: var(--orange); }
-.text-green { color: var(--green); }
-.text-blue { color: var(--blue); }
-.text-white { color: var(--white); }
+.text-pink {
+  color: var(--pink);
+}
+.text-orange {
+  color: var(--orange);
+}
+.text-green {
+  color: var(--green);
+}
+.text-blue {
+  color: var(--blue);
+}
+.text-white {
+  color: var(--white);
+}

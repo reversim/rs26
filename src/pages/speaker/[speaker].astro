@@ -46,7 +46,11 @@ const socialLinks: Record<string, string> = {};
   socialLinks[finalLink] = link.url;
 });
 
-const image = await getImage({ src: profilePicture || "", height: 500, width: 500 });
+const image = await getImage({
+  src: profilePicture || "",
+  height: 500,
+  width: 500,
+});
 ---
 
 <Layout havePaddingBottom={true}>

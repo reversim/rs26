@@ -155,12 +155,12 @@ const cssVars = `
     --border-height: 12px;
     height: max-content;
     width: 100%;
-    background-color: var(--navy);
+    background-color: var(--dark-blue);
     clip-path: ellipse(133% 100% at 40% 100%);
 
     position: relative;
     padding: 8% 10%;
-    border-bottom: var(--border-height) solid #9e9e9e;
+    border-bottom: var(--border-height) solid var(--navy-line);
 
     @media (max-width: 768px) {
       clip-path: ellipse(225% 100% at 40% 100%);
@@ -174,7 +174,7 @@ const cssVars = `
 
       background-image: linear-gradient(
         to right,
-        #e4e4e4 60%,
+        var(--blue-bright) 60%,
         rgba(255, 255, 255, 0) 0%
       );
       top: calc(100% + var(--border-height) / 2);
@@ -227,7 +227,7 @@ const cssVars = `
       margin: auto;
 
       .event-description {
-        color: white;
+        color: var(--text-lede);
         font-weight: 400;
         font-size: 16px;
         max-width: 64%;

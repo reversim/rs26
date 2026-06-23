@@ -10,33 +10,45 @@
   --max-container-width: 1000px;
   --header-height: 60px;
 
-  // Brand Colors
-  --pink: #fd6a82;
-  --pink-dark: #e75a80;
-  --orange: #f78750;
-  --green: #81c47a;
-  --blue: #506592;
+  // Brand Colors — dark "Agent Mesh" palette
+  --pink: #f3a0c5; // playful accent (use sparingly)
+  --pink-dark: #c77ba0; // deeper pink (button wave / hover)
+  --orange: #f07a23; // primary CTA / energy
+  --green: #7ccfa8; // "mint" — eyebrows / fresh accent
+  --blue: #6c8cc7; // periwinkle "winter" accent
   --yellow: #f7ab22;
 
-  // Neutrals
+  // Surfaces (dark layers, deepest → base)
+  --navy-deep: #060f25; // footer / deepest layer
+  --dark-blue: #0a1631; // deeper surface (section bands)
+  --navy: #0e1d42; // primary base background / ink
+  --navy-line: #1e2f58; // hairlines/borders on dark surfaces
+
+  // Neutrals & text ramp (tuned for dark surfaces)
   --white: #ffffff;
+  --blue-bright: #84a2da; // brighter blue for small text on dark
+  --text-body: #eaf0ff; // default body text on dark
+  --text-lede: #c3cdea; // lede / intro paragraphs
+  --text-muted: #9fb0d6; // muted captions / secondary
+  --secondary-text-color: #9fb0d6;
   --gray-50: #f8f9fa; // lightest surface / hover background
   --gray-100: #e9ecef; // subtle borders & dividers
   --light-gray: #d1cdcd;
   --gray: #6b7280;
   --dark-gray: #3e3d3d;
   --slate: #2c3e50; // dark text on agenda cards
-  --navy: #171c3e; // dark card background (sponsors)
-  --dark-blue: #1d2244;
   --teal: #7eb9bf;
-  --secondary-text-color: #667;
-  --background-opacity: rgba(255, 255, 255, 0.945);
+  --background-opacity: rgba(14, 29, 66, 0.85);
 
   // Effects
   --shadow-pop: #c1c1c182; // offset "sticker" shadow / text shadow
 
   // Typography
-  --font-primary: var(--font-montserrat), sans-serif;
+  --font-primary: var(--font-montserrat), sans-serif; // body
+  --font-display:
+    var(--font-space-grotesk), var(--font-montserrat), sans-serif; // headings
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, monospace; // eyebrows / labels / date pill
 
   // Spacing
   --spacing-md: 16px;
@@ -45,7 +57,10 @@
 
   // Borders & Radius
   --border-radius-full: 50%;
+  --radius-md: 14px;
+  --radius-pill: 999px;
 
   // Transitions
   --transition-normal: 0.3s ease;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1); // shared easing
 }

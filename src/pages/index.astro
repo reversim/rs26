@@ -8,7 +8,6 @@ import PastEvents from "../components/pastEventsSection.astro";
 import TeamMembersSection from "../components/teamMembersSection.astro";
 import VenueSection from "../components/venueSection.astro";
 import Layout from "../layouts/Layout.astro";
-
 ---
 
 <style is:global>
@@ -35,7 +34,7 @@ import Layout from "../layouts/Layout.astro";
   <div class="team-members-card card">
     <TeamMembersSection />
   </div>
-  
+
   <div class="past-events-card card">
     <PastEvents />
   </div>
@@ -100,7 +99,8 @@ import Layout from "../layouts/Layout.astro";
 
   footer {
     position: absolute;
-    background-color: var(--orange);
+    background-color: var(--navy-deep);
+    border-top: 1px solid var(--navy-line);
     bottom: auto;
     right: 0px;
     width: 100%;

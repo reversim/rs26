@@ -109,11 +109,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
         root.querySelectorAll<HTMLElement>(".splide__slide"),
       );
       const total = slides.length;
-      const dots = Array.from(
-        root.querySelectorAll<HTMLElement>(".car-dot"),
-      );
-      const thumbsContainer =
-        root.querySelector<HTMLElement>(".car-thumbs");
+      const dots = Array.from(root.querySelectorAll<HTMLElement>(".car-dot"));
+      const thumbsContainer = root.querySelector<HTMLElement>(".car-thumbs");
       const thumbs = Array.from(
         root.querySelectorAll<HTMLElement>(".car-thumb"),
       );
@@ -127,8 +124,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
         const tRect = thumb.getBoundingClientRect();
         const offsetInContainer =
           tRect.left - cRect.left + thumbsContainer.scrollLeft;
-        const target =
-          offsetInContainer - cRect.width / 2 + tRect.width / 2;
+        const target = offsetInContainer - cRect.width / 2 + tRect.width / 2;
         thumbsContainer.scrollTo({ left: target, behavior: "smooth" });
       };
 

@@ -4,42 +4,496 @@ import Button from "./button.astro";
 import { event } from "../config/event";
 ---
 
-<div class="hero-container">
-  <div class="title-container">
-    <h2 class="title green">{event.title.line1}</h2>
-    <h2 class="title blue">
-      {event.title.line2}
+<section class="hero">
+  <canvas id="mesh"></canvas>
+  <div class="hero-grid-fade"></div>
 
-      <span class="title orange">{event.title.year}</span>
-    </h2>
+  <div class="hero-container">
+    <div class="title-container">
+      <h2 class="title green">{event.title.line1}</h2>
+      <h2 class="title blue">
+        {event.title.line2}
+
+        <span class="title orange">{event.title.year}</span>
+      </h2>
+    </div>
+
+    <div class="event-date-container">
+      <p class="event-date">{event.dates}</p>
+      <Highlight />
+    </div>
+
+    <div class="action-cta">
+      <Button
+        variant="primary"
+        size="lg"
+        text={event.cfp.label}
+        href={event.cfp.url}
+      />
+      <Button
+        variant="speakers"
+        size="lg"
+        text={event.sponsor.label}
+        href={event.sponsor.url}
+      />
+    </div>
   </div>
 
-  <div class="event-date-container">
-    <p class="event-date">{event.dates}</p>
-    <Highlight />
-  </div>
+  <p class="mesh-hint">drag the nodes · they don't bite</p>
+</section>
 
-  <div class="action-cta">
-    <Button
-      variant="primary"
-      size="lg"
-      text={event.cfp.label}
-      href={event.cfp.url}
-    />
-    <Button
-      variant="speakers"
-      size="lg"
-      text={event.sponsor.label}
-      href={event.sponsor.url}
-    />
-  </div>
-</div>
+<script>
+  // Agent Mesh — Canvas 2D autonomous-agent network + drifting snow.
+  // Ported from the redesign prototype's mesh.js; reduced-motion aware,
+  // cleans up its RAF loop + listeners on page hide / view-swap.
+  function initMesh() {
+    const canvas = document.getElementById("mesh") as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const palette = ["#6c8cc7", "#f07a23", "#7ccfa8", "#f3a0c5", "#84a2da"];
+    const LABELS = [
+      "AI Apps",
+      "AI Infra",
+      "Backend",
+      "Culture",
+      "Frontend",
+      "Ignites",
+      "Infrastructure",
+      "Keynote",
+    ];
+
+    type Node = {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      r: number;
+      color: string;
+      label: string;
+      phase: number;
+      drag: boolean;
+    };
+    type Pulse = {
+      a: number;
+      b: number;
+      t: number;
+      speed: number;
+      color: string;
+      hop: number;
+      dead?: boolean;
+    };
+    type Flake = { x: number; y: number; r: number; s: number; drift: number };
+
+    let W = 0,
+      H = 0,
+      DPR = 1;
+    let nodes: Node[] = [],
+      pulses: Pulse[] = [],
+      snow: Flake[] = [];
+    const autonomy = 0.4;
+
+    function resize() {
+      DPR = Math.min(2, window.devicePixelRatio || 1);
+      W = canvas!.clientWidth;
+      H = canvas!.clientHeight;
+      canvas!.width = W * DPR;
+      canvas!.height = H * DPR;
+      ctx!.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+
+    // Keep the swarm on the right so it never sits under the hero copy.
+    function leftBound() {
+      return W < 820 ? 56 : Math.round(W * 0.5);
+    }
+
+    function makeNode(i: number): Node {
+      const lb = leftBound();
+      return {
+        x: lb + Math.random() * (W - lb - 90),
+        y: 80 + Math.random() * (H - 160),
+        vx: 0,
+        vy: 0,
+        r: 5 + Math.random() * 4,
+        color: palette[i % palette.length],
+        label: LABELS[i % LABELS.length],
+        phase: Math.random() * Math.PI * 2,
+        drag: false,
+      };
+    }
+    function seed() {
+      const area = W * H;
+      const count = Math.max(
+        8,
+        Math.min(LABELS.length, Math.round(area / 95000)),
+      );
+      nodes = [];
+      for (let i = 0; i < count; i++) nodes.push(makeNode(i));
+      snow = [];
+      const sc = Math.floor(area / 24000);
+      for (let i = 0; i < sc; i++)
+        snow.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: 0.6 + Math.random() * 1.8,
+          s: 0.15 + Math.random() * 0.5,
+          drift: Math.random() * Math.PI * 2,
+        });
+    }
+
+    const EDGE = 240; // connection distance
+    function neighbors() {
+      const list: [number, number, number][] = [];
+      for (let i = 0; i < nodes.length; i++)
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i],
+            b = nodes[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < EDGE) list.push([i, j, d]);
+        }
+      return list;
+    }
+
+    function spawnPulse(from: number) {
+      if (nodes.length < 2) return;
+      let to = from,
+        tries = 0;
+      do {
+        to = Math.floor(Math.random() * nodes.length);
+        tries++;
+      } while (to === from && tries < 8);
+      pulses.push({
+        a: from,
+        b: to,
+        t: 0,
+        speed: 0.004 + Math.random() * 0.004,
+        color: nodes[from].color,
+        hop: 0,
+      });
+    }
+
+    function hexA(hex: string, a: number) {
+      const n = parseInt(hex.slice(1), 16);
+      return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+    }
+
+    let t = 0;
+    function frame() {
+      t += 1;
+      ctx!.clearRect(0, 0, W, H);
+
+      // dotted grid (RS heritage)
+      const gap = 34;
+      ctx!.fillStyle = "rgba(108,140,199,.10)";
+      for (let x = gap; x < W; x += gap)
+        for (let y = gap; y < H; y += gap) {
+          ctx!.beginPath();
+          ctx!.arc(x, y, 1, 0, 7);
+          ctx!.fill();
+        }
+
+      // snow
+      ctx!.fillStyle = "rgba(255,255,255,.55)";
+      for (const f of snow) {
+        if (!reduce) {
+          f.y += f.s;
+          f.x += Math.sin(t * 0.01 + f.drift) * 0.25;
+          if (f.y > H + 4) {
+            f.y = -4;
+            f.x = Math.random() * W;
+          }
+        }
+        ctx!.globalAlpha = 0.25 + f.r * 0.25;
+        ctx!.beginPath();
+        ctx!.arc(f.x, f.y, f.r, 0, 7);
+        ctx!.fill();
+      }
+      ctx!.globalAlpha = 1;
+
+      // physics
+      if (!reduce) {
+        for (const n of nodes) {
+          if (n.drag) continue;
+          n.phase += 0.01;
+          const wander = autonomy * 0.22;
+          n.vx +=
+            Math.cos(n.phase) * wander * 0.009 +
+            (Math.random() - 0.5) * autonomy * 0.006;
+          n.vy +=
+            Math.sin(n.phase * 1.3) * wander * 0.009 +
+            (Math.random() - 0.5) * autonomy * 0.006;
+          for (const m of nodes) {
+            if (m === n) continue;
+            const dx = n.x - m.x,
+              dy = n.y - m.y;
+            const d = Math.hypot(dx, dy) || 1;
+            if (d < 70) {
+              n.vx += (dx / d) * 0.25;
+              n.vy += (dy / d) * 0.25;
+            }
+          }
+          n.vx *= 0.92;
+          n.vy *= 0.92;
+          const sp = Math.hypot(n.vx, n.vy),
+            max = 0.35;
+          if (sp > max) {
+            n.vx = (n.vx / sp) * max;
+            n.vy = (n.vy / sp) * max;
+          }
+          n.x += n.vx;
+          n.y += n.vy;
+          const lb = leftBound(),
+            pad = 46,
+            padR = 90;
+          if (n.x < lb) {
+            n.x = lb;
+            n.vx *= -0.6;
+          }
+          if (n.x > W - padR) {
+            n.x = W - padR;
+            n.vx *= -0.6;
+          }
+          if (n.y < pad) {
+            n.y = pad;
+            n.vy *= -0.6;
+          }
+          if (n.y > H - pad) {
+            n.y = H - pad;
+            n.vy *= -0.6;
+          }
+        }
+      }
+
+      // edges
+      for (const [i, j, d] of neighbors()) {
+        const a = nodes[i],
+          b = nodes[j];
+        const alpha = (1 - d / EDGE) * 0.5;
+        ctx!.strokeStyle = `rgba(108,140,199,${alpha.toFixed(3)})`;
+        ctx!.lineWidth = 1;
+        ctx!.beginPath();
+        ctx!.moveTo(a.x, a.y);
+        ctx!.lineTo(b.x, b.y);
+        ctx!.stroke();
+      }
+
+      // auto-dispatch
+      if (!reduce && Math.random() < autonomy * 0.05)
+        spawnPulse(Math.floor(Math.random() * nodes.length));
+
+      // pulses
+      for (const p of pulses) {
+        const a = nodes[p.a],
+          b = nodes[p.b];
+        if (!a || !b) {
+          p.dead = true;
+          continue;
+        }
+        if (!reduce) p.t += p.speed;
+        const x = a.x + (b.x - a.x) * p.t,
+          y = a.y + (b.y - a.y) * p.t;
+        const g = ctx!.createRadialGradient(x, y, 0, x, y, 9);
+        g.addColorStop(0, p.color);
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx!.fillStyle = g;
+        ctx!.beginPath();
+        ctx!.arc(x, y, 9, 0, 7);
+        ctx!.fill();
+        ctx!.fillStyle = "#fff";
+        ctx!.beginPath();
+        ctx!.arc(x, y, 2.4, 0, 7);
+        ctx!.fill();
+        ctx!.strokeStyle = p.color;
+        ctx!.globalAlpha = 0.5;
+        ctx!.lineWidth = 1.6;
+        ctx!.beginPath();
+        ctx!.moveTo(a.x, a.y);
+        ctx!.lineTo(x, y);
+        ctx!.stroke();
+        ctx!.globalAlpha = 1;
+        if (p.t >= 1) {
+          if (p.hop < 2 && Math.random() < 0.6) {
+            p.a = p.b;
+            p.b = Math.floor(Math.random() * nodes.length);
+            p.t = 0;
+            p.hop++;
+          } else p.dead = true;
+        }
+      }
+      pulses = pulses.filter((p) => !p.dead);
+
+      // nodes
+      for (const n of nodes) {
+        const g = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 4);
+        g.addColorStop(0, hexA(n.color, 0.35));
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx!.fillStyle = g;
+        ctx!.beginPath();
+        ctx!.arc(n.x, n.y, n.r * 4, 0, 7);
+        ctx!.fill();
+        ctx!.beginPath();
+        ctx!.fillStyle = n.color;
+        ctx!.arc(n.x, n.y, n.r, 0, 7);
+        ctx!.fill();
+        ctx!.lineWidth = 2;
+        ctx!.strokeStyle = "rgba(255,255,255,.85)";
+        ctx!.stroke();
+        ctx!.font = "500 11px var(--font-mono), monospace";
+        ctx!.fillStyle = "rgba(200,212,240,.75)";
+        ctx!.textAlign = "left";
+        ctx!.fillText(n.label, n.x + n.r + 8, n.y + 3);
+      }
+
+      if (!running) return;
+      rafId = requestAnimationFrame(frame);
+    }
+
+    // ---- interaction ----
+    let dragging: Node | null = null;
+    function pos(e: PointerEvent) {
+      const r = canvas!.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+    function pick(pt: { x: number; y: number }) {
+      let best: Node | null = null,
+        bd = 1e9;
+      for (const n of nodes) {
+        const d = Math.hypot(n.x - pt.x, n.y - pt.y);
+        if (d < bd && d < 34) {
+          bd = d;
+          best = n;
+        }
+      }
+      return best;
+    }
+    canvas.style.cursor = "default";
+    const onDown = (e: PointerEvent) => {
+      const n = pick(pos(e));
+      if (n) {
+        n.drag = true;
+        dragging = n;
+        canvas.setPointerCapture(e.pointerId);
+        canvas.style.cursor = "grabbing";
+      }
+    };
+    const onMove = (e: PointerEvent) => {
+      if (dragging) {
+        const p = pos(e);
+        dragging.x = p.x;
+        dragging.y = p.y;
+        dragging.vx = 0;
+        dragging.vy = 0;
+        return;
+      }
+      canvas.style.cursor = pick(pos(e)) ? "grab" : "default";
+    };
+    const release = () => {
+      if (dragging) {
+        dragging.drag = false;
+        dragging = null;
+        canvas.style.cursor = "grab";
+      }
+    };
+    canvas.addEventListener("pointerdown", onDown);
+    canvas.addEventListener("pointermove", onMove);
+    canvas.addEventListener("pointerup", release);
+    canvas.addEventListener("pointercancel", release);
+
+    // ---- lifecycle ----
+    let running = false;
+    let rafId = 0;
+    const onResize = () => {
+      resize();
+      seed();
+    };
+    const onVisibility = () => {
+      if (document.hidden) {
+        running = false;
+      } else if (!running) {
+        running = true;
+        frame();
+      }
+    };
+    window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onVisibility);
+
+    function cleanup() {
+      running = false;
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      canvas!.removeEventListener("pointerdown", onDown);
+      canvas!.removeEventListener("pointermove", onMove);
+      canvas!.removeEventListener("pointerup", release);
+      canvas!.removeEventListener("pointercancel", release);
+    }
+    window.addEventListener("pagehide", cleanup, { once: true });
+    document.addEventListener("astro:before-swap", cleanup, { once: true });
+
+    resize();
+    seed();
+    running = true;
+    frame();
+  }
+
+  initMesh();
+</script>
 
 <style lang="scss">
+  .hero {
+    position: relative;
+    width: 100%;
+    min-height: clamp(560px, 82svh, 900px);
+    overflow: hidden;
+  }
+
+  #mesh {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+  }
+
+  // Vignette so nodes/labels fade toward the edges, never crowding the copy.
+  .hero-grid-fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 90% at 78% 30%,
+      transparent 40%,
+      rgba(6, 15, 37, 0.55) 100%
+    );
+  }
+
+  .mesh-hint {
+    position: absolute;
+    right: clamp(18px, 5vw, 56px);
+    bottom: 22px;
+    z-index: 3;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: #6c7ca6;
+    pointer-events: none;
+    text-align: right;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
   .hero-container {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-height: inherit;
     pointer-events: none;
     padding: 72px;
 
@@ -52,16 +506,14 @@ import { event } from "../config/event";
         font-weight: inherit;
         margin: 0 auto;
         line-height: 1;
-        --textShadow: var(--shadow-pop);
+        text-shadow: 0 2px 30px rgba(6, 15, 37, 0.55);
 
         &.green {
           color: var(--green);
-          text-shadow: -6px -4px 0px var(--textShadow);
         }
 
         &.orange {
           color: var(--orange);
-          text-shadow: -6px 4px 0px var(--textShadow);
         }
 
         &.blue {
@@ -70,7 +522,6 @@ import { event } from "../config/event";
           align-items: center;
           gap: 12px;
           color: var(--blue);
-          text-shadow: -4px -6px 0px var(--textShadow);
 
           @media screen and (min-width: 1200px) {
             transform: translateX(-1.47em);
@@ -97,9 +548,11 @@ import { event } from "../config/event";
         gap: 12px;
         margin: auto;
         margin-top: 40px;
-        font-weight: 600;
-        font-size: 48px;
-        color: var(--pink);
+        font-family: var(--font-mono);
+        font-weight: 500;
+        font-size: clamp(20px, 3vw, 34px);
+        letter-spacing: 0.02em;
+        color: var(--blue-bright);
         text-align: center;
 
         @media (max-width: 768px) {

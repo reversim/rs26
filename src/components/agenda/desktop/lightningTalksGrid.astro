@@ -1,14 +1,21 @@
 ---
-import { createSessionUrl, createSpeakerUrl } from "../../../helpers/agenda/agendaHelpers";
+import {
+  createSessionUrl,
+  createSpeakerUrl,
+} from "../../../helpers/agenda/agendaHelpers";
 import type { AgendaSession, AgendaSpeaker } from "../../../types/agenda";
 const { lightningArr } = Astro.props;
 ---
+
 <div class="lightning-talk-list">
   {
     lightningArr?.map((session: AgendaSession) => {
       return (
         <div class="lightning-talk-container">
-          <a class="lightning-talk-title" href={createSessionUrl(session.title)}>
+          <a
+            class="lightning-talk-title"
+            href={createSessionUrl(session.title)}
+          >
             {session.title}
           </a>
           {session.speakers.length > 0 &&

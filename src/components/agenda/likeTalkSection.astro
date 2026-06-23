@@ -37,7 +37,11 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--gray-50) 0%,
+      var(--gray-100) 100%
+    );
     padding: 25px;
     border-radius: 15px;
     margin-bottom: 30px;
@@ -268,7 +272,13 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
 </style>
 
 <script is:inline define:vars={{ allSessions, agendaDays }}>
-  import { findSessionById, formatTime, getSessionCategoryColor, LIKED_TALKS_KEY, storageHelpers } from "../../helpers/agenda/agendaHelpers";
+  import {
+    findSessionById,
+    formatTime,
+    getSessionCategoryColor,
+    LIKED_TALKS_KEY,
+    storageHelpers,
+  } from "../../helpers/agenda/agendaHelpers";
   import slugify from "slug";
 
   // Pass sessions data to the client-side script
