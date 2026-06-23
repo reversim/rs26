@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import HeaderLink from "./headerLink.astro";
 import { getAgendaCurrentDay } from "../../helpers/data/getAgendaCurrentDay";
 import { event } from "../../config/event";
+import logo from "../../assets/reversim-25-icon.svg";
 
 const currentDayUrl = await getAgendaCurrentDay();
 
@@ -79,19 +81,24 @@ const navbarLinks: HeaderLink[] = [
 
 <div class="header">
   <div class="inner-container">
-    <div class="navbar-container">
-      {
-        navbarLinks.map((link) => (
-          <HeaderLink
-            link={link.link}
-            label={link.label}
-            iconColor={link.iconColor}
-            variant={link?.variant}
-          />
-        ))
-      }
+    <a href="/" class="logo-link" aria-label={`${event.name} home`}>
+      <Image src={logo} alt={event.name} class="rv-icon" />
+    </a>
+    <div class="nav-right">
+      <div class="navbar-container">
+        {
+          navbarLinks.map((link) => (
+            <HeaderLink
+              link={link.link}
+              label={link.label}
+              iconColor={link.iconColor}
+              variant={link?.variant}
+            />
+          ))
+        }
+      </div>
+      <span class="date-pill">{event.dates}</span>
     </div>
-    <span class="date-pill">{event.dates}</span>
   </div>
 </div>
 
@@ -243,15 +250,22 @@ const navbarLinks: HeaderLink[] = [
     }
   }
 
-  .rv-icon {
-    width: 100px;
-    height: auto;
+  .logo-link {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+  }
 
-    @media screen and (max-width: 1300px) {
-      margin-left: 40px;
-    }
-    @media screen and (max-width: 1000px) {
-      margin-left: 20px;
-    }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .rv-icon {
+    height: 30px;
+    width: auto;
+    // Brand wordmark ships in navy; knock it out to white for the dark bar.
+    filter: brightness(0) invert(1);
   }
 </style>
