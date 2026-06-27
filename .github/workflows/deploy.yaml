@@ -45,6 +45,12 @@ jobs:
       - name: Install Firebase CLI
         run: yarn global add firebase-tools
 
+      # Generate unique build metadata to force a new file hash
+      - name: Generate build timestamp
+        run: |
+          mkdir -p dist
+          echo "{\"builtAt\":\"$(date -u)\"}" > dist/build-metadata.json
+
       # Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
         env:
