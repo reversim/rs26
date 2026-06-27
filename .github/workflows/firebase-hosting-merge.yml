@@ -37,3 +37,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_REVERSIM_26 }}
           channelId: live
           projectId: reversim-26
+          force: true
