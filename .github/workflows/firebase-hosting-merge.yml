@@ -30,11 +30,15 @@ jobs:
           timezoneLinux: Asia/Jerusalem
 
       - run: yarn install && yarn build
-      
+
+       - name: Generate build timestamp
+        run: |
+          mkdir -p dist
+          echo "{\"builtAt\":\"$(date -u)\"}" > dist/build-metadata.json
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_REVERSIM_26 }}
           channelId: live
           projectId: reversim-26
-          force: true
