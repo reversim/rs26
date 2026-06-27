@@ -5,10 +5,6 @@ on:
   push:
     branches:
       - main
-  schedule:
-    # Runs daily at 12:00 AM Jerusalem time (21:00 UTC during DST, 22:00 UTC during standard time)
-    # Using 21:00 UTC to align with Jerusalem DST (UTC+3) which is observed most of the year
-    - cron: "0 21 * * *"
 
   workflow_dispatch:
 
@@ -17,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-    
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24 
+          node-version: 24
           cache: "yarn"
-      
+
       - name: Set timezone
         uses: szenius/set-timezone@v2.0
         with:
@@ -36,7 +32,7 @@ jobs:
           mkdir -p dist
           echo "{\"builtAt\":\"$(date -u)\"}" > dist/build-metadata.json
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: FirebaseExtended/action-hosting-deploy@v0.11.0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_REVERSIM_26 }}
