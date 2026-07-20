@@ -137,12 +137,14 @@ const carouselImagesPromise = await Promise.all(
               <div class="testimonials-container">
                 {testimonials.map((testimonial) => (
                   <div class="testimonial-card">
-                    <Picture
-                      formats={["avif", "webp"]}
-                      src={testimonial.image}
-                      alt={testimonial.testimonialAuthor}
-                      class="testimonial-image"
-                    />
+                    {testimonial.image && (
+                      <Picture
+                        formats={["avif", "webp"]}
+                        src={testimonial.image}
+                        alt={testimonial.testimonialAuthor}
+                        class="testimonial-image"
+                      />
+                    )}
                     <div class="testimonial-content">
                       <p class="testimonial-description">
                         {(testimonial.testimonialDescription || "").trim()}

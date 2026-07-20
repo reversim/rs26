@@ -8,6 +8,14 @@ export default defineConfig({
   prefetch: true,
   site: "https://summit2025.reversim.com",
 
+  image: {
+    // Authorize the back office asset host so remote sponsor/team images are
+    // downloaded and optimized at build time instead of hotlinked.
+    remotePatterns: [
+      { protocol: "https", hostname: "raw.githubusercontent.com" },
+    ],
+  },
+
   experimental: {
     fonts: [
       {
