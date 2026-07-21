@@ -16,11 +16,7 @@ const { sessionRoom, sessionStartsAt, duration, session, isSession } =
 ---
 
 <div class="session-header">
-  <Category
-    uppercase={false}
-    categoryColor={"#6c8cc7"}
-    track={sessionRoom}
-  />
+  <Category uppercase={false} categoryColor={"#6c8cc7"} track={sessionRoom} />
   <span class="time-duration">
     {formatTime(sessionStartsAt)}
     {" "}

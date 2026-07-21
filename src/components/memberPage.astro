@@ -49,7 +49,14 @@ const {
       </span>
       <h1 class="m-name">{name}</h1>
       <p class="m-title">
-        {title}{company && <> · <b>{company}</b></>}
+        {title}{
+          company && (
+            <>
+              {" "}
+              · <b>{company}</b>
+            </>
+          )
+        }
       </p>
       {bio && <p class="m-bio">{bio}</p>}
       <SocialLinks variant="member-large" socialList={socialList || {}} />

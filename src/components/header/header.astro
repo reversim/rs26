@@ -66,7 +66,11 @@ const navbarLinks: HeaderLink[] = [
   <div class="sidebar-container">
     {
       navbarLinks.map((link) => (
-        <HeaderLink link={link.link} label={link.label} variant={link?.variant} />
+        <HeaderLink
+          link={link.link}
+          label={link.label}
+          variant={link?.variant}
+        />
       ))
     }
     <span class="head-date">{event.dates}</span>
@@ -81,7 +85,11 @@ const navbarLinks: HeaderLink[] = [
     <div class="navbar-container">
       {
         navbarLinks.map((link) => (
-          <HeaderLink link={link.link} label={link.label} variant={link?.variant} />
+          <HeaderLink
+            link={link.link}
+            label={link.label}
+            variant={link?.variant}
+          />
         ))
       }
       <span class="head-date">{event.dates}</span>

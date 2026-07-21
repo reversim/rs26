@@ -54,9 +54,7 @@ const socialList = {
   youtube,
 };
 
-const websiteLabel = website
-  ?.replace(/^https?:\/\//, "")
-  .replace(/\/$/, "");
+const websiteLabel = website?.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 const carouselImagesPromise = await Promise.all(
   carouselImages.map(async (image) => {

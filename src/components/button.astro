@@ -8,7 +8,7 @@ interface Props {
   href?: string;
   /** Link target (only applied when href is set), e.g. "_blank". */
   target?: string;
-  variant?: "primary" | "speakers" | "no-border" | "back" | "orange" | "ghost";
+  variant?: "back" | "orange" | "ghost";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   id?: string;
@@ -19,7 +19,7 @@ const {
   text,
   href,
   target,
-  variant = "primary",
+  variant = "orange",
   size = "md",
   fullWidth = false,
   id,
@@ -27,8 +27,6 @@ const {
 } = Astro.props;
 
 const isBack = variant === "back";
-// RS26 pill buttons render a bare label — no wave/sticker machinery.
-const isPill = variant === "orange" || variant === "ghost";
 const classes = [
   "btn",
   variant,
@@ -54,13 +52,8 @@ const Tag = href ? "a" : "button";
       <>
         <Arrow class="back-arrow" /> Back to {text}
       </>
-    ) : isPill ? (
-      text
     ) : (
-      <>
-        <span class="btn-label">{text}</span>
-        <div class="wave" />
-      </>
+      text
     )
   }
 </Tag>
@@ -150,151 +143,6 @@ const Tag = href ? "a" : "button";
       width: 13px;
       transform: scaleX(-1);
       fill: currentColor;
-    }
-  }
-
-  // ---- Hero CTA family (primary / speakers / no-border) -------------------
-  .btn.primary,
-  .btn.speakers,
-  .btn.no-border {
-    position: relative;
-    display: inline-block;
-    border: none;
-    width: 286px;
-    border-radius: 50px;
-    background-color: var(--pink-dark);
-    box-shadow: 4px 4px 0px var(--shadow-pop);
-    transition: all 0.15s ease-in;
-
-    &.full-width {
-      width: 100%;
-    }
-
-    .btn-label {
-      color: white;
-      font-weight: bold;
-      display: block;
-      margin: auto;
-      position: relative;
-      z-index: 2;
-      pointer-events: all;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 3px;
-        height: 100%;
-        background-color: white;
-        transition: right 0.5s ease;
-      }
-      &::before {
-        right: 90%;
-      }
-      &::after {
-        right: 10%;
-      }
-    }
-
-    &:hover .btn-label {
-      &::before {
-        right: 10%;
-      }
-      &::after {
-        right: 90%;
-      }
-    }
-
-    .wave,
-    .wave::before,
-    .wave::after {
-      opacity: 1;
-      transition: all 0.15s ease-in;
-    }
-
-    &:hover .wave {
-      opacity: 0;
-    }
-
-    .wave {
-      position: absolute;
-      background-color: #d95579;
-      border-radius: 30px 30px 0;
-      width: 50%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1;
-
-      &::after,
-      &::before {
-        content: "";
-        position: absolute;
-        width: 17px;
-        height: 100%;
-        top: 0px;
-        background-color: var(--pink-dark);
-        border-radius: 0px 500%;
-        rotate: -2deg;
-      }
-      &::after {
-        right: 0px;
-      }
-      &::before {
-        right: -5px;
-      }
-    }
-  }
-
-  // ---- Sizes (CTA family) -------------------------------------------------
-  .btn.primary,
-  .btn.speakers {
-    &.size-sm .btn-label {
-      font-size: 14px;
-      padding: 8px 32px;
-    }
-    &.size-md .btn-label {
-      font-size: 18px;
-      padding: 12px 54px;
-    }
-    &.size-lg .btn-label {
-      font-size: 20px;
-      padding: 16px 64px;
-    }
-  }
-
-  // ---- Speakers variant ---------------------------------------------------
-  .btn.speakers {
-    background-color: var(--blue);
-
-    .btn-label {
-      padding: 12px 24px;
-    }
-
-    .wave {
-      background-color: #485b7a;
-      &::after,
-      &::before {
-        background-color: var(--blue);
-      }
-    }
-  }
-
-  // ---- No-border variant --------------------------------------------------
-  .btn.no-border {
-    .btn-label {
-      padding: 12px;
-
-      &::before,
-      &::after {
-        display: none;
-      }
-
-      @media (max-width: 768px) {
-        font-size: 16px;
-        padding: 12px 24px;
-      }
     }
   }
 </style>

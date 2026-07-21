@@ -20,14 +20,6 @@ export default defineConfig({
     fonts: [
       {
         provider: fontProviders.google(),
-        name: "Montserrat",
-        cssVariable: "--font-montserrat",
-        weights: ["100..900"],
-        styles: ["normal"],
-        display: "swap",
-      },
-      {
-        provider: fontProviders.google(),
         name: "Space Grotesk",
         cssVariable: "--font-space-grotesk",
         weights: ["400", "500", "600", "700"],

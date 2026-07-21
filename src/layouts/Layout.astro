@@ -6,13 +6,11 @@ import "../styles/global.scss";
 interface Props {
   havePadding?: boolean;
   havePaddingBottom?: boolean;
-  haveBG?: boolean;
   displayHeader?: boolean;
 }
 
 const {
   havePadding = true,
-  haveBG = false,
   havePaddingBottom = false,
   displayHeader = true,
 } = Astro.props;
@@ -37,7 +35,6 @@ const ogImage = new URL("/og-image.png", Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <Font cssVariable="--font-montserrat" />
     <Font cssVariable="--font-space-grotesk" preload />
     <Font cssVariable="--font-hanken-grotesk" preload />
     <Font cssVariable="--font-jetbrains-mono" />
@@ -51,7 +48,10 @@ const ogImage = new URL("/og-image.png", Astro.site);
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Reversim Summit 2026, 30.11-1.12, 2026" />
+    <meta
+      property="og:image:alt"
+      content="Reversim Summit 2026, 30.11-1.12, 2026"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://summit2026.reversim.com/" />
 
@@ -78,7 +78,7 @@ const ogImage = new URL("/og-image.png", Astro.site);
   <body>
     {displayHeader && <Header />}
     <div
-      class={`body-container ${havePadding ? "have-padding" : ""} ${haveBG ? "have-background" : ""} ${havePaddingBottom ? "have-padding-bottom" : ""}`}
+      class={`body-container ${havePadding ? "have-padding" : ""} ${havePaddingBottom ? "have-padding-bottom" : ""}`}
     >
       <slot class="layout-container" />
     </div>

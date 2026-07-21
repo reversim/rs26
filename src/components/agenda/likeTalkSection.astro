@@ -265,7 +265,13 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
 </style>
 
 <script is:inline define:vars={{ allSessions, agendaDays }}>
-  import { findSessionById, formatTime, getSessionCategoryColor, LIKED_TALKS_KEY, storageHelpers } from "../../helpers/agenda/agendaHelpers";
+  import {
+    findSessionById,
+    formatTime,
+    getSessionCategoryColor,
+    LIKED_TALKS_KEY,
+    storageHelpers,
+  } from "../../helpers/agenda/agendaHelpers";
   import slugify from "slug";
 
   // Pass sessions data to the client-side script

@@ -11,4 +11,3 @@ export const supportedSocials = {
   medium: "medium",
   youtube: "youtube",
 } as const;
-

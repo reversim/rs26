@@ -47,20 +47,48 @@ a {
 }
 
 // Text Utilities
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
 
-.font-light { font-weight: 300; }
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
+.font-light {
+  font-weight: 300;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
 
 // Color Text Utilities
-.text-pink { color: var(--rs26-pink); }
-.text-orange { color: var(--rs26-orange); }
-.text-mint { color: var(--rs26-mint); }
-.text-blue { color: var(--rs26-blue); }
-.text-white { color: var(--rs26-white); }
-.text-muted { color: var(--rs26-muted); }
+.text-pink {
+  color: var(--rs26-pink);
+}
+.text-orange {
+  color: var(--rs26-orange);
+}
+.text-mint {
+  color: var(--rs26-mint);
+}
+.text-blue {
+  color: var(--rs26-blue);
+}
+.text-white {
+  color: var(--rs26-white);
+}
+.text-muted {
+  color: var(--rs26-muted);
+}

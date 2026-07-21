@@ -131,4 +131,3 @@ export function getCalendarUrl(
       return createGoogleCalendarUrl(session);
   }
 }
-

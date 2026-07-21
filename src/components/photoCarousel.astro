@@ -49,7 +49,10 @@ const hasCaptions = slides.some((slide) => slide.caption);
         <ul class="splide__list">
           {
             slides.map((slide, i) => (
-              <li class="splide__slide car-slide" data-cap={slide.caption ?? ""}>
+              <li
+                class="splide__slide car-slide"
+                data-cap={slide.caption ?? ""}
+              >
                 {typeof slide.src === "string" ? (
                   <img
                     src={slide.src}
