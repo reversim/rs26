@@ -32,7 +32,7 @@ const iconMap: Record<string, { Icon: any; sizeBump?: number }> = {
 };
 
 const { link, type, variant } = Astro.props;
-const baseSize = variant === "member-medium" ? 20 : 24;
+const baseSize = variant === "member-medium" ? 16 : 19;
 const lowerCaseType = type.toLowerCase();
 
 const entry = iconMap[lowerCaseType];
@@ -52,34 +52,36 @@ const iconWidth = baseSize + (entry?.sizeBump ?? 0);
   a {
     border-radius: 50%;
     aspect-ratio: 1;
-    width: 28px;
+    width: 42px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
+    border: 1px solid var(--rs26-navy-line);
+    background: rgba(108, 140, 199, 0.08);
+    transition:
+      border-color 0.18s,
+      background 0.18s,
+      transform 0.18s;
+
     svg {
-      fill: #cddcf0;
-      transition: 0.3s;
+      fill: #cdd8f3;
+      transition: fill 0.18s;
     }
 
     &:hover {
+      border-color: var(--rs26-orange);
+      background: rgba(240, 122, 35, 0.14);
+      transform: translateY(-2px);
+
       svg {
-        fill: white;
+        fill: var(--rs26-white);
       }
     }
 
-    &.member-large,
     &.member-medium {
-      svg {
-        fill: black;
-      }
-
-      &:hover {
-        svg {
-          fill: var(--dark-gray);
-        }
-      }
+      width: 34px;
     }
   }
 </style>

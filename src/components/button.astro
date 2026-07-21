@@ -126,21 +126,30 @@ const Tag = href ? "a" : "button";
 
   // ---- Back link ----------------------------------------------------------
   .btn.back {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     width: max-content;
     height: max-content;
     margin-bottom: 12px;
-    color: var(--dark-blue);
-    font-weight: 600;
+    padding: 22px 0 0;
+    font-family: var(--rs26-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--rs26-muted);
     background: none;
     border: none;
+    transition: color 0.18s;
+
+    &:hover {
+      color: var(--rs26-orange);
+    }
 
     .back-arrow {
-      height: 16px;
-      width: 16px;
+      height: 13px;
+      width: 13px;
       transform: scaleX(-1);
+      fill: currentColor;
     }
   }
 
