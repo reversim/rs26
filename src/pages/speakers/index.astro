@@ -18,7 +18,8 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
 ---
 
 <Layout havePaddingBottom={true}>
-  <h2>Our Speakers</h2>
+  <p class="eyebrow">The lineup</p>
+  <h2 class="page-title">Our Speakers</h2>
   <p class="description">
     We are thrilled to unveil our distinguished speaker lineup for the upcoming
     Reversim Summit 2026. These accomplished individuals will delve into a
@@ -30,8 +31,18 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
 </Layout>
 
 <style lang="scss">
+  .eyebrow {
+    margin-top: 32px;
+  }
+
+  .page-title {
+    color: var(--rs26-white);
+    margin: 8px 0 16px;
+  }
+
   .description {
-    margin-bottom: 20px;
-    font-weight: 300;
+    margin-bottom: 32px;
+    color: var(--rs26-text);
+    max-width: 64ch;
   }
 </style>

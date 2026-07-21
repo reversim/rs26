@@ -90,36 +90,36 @@ const isSession =
     text-decoration: none;
 
     &:hover {
-      color: var(--blue);
+      color: var(--rs26-blue-bright);
       text-decoration: underline;
     }
   }
 
   .session-content {
     height: 100%;
-    background: var(--gray-50);
-    border: 2px solid var(--gray-100);
-    border-radius: 8px;
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: var(--rs26-r-sm);
     padding: 15px;
 
     cursor: pointer;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.3s var(--rs26-ease);
     display: flex;
     flex-direction: column;
     min-height: 120px;
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-      border-color: var(--blue);
+      box-shadow: 0 24px 40px -28px rgba(0, 0, 0, 0.9);
+      border-color: var(--rs26-blue);
     }
   }
 
   .time-slot-row {
     display: grid;
     grid-template-columns: 120px 1fr 1fr 1fr;
-    border-bottom: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--rs26-navy-line);
 
     &:last-child {
       border-bottom: none;
@@ -131,7 +131,7 @@ const isSession =
       .full-width-session-cell {
         grid-column: 2;
         padding: 8px;
-        border-right: 1px solid var(--gray-100);
+        border-right: 1px solid var(--rs26-navy-line);
 
         &:last-child {
           border-right: none;
@@ -143,32 +143,36 @@ const isSession =
       padding: 20px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border-radius: 8px;
-      color: var(--secondary-text-color);
+      transition: all 0.3s var(--rs26-ease);
+      border-radius: var(--rs26-r-sm);
+      color: var(--rs26-muted);
 
       &:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border-color: var(--blue);
+        box-shadow: 0 16px 30px -24px rgba(0, 0, 0, 0.9);
+        border-color: var(--rs26-blue);
         z-index: 1;
       }
 
       .break-time {
+        font-family: var(--rs26-mono);
         font-size: 12px;
         font-weight: 500;
       }
 
       .break-title {
+        font-family: var(--rs26-display);
         font-size: 24px;
-        font-weight: 700;
-        color: var(--blue);
+        font-weight: 600;
+        color: var(--rs26-white);
         margin: 0;
       }
 
       .break-location {
-        font-size: 14px;
-        font-weight: 500;
+        font-family: var(--rs26-mono);
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--rs26-muted);
       }
 
       .keynote-session {
@@ -184,7 +188,7 @@ const isSession =
     }
 
     &:has(.highlighted) {
-      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      background: var(--rs26-navy-2);
       .time-column,
       .full-width-session-cell {
         background: none;

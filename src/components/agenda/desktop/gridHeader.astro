@@ -22,8 +22,8 @@ const { dayLabel, desiredRooms } = Astro.props;
   .grid-header {
     display: grid;
     grid-template-columns: 120px 1fr 1fr 1fr;
-    background: var(--gray-50);
-    border-bottom: 2px solid var(--gray-100);
+    background: var(--rs26-navy-2);
+    border-bottom: 1px solid var(--rs26-navy-line);
     position: sticky;
     top: calc(var(--header-height) + 54px);
     z-index: 3;
@@ -32,9 +32,13 @@ const { dayLabel, desiredRooms } = Astro.props;
     .room-column-header {
       padding: 15px 20px;
       text-align: center;
-      font-weight: 700;
-      color: var(--blue);
-      border-right: 1px solid var(--gray-100);
+      font-family: var(--rs26-mono);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: var(--rs26-blue-bright);
+      border-right: 1px solid var(--rs26-navy-line);
 
       &:last-child {
         border-right: none;
@@ -44,7 +48,7 @@ const { dayLabel, desiredRooms } = Astro.props;
     .time-column-header {
       width: 120px;
       min-width: 120px;
-      background: #f1f3f4;
+      background: var(--rs26-navy-3);
     }
 
     .room-column-header {

@@ -31,31 +31,30 @@ const { availableDays, currentDaySlug } = Astro.props;
   }
 
   .day-switch-btn {
-    background: white;
-    border: 2px solid var(--gray-100);
-    border-radius: 8px;
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: 999px;
     padding: 12px 24px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--secondary-text-color);
+    transition: all 0.3s var(--rs26-ease);
+    color: var(--rs26-muted);
     text-decoration: none;
     display: inline-block;
 
     &:hover {
-      border-color: var(--blue);
-      background: var(--gray-50);
+      border-color: var(--rs26-blue);
+      color: var(--rs26-white);
     }
 
     &.active {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: white;
+      background: var(--rs26-orange);
+      border-color: transparent;
+      color: var(--rs26-white);
 
       &:hover {
-        background: white;
-        color: var(--secondary-text-color);
+        filter: brightness(1.06);
       }
     }
   }

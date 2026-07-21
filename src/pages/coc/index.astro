@@ -60,7 +60,8 @@ import Layout from "../../layouts/Layout.astro";
 
 <style lang="scss">
   h2 {
-    font-weight: 400;
+    color: var(--rs26-white);
+    margin-top: 24px;
   }
 
   h4,
@@ -69,16 +70,22 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   p {
-    font-weight: 200;
     line-height: 1.6;
+    color: var(--rs26-text);
   }
 
   h4 {
-    font-weight: 300;
+    font-weight: 600;
+    color: var(--rs26-white);
   }
 
   .card {
     margin-top: 30px;
+    padding: 24px;
+    border-radius: var(--rs26-r-md);
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+
     h4 {
       font-size: 20px;
     }

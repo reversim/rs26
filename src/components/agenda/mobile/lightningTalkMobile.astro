@@ -31,8 +31,9 @@ const { lightnings } = Astro.props;
 
   .lightning-talk-item-mobile {
     padding: 12px;
-    background: var(--gray-50);
-    border-radius: 8px;
+    background: var(--rs26-navy-2);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: var(--rs26-r-sm);
   }
 
   .lightning-talk-title-mobile {
@@ -42,11 +43,11 @@ const { lightnings } = Astro.props;
     line-height: 1.3;
 
     a {
-      color: var(--slate);
+      color: var(--rs26-white);
       text-decoration: none;
 
       &:hover {
-        color: var(--blue);
+        color: var(--rs26-blue-bright);
         text-decoration: underline;
       }
     }

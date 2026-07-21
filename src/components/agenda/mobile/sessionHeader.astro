@@ -16,7 +16,11 @@ const { sessionRoom, sessionStartsAt, duration, session, isSession } =
 ---
 
 <div class="session-header">
-  <Category uppercase={false} categoryColor={"var(--blue)"} track={sessionRoom} />
+  <Category
+    uppercase={false}
+    categoryColor={"#6c8cc7"}
+    track={sessionRoom}
+  />
   <span class="time-duration">
     {formatTime(sessionStartsAt)}
     {" "}
@@ -41,8 +45,9 @@ const { sessionRoom, sessionStartsAt, duration, session, isSession } =
     margin-bottom: 15px;
 
     .time-duration {
+      font-family: var(--rs26-mono);
       font-size: 13px;
-      color: var(--secondary-text-color);
+      color: var(--rs26-muted);
       font-weight: 500;
     }
   }

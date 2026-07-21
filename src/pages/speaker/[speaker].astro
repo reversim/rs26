@@ -60,7 +60,7 @@ const image = await getImage({ src: profilePicture || "", height: 500, width: 50
   />
 
   <div class="talks-container">
-    <h3 class="talks-title">Talks:</h3>
+    <h3 class="talks-title">Talks</h3>
 
     {
       (sessions || []).map((talk) => {
@@ -78,11 +78,22 @@ const image = await getImage({ src: profilePicture || "", height: 500, width: 50
   .talks-container {
     margin-top: 60px;
 
+    .talks-title {
+      font-family: var(--rs26-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rs26-mint);
+      margin-bottom: 12px;
+    }
+
     .talk-name {
       display: block;
       padding-top: 8px;
+      color: var(--rs26-text);
 
       &:hover {
+        color: var(--rs26-blue-bright);
         text-decoration: underline;
       }
     }

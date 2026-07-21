@@ -26,7 +26,7 @@ function getTalkInfo(fullText: string): {
 ---
 
 <Layout>
-  <h2>Our Sessions</h2>
+  <h2 class="page-title">Our Sessions</h2>
 
   <div class="sessions-container">
     {
@@ -50,7 +50,7 @@ function getTalkInfo(fullText: string): {
                 {descriptionInfo.shouldLoadMore && (
                   <a
                     href={`/session/${slug(session.title)}`}
-                    class="session-link"
+                    class="session-link read-more"
                   >
                     Read More
                   </a>
@@ -65,21 +65,39 @@ function getTalkInfo(fullText: string): {
 </Layout>
 
 <style lang="scss">
+  .page-title {
+    color: var(--rs26-white);
+    margin-top: 24px;
+  }
+
   .card {
     padding: 20px;
     margin-top: 24px;
-    border-radius: 5px;
+    border-radius: var(--rs26-r-md);
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    transition:
+      transform 0.2s var(--rs26-ease),
+      border-color 0.2s var(--rs26-ease);
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--rs26-blue);
+    }
 
     h4 {
-      font-size: 16px;
+      font-family: var(--rs26-display);
+      font-size: 18px;
+      color: var(--rs26-white);
     }
 
     .session-description {
       margin-top: 8px;
       font-size: 14px;
+      color: var(--rs26-text);
 
-      .session-link {
-        color: rgb(88, 108, 142);
+      .read-more {
+        color: var(--rs26-blue-bright);
         margin-left: 5px;
         font-size: 0.9em;
         cursor: pointer;

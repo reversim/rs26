@@ -36,14 +36,14 @@ const { sessionId } = Astro.props;
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #ccc;
+    color: var(--rs26-muted-3);
     transition: all 0.25s ease;
     line-height: 1;
     padding: 0;
     margin: 0;
 
     &.liked {
-      color: var(--yellow);
+      color: var(--rs26-orange);
     }
 
     &[disabled] {
@@ -55,7 +55,7 @@ const { sessionId } = Astro.props;
 
     @media screen and (min-width: 768px) {
       &:hover:not(.liked):not([disabled]) {
-        color: var(--yellow);
+        color: var(--rs26-orange);
         opacity: 0.4;
       }
     }

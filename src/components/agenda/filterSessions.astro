@@ -125,23 +125,23 @@ const uniqueCategories = [
   }
 
   .filter-toggle-btn {
-    background: var(--pink-dark);
-    color: white;
+    background: var(--rs26-orange);
+    color: var(--rs26-white);
     border: none;
-    border-radius: 25px;
+    border-radius: 999px;
     padding: 12px 24px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(253, 106, 130, 0.3);
+    transition: all 0.3s var(--rs26-ease);
+    box-shadow: 0 8px 22px -8px rgba(240, 122, 35, 0.7);
 
     &:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(253, 106, 130, 0.4);
+      box-shadow: 0 14px 30px -10px rgba(240, 122, 35, 0.85);
     }
 
     .filter-icon {
@@ -154,9 +154,6 @@ const uniqueCategories = [
     }
 
     &.active {
-      background: var(--pink-dark);
-      border-color: var(--pink-dark);
-
       .filter-arrow {
         transform: rotate(180deg);
       }
@@ -164,12 +161,12 @@ const uniqueCategories = [
   }
 
   .filter-section {
-    background: white;
-    border: 2px solid #e5e7eb;
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
     border-radius: 16px;
     padding: 16px 24px;
     margin: 16px 0 24px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 24px 40px -30px rgba(0, 0, 0, 0.8);
     animation: slideDown 0.3s ease-out;
   }
 
@@ -186,11 +183,11 @@ const uniqueCategories = [
 
     h4 {
       font-size: 18px;
-      font-weight: 700;
-      color: #374151;
+      font-weight: 600;
+      color: var(--rs26-white);
       margin: 0 0 16px 0;
       padding-bottom: 8px;
-      border-bottom: 2px solid #f3f4f6;
+      border-bottom: 1px solid var(--rs26-navy-line);
     }
 
     .favorite-filter {
@@ -199,7 +196,7 @@ const uniqueCategories = [
       gap: 4px;
 
       svg {
-        color: var(--yellow);
+        color: var(--rs26-orange);
         transform: translateY(-1px);
       }
     }
@@ -217,12 +214,12 @@ const uniqueCategories = [
     cursor: pointer;
     padding: 8px 0;
     font-size: 15px;
-    color: var(--gray);
+    color: var(--rs26-muted);
     font-weight: 500;
     transition: color 0.2s ease;
 
     &:hover {
-      color: #374151;
+      color: var(--rs26-white);
     }
 
     input[type="checkbox"] {
@@ -236,22 +233,22 @@ const uniqueCategories = [
     .checkmark {
       height: 20px;
       width: 20px;
-      background-color: #f9fafb;
-      border: 2px solid #d1d5db;
+      background-color: var(--rs26-navy-2);
+      border: 2px solid var(--rs26-navy-line);
       border-radius: 4px;
       position: relative;
       transition: all 0.2s ease;
     }
     @media screen and (min-width: 768px) {
       &:hover .checkmark {
-        border-color: var(--pink);
-        background-color: #fef7f7;
+        border-color: var(--rs26-orange);
+        background-color: rgba(240, 122, 35, 0.12);
       }
     }
 
     input:checked ~ .checkmark {
-      background-color: var(--pink);
-      border-color: var(--pink);
+      background-color: var(--rs26-orange);
+      border-color: var(--rs26-orange);
     }
 
     .checkmark:after {
@@ -277,28 +274,28 @@ const uniqueCategories = [
     justify-content: space-between;
     align-items: center;
     padding-top: 16px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--rs26-navy-line);
     flex-wrap: wrap;
     gap: 16px;
   }
 
   .reset-filters-btn {
-    background: var(--pink);
-    color: white;
-    border: 2px solid var(--pink);
-    border-radius: 25px;
+    background: var(--rs26-orange);
+    color: var(--rs26-white);
+    border: 1.5px solid var(--rs26-orange);
+    border-radius: 999px;
     padding: 10px 24px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s var(--rs26-ease);
 
     @media screen and (min-width: 768px) {
       background: transparent;
-      color: var(--pink);
+      color: var(--rs26-orange);
       &:hover {
-        background: var(--pink);
-        color: white;
+        background: var(--rs26-orange);
+        color: var(--rs26-white);
         transform: translateY(-1px);
       }
     }

@@ -135,7 +135,7 @@ const sessionData = JSON.stringify(calendarData);
     @media screen and (min-width: 768px) {
       &:hover {
         svg {
-          stroke: #929292;
+          stroke: var(--rs26-blue-bright);
         }
       }
     }
@@ -144,7 +144,7 @@ const sessionData = JSON.stringify(calendarData);
   .add-to-calendar-btn {
     display: flex;
     align-items: center;
-    color: #ccc;
+    color: var(--rs26-muted-3);
     background: none;
     border: none;
     border-radius: 6px;
@@ -171,12 +171,12 @@ const sessionData = JSON.stringify(calendarData);
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
     border-radius: 8px;
     box-shadow:
-      0 4px 6px rgba(0, 0, 0, 0.07),
-      0 10px 20px rgba(0, 0, 0, 0.1);
+      0 4px 6px rgba(0, 0, 0, 0.3),
+      0 10px 20px rgba(0, 0, 0, 0.4);
     min-width: 160px;
     opacity: 0;
     visibility: hidden;
@@ -197,11 +197,11 @@ const sessionData = JSON.stringify(calendarData);
     gap: 12px;
     width: 100%;
     padding: 12px 16px;
-    background: white;
+    background: var(--rs26-panel-2);
     border: none;
     text-align: left;
     font-size: 14px;
-    color: #333;
+    color: var(--rs26-text);
     cursor: pointer;
     transition: background 0.2s ease;
 
@@ -214,11 +214,11 @@ const sessionData = JSON.stringify(calendarData);
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid var(--rs26-navy-line);
     }
 
     &:hover {
-      background: var(--gray-50);
+      background: rgba(108, 140, 199, 0.12);
     }
   }
 </style>
