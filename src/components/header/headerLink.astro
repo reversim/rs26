@@ -2,88 +2,45 @@
 interface Props {
   label: string;
   link: string;
-  iconColor: string;
-  iconDegree?: number;
   variant?: "button" | "link";
 }
 
-const { label, iconColor, link, variant } = Astro.props;
-
-let iconDegree = Astro.props.iconDegree;
-
-if (!iconDegree) {
-  iconDegree = Math.random() * 360;
-}
-const iconDegreeStr = `${iconDegree}deg`;
+const { label, link, variant } = Astro.props;
 ---
 
 <a
-  class={`header-link ${variant}`}
+  class={`header-link ${variant ?? ""}`}
   target={variant === "button" ? "_blank" : "_self"}
   href={link}
 >
-  <div class="screw"></div>
-  <span class="label"> {label} </span>
+  {label}
 </a>
 
-<style define:vars={{ iconColor, iconDegreeStr }} lang="scss">
+<style lang="scss">
   .header-link {
-    width: fit-content;
-    font-weight: 400;
-    position: relative;
-    display: flex;
-    align-items: center;
+    font-weight: 600;
+    font-size: 0.94rem;
+    padding: 0.5em 0.8em;
+    border-radius: 999px;
+    color: #dce4f7;
+    opacity: 0.82;
+    transition:
+      opacity 0.2s,
+      background 0.2s;
+
     &:hover {
-      --modifiedDegree: calc(var(--iconDegreeStr) - 180deg);
+      opacity: 1;
+      color: var(--rs26-white);
     }
 
     &.button {
-      position: relative;
-      border: none;
-      padding: 8px 12px;
-      color: white;
-      border-radius: 50px;
-      background-color: var(--iconColor);
-      box-shadow: 4px 4px 0px var(--shadow-pop);
-      transition: all 0.15s ease-in;
+      border: 1px solid var(--rs26-navy-line);
+      background: rgba(108, 140, 199, 0.12);
+      opacity: 1;
 
-      .screw {
-        background-color: var(--pink);
-        position: absolute;
-        top: 46%;
-        left: 39.3%;
-        transform: translate(-50%, -50%);
-        scale: 0.63;
-
-        &::before {
-          background-color: white;
-          width: 3px;
-        }
+      &:hover {
+        border-color: var(--rs26-blue);
       }
-    }
-  }
-
-  .screw {
-    position: relative;
-    margin-right: 4px;
-    height: 16px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background-color: var(--iconColor);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &::before {
-      content: "";
-      position: absolute;
-      display: block;
-      width: 1px;
-      height: 12px;
-      background-color: black;
-      transition: transform 0.3s;
-      transform: rotate(var(--modifiedDegree, var(--iconDegreeStr, 0deg)));
-      border-radius: 4px;
     }
   }
 </style>
