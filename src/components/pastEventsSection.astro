@@ -1,8 +1,7 @@
 ---
-import "glightbox/dist/css/glightbox.css";
 import { getPastEventsImages } from "../helpers/data/getPastEventsImages";
 import Button from "./button.astro";
-import Slider from "./slider.astro";
+import PhotoCarousel from "./photoCarousel.astro";
 import type { CarouselImage } from "../types/slider";
 
 const images: CarouselImage[] = await getPastEventsImages();
@@ -27,13 +26,12 @@ const images: CarouselImage[] = await getPastEventsImages();
       community-driven space for learning and networking in software.
     </p>
 
-    <Slider
-      videos={[
-        {
-          url: "https://www.youtube.com/embed/gbcaCFO65Bo?si=_c-V6WTmXCb1ktut",
-        },
-      ]}
-      images={images}
+    <PhotoCarousel
+      slides={images.map((image) => ({ src: image.src, alt: image.alt }))}
+      ariaLabel="Photos from past summits"
+      perPage={3}
+      showThumbnails={false}
+      interval={4500}
     />
   </div>
 </section>
