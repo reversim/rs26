@@ -7,13 +7,21 @@ export const event = {
 
   // Shown in the hero. Kept as separate words because each is styled/colored.
   title: {
-    line1: "REVERSIM",
-    line2: "SUMMIT",
-    year: "2026",
+    line1: "Reversim",
+    line2: "Winter",
+    line3: "Summit",
   },
 
-  // Hero date line, e.g. "30.11-1.12, 2026"
-  dates: "30.11-1.12, 2026",
+  // Human date line, e.g. header pill (uppercased via CSS) and hero meta row.
+  dates: "Nov 30 – Dec 1, 2026",
+
+  hero: {
+    lede:
+      "Two days of deep engineering as Israel's dev community wires up the " +
+      "next generation of autonomous, agentic systems — one node at a time.",
+    metaNote: "Two full days",
+    hint: "drag the nodes · they don't bite",
+  },
 
   // Intro paragraph under the hero.
   description:
@@ -28,11 +36,11 @@ export const event = {
 
   // Hero call-to-action. Set `url` to the CFP submission link when ready.
   cfp: {
-    label: "CFP Is Open!",
+    label: "CFP is open →",
     url: "https://sessionize.com/reversim-summit-2026/",
   },
-  sponsor:{
-    label: "Be A Sponsor!",
+  sponsor: {
+    label: "Become a sponsor",
     url: "/sponsors",
-  }
+  },
 } as const;

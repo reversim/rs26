@@ -6,7 +6,7 @@ interface Props {
   text: string;
   /** When set, renders an <a>; otherwise a <button>. */
   href?: string;
-  variant?: "primary" | "speakers" | "no-border" | "back";
+  variant?: "primary" | "speakers" | "no-border" | "back" | "orange" | "ghost";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   id?: string;
@@ -24,6 +24,8 @@ const {
 } = Astro.props;
 
 const isBack = variant === "back";
+// RS26 pill buttons render a bare label — no wave/sticker machinery.
+const isPill = variant === "orange" || variant === "ghost";
 const classes = [
   "btn",
   variant,
@@ -43,6 +45,8 @@ const Tag = href ? "a" : "button";
       <>
         <Arrow class="back-arrow" /> Back to {text}
       </>
+    ) : isPill ? (
+      text
     ) : (
       <>
         <span class="btn-label">{text}</span>
@@ -56,6 +60,59 @@ const Tag = href ? "a" : "button";
   .btn {
     font-family: inherit;
     cursor: pointer;
+  }
+
+  // ---- RS26 pill family (orange / ghost) -----------------------------------
+  .btn.orange,
+  .btn.ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    white-space: nowrap;
+    font-family: var(--rs26-body);
+    font-weight: 700;
+    font-size: 0.98rem;
+    padding: 0.85em 1.4em;
+    border-radius: 999px;
+    border: 0;
+    transition:
+      transform 0.18s var(--rs26-ease),
+      box-shadow 0.25s var(--rs26-ease),
+      background 0.2s,
+      border-color 0.2s;
+
+    &:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    &.full-width {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .btn.orange {
+    background: var(--rs26-orange);
+    color: var(--rs26-white);
+    box-shadow: 0 8px 22px -8px rgba(240, 122, 35, 0.7);
+
+    &:hover {
+      color: var(--rs26-white);
+      box-shadow: 0 14px 30px -10px rgba(240, 122, 35, 0.85);
+      transform: translateY(-2px);
+    }
+  }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--rs26-white);
+    border: 1.5px solid var(--rs26-navy-line);
+
+    &:hover {
+      color: var(--rs26-white);
+      border-color: var(--rs26-blue);
+      background: rgba(108, 140, 199, 0.12);
+    }
   }
 
   // ---- Back link ----------------------------------------------------------

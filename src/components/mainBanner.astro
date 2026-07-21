@@ -1,15 +1,7 @@
 ---
 import HeroSection from "./heroSection.astro";
 import SponsorsGrid from "./sponsorsGrid.astro";
-import { MIN_MACHINE_WIDTH } from "../config/breakpoints";
 ---
-
-<script is:inline define:vars={{ minMachineWidth: MIN_MACHINE_WIDTH }}>
-  document.documentElement.style.setProperty(
-    "--minMachineWidth",
-    `${minMachineWidth}px`,
-  );
-</script>
 
 <div class="main-banner">
   <HeroSection />
