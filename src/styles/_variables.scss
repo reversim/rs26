@@ -48,4 +48,34 @@
 
   // Transitions
   --transition-normal: 0.3s ease;
+
+  // RS26 theme
+  --rs26-navy: #0e1d42; // base background
+  --rs26-navy-2: #0a1631; // section bands
+  --rs26-navy-3: #060f25; // footer / deepest
+  --rs26-navy-line: #1e2f58; // hairlines & borders on dark
+  --rs26-panel: #0a1736; // card/panel fill
+  --rs26-panel-2: #10204a; // raised card fill (sessions, positions)
+  --rs26-panel-3: #11214c; // sponsor logo cells
+  --rs26-white: #ffffff;
+  --rs26-paper: #f4f6fb; // off-white (rarely used on dark theme)
+  --rs26-blue: #6c8cc7; // periwinkle "winter" accent
+  --rs26-blue-bright: #84a2da;
+  --rs26-orange: #f07a23; // primary CTA / energy
+  --rs26-mint: #7ccfa8; // eyebrows / fresh accent
+  --rs26-pink: #f3a0c5; // playful, use sparingly
+  --rs26-dashed: #3a4d7a; // dashed borders on dark
+  --rs26-text: #c3cdea; // body text on dark
+  --rs26-muted: #8fa0c8;
+  --rs26-muted-2: #8595bd;
+  --rs26-muted-3: #6c7ca6;
+  --rs26-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --rs26-body: var(--font-hanken-grotesk), system-ui, sans-serif;
+  --rs26-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --rs26-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --rs26-r-sm: 8px;
+  --rs26-r-md: 14px;
+  --rs26-r-lg: 22px;
+  --rs26-r-xl: 34px;
+  --rs26-maxw: 1240px;
 }

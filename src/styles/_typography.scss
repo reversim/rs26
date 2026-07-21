@@ -9,16 +9,41 @@ h6 {
   margin: 0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--rs26-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+}
+
 h2 {
-  font-size: 36px;
+  font-size: clamp(1.9rem, 4vw, 3rem);
   margin-bottom: var(--spacing-md);
-  font-weight: 100;
-  text-align: center;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+
+  &:hover {
+    color: var(--rs26-blue-bright);
+  }
+}
+
+// Mono eyebrow label (mint by default, per section heads in the design)
+.eyebrow {
+  font-family: var(--rs26-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--rs26-mint);
+  margin: 0;
 }
 
 // Text Utilities
@@ -33,8 +58,9 @@ a {
 .font-bold { font-weight: 700; }
 
 // Color Text Utilities
-.text-pink { color: var(--pink); }
-.text-orange { color: var(--orange); }
-.text-green { color: var(--green); }
-.text-blue { color: var(--blue); }
-.text-white { color: var(--white); }
+.text-pink { color: var(--rs26-pink); }
+.text-orange { color: var(--rs26-orange); }
+.text-mint { color: var(--rs26-mint); }
+.text-blue { color: var(--rs26-blue); }
+.text-white { color: var(--rs26-white); }
+.text-muted { color: var(--rs26-muted); }
