@@ -1,61 +1,95 @@
 ---
-import Title from "./title.astro";
-import FrameEdge from "./frameEdge.astro";
+
 ---
 
-<Title style="color: #060723" title="Venue" id="venue" />
-<h4>Expo Tel Aviv Pavilion 10</h4>
-<div class="venue">
-  <div class="map-wrapper">
-    <FrameEdge rotation={0} />
-    <iframe
-      title="google map to the conference venue"
-      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6759.250612977819!2d34.810085!3d32.106411!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d497b83bbbbaf%3A0x5a59d2a2b6fee5ae!2sHall%2010!5e0!3m2!1sen!2sil!4v1755605843753!5m2!1sen!2sil"
-      width="600"
-      height="450"
-      style="border:0;"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-    >
-    </iframe>
-    <FrameEdge bottom={0} right={0} rotation={180} />
+<section class="block" id="venue">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Where it happens</p>
+        <h2>Venue</h2>
+      </div>
+    </div>
+
+    <div class="venue-grid">
+      <div class="venue-info">
+        <div class="vrow">
+          <span class="vk">Location</span>
+          <span class="vv">Expo Tel Aviv · Pavilion 10</span>
+        </div>
+        <div class="vrow">
+          <span class="vk">Address</span>
+          <span class="vv">Rokach Blvd 101, Tel Aviv-Yafo</span>
+        </div>
+      </div>
+      <div class="map-wrapper">
+        <iframe
+          title="google map to the conference venue"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6759.250612977819!2d34.810085!3d32.106411!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d497b83bbbbaf%3A0x5a59d2a2b6fee5ae!2sHall%2010!5e0!3m2!1sen!2sil!4v1755605843753!5m2!1sen!2sil"
+          width="600"
+          height="450"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        >
+        </iframe>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <style lang="scss">
-  p {
-    font-size: 16px;
-  }
+  .venue-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(24px, 4vw, 48px);
+    align-items: stretch;
 
-  h4 {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 8px;
-  }
-
-  .venue {
-    display: flex;
-    width: 100%;
-    gap: 42px;
-    align-items: start;
-    > * {
-      flex: 1;
+    @media (max-width: 760px) {
+      grid-template-columns: 1fr;
     }
+  }
 
-    @media screen and (max-width: 768px) {
+  .venue-info {
+    .vrow {
+      display: flex;
       flex-direction: column;
+      gap: 3px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--rs26-navy-line);
 
-      * {
-        width: 100%;
+      &:first-of-type {
+        border-top: 1px solid var(--rs26-navy-line);
       }
     }
+
+    .vk {
+      font-family: var(--rs26-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7e8fba;
+    }
+
+    .vv {
+      font-family: var(--rs26-display);
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: var(--rs26-white);
+    }
   }
+
   .map-wrapper {
-    position: relative;
+    border-radius: var(--rs26-r-md);
+    border: 1px solid var(--rs26-navy-line);
+    overflow: hidden;
+    min-height: 280px;
 
     iframe {
       width: 100%;
+      height: 100%;
+      display: block;
     }
   }
 </style>

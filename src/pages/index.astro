@@ -3,28 +3,22 @@ import "@splidejs/splide/css";
 import { Image } from "astro:assets";
 import logoWhite from "../assets/logo-white.png";
 import { event } from "../config/event";
-import MainBanner from "../components/mainBanner.astro";
+import AboutSection from "../components/aboutSection.astro";
+import HeroSection from "../components/heroSection.astro";
 import PastEvents from "../components/pastEventsSection.astro";
+import SponsorsGrid from "../components/sponsorsGrid.astro";
 import TeamMembersSection from "../components/teamMembersSection.astro";
 import VenueSection from "../components/venueSection.astro";
 import Layout from "../layouts/Layout.astro";
-
 ---
 
 <Layout havePadding={false}>
-  <MainBanner />
-
-  <div class="team-members-card card">
-    <TeamMembersSection />
-  </div>
-  
-  <div class="past-events-card card">
-    <PastEvents />
-  </div>
-
-  <div class="card venue-card">
-    <VenueSection />
-  </div>
+  <HeroSection />
+  <AboutSection />
+  <SponsorsGrid />
+  <TeamMembersSection />
+  <PastEvents />
+  <VenueSection />
 
   <footer class="site-foot">
     <div class="foot-grid">
@@ -44,31 +38,6 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
 
 <style lang="scss">
-  .team-member-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 32px 10px;
-  }
-  .card {
-    max-width: var(--max-container-width);
-    margin: auto;
-
-    &.venue-card {
-      padding-bottom: 100px;
-    }
-
-    @media screen and (max-width: 1280px) {
-      padding: 20px 10% 0;
-    }
-    @media screen and (max-width: 576px) {
-      padding: 20px 6% 0;
-    }
-  }
-  .past-events-card {
-    overflow: hidden;
-    position: relative;
-  }
-
   .site-foot {
     background: var(--rs26-navy-3);
     color: #cdd6ec;

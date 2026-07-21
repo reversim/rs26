@@ -1,4 +1,36 @@
 // LAYOUT UTILITIES
+
+// RS26 section shell — shared by homepage + detail-page sections.
+.wrap {
+  width: 100%;
+  max-width: var(--rs26-maxw);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 56px);
+}
+
+section.block {
+  padding: clamp(48px, 8vw, 96px) 0;
+}
+
+.band {
+  background: var(--rs26-navy-2);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+
+  h2 {
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    color: var(--rs26-white);
+    margin: 8px 0 0;
+  }
+}
+
 .body-container {
   margin: auto;
   box-sizing: unset;

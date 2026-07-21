@@ -1,17 +1,18 @@
 ---
-import "glightbox/dist/css/glightbox.css";
 import { getTeamMembers } from "../helpers/data/getTeam";
 import MemberGrid from "./memberGrid.astro";
-import Title from "./title.astro";
 
 const teamMembers = await getTeamMembers();
 ---
 
-<div class="team-members-container">
-  <Title
-    title="Our Team"
-    style="color: black; margin: 100px 0 40px"
-    id="past-events"
-  />
-  <MemberGrid members={teamMembers} />
-</div>
+<section class="block" id="team">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">The people behind it</p>
+        <h2>Our team</h2>
+      </div>
+    </div>
+    <MemberGrid members={teamMembers} />
+  </div>
+</section>

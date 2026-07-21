@@ -23,6 +23,19 @@ export const event = {
     hint: "drag the nodes · they don't bite",
   },
 
+  // Homepage about section: big display lede + supporting paragraphs.
+  aboutLede:
+    "A community-driven summit for the people who build software in Israel.",
+  aboutBody: [
+    "Reversim Winter Summit is a two-day, content-first conference for " +
+      "software developers, product managers, data scientists and everyone " +
+      "else in the industry. We've been running it since 2013 — and this is " +
+      "the agentic edition.",
+    "Reversim is not-for-profit. Its sole purpose is to enrich the community " +
+      "with great content and real networking, organised by a volunteer team " +
+      "drawn from the top of the industry.",
+  ],
+
   // Intro paragraph under the hero.
   description:
     "Reversim Summit 2026 (RS26) is a community driven event in Israel for " +

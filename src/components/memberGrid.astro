@@ -18,12 +18,12 @@ const { members, pageBase = "about" } = Astro.props;
 <style lang="scss">
   .member-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px 80px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 18px;
 
     @media screen and (max-width: 576px) {
-      grid-template-columns: 1fr;
-      gap: 50px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
   }
 </style>

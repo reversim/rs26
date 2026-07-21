@@ -6,6 +6,8 @@ interface Props {
   text: string;
   /** When set, renders an <a>; otherwise a <button>. */
   href?: string;
+  /** Link target (only applied when href is set), e.g. "_blank". */
+  target?: string;
   variant?: "primary" | "speakers" | "no-border" | "back" | "orange" | "ghost";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
@@ -16,6 +18,7 @@ interface Props {
 const {
   text,
   href,
+  target,
   variant = "primary",
   size = "md",
   fullWidth = false,
@@ -39,7 +42,13 @@ const classes = [
 const Tag = href ? "a" : "button";
 ---
 
-<Tag class={classes} id={id} href={href}>
+<Tag
+  class={classes}
+  id={id}
+  href={href}
+  target={href ? target : undefined}
+  rel={href && target === "_blank" ? "noopener" : undefined}
+>
   {
     isBack ? (
       <>

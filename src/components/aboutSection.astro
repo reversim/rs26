@@ -1,0 +1,50 @@
+---
+import { event } from "../config/event";
+---
+
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <p class="about-lede">{event.aboutLede}</p>
+      <div class="about-body">
+        {event.aboutBody.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+
+    @media (max-width: 760px) {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+
+  .about-lede {
+    font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+    line-height: 1.32;
+    max-width: 24ch;
+    font-family: var(--rs26-display);
+    font-weight: 500;
+    color: var(--rs26-white);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .about-body p {
+    color: var(--rs26-text);
+    font-size: 1.06rem;
+    margin: 0 0 14px;
+    max-width: 54ch;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+</style>
