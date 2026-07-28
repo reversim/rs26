@@ -49,6 +49,7 @@ export const event = {
 
   // Hero call-to-action. Set `url` to the CFP submission link when ready.
   cfp: {
+    display: false,
     label: "CFP is open →",
     url: "https://sessionize.com/reversim-summit-2026/",
   },

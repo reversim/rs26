@@ -15,9 +15,11 @@ import { event } from "../config/event";
     </h1>
     <p class="lede">{event.hero.lede}</p>
     <div class="cta-row">
-      <Button variant="orange" text={event.cfp.label} href={event.cfp.url} />
+      {event.cfp.display && (
+        <Button variant="orange" text={event.cfp.label} href={event.cfp.url} />
+      )}
       <Button
-        variant="ghost"
+        variant={event.cfp.display ? "ghost" : "orange"}
         text={event.sponsor.label}
         href={event.sponsor.url}
       />
@@ -79,8 +81,8 @@ import { event } from "../config/event";
     };
     const palette = [C.blue, C.orange, C.mint, C.pink, C.blueB];
     const LABELS = [
-      "AI Apps",
-      "AI Infra",
+      "Craft",
+      "AI/ML",
       "Backend",
       "Culture",
       "Frontend",
