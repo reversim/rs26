@@ -152,21 +152,21 @@ const { currentDay } = Astro.props;
   @keyframes highlight-bg {
     0%,
     100% {
-      background-color: none;
+      background-color: transparent;
     }
     20%,
     80% {
-      background-color: lightgray;
+      background-color: rgba(108, 140, 199, 0.12);
     }
   }
   @keyframes highlight-border {
     0%,
     100% {
-      border-color: var(--gray-100);
+      border-color: var(--rs26-navy-line);
     }
     20%,
     80% {
-      border-color: var(--blue);
+      border-color: var(--rs26-blue);
     }
   }
 
@@ -191,15 +191,15 @@ const { currentDay } = Astro.props;
   .scroll-to-now-btn {
     display: none;
     padding: 10px 20px;
-    background-color: var(--blue);
-    color: white;
+    background-color: var(--rs26-orange);
+    color: var(--rs26-white);
     border: none;
-    border-radius: 8px;
+    border-radius: 999px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s var(--rs26-ease);
+    box-shadow: 0 8px 22px -8px rgba(240, 122, 35, 0.7);
 
     position: sticky;
     top: 100%;

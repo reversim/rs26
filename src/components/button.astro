@@ -6,7 +6,9 @@ interface Props {
   text: string;
   /** When set, renders an <a>; otherwise a <button>. */
   href?: string;
-  variant?: "primary" | "speakers" | "no-border" | "back";
+  /** Link target (only applied when href is set), e.g. "_blank". */
+  target?: string;
+  variant?: "back" | "orange" | "ghost";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   id?: string;
@@ -16,7 +18,8 @@ interface Props {
 const {
   text,
   href,
-  variant = "primary",
+  target,
+  variant = "orange",
   size = "md",
   fullWidth = false,
   id,
@@ -37,17 +40,20 @@ const classes = [
 const Tag = href ? "a" : "button";
 ---
 
-<Tag class={classes} id={id} href={href}>
+<Tag
+  class={classes}
+  id={id}
+  href={href}
+  target={href ? target : undefined}
+  rel={href && target === "_blank" ? "noopener" : undefined}
+>
   {
     isBack ? (
       <>
         <Arrow class="back-arrow" /> Back to {text}
       </>
     ) : (
-      <>
-        <span class="btn-label">{text}</span>
-        <div class="wave" />
-      </>
+      text
     )
   }
 </Tag>
@@ -58,168 +64,109 @@ const Tag = href ? "a" : "button";
     cursor: pointer;
   }
 
-  // ---- Back link ----------------------------------------------------------
-  .btn.back {
-    display: flex;
+  // ---- RS26 pill family (orange / ghost) -----------------------------------
+  .btn.orange,
+  .btn.ghost {
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
-    width: max-content;
-    height: max-content;
-    margin-bottom: 12px;
-    color: var(--dark-blue);
-    font-weight: 600;
-    background: none;
-    border: none;
+    gap: 0.6em;
+    white-space: nowrap;
+    font-family: var(--rs26-body);
+    font-weight: 700;
+    font-size: 0.98rem;
+    padding: 0.85em 1.4em;
+    border-radius: 999px;
+    border: 0;
+    transition:
+      transform 0.18s var(--rs26-ease),
+      box-shadow 0.25s var(--rs26-ease),
+      background 0.2s,
+      border-color 0.2s;
 
-    .back-arrow {
-      height: 16px;
-      width: 16px;
-      transform: scaleX(-1);
+    &:active {
+      transform: translateY(1px) scale(0.99);
     }
-  }
-
-  // ---- Hero CTA family (primary / speakers / no-border) -------------------
-  .btn.primary,
-  .btn.speakers,
-  .btn.no-border {
-    position: relative;
-    display: inline-block;
-    border: none;
-    width: 286px;
-    border-radius: 50px;
-    background-color: var(--pink-dark);
-    box-shadow: 4px 4px 0px var(--shadow-pop);
-    transition: all 0.15s ease-in;
 
     &.full-width {
       width: 100%;
-    }
-
-    .btn-label {
-      color: white;
-      font-weight: bold;
-      display: block;
-      margin: auto;
-      position: relative;
-      z-index: 2;
-      pointer-events: all;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 3px;
-        height: 100%;
-        background-color: white;
-        transition: right 0.5s ease;
-      }
-      &::before {
-        right: 90%;
-      }
-      &::after {
-        right: 10%;
-      }
-    }
-
-    &:hover .btn-label {
-      &::before {
-        right: 10%;
-      }
-      &::after {
-        right: 90%;
-      }
-    }
-
-    .wave,
-    .wave::before,
-    .wave::after {
-      opacity: 1;
-      transition: all 0.15s ease-in;
-    }
-
-    &:hover .wave {
-      opacity: 0;
-    }
-
-    .wave {
-      position: absolute;
-      background-color: #d95579;
-      border-radius: 30px 30px 0;
-      width: 50%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1;
-
-      &::after,
-      &::before {
-        content: "";
-        position: absolute;
-        width: 17px;
-        height: 100%;
-        top: 0px;
-        background-color: var(--pink-dark);
-        border-radius: 0px 500%;
-        rotate: -2deg;
-      }
-      &::after {
-        right: 0px;
-      }
-      &::before {
-        right: -5px;
-      }
+      justify-content: center;
     }
   }
 
-  // ---- Sizes (CTA family) -------------------------------------------------
-  .btn.primary,
-  .btn.speakers {
-    &.size-sm .btn-label {
-      font-size: 14px;
-      padding: 8px 32px;
-    }
-    &.size-md .btn-label {
-      font-size: 18px;
-      padding: 12px 54px;
-    }
-    &.size-lg .btn-label {
-      font-size: 20px;
-      padding: 16px 64px;
+  .btn.orange {
+    background: var(--rs26-orange);
+    color: var(--rs26-white);
+    box-shadow: 0 8px 22px -8px rgba(240, 122, 35, 0.7);
+
+    &:hover {
+      color: var(--rs26-white);
+      box-shadow: 0 14px 30px -10px rgba(240, 122, 35, 0.85);
+      transform: translateY(-2px);
     }
   }
 
-  // ---- Speakers variant ---------------------------------------------------
-  .btn.speakers {
-    background-color: var(--blue);
+  .btn.ghost {
+    background: transparent;
+    color: var(--rs26-white);
+    border: 1.5px solid var(--rs26-navy-line);
 
-    .btn-label {
-      padding: 12px 24px;
-    }
-
-    .wave {
-      background-color: #485b7a;
-      &::after,
-      &::before {
-        background-color: var(--blue);
-      }
+    &:hover {
+      color: var(--rs26-white);
+      border-color: var(--rs26-blue);
+      background: rgba(108, 140, 199, 0.12);
     }
   }
 
-  // ---- No-border variant --------------------------------------------------
-  .btn.no-border {
-    .btn-label {
-      padding: 12px;
+  // ---- Touch foundations --------------------------------------------------
+  // The global rules in _base.scss lose to these scoped selectors, so the
+  // pill family carries its own copy. `.btn.back` is a text link, not a pill,
+  // and is deliberately left out of the 48px floor.
+  @media (hover: none) {
+    .btn.orange:hover,
+    .btn.ghost:hover {
+      transform: none;
+    }
 
-      &::before,
-      &::after {
-        display: none;
-      }
+    .btn.orange:active,
+    .btn.ghost:active {
+      transform: scale(0.97);
+    }
+  }
 
-      @media (max-width: 768px) {
-        font-size: 16px;
-        padding: 12px 24px;
-      }
+  @media (pointer: coarse) {
+    .btn.orange,
+    .btn.ghost {
+      min-height: 48px;
+      padding: 0.85em 1.5em;
+    }
+  }
+
+  // ---- Back link ----------------------------------------------------------
+  .btn.back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    height: max-content;
+    margin-bottom: 12px;
+    padding: 22px 0 0;
+    font-family: var(--rs26-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--rs26-muted);
+    background: none;
+    border: none;
+    transition: color 0.18s;
+
+    &:hover {
+      color: var(--rs26-orange);
+    }
+
+    .back-arrow {
+      height: 13px;
+      width: 13px;
+      transform: scaleX(-1);
+      fill: currentColor;
     }
   }
 </style>

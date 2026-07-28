@@ -116,23 +116,23 @@ const { session: sessions } = Astro.props;
       -ms-user-select: none;
       cursor: default;
       padding: 16px;
-      background: white;
-      border: 2px solid var(--gray-100);
+      background: var(--rs26-panel-2);
+      border: 1px solid var(--rs26-navy-line);
       border-radius: 12px;
       position: relative;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s var(--rs26-ease);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 
       &:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-        border-color: var(--gray-100) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        border-color: var(--rs26-navy-line) !important;
       }
 
       &:focus {
         outline: none;
         transform: none !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
-        border-color: var(--gray-100) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+        border-color: var(--rs26-navy-line) !important;
       }
 
       &:active {
@@ -141,11 +141,12 @@ const { session: sessions } = Astro.props;
     }
 
     .session-title {
+      font-family: var(--rs26-display);
       font-size: 18px;
       padding-right: 35px;
-      line-height: 1.4;
+      line-height: 1.3;
       margin: 0 0 12px 0;
-      color: var(--slate);
+      color: var(--rs26-white);
     }
   }
 </style>

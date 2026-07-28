@@ -1,14 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import rs24Image from "../assets/reversim24-image.png";
-import { getSponsors } from "../helpers/data/getSponsors";
-import { getResponsiveImage } from "../helpers/data/getResponsiveImage";
-import SponsorDialog from "./sponsorDialog.astro";
-import Title from "./title.astro";
 import { event } from "../config/event";
 import { sponsorTiers } from "../config/sponsorTiers";
-
-const rs24 = await getResponsiveImage(rs24Image);
+import { getSponsors } from "../helpers/data/getSponsors";
+import Button from "./button.astro";
+import SponsorDialog from "./sponsorDialog.astro";
 
 const organizingSponsor = await getSponsors("organizing");
 const communitySponsors = await getSponsors("community");
@@ -17,11 +13,12 @@ const gameChangersSponsors = await getSponsors("game-changers");
 const tierLabel = (key: string) =>
   sponsorTiers.find((tier) => tier.key === key)?.label ?? "";
 
-const cssVars = `
-.card-background {
-    --optimizedRS24URLMobile: url(${rs24.mobile.src});
-    --optimizedRS24URLDesktop: url(${rs24.desktop.src})
-    }`;
+// Mono tier-marker glyphs from the design reference.
+const tierMark: Record<string, string> = {
+  organizing: "◆",
+  "game-changers": "●",
+  community: "○",
+};
 ---
 
 <script is:inline>
@@ -61,54 +58,38 @@ const cssVars = `
   });
 </script>
 
-<div class="sponsors card-background card">
-  <div class="description-container">
-    <p class="event-description" id="about">{event.description}</p>
-
-    <Title
-      variant="sponsor-large"
-      style="margin: 25px 0 24px"
-      title={tierLabel("organizing")}
-      id="sponsors"
-    />
-    <div class="sponsors-container organizer">
-      {
-        organizingSponsor.map((sponsor) => (
-          <a
-            class={`${sponsor.slug} logo-container`}
-            href={`/sponsors/${sponsor.slug}`}
-          >
-            <Image
-              class={`organizer sponsor-logo ${sponsor.slug}`}
-              src={sponsor.companyNameLogo}
-              width={300}
-              height={150}
-              alt={`Sponsor ${sponsor.companyName}`}
-            />
-          </a>
-        ))
-      }
+<section class="block band" id="sponsors">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Powered by</p>
+        <h2>Our sponsors</h2>
+      </div>
+      <Button
+        variant="orange"
+        text={event.sponsor.label}
+        href={event.sponsor.url}
+      />
     </div>
+
     {
-      gameChangersSponsors.length > 0 && (
+      organizingSponsor.length > 0 && (
         <>
-          <Title
-            variant="sponsor-medium"
-            style="margin: 36px 0 18px"
-            title={tierLabel("game-changers")}
-            id="sponsors"
-          />
-          <div class="sponsors-container game-changers">
-            {gameChangersSponsors.map((sponsor) => (
+          <p class="tier">
+            {tierMark["organizing"]} {tierLabel("organizing")}
+          </p>
+          <div class="spon-grid organizing">
+            {organizingSponsor.map((sponsor) => (
               <a
-                class={`${sponsor.slug} logo-container`}
+                class="spon spon-lg"
                 href={`/sponsors/${sponsor.slug}`}
+                aria-label={sponsor.companyName}
               >
                 <Image
-                  class={`sponsor-logo`}
+                  class={`sponsor-logo ${sponsor.slug}`}
                   src={sponsor.companyNameLogo}
-                  width={400}
-                  height={1000}
+                  width={480}
+                  height={240}
                   alt={`Sponsor ${sponsor.companyName}`}
                 />
               </a>
@@ -117,23 +98,54 @@ const cssVars = `
         </>
       )
     }
+
+    {
+      gameChangersSponsors.length > 0 && (
+        <>
+          <p class="tier">
+            {tierMark["game-changers"]} {tierLabel("game-changers")}
+          </p>
+          <div class="spon-grid">
+            {gameChangersSponsors.map((sponsor) => (
+              <a
+                class="spon"
+                href={`/sponsors/${sponsor.slug}`}
+                aria-label={sponsor.companyName}
+              >
+                <Image
+                  class={`sponsor-logo ${sponsor.slug}`}
+                  src={sponsor.companyNameLogo}
+                  width={400}
+                  height={200}
+                  alt={`Sponsor ${sponsor.companyName}`}
+                />
+              </a>
+            ))}
+          </div>
+        </>
+      )
+    }
+
     {
       (communitySponsors?.length ?? 0) > 0 && (
         <>
-          <Title
-            variant="sponsor-medium"
-            style="margin: 42px 0 18px"
-            title={tierLabel("community")}
-            id="sponsors"
-          />
-          <div class="community sponsors-container">
+          <p class="tier">
+            {tierMark["community"]} {tierLabel("community")}
+          </p>
+          <div class="spon-grid community">
             {communitySponsors.map((sponsor) => (
-              <div class="sponsor-item" data-sponsor={sponsor.slug}>
+              <div
+                class="spon sponsor-item"
+                data-sponsor={sponsor.slug}
+                role="button"
+                tabindex="0"
+                aria-label={sponsor.companyName}
+              >
                 <Image
                   class={`sponsor-logo ${sponsor.slug} clickable-sponsor`}
                   src={sponsor.companyNameLogo}
-                  width={400}
-                  height={1000}
+                  width={300}
+                  height={150}
                   alt={`Sponsor ${sponsor.companyName}`}
                 />
               </div>
@@ -143,199 +155,122 @@ const cssVars = `
       )
     }
   </div>
-</div>
+</section>
 
 <!-- Dialog elements for community sponsors -->
 {communitySponsors?.map((sponsor) => <SponsorDialog sponsor={sponsor} />)}
 
-<style set:html={cssVars}></style>
-
 <style lang="scss">
-  .card-background {
-    --border-height: 12px;
-    height: max-content;
-    width: 100%;
-    background-color: var(--navy);
-    clip-path: ellipse(133% 100% at 40% 100%);
+  @use "../styles/breakpoints" as *;
 
-    position: relative;
-    padding: 8% 10%;
-    border-bottom: var(--border-height) solid #9e9e9e;
+  .tier {
+    font-family: var(--rs26-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    color: var(--rs26-muted);
+    margin: 26px 0 12px;
+  }
 
-    @media (max-width: 768px) {
-      clip-path: ellipse(225% 100% at 40% 100%);
+  .spon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+
+    &.organizing {
+      grid-template-columns: 1fr;
+      max-width: 420px;
     }
 
-    &::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: var(--border-height);
-
-      background-image: linear-gradient(
-        to right,
-        #e4e4e4 60%,
-        rgba(255, 255, 255, 0) 0%
-      );
-      top: calc(100% + var(--border-height) / 2);
-      right: 0;
-
-      background-size: 12px 2px;
-      background-repeat: repeat-x;
-
-      animation: scrollBackground linear both;
-      animation-timeline: scroll(block root);
-    }
-
-    @keyframes scrollBackground {
-      0% {
-        background-position: 0% 0%;
-      }
-      100% {
-        background-position: 12% 0%;
-      }
-    }
-
-    &::before {
-      content: "";
-      position: absolute;
-
-      width: 100%;
-      height: 100%;
-      top: 0;
-      right: 0;
-      opacity: 0.3;
-      z-index: -1;
-
-      background:
-        linear-gradient(
-          122deg,
-          black 0%,
-          rgba(0, 0, 0, 0.8) 30%,
-          transparent 100%
-        ),
-        var(--optimizedRS24URLDesktop);
-      background-size: 128%;
-      background-position: center;
-
-      clip-path: inherit;
-      filter: grayscale(1);
-    }
-
-    .description-container {
-      max-width: var(--max-container-width);
-      margin: auto;
-
-      .event-description {
-        color: white;
-        font-weight: 400;
-        font-size: 16px;
-        max-width: 64%;
-        line-height: 1.5rem;
-
-        @media screen and (max-width: 768px) {
-          max-width: 95%;
-        }
-        @media screen and (max-width: 576px) {
-          padding-top: 24px;
-        }
-      }
-      .title-container {
-        margin-top: 40px;
-      }
-    }
-
-    .sponsors-container {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 48px 32px;
-
-      &.community {
-        gap: 12px 18px;
-
-        .sponsor-item {
-          display: flex;
-          align-items: center;
-
-          &[data-sponsor="startio"] {
-            > img {
-              height: 26px;
-            }
-          }
-        }
-
-        .sponsor-logo {
-          height: 32px;
-          cursor: pointer;
-        }
-      }
-
-      .logo-container {
-        display: flex;
-        height: 48px;
-      }
-      .sponsor-logo {
-        filter: brightness(0) invert(1);
-        object-fit: contain;
-        height: 100%;
-        width: auto;
-        max-width: 300px;
-        align-self: center;
-        transition: scale 0.2s ease;
-
-        &.teads {
-          filter: brightness(1) invert(0);
-        }
-
-        &:hover {
-          scale: 1.05;
-        }
-
-        &.organizer {
-          height: 65px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-
-        &.game-changers {
-          transform: translateX(-18px);
-        }
-
-        &.community {
-          flex-direction: row;
-          justify-content: center;
-          row-gap: 18px;
-          column-gap: 24px;
-        }
-
-        .logo-container {
-          transform: translateY(0px) !important;
-
-          &[class*="logo-container"] {
-            scale: 0.8;
-          }
-        }
-      }
-    }
-
-    @media (max-width: 768px) {
-      &::before {
-        background-image: var(--optimizedRS24URLMobile);
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
+    &.community {
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 10px;
     }
   }
 
-  @media screen and (max-width: 768px) {
-    .game-changers {
-      justify-content: center;
-      gap: 20px;
+  .spon {
+    height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--rs26-r-md);
+    background: var(--rs26-panel-3);
+    border: 1px solid var(--rs26-navy-line);
+    cursor: pointer;
+    transition:
+      transform 0.2s var(--rs26-ease),
+      border-color 0.2s var(--rs26-ease);
+
+    &:hover {
+      border-color: var(--rs26-orange);
+      transform: translateY(-2px);
+    }
+
+    &.spon-lg {
+      height: 130px;
+    }
+  }
+
+  .community .spon {
+    height: 54px;
+  }
+
+  .sponsor-logo {
+    // Logos knock out to white on the dark cells…
+    filter: brightness(0) invert(1);
+    object-fit: contain;
+    height: 40%;
+    width: auto;
+    max-width: 72%;
+
+    // …except Teads (organizing sponsor keeps its real colors).
+    &.teads {
+      filter: brightness(1) invert(0);
+    }
+  }
+
+  .spon-lg .sponsor-logo {
+    height: 46%;
+  }
+
+  .community .sponsor-logo {
+    height: 44%;
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .spon-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+
+      &.organizing {
+        grid-template-columns: 1fr;
+        max-width: none;
+      }
+
+      &.community {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+    }
+
+    .spon {
+      height: 72px;
+
+      &.spon-lg {
+        height: 110px;
+      }
+    }
+
+    .community .spon {
+      height: 60px;
+    }
+  }
+
+  // The scoped `.spon:hover` above out-specifies the global rule in _base.scss.
+  @media (hover: none) {
+    .spon:hover {
+      transform: none;
     }
   }
 </style>

@@ -68,8 +68,8 @@ const { cells, currentDay, desiredRooms } = Astro.props;
 
 <style lang="scss">
   .empty-cell {
-    background: #fafafa;
-    border-right: 1px solid var(--gray-100);
+    background: var(--rs26-navy-2);
+    border-right: 1px solid var(--rs26-navy-line);
     grid-column: var(--col-index);
 
     &:last-child {
@@ -80,7 +80,7 @@ const { cells, currentDay, desiredRooms } = Astro.props;
   .session-cell {
     padding: 8px;
     vertical-align: top;
-    border-right: 1px solid var(--gray-100);
+    border-right: 1px solid var(--rs26-navy-line);
     z-index: 1;
     grid-column: var(--col-index);
 
@@ -90,37 +90,39 @@ const { cells, currentDay, desiredRooms } = Astro.props;
 
     .session-content {
       height: 100%;
-      background: var(--gray-50);
-      border: 2px solid var(--gray-100);
-      border-radius: 8px;
+      background: var(--rs26-panel-2);
+      border: 1px solid var(--rs26-navy-line);
+      border-radius: var(--rs26-r-sm);
       padding: 15px;
 
       cursor: pointer;
       position: relative;
-      transition: all 0.3s ease;
+      transition: all 0.3s var(--rs26-ease);
       display: flex;
       flex-direction: column;
       min-height: 120px;
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        border-color: var(--blue);
+        box-shadow: 0 24px 40px -28px rgba(0, 0, 0, 0.9);
+        border-color: var(--rs26-blue);
       }
 
       .session-duration {
+        font-family: var(--rs26-mono);
         font-size: 12px;
-        color: var(--secondary-text-color);
+        color: var(--rs26-blue-bright);
         font-weight: 500;
         margin-bottom: 8px;
       }
 
       .session-title {
+        font-family: var(--rs26-display);
         font-size: 20px;
-        font-weight: 700;
-        line-height: 1.4;
+        font-weight: 600;
+        line-height: 1.3;
         margin: 0 0 12px 0;
-        color: var(--slate);
+        color: var(--rs26-white);
         padding-right: 40px;
 
         a {
@@ -128,7 +130,7 @@ const { cells, currentDay, desiredRooms } = Astro.props;
           text-decoration: none;
 
           &:hover {
-            color: var(--blue);
+            color: var(--rs26-blue-bright);
             text-decoration: underline;
           }
         }

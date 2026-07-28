@@ -1,55 +1,46 @@
 ---
-import "glightbox/dist/css/glightbox.css";
 import { getPastEventsImages } from "../helpers/data/getPastEventsImages";
-import Slider from "./slider.astro";
-import Title from "./title.astro";
+import Button from "./button.astro";
+import PhotoCarousel from "./photoCarousel.astro";
 import type { CarouselImage } from "../types/slider";
 
 const images: CarouselImage[] = await getPastEventsImages();
 ---
 
-<div class="past-events-container">
-  <Title
-    title="Past Events"
-    style="color: black; margin: 100px 0 0"
-    id="past-events"
-  />
-  <p class="past-events-description">
-    Reversim Summit has run every year since 2013 in Israel, providing a
-    community-driven space for learning and networking in software.
-    <a
-      href="https://summit.reversim.com/"
-      target="_blank"
-      class="past-events-link"
-    >
-      Explore our past events <span class="arrow">→</span>
-    </a>
-  </p>
+<section class="block band" id="past-events">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">The story so far</p>
+        <h2>Past events</h2>
+      </div>
+      <Button
+        variant="ghost"
+        text="Explore past events →"
+        href="https://summit.reversim.com/"
+        target="_blank"
+      />
+    </div>
+    <p class="past-lede">
+      Reversim Summit has run every year since 2013 in Israel, providing a
+      community-driven space for learning and networking in software.
+    </p>
 
-  <Slider
-    videos={[
-      { url: "https://www.youtube.com/embed/gbcaCFO65Bo?si=_c-V6WTmXCb1ktut" },
-    ]}
-    images={images}
-  />
+    <PhotoCarousel
+      slides={images.map((image) => ({ src: image.src, alt: image.alt }))}
+      ariaLabel="Photos from past summits"
+      perPage={3}
+      showThumbnails={false}
+      interval={4500}
+    />
+  </div>
+</section>
 
-  <style lang="scss">
-    .past-events-description {
-      margin-top: 20px;
-      font-weight: 700;
-      a {
-        text-decoration: underline;
-      }
-    }
-
-    .past-events-container {
-      max-width: var(--breakpoint-x-large);
-      margin: auto;
-      position: relative;
-
-      @media screen and (max-width: 576px) {
-        padding: 20px 0% 0;
-      }
-    }
-  </style>
-</div>
+<style lang="scss">
+  .past-lede {
+    color: var(--rs26-text);
+    max-width: 60ch;
+    margin: 0 0 26px;
+    font-size: clamp(1.05rem, 2vw, 1.32rem);
+  }
+</style>

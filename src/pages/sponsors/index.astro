@@ -16,46 +16,10 @@ import TeamCta from "../../components/sponsorsCall/teamCta.astro";
 </Layout>
 
 <style lang="scss" is:global>
+  // Tokens, dark base, and the reduced-motion kill-switch now live globally
+  // in src/styles — this wrapper only guarantees the full-height dark canvas.
   .rs26-sponsors-call {
-    --rs26-navy: #0e1d42;
-    --rs26-navy-2: #0a1631;
-    --rs26-navy-3: #060f25;
-    --rs26-navy-line: #1e2f58;
-    --rs26-panel: #0a1736;
-    --rs26-white: #ffffff;
-    --rs26-blue-bright: #84a2da;
-    --rs26-orange: #f07a23;
-    --rs26-mint: #7ccfa8;
-    --rs26-dashed: #3a4d7a;
-    --rs26-text: #c3cdea;
-    --rs26-muted: #8fa0c8;
-    --rs26-muted-2: #8595bd;
-    --rs26-muted-3: #6c7ca6;
-    --rs26-display: var(--font-space-grotesk), system-ui, sans-serif;
-    --rs26-body: var(--font-hanken-grotesk), system-ui, sans-serif;
-    --rs26-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
-    --rs26-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-    --rs26-r-xl: 34px;
-    --rs26-maxw: 1240px;
-
     background: var(--rs26-navy);
-    color: #eaf0ff;
-    font-family: var(--rs26-body);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
     min-height: 100vh;
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .rs26-sponsors-call * {
-      animation-duration: 0.001ms !important;
-      transition-duration: 0.05ms !important;
-    }
   }
 </style>

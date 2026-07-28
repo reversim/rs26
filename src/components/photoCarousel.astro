@@ -3,23 +3,42 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 
 interface Slide {
-  src: ImageMetadata;
+  // Local assets get Astro image optimization; plain strings (already
+  // processed / remote URLs) render as-is.
+  src: ImageMetadata | string;
   alt: string;
-  caption: string;
+  caption?: string;
 }
 
 interface Props {
   slides: readonly Slide[];
   ariaLabel?: string;
+  /** Slides visible at once. >1 switches to the card look (2 at ≤992px, 1 at ≤576px). */
+  perPage?: number;
+  /** Show the thumbnail-preview strip under the big image. */
+  showThumbnails?: boolean;
+  /** Autoplay interval in ms. */
+  interval?: number;
 }
 
-const { slides, ariaLabel = "Photos" } = Astro.props;
+const {
+  slides,
+  ariaLabel = "Photos",
+  perPage = 1,
+  showThumbnails = true,
+  interval = 5000,
+} = Astro.props;
+
 const total = slides.length;
 const pad = (n: number) => String(n).padStart(2, "0");
+const multi = perPage > 1;
+const hasCaptions = slides.some((slide) => slide.caption);
 ---
 
 <div
-  class="photo-carousel"
+  class:list={["photo-carousel", { multi }]}
+  data-per-page={perPage}
+  data-interval={interval}
   role="region"
   aria-roledescription="carousel"
   aria-label={ariaLabel}
@@ -30,24 +49,45 @@ const pad = (n: number) => String(n).padStart(2, "0");
         <ul class="splide__list">
           {
             slides.map((slide, i) => (
-              <li class="splide__slide car-slide" data-cap={slide.caption}>
-                <Image
-                  src={slide.src}
-                  alt={slide.alt}
-                  widths={[640, 1000, 1400]}
-                  sizes="(max-width: 1240px) 100vw, 1240px"
-                  loading={i < 2 ? "eager" : "lazy"}
-                  draggable={false}
-                />
+              <li
+                class="splide__slide car-slide"
+                data-cap={slide.caption ?? ""}
+              >
+                {typeof slide.src === "string" ? (
+                  <img
+                    src={slide.src}
+                    alt={slide.alt}
+                    loading={i < 3 ? "eager" : "lazy"}
+                    draggable={false}
+                  />
+                ) : (
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    widths={[640, 1000, 1400]}
+                    sizes="(max-width: 1240px) 100vw, 1240px"
+                    loading={i < 2 ? "eager" : "lazy"}
+                    draggable={false}
+                  />
+                )}
+                {multi && slide.caption && (
+                  <span class="slide-cap">{slide.caption}</span>
+                )}
               </li>
             ))
           }
         </ul>
       </div>
     </div>
-    <div class="car-shade" aria-hidden="true"></div>
-    <span class="car-counter">{pad(1)} / {pad(total)}</span>
-    <p class="car-cap">{slides[0].caption}</p>
+    {!multi && <div class="car-shade" aria-hidden="true" />}
+    {
+      !multi && (
+        <span class="car-counter">
+          {pad(1)} / {pad(total)}
+        </span>
+      )
+    }
+    {!multi && hasCaptions && <p class="car-cap">{slides[0].caption ?? ""}</p>}
     <button class="car-btn car-prev" type="button" aria-label="Previous photo"
       >‹</button
     >
@@ -69,27 +109,33 @@ const pad = (n: number) => String(n).padStart(2, "0");
     }
   </div>
 
-  <div class="car-thumbs">
-    {
-      slides.map((slide, i) => (
-        <button
-          class={`car-thumb${i === 0 ? " on" : ""}`}
-          aria-label={`Photo ${i + 1}`}
-          data-i={i}
-          type="button"
-        >
-          <Image
-            src={slide.src}
-            alt=""
-            widths={[208]}
-            sizes="104px"
-            loading="lazy"
-            draggable={false}
-          />
-        </button>
-      ))
-    }
-  </div>
+  {
+    showThumbnails && (
+      <div class="car-thumbs">
+        {slides.map((slide, i) => (
+          <button
+            class={`car-thumb${i === 0 ? " on" : ""}`}
+            aria-label={`Photo ${i + 1}`}
+            data-i={i}
+            type="button"
+          >
+            {typeof slide.src === "string" ? (
+              <img src={slide.src} alt="" loading="lazy" draggable={false} />
+            ) : (
+              <Image
+                src={slide.src}
+                alt=""
+                widths={[208]}
+                sizes="104px"
+                loading="lazy"
+                draggable={false}
+              />
+            )}
+          </button>
+        ))}
+      </div>
+    )
+  }
 </div>
 
 <script>
@@ -105,20 +151,20 @@ const pad = (n: number) => String(n).padStart(2, "0");
       const splideEl = root.querySelector<HTMLElement>(".splide");
       if (!splideEl) return;
 
+      const perPage = Number(root.dataset.perPage || "1");
+      const interval = Number(root.dataset.interval || "5000");
+
       const slides = Array.from(
         root.querySelectorAll<HTMLElement>(".splide__slide"),
       );
       const total = slides.length;
-      const dots = Array.from(
-        root.querySelectorAll<HTMLElement>(".car-dot"),
-      );
-      const thumbsContainer =
-        root.querySelector<HTMLElement>(".car-thumbs");
+      const dots = Array.from(root.querySelectorAll<HTMLElement>(".car-dot"));
+      const thumbsContainer = root.querySelector<HTMLElement>(".car-thumbs");
       const thumbs = Array.from(
         root.querySelectorAll<HTMLElement>(".car-thumb"),
       );
-      const capEl = root.querySelector<HTMLElement>(".car-cap")!;
-      const counterEl = root.querySelector<HTMLElement>(".car-counter")!;
+      const capEl = root.querySelector<HTMLElement>(".car-cap");
+      const counterEl = root.querySelector<HTMLElement>(".car-counter");
       const pad = (n: number) => String(n).padStart(2, "0");
 
       const centerThumb = (thumb: HTMLElement | undefined) => {
@@ -127,35 +173,42 @@ const pad = (n: number) => String(n).padStart(2, "0");
         const tRect = thumb.getBoundingClientRect();
         const offsetInContainer =
           tRect.left - cRect.left + thumbsContainer.scrollLeft;
-        const target =
-          offsetInContainer - cRect.width / 2 + tRect.width / 2;
+        const target = offsetInContainer - cRect.width / 2 + tRect.width / 2;
         thumbsContainer.scrollTo({ left: target, behavior: "smooth" });
       };
 
       const splide = new Splide(splideEl, {
         type: "loop",
-        perPage: 1,
+        perPage,
+        perMove: 1,
+        gap: perPage > 1 ? "12px" : 0,
         arrows: false,
         pagination: false,
         autoplay: !reduce,
-        interval: 5000,
+        interval,
         pauseOnHover: true,
         pauseOnFocus: false,
         drag: true,
         keyboard: "focused",
         speed: 600,
         easing: "cubic-bezier(.22,.61,.36,1)",
+        breakpoints:
+          perPage > 1
+            ? {
+                992: { perPage: Math.min(2, perPage) },
+                // One card plus a peek of the next, so the row reads as
+                // swipeable on phones.
+                768: { perPage: 1, fixedWidth: "82%" },
+              }
+            : undefined,
       });
 
       const sync = (i: number) => {
         const slide = slides[i];
-        capEl.textContent = slide?.getAttribute("data-cap") ?? "";
-        counterEl.textContent = `${pad(i + 1)} / ${pad(total)}`;
+        if (capEl) capEl.textContent = slide?.getAttribute("data-cap") ?? "";
+        if (counterEl) counterEl.textContent = `${pad(i + 1)} / ${pad(total)}`;
         dots.forEach((d, j) => d.classList.toggle("on", j === i));
         thumbs.forEach((t, j) => t.classList.toggle("on", j === i));
-        slides.forEach((s, j) =>
-          s.setAttribute("aria-hidden", j === i ? "false" : "true"),
-        );
         centerThumb(thumbs[i]);
       };
 
@@ -179,14 +232,10 @@ const pad = (n: number) => String(n).padStart(2, "0");
           if (btn) splide.go(Number(btn.dataset.i));
         });
 
-      root
-        .querySelector<HTMLElement>(".car-thumbs")
-        ?.addEventListener("click", (e) => {
-          const btn = (e.target as HTMLElement).closest<HTMLElement>(
-            "[data-i]",
-          );
-          if (btn) splide.go(Number(btn.dataset.i));
-        });
+      thumbsContainer?.addEventListener("click", (e) => {
+        const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");
+        if (btn) splide.go(Number(btn.dataset.i));
+      });
 
       const autoplay = splide.Components.Autoplay;
       document.addEventListener("visibilitychange", () => {
@@ -205,6 +254,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
 </script>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .photo-carousel {
     outline: none;
   }
@@ -242,6 +293,50 @@ const pad = (n: number) => String(n).padStart(2, "0");
     object-fit: cover;
     user-select: none;
     display: block;
+  }
+
+  // ---- multi-card mode (perPage > 1): 16/10 hairline cards, hover zoom ----
+  .photo-carousel.multi .car-view {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    aspect-ratio: auto;
+  }
+
+  .photo-carousel.multi .car-view :global(.splide),
+  .photo-carousel.multi .car-view :global(.splide__track),
+  .photo-carousel.multi .car-view :global(.splide__list) {
+    height: auto;
+  }
+
+  .photo-carousel.multi .car-view :global(.splide__slide) {
+    height: auto;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--rs26-r-md);
+    border: 1px solid var(--rs26-navy-line);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .photo-carousel.multi .car-view :global(.splide__slide img) {
+    transition: transform 0.4s var(--rs26-ease);
+  }
+
+  .photo-carousel.multi .car-view :global(.splide__slide:hover img) {
+    transform: scale(1.05);
+  }
+
+  .photo-carousel.multi .car-view :global(.slide-cap) {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 30px 16px 14px;
+    background: linear-gradient(transparent, rgba(6, 15, 37, 0.92));
+    color: var(--rs26-white);
+    font-family: var(--rs26-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.02em;
+    pointer-events: none;
   }
 
   .car-shade {
@@ -330,24 +425,45 @@ const pad = (n: number) => String(n).padStart(2, "0");
     right: 14px;
   }
 
+  .photo-carousel.multi .car-prev {
+    left: -18px;
+  }
+
+  .photo-carousel.multi .car-next {
+    right: -18px;
+  }
+
   .car-dots {
     display: flex;
-    gap: 8px;
+    gap: 2px;
     justify-content: center;
     margin-top: 18px;
   }
 
+  // 8px visual inside a 30x38 transparent hit box, so the dot clears the
+  // touch-target floor without growing visually.
   .car-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 0;
-    background: #2a3c66;
-    cursor: pointer;
+    width: 30px;
+    height: 38px;
     padding: 0;
-    transition: 0.2s;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
 
-    &.on {
+    &::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2a3c66;
+      transition: 0.22s var(--rs26-ease);
+    }
+
+    &.on::before {
       background: var(--rs26-orange);
       width: 26px;
       border-radius: 99px;
@@ -390,6 +506,21 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
     &:hover {
       opacity: 0.85;
+    }
+  }
+
+  // Arrows are a pointer affordance; on touch the carousel is swiped and the
+  // dots handle jumps. Applies to all three carousels that use this component.
+  @media (hover: none) {
+    .car-btn {
+      display: none;
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .photo-carousel.multi .car-view :global(.slide-cap) {
+      font-size: 0.7rem;
+      padding: 26px 13px 12px;
     }
   }
 </style>

@@ -10,7 +10,7 @@ const { company, name, title, picture, slug, pageBase = "about" } = Astro.props;
 ---
 
 <a data-astro-prefetch href={`/${pageBase}/${slug}`} class="member">
-  <div class="image-container">
+  <div class="photo">
     {
       picture !== "" && (
         <Picture
@@ -18,75 +18,85 @@ const { company, name, title, picture, slug, pageBase = "about" } = Astro.props;
           class="image"
           alt={name}
           src={picture}
-          width="240"
-          height="240"
+          width="340"
+          height="840"
         />
       )
     }
   </div>
   <h3 class="name">{name}</h3>
-  <span class="title">{title}{" "}{company ? `@${company}` : ""}</span>
+  <span class="role">{title}{" "}{company ? `@${company}` : ""}</span>
 </a>
 
 <style lang="scss">
-  h3,
-  p {
-    margin: 0;
-    text-align: center;
-  }
+  @use "../styles/breakpoints" as *;
 
   .member {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    flex: 1;
-    position: relative;
-    color: black;
-    gap: 4px;
-    transition: 0.3s;
-    &:hover {
-      transform: translateY(-4px);
+    align-items: flex-start;
+    gap: 8px;
+    transition:
+      transform 0.2s var(--rs26-ease),
+      color 0.2s;
 
-      .image-container .image {
-        border-radius: 16%;
-        transform: translateY(-4px);
+    &:hover {
+      transform: translateY(-3px);
+      color: inherit;
+
+      .photo {
+        border-color: var(--rs26-blue);
       }
     }
-    .image-container {
-      width: 120px;
-      height: 120px;
-      transition: 0.3s;
-      margin-bottom: 5px;
-      position: relative;
+
+    .photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--rs26-r-md);
+      overflow: hidden;
+      background: var(--rs26-panel-2);
+      border: 1px solid var(--rs26-navy-line);
+      transition: border-color 0.2s var(--rs26-ease);
 
       .image {
         width: 100%;
         height: 100%;
-        border-radius: 16% 0 0 0;
         object-fit: cover;
-        transition: 0.3s;
+        display: block;
       }
     }
 
     .name {
-      font-size: 16px;
+      font-family: var(--rs26-display);
+      font-weight: 600;
+      font-size: 1.04rem;
+      color: var(--rs26-white);
+      margin-top: 2px;
     }
 
-    .title {
-      font-size: 12px;
-      font-weight: 500;
-      text-align: center;
+    .role {
+      font-size: 0.84rem;
+      color: #9fb0d6;
+      line-height: 1.35;
     }
+  }
 
-    @media screen and (max-width: 576px) {
-      min-height: auto;
-
-      .image {
-        width: 60%;
-        aspect-ratio: 1 / 1;
-        height: auto;
+  @media (max-width: $breakpoint-medium) {
+    .member {
+      .name {
+        font-size: 0.96rem;
       }
+
+      .role {
+        font-size: 0.78rem;
+      }
+    }
+  }
+
+  // The scoped `.member:hover` above out-specifies the global rule in _base.scss.
+  @media (hover: none) {
+    .member:hover {
+      transform: none;
     }
   }
 </style>

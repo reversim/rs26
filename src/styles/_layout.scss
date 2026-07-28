@@ -1,4 +1,69 @@
 // LAYOUT UTILITIES
+@use "breakpoints" as *;
+
+// RS26 section shell — shared by homepage + detail-page sections.
+.wrap {
+  width: 100%;
+  max-width: var(--rs26-maxw);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 56px);
+}
+
+section.block {
+  padding: clamp(48px, 8vw, 96px) 0;
+}
+
+.band {
+  background: var(--rs26-navy-2);
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+
+  h2 {
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    color: var(--rs26-white);
+    margin: 8px 0 0;
+  }
+}
+
+// Mono date pill — shared by the header bar and the mobile nav drawer.
+.head-date {
+  font-family: var(--rs26-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  padding: 0.45em 0.8em;
+  border-radius: 999px;
+  background: rgba(108, 140, 199, 0.16);
+  color: var(--rs26-blue-bright);
+}
+
+// Shared phone tier for every section that uses the shell above.
+@media screen and (max-width: $breakpoint-medium) {
+  section.block {
+    padding: clamp(40px, 10vw, 64px) 0;
+  }
+
+  .section-head {
+    margin-bottom: 24px;
+    gap: 16px;
+  }
+
+  // Section CTAs go full width. Where the CTA is the Button component prefer
+  // its `fullWidth` prop; this covers the plain-markup cases.
+  .section-head > .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .body-container {
   margin: auto;
   box-sizing: unset;
@@ -7,36 +72,6 @@
     100vh - var(--header-height) - var(--spacing-lg) - var(--spacing-xl) - 41px
   );
   z-index: 1;
-
-  &.have-background {
-    &::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: var(--background-opacity);
-      mask-image: radial-gradient(var(--white) 85% 0, transparent 100%);
-      -webkit-mask-image: radial-gradient(var(--white) 85% 0, transparent 100%);
-      top: 0;
-      right: 0;
-      z-index: -1;
-    }
-
-    @media (max-width: 768px) {
-      &::before {
-        mask-image: radial-gradient(
-          circle at 50% 50%,
-          var(--white) 100% 0,
-          transparent 100%
-        );
-        -webkit-mask-image: radial-gradient(
-          circle at 50% 50%,
-          var(--white) 100% 0,
-          transparent 100%
-        );
-      }
-    }
-  }
 }
 
 .have-padding {

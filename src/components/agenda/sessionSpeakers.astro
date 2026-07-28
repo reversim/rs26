@@ -50,7 +50,7 @@ const { speakers, variant = "default" } = Astro.props;
 <style lang="scss">
   .session-speakers {
     font-size: 14px;
-    color: #555;
+    color: var(--rs26-muted-2);
     font-weight: 500;
     margin-top: auto;
 
@@ -59,7 +59,7 @@ const { speakers, variant = "default" } = Astro.props;
       text-decoration: none;
 
       &:hover {
-        color: var(--blue);
+        color: var(--rs26-blue-bright);
         text-decoration: underline;
       }
     }
@@ -72,7 +72,7 @@ const { speakers, variant = "default" } = Astro.props;
 
       font-size: 16px;
       font-weight: 400;
-      color: black;
+      color: var(--rs26-text);
 
       .session-speaker {
         display: flex;
@@ -89,7 +89,7 @@ const { speakers, variant = "default" } = Astro.props;
           .session-speaker-tagline {
             margin-top: 4px;
             font-size: 14px;
-            color: var(--dark-gray);
+            color: var(--rs26-muted);
           }
         }
 

@@ -1,99 +1,45 @@
 ---
-import HeaderLink from "./headerLink.astro";
+import { Image } from "astro:assets";
+import logo from "../../assets/rs-25-logo.png";
+import { event } from "../../config/event";
+import { navLinks } from "../../config/nav";
 import { getAgendaCurrentDay } from "../../helpers/data/getAgendaCurrentDay";
+import HeaderLink from "./headerLink.astro";
+import NavDrawer from "./navDrawer.astro";
 
 const currentDayUrl = await getAgendaCurrentDay();
-
-interface HeaderLink {
-  link: string;
-  label: string;
-  iconColor: string;
-  variant?: "button" | "link";
-}
-
-const navbarLinks: HeaderLink[] = [
-  { link: "/", label: "Home", iconColor: "#7ebec8" },
-  // { link: "/#sponsors", label: "Sponsors", iconColor: "var(--orange)" },
-  // { link: currentDayUrl, label: "Agenda", iconColor: "var(--blue)" },
-  // { link: "/speakers", label: "Speakers", iconColor: "var(--green)" },
-  // { link: "/about", label: "Team", iconColor: "var(--pink)" },
-];
 ---
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const toggleButton: any = document.querySelector(".menu-toggle");
-    const sidebar: any = document.querySelector(".sidebar-container");
-    const blurOverlay: any = document.querySelector(".blur-overlay");
-    const link: any = document.querySelectorAll(".header-link");
-
-    toggleButton.addEventListener("click", (event: any) => {
-      sidebar.classList.toggle("open");
-      blurOverlay.classList.toggle("open");
-      toggleButton.classList.toggle("open");
-      event.stopPropagation(); // Prevent immediate closing when clicking the button
-    });
-
-    document.addEventListener("click", (event) => {
-      if (
-        !sidebar.contains(event.target) &&
-        !toggleButton.contains(event.target)
-      ) {
-        sidebar.classList.remove("open");
-        blurOverlay.classList.remove("open");
-        toggleButton.classList.remove("open");
-      }
-    });
-
-    link.forEach((link: any) => {
-      link.addEventListener("click", (event: any) => {
-        sidebar.classList.remove("open");
-        blurOverlay.classList.remove("open");
-        toggleButton.classList.remove("open");
-      });
-    });
-  });
-</script>
-
-<div class="blur-overlay"></div>
-<div>
-  <div class="menu-toggle">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-  <div class="sidebar-container">
-    {
-      navbarLinks.map((link) => (
-        <HeaderLink
-          link={link.link}
-          label={link.label}
-          iconColor={link.iconColor}
-          variant={link?.variant}
-        />
-      ))
-    }
-  </div>
-</div>
 
 <div class="header">
   <div class="inner-container">
+    <a class="logo-link" href="/" aria-label="Reversim home">
+      <Image class="logo" src={logo} alt={event.name} height={100} />
+    </a>
     <div class="navbar-container">
       {
-        navbarLinks.map((link) => (
-          <HeaderLink
-            link={link.link}
-            label={link.label}
-            iconColor={link.iconColor}
-            variant={link?.variant}
-          />
+        navLinks.map((link) => (
+          <HeaderLink link={link.href} label={link.label} />
         ))
       }
+      <span class="head-date">{event.dates}</span>
     </div>
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="navDrawer"
+    >
+      <i></i><i></i><i></i>
+    </button>
   </div>
 </div>
 
+<NavDrawer />
+
 <style lang="scss">
+  @use "../../styles/breakpoints" as *;
+
   .header {
     position: sticky;
     top: 0;
@@ -101,133 +47,112 @@ const navbarLinks: HeaderLink[] = [
     width: 100%;
     z-index: 99999;
     height: var(--header-height);
-
-    &:before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: var(--white);
-      background-image: radial-gradient(var(--light-gray) 1px, transparent 1px);
-      background-position-y: 4px;
-      background-size: 23px 23px;
-      animation: headerBackground;
-      animation-timeline: --sponsorsReveal;
-
-      @keyframes headerBackground {
-        0%,
-        65% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
-    }
+    background: rgba(10, 22, 49, 0.6);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--rs26-navy-line);
   }
 
   .inner-container {
-    max-width: var(--max-container-width);
+    max-width: var(--rs26-maxw);
     margin: auto;
-    padding: 8px 0;
+    padding: 8px clamp(18px, 4vw, 40px);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
   }
 
-  .menu-toggle {
-    display: none;
-    @media screen and (max-width: 992px) {
-      display: flex;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      z-index: 100000;
-    }
+  .logo-link {
+    display: flex;
+    align-items: center;
 
-    span {
-      display: block;
-      width: 30px;
-      height: 4px;
-      border-radius: 5px;
-      background: black;
-      transition: 0.3s;
-    }
-
-    &.open span:nth-child(1) {
-      transform: translateY(8px) rotate(45deg);
-      opacity: 0;
-    }
-
-    &.open span:nth-child(2) {
-      opacity: 0;
-    }
-
-    &.open span:nth-child(3) {
-      transform: translateY(-8px) rotate(-45deg);
-      opacity: 0;
+    .logo {
+      height: 34px;
+      width: auto;
     }
   }
 
   .navbar-container {
     display: flex;
-    gap: 50px;
+    align-items: center;
+    gap: 6px;
 
-    @media screen and (max-width: 992px) {
+    @media screen and (max-width: $breakpoint-large) {
       display: none;
     }
   }
 
-  .sidebar-container {
-    display: flex;
+  .nav-toggle {
+    display: none;
+    position: relative;
+    margin-left: auto;
+    flex: 0 0 auto;
     flex-direction: column;
-    align-items: start;
-    background-color: var(--white);
-    position: fixed;
-    right: -100%;
-    top: 0px;
-    bottom: 0px;
-    width: 200px;
-    height: 100%;
-    padding: 36px 24px;
-    gap: 42px;
-    transition: right 0.3s ease-in-out;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 12px;
+    border: 1px solid var(--rs26-navy-line);
+    background: rgba(108, 140, 199, 0.1);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 
-    &.open {
-      right: 0;
-      z-index: 999999;
+    @media screen and (max-width: $breakpoint-large) {
+      display: flex;
+    }
+
+    // The button is 40px so it fits the 60px header bar; the tap target is
+    // pushed back out to the 44px accessibility floor.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+    }
+
+    i {
+      display: block;
+      width: 19px;
+      height: 2px;
+      border-radius: 2px;
+      background: #e6ecfb;
+      transition:
+        transform 0.28s var(--rs26-ease),
+        opacity 0.18s;
+    }
+
+    &[aria-expanded="true"] {
+      i:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      i:nth-child(2) {
+        opacity: 0;
+      }
+
+      i:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
     }
   }
 
-  .blur-overlay {
-    transition: 1s;
-    &.open {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999999;
-      background: #0303032b;
-      backdrop-filter: blur(1px) saturate(100%);
-    }
+  // While the drawer is open the bar goes transparent so the panel's own
+  // gradient shows through; the logo and the X stay above it.
+  :global(body.nav-open) .header {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-color: transparent;
   }
 
-  .rv-icon {
-    width: 100px;
-    height: auto;
-
-    @media screen and (max-width: 1300px) {
-      margin-left: 40px;
-    }
-    @media screen and (max-width: 1000px) {
-      margin-left: 20px;
-    }
+  :global(body.nav-open) .nav-toggle {
+    background: transparent;
+    border-color: transparent;
   }
 </style>

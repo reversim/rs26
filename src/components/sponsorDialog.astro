@@ -1,5 +1,5 @@
 ---
-import { Image, Picture } from "astro:assets";
+import { Picture } from "astro:assets";
 
 export interface Props {
   sponsor: {
@@ -83,10 +83,11 @@ const { sponsor } = Astro.props;
     }
 
     .dialog-content {
-      background: var(--navy);
-      border-radius: 12px;
+      background: var(--rs26-panel-2);
+      border: 1px solid var(--rs26-navy-line);
+      border-radius: var(--rs26-r-md);
       overflow: hidden;
-      color: white;
+      color: var(--rs26-white);
     }
 
     .dialog-header {
@@ -94,7 +95,8 @@ const { sponsor } = Astro.props;
       justify-content: space-between;
       align-items: center;
       padding: 20px 24px 16px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(108, 140, 199, 0.08);
+      border-bottom: 1px solid var(--rs26-navy-line);
 
       .dialog-logo {
         filter: brightness(0) invert(1);
@@ -123,6 +125,11 @@ const { sponsor } = Astro.props;
           width: 20px;
           height: 20px;
         }
+
+        // 8px padding + 20px icon is a 36px target — below the touch floor.
+        @media (pointer: coarse) {
+          padding: 12px;
+        }
       }
     }
 
@@ -138,25 +145,26 @@ const { sponsor } = Astro.props;
 
       .sponsor-description {
         font-size: 16px;
-        line-height: 1.5;
         margin: 0 0 20px 0;
-        color: rgba(255, 255, 255, 0.9);
+        color: var(--rs26-text);
         white-space: pre-wrap;
-        line-height: 110%;
+        line-height: 1.4;
       }
 
       .sponsor-website {
         display: inline-block;
-        color: var(--orange);
+        font-family: var(--rs26-mono);
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+        color: var(--rs26-orange);
         text-decoration: none;
         font-weight: 600;
         transition: color 0.2s ease;
 
         &:hover {
-          color: var(--pink);
+          color: var(--rs26-blue-bright);
         }
       }
     }
   }
 </style>
-

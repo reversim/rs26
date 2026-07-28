@@ -33,8 +33,10 @@ const displayNextDay = dayLabel.includes("27");
     padding: 15px 25px;
     border-radius: 12px 12px 0 0;
 
-    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-    color: var(--blue);
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    color: var(--rs26-blue-bright);
+    font-family: var(--rs26-display);
     font-weight: 600;
     text-align: center;
     font-size: 18px;
@@ -44,7 +46,7 @@ const displayNextDay = dayLabel.includes("27");
       margin-bottom: 20px;
       padding: 12px 20px;
 
-      color: white;
+      color: var(--rs26-white);
       font-size: 16px;
 
       animation: shrinkRadius 0.5s both;
@@ -52,7 +54,6 @@ const displayNextDay = dayLabel.includes("27");
       animation-range-start: 0;
       animation-range-end: 100dvh;
     }
-
 
     .next,
     .prev {

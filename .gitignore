@@ -27,3 +27,8 @@ pnpm-debug.log*
 common-scripts/
 
 claude-design-artifacts/
+design-handoff/
+
+.firebase/hosting.*.cache
+
+design_handoff_rs26_mobile/*

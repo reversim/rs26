@@ -1,28 +1,136 @@
 ---
+import Button from "../components/button.astro";
+import { getAgendaCurrentDay } from "../helpers/data/getAgendaCurrentDay";
 import Layout from "../layouts/Layout.astro";
+
+const agendaUrl = await getAgendaCurrentDay();
 ---
 
-<Layout class:list={["container"]}>
-  <h1>404</h1>
-  <a href="/">Home Page</a>
+<Layout havePadding={false} displayHeader={false}>
+  <section class="notfound">
+    <div class="snowfield" id="snow" aria-hidden="true"></div>
+    <div class="copy">
+      <div class="big">
+        <span class="four">4</span><span class="zero">0</span><span class="four"
+          >4</span
+        >
+      </div>
+      <h1>This page wandered off.</h1>
+      <p>
+        One of our agents went looking for it and got a little lost in the snow.
+        Point the way — it'll follow.
+      </p>
+      <div class="links">
+        <Button variant="orange" text="↩ Take me home" href="/" />
+        <Button variant="ghost" text="See the agenda" href={agendaUrl} />
+      </div>
+    </div>
+  </section>
 </Layout>
 
-<style>
-  h1 {
-    font-size: 90px;
-    text-align: center;
-  }
-
-  a {
-    color: blue;
-    display: block;
-    text-align: center;
-  }
-</style>
-
 <script>
+  // Agenda deep links that no longer resolve should land on the agenda index.
   const url = window.location.pathname;
   if (url.startsWith("/agenda/")) {
     window.location.href = "/agenda";
   }
+
+  // Drifting snow — skipped when the visitor prefers reduced motion.
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const snow = document.getElementById("snow");
+  if (snow && !reduce) {
+    for (let i = 0; i < 40; i++) {
+      const f = document.createElement("span");
+      f.className = "flake";
+      const s = 2 + Math.random() * 4;
+      f.style.left = Math.random() * 100 + "%";
+      f.style.width = f.style.height = s + "px";
+      f.style.opacity = (0.3 + Math.random() * 0.5).toFixed(2);
+      f.style.setProperty("--dx", Math.random() * 60 - 30 + "px");
+      f.style.animationDuration = 6 + Math.random() * 9 + "s";
+      f.style.animationDelay = -Math.random() * 12 + "s";
+      snow.appendChild(f);
+    }
+  }
 </script>
+
+<style lang="scss">
+  .notfound {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(
+      120% 90% at 50% -10%,
+      #1a2f63,
+      var(--rs26-navy) 55%,
+      var(--rs26-navy-2)
+    );
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .snowfield {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  :global(.snowfield .flake) {
+    position: absolute;
+    top: -12px;
+    border-radius: 50%;
+    background: #fff;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(115vh) translateX(var(--dx, 20px));
+    }
+  }
+
+  .copy {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: clamp(70px, 12vh, 150px) clamp(20px, 5vw, 56px) 60px;
+    max-width: 640px;
+
+    .big {
+      font-family: var(--rs26-display);
+      font-weight: 700;
+      font-size: clamp(7rem, 22vw, 16rem);
+      line-height: 0.85;
+      color: var(--rs26-white);
+      letter-spacing: -0.04em;
+
+      .zero {
+        color: var(--rs26-orange);
+      }
+    }
+
+    h1 {
+      font-size: clamp(1.4rem, 3.4vw, 2.3rem);
+      color: var(--rs26-white);
+      margin: 0.4em 0 0.25em;
+    }
+
+    p {
+      color: var(--rs26-text);
+      max-width: 46ch;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 26px;
+      flex-wrap: wrap;
+    }
+  }
+</style>

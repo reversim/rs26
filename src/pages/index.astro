@@ -1,205 +1,110 @@
 ---
 import "@splidejs/splide/css";
-import { Picture } from "astro:assets";
-import computerRetroImage from "../assets/computer-retro.png";
-import hamsterImage from "../assets/hamster.png";
-import MainBanner from "../components/mainBanner.astro";
+import { Image } from "astro:assets";
+import logoWhite from "../assets/logo-white.png";
+import { event } from "../config/event";
+import AboutSection from "../components/aboutSection.astro";
+import HeroSection from "../components/heroSection.astro";
 import PastEvents from "../components/pastEventsSection.astro";
+import SponsorsGrid from "../components/sponsorsGrid.astro";
 import TeamMembersSection from "../components/teamMembersSection.astro";
 import VenueSection from "../components/venueSection.astro";
 import Layout from "../layouts/Layout.astro";
-
 ---
 
-<style is:global>
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    height: auto;
-  }
-
-  * {
-    scroll-margin-top: 100px;
-  }
-
-  body {
-    font-family: var(--font-montserrat), sans-serif;
-  }
-</style>
-
 <Layout havePadding={false}>
-  <MainBanner />
+  <HeroSection />
+  <AboutSection />
+  <SponsorsGrid />
+  <TeamMembersSection />
+  <PastEvents />
+  <VenueSection />
 
-  <div class="team-members-card card">
-    <TeamMembersSection />
-  </div>
-  
-  <div class="past-events-card card">
-    <PastEvents />
-  </div>
-
-  <div class="card venue-card">
-    <VenueSection />
-  </div>
-
-  <footer>
-    <div class="footer-content">
-      <div class="hamster-container">
-        <Picture
-          formats={["avif", "webp"]}
-          src={hamsterImage}
-          alt="Hamster"
-          class="hamster"
-          height={243}
-          width={122}
+  <footer class="site-foot">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <Image
+          class="foot-logo"
+          src={logoWhite}
+          alt={event.name}
+          height={100}
         />
-        <Picture
-          formats={["avif", "webp"]}
-          src={computerRetroImage}
-          alt="Computer Retro"
-          class="computer"
-          height={139}
-          width={145}
-        />
+        <p class="foot-tag">{event.name} · {event.dates}</p>
       </div>
-      <a class="header-link" href={"/coc"}>Code of conduct</a>
-      <a class="header-link attributions" href={"/attributions"}>Attributions</a
-      >
-      <p>All rights reserved Reversim 2026</p>
+      <nav class="foot-nav">
+        <a href="https://summit.reversim.com/" target="_blank" rel="noopener">
+          Past events
+        </a>
+        <a href="/coc">Code of conduct</a>
+        <a href="/attributions">Attributions</a>
+      </nav>
     </div>
   </footer>
 </Layout>
 
 <style lang="scss">
-  .team-member-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 32px 10px;
-  }
-  .card {
-    max-width: var(--max-container-width);
-    margin: auto;
+  @use "../styles/breakpoints" as *;
 
-    &.venue-card {
-      padding-bottom: 100px;
-    }
+  .site-foot {
+    background: var(--rs26-navy-3);
+    color: #cdd6ec;
+    padding: 54px 0 40px;
 
-    @media screen and (max-width: 1280px) {
-      padding: 20px 10% 0;
-    }
-    @media screen and (max-width: 576px) {
-      padding: 20px 6% 0;
-    }
-  }
-  .past-events-card {
-    overflow: hidden;
-    position: relative;
-  }
-
-  footer {
-    position: absolute;
-    background-color: var(--orange);
-    bottom: auto;
-    right: 0px;
-    width: 100%;
-    padding: 18px 0px;
-
-    .hamster-container {
-      position: absolute;
-      display: flex;
-      align-items: end;
-      top: 0;
-      transform: translateY(-100%);
-
-      .hamster {
-        aspect-ratio: 61 / 42;
-        width: 52px;
-        height: max-content;
-        transform: translateX(25%);
-        user-select: none;
-      }
-
-      .computer {
-        aspect-ratio: 145 / 139;
-        width: 52px;
-        height: max-content;
-        user-select: none;
-      }
-
-      &:hover {
-        .hamster {
-          animation: hamster-move 0.4s ease-in-out;
-        }
-      }
-
-      @media (max-width: 576px) {
-        left: 20px;
-      }
-    }
-
-    .footer-content {
-      max-width: var(--max-container-width);
-
+    .foot-grid {
+      width: 100%;
+      max-width: var(--rs26-maxw);
+      margin-inline: auto;
+      padding-inline: clamp(20px, 5vw, 56px);
       display: flex;
       justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
       align-items: center;
-      margin: auto;
-      color: white;
-      gap: 30px;
+    }
 
-      .attributions {
-        margin-right: auto;
+    .foot-brand {
+      .foot-logo {
+        height: 30px;
+        width: auto;
+        margin-bottom: 16px;
       }
 
-      @media (max-width: 576px) {
+      .foot-tag {
+        font-family: var(--rs26-mono);
+        font-size: 0.78rem;
+        color: var(--rs26-muted);
+      }
+    }
+
+    .foot-nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+
+      a:hover {
+        color: var(--rs26-white);
+      }
+    }
+
+    @media (max-width: $breakpoint-medium) {
+      padding-bottom: calc(40px + env(safe-area-inset-bottom));
+
+      .foot-grid {
+        gap: 26px;
+        // Stack brand over nav rather than sitting them side by side.
         flex-direction: column;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
+        align-items: flex-start;
+      }
 
-        .attributions {
-          margin: 0;
+      .foot-nav {
+        gap: 14px 20px;
+
+        // 44px rather than the spec'd 34px, to clear the touch-target floor.
+        a {
+          min-height: 44px;
+          display: flex;
+          align-items: center;
         }
-      }
-    }
-
-    .site-credits {
-      max-width: var(--max-container-width);
-      margin: auto;
-      color: white;
-      list-style: none;
-      font-size: 12px;
-
-      text-align: left;
-      padding: 0;
-      margin: 6px auto 5px auto;
-
-      a {
-        text-decoration: underline;
-      }
-
-      @media (max-width: 576px) {
-        text-align: center;
-      }
-    }
-
-    @keyframes hamster-move {
-      0% {
-        transform: translateX(25%);
-      }
-      30% {
-        transform: translateX(20%);
-      }
-      60% {
-        transform: translateX(28%);
-      }
-      90% {
-        transform: translateX(20%);
-      }
-      100% {
-        transform: translateX(25%);
       }
     }
   }

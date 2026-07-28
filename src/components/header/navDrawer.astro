@@ -1,0 +1,220 @@
+---
+import Button from "../button.astro";
+import { event } from "../../config/event";
+import { isActiveNavLink, navLinks } from "../../config/nav";
+
+// The toggle button itself lives in header.astro so it sits inside the header
+// bar; this component owns the panel and the behaviour for both.
+const pathname = Astro.url.pathname;
+---
+
+<div class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <nav aria-label="Main">
+    {
+      navLinks.map((link, index) => {
+        const isActive = isActiveNavLink(link.href, pathname);
+        return (
+          <a
+            class:list={["drawer-link", { active: isActive }]}
+            href={link.href}
+            style={`--i:${index}`}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+
+  <div class="drawer-foot">
+    <span class="head-date">{event.dates}</span>
+    <Button text={event.sponsor.label} href={event.sponsor.url} />
+  </div>
+</div>
+
+<script>
+  import { breakpoints } from "../../config/breakpoints";
+
+  const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+  const drawer = document.querySelector<HTMLElement>("#navDrawer");
+  const header = document.querySelector<HTMLElement>(".header");
+
+  // Publish the real header height so the hero can size itself to the visible
+  // area below it. Mobile browser chrome makes a hard-coded offset unreliable.
+  const publishHeaderHeight = () => {
+    if (!header) return;
+    document.documentElement.style.setProperty(
+      "--head-h",
+      `${header.offsetHeight}px`,
+    );
+  };
+
+  publishHeaderHeight();
+  window.addEventListener("load", publishHeaderHeight);
+  window.addEventListener("resize", publishHeaderHeight);
+
+  if (toggle && drawer) {
+    const firstLink = drawer.querySelector<HTMLAnchorElement>(".drawer-link");
+    let isOpen = false;
+
+    const setOpen = (open: boolean) => {
+      isOpen = open;
+      drawer.classList.toggle("open", open);
+      drawer.setAttribute("aria-hidden", open ? "false" : "true");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      document.body.classList.toggle("nav-open", open);
+      if (open) {
+        // Focusability is checked against committed style, so flush the
+        // visibility change before moving focus into the panel.
+        drawer.getBoundingClientRect();
+        firstLink?.focus({ preventScroll: true });
+      }
+    };
+
+    toggle.addEventListener("click", () => setOpen(!isOpen));
+
+    // Any link in the panel closes it — nav links and the footer CTA alike.
+    drawer.addEventListener("click", (e) => {
+      if (e.target instanceof Element && e.target.closest("a")) setOpen(false);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isOpen) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (isOpen && window.innerWidth > breakpoints.large) setOpen(false);
+    });
+  }
+</script>
+
+<style lang="scss">
+  .nav-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #0e1d42 0%, #0a1631 100%);
+    padding: calc(env(safe-area-inset-top) + 76px) clamp(22px, 7vw, 40px)
+      calc(env(safe-area-inset-bottom) + 28px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    // `visibility` is held until the fade-out finishes on close, then flips in
+    // one step. On open it flips instantly (see `.open`) — a transitioning
+    // visibility still computes to `hidden` on the first frame, which would
+    // make the links unfocusable exactly when focus moves into the panel.
+    transition:
+      opacity 0.26s var(--rs26-ease),
+      transform 0.3s var(--rs26-ease),
+      visibility 0s linear 0.26s;
+    overscroll-behavior: contain;
+
+    // Dot texture, faded out toward the bottom of the panel.
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.5;
+      background-image: radial-gradient(
+        rgba(108, 140, 199, 0.18) 1.1px,
+        transparent 1.1px
+      );
+      background-size: 30px 30px;
+      -webkit-mask-image: radial-gradient(
+        110% 70% at 50% 0%,
+        #000 30%,
+        transparent 80%
+      );
+      mask-image: radial-gradient(
+        110% 70% at 50% 0%,
+        #000 30%,
+        transparent 80%
+      );
+    }
+
+    &.open {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition-delay: 0s;
+    }
+  }
+
+  nav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .drawer-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 60px;
+    padding: 0.4em 0;
+    border-bottom: 1px solid var(--rs26-navy-line);
+    font-family: var(--rs26-display);
+    font-weight: 600;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+    color: var(--rs26-white);
+    opacity: 0;
+    transform: translateY(10px);
+
+    &::after {
+      content: "→";
+      font-family: var(--rs26-mono);
+      font-size: 1rem;
+      color: var(--rs26-orange);
+      opacity: 0.55;
+    }
+
+    &.active {
+      color: var(--rs26-orange);
+
+      &::after {
+        content: "●";
+        font-size: 0.6rem;
+        opacity: 1;
+      }
+    }
+  }
+
+  // Staggered entrance, one step per link.
+  .nav-drawer.open .drawer-link {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.3s var(--rs26-ease) calc(60ms * var(--i, 0)),
+      transform 0.34s var(--rs26-ease) calc(60ms * var(--i, 0));
+  }
+
+  .drawer-foot {
+    position: relative;
+    margin-top: auto;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+
+    .head-date {
+      font-size: 0.8rem;
+    }
+  }
+
+  // Owned by the drawer: the page must not scroll behind an open panel.
+  :global(body.nav-open) {
+    overflow: hidden;
+  }
+</style>
