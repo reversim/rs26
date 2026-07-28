@@ -6,24 +6,64 @@ interface Props {
   members: TeamMember[];
   // Route prefix for each card's link (e.g. "about" or "speaker").
   pageBase?: string;
+  /**
+   * Phone-tier layout. "grid" keeps the two-column grid; "swipe" turns the
+   * row into an edge-to-edge horizontal snap strip (homepage team teaser).
+   */
+  mobileLayout?: "grid" | "swipe";
 }
 
-const { members, pageBase = "about" } = Astro.props;
+const { members, pageBase = "about", mobileLayout = "grid" } = Astro.props;
 ---
 
-<div class="member-grid">
+<div class:list={["member-grid", `mobile-${mobileLayout}`]}>
   {members.map((member) => <MemberCard {...member} pageBase={pageBase} />)}
 </div>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .member-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 18px;
+  }
 
-    @media screen and (max-width: 576px) {
+  @media screen and (max-width: $breakpoint-small) {
+    .member-grid.mobile-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
+    }
+  }
+
+  // Horizontal snap row: the cards bleed to both screen edges so the strip
+  // reads as swipeable rather than clipped.
+  @media screen and (max-width: $breakpoint-medium) {
+    .member-grid.mobile-swipe {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      margin-inline: calc(-1 * clamp(20px, 5vw, 56px));
+      padding: 8px clamp(20px, 5vw, 56px) 16px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      :global(.member) {
+        flex: 0 0 44%;
+        scroll-snap-align: start;
+      }
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-small) {
+    .member-grid.mobile-swipe :global(.member) {
+      flex-basis: 58%;
     }
   }
 </style>

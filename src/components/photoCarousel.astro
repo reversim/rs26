@@ -196,7 +196,9 @@ const hasCaptions = slides.some((slide) => slide.caption);
           perPage > 1
             ? {
                 992: { perPage: Math.min(2, perPage) },
-                576: { perPage: 1 },
+                // One card plus a peek of the next, so the row reads as
+                // swipeable on phones.
+                768: { perPage: 1, fixedWidth: "82%" },
               }
             : undefined,
       });
@@ -252,6 +254,8 @@ const hasCaptions = slides.some((slide) => slide.caption);
 </script>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .photo-carousel {
     outline: none;
   }
@@ -431,22 +435,35 @@ const hasCaptions = slides.some((slide) => slide.caption);
 
   .car-dots {
     display: flex;
-    gap: 8px;
+    gap: 2px;
     justify-content: center;
     margin-top: 18px;
   }
 
+  // 8px visual inside a 30x38 transparent hit box, so the dot clears the
+  // touch-target floor without growing visually.
   .car-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 0;
-    background: #2a3c66;
-    cursor: pointer;
+    width: 30px;
+    height: 38px;
     padding: 0;
-    transition: 0.2s;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
 
-    &.on {
+    &::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2a3c66;
+      transition: 0.22s var(--rs26-ease);
+    }
+
+    &.on::before {
       background: var(--rs26-orange);
       width: 26px;
       border-radius: 99px;
@@ -489,6 +506,21 @@ const hasCaptions = slides.some((slide) => slide.caption);
 
     &:hover {
       opacity: 0.85;
+    }
+  }
+
+  // Arrows are a pointer affordance; on touch the carousel is swiped and the
+  // dots handle jumps. Applies to all three carousels that use this component.
+  @media (hover: none) {
+    .car-btn {
+      display: none;
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .photo-carousel.multi .car-view :global(.slide-cap) {
+      font-size: 0.7rem;
+      padding: 26px 13px 12px;
     }
   }
 </style>

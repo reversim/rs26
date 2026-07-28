@@ -117,6 +117,30 @@ const Tag = href ? "a" : "button";
     }
   }
 
+  // ---- Touch foundations --------------------------------------------------
+  // The global rules in _base.scss lose to these scoped selectors, so the
+  // pill family carries its own copy. `.btn.back` is a text link, not a pill,
+  // and is deliberately left out of the 48px floor.
+  @media (hover: none) {
+    .btn.orange:hover,
+    .btn.ghost:hover {
+      transform: none;
+    }
+
+    .btn.orange:active,
+    .btn.ghost:active {
+      transform: scale(0.97);
+    }
+  }
+
+  @media (pointer: coarse) {
+    .btn.orange,
+    .btn.ghost {
+      min-height: 48px;
+      padding: 0.85em 1.5em;
+    }
+  }
+
   // ---- Back link ----------------------------------------------------------
   .btn.back {
     display: inline-flex;

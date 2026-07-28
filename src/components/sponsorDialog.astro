@@ -125,6 +125,11 @@ const { sponsor } = Astro.props;
           width: 20px;
           height: 20px;
         }
+
+        // 8px padding + 20px icon is a 36px target — below the touch floor.
+        @media (pointer: coarse) {
+          padding: 12px;
+        }
       }
     }
 

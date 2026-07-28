@@ -15,9 +15,15 @@ import { event } from "../config/event";
     </h1>
     <p class="lede">{event.hero.lede}</p>
     <div class="cta-row">
-      {event.cfp.display && (
-        <Button variant="orange" text={event.cfp.label} href={event.cfp.url} />
-      )}
+      {
+        event.cfp.display && (
+          <Button
+            variant="orange"
+            text={event.cfp.label}
+            href={event.cfp.url}
+          />
+        )
+      }
       <Button
         variant={event.cfp.display ? "ghost" : "orange"}
         text={event.sponsor.label}
@@ -70,6 +76,12 @@ import { event } from "../config/event";
     if (!ctx) return;
 
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Phones get the grid + snow only: no nodes, labels, edges or pulses, and
+    // no pointer listeners. `small()` also covers a narrowed desktop window,
+    // where the mesh is too cramped for labelled nodes.
+    const coarse = matchMedia("(hover:none), (pointer:coarse)").matches;
+    const small = () => window.innerWidth < 760;
+    const nodesOff = () => coarse || small();
 
     // Brand hexes (canvas can't read CSS custom properties per-frame cheaply).
     const C = {
@@ -97,7 +109,7 @@ import { event } from "../config/event";
     let W = 0;
     let H = 0;
     function resize() {
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      const dpr = Math.min(coarse ? 1.5 : 2, window.devicePixelRatio || 1);
       W = canvas!.clientWidth;
       H = canvas!.clientHeight;
       canvas!.width = W * dpr;
@@ -125,10 +137,9 @@ import { event } from "../config/event";
 
     function seed() {
       const area = W * H;
-      const count = Math.max(
-        8,
-        Math.min(LABELS.length, Math.round(area / 95000)),
-      );
+      const count = nodesOff()
+        ? 0
+        : Math.max(8, Math.min(LABELS.length, Math.round(area / 95000)));
       nodes = [];
       for (let i = 0; i < count; i++) nodes.push(makeNode(i));
       snow = [];
@@ -311,32 +322,38 @@ import { event } from "../config/event";
       }
       return best;
     }
-    canvas.addEventListener("pointerdown", (e) => {
-      const n = pick(pos(e));
-      if (n) {
-        dragging = n;
-        canvas.setPointerCapture(e.pointerId);
-        canvas.style.cursor = "grabbing";
-      }
-    });
-    canvas.addEventListener("pointermove", (e) => {
-      if (dragging) {
-        const p = pos(e);
-        dragging.x = p.x;
-        dragging.y = p.y;
-        if (reduce) frame(); // static frame still follows the drag
-        return;
-      }
-      canvas.style.cursor = pick(pos(e)) ? "grab" : "default";
-    });
-    const release = () => {
-      if (dragging) {
-        dragging = null;
-        canvas.style.cursor = "grab";
-      }
-    };
-    canvas.addEventListener("pointerup", release);
-    canvas.addEventListener("pointercancel", release);
+    if (coarse) {
+      // Nothing to drag, so let every touch fall through to the page.
+      canvas.style.pointerEvents = "none";
+      canvas.style.touchAction = "auto";
+    } else {
+      canvas.addEventListener("pointerdown", (e) => {
+        const n = pick(pos(e));
+        if (n) {
+          dragging = n;
+          canvas.setPointerCapture(e.pointerId);
+          canvas.style.cursor = "grabbing";
+        }
+      });
+      canvas.addEventListener("pointermove", (e) => {
+        if (dragging) {
+          const p = pos(e);
+          dragging.x = p.x;
+          dragging.y = p.y;
+          if (reduce) frame(); // static frame still follows the drag
+          return;
+        }
+        canvas.style.cursor = pick(pos(e)) ? "grab" : "default";
+      });
+      const release = () => {
+        if (dragging) {
+          dragging = null;
+          canvas.style.cursor = "grab";
+        }
+      };
+      canvas.addEventListener("pointerup", release);
+      canvas.addEventListener("pointercancel", release);
+    }
 
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
@@ -347,10 +364,20 @@ import { event } from "../config/event";
       }
     });
 
+    // Mobile browsers fire `resize` on every URL-bar show/hide, which would
+    // otherwise reseed the whole mesh mid-scroll. Debounce, and only reseed
+    // when the width actually changed.
+    let lastW = window.innerWidth;
+    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
     window.addEventListener("resize", () => {
-      resize();
-      seed();
-      if (reduce) frame();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const changed = Math.abs(window.innerWidth - lastW) > 4;
+        lastW = window.innerWidth;
+        resize();
+        if (changed) seed();
+        if (reduce) frame();
+      }, 120);
     });
 
     resize();
@@ -371,6 +398,8 @@ import { event } from "../config/event";
 </script>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .hero {
     position: relative;
     height: min(92svh, 960px);
@@ -384,7 +413,10 @@ import { event } from "../config/event";
     width: 100%;
     height: 100%;
     display: block;
-    touch-action: none;
+    // `none` here swallowed vertical page scroll on touch. `pan-y` keeps the
+    // page scrollable while a fine pointer can still drag nodes sideways;
+    // on coarse pointers the script drops this to `auto` entirely.
+    touch-action: pan-y;
   }
 
   .hero-grid-fade {
@@ -476,16 +508,75 @@ import { event } from "../config/event";
     text-align: right;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: $breakpoint-large) {
     .hero {
-      height: auto;
-      min-height: 0;
+      height: calc(100svh - var(--head-h, var(--header-height)));
+      min-height: 520px;
+      max-height: 1000px;
+    }
+
+    .hero-grid-fade {
+      background: radial-gradient(
+        90% 52% at 50% 30%,
+        rgba(108, 140, 199, 0.17),
+        transparent 70%
+      );
     }
 
     .hero-content {
-      height: auto;
-      padding-top: 40px;
-      padding-bottom: 26px;
+      max-width: none;
+      align-items: center;
+      text-align: center;
+      justify-content: flex-start;
+      padding-top: clamp(34px, 7vh, 66px);
+      padding-bottom: calc(34px + env(safe-area-inset-bottom));
+      padding-inline: max(clamp(20px, 5vw, 56px), env(safe-area-inset-left));
+
+      h1 {
+        font-size: clamp(3.4rem, 17vw, 5.4rem);
+        margin: 0.18em 0 0;
+      }
+
+      .lede {
+        font-size: 1.16rem;
+        max-width: 30ch;
+        margin: 22px auto 0;
+      }
+
+      .cta-row {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        margin-top: auto;
+        padding-top: 32px;
+        gap: 12px;
+      }
+
+      // The `fullWidth` prop is unconditional and would follow the buttons up
+      // to desktop, so the hero widens them for this tier only.
+      .cta-row :global(.btn) {
+        width: 100%;
+        justify-content: center;
+        font-size: 1.02rem;
+      }
+
+      .meta-row {
+        justify-content: center;
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid var(--rs26-navy-line);
+        gap: 20px;
+        width: 100%;
+        font-size: 0.84rem;
+
+        span {
+          align-items: center;
+        }
+
+        b {
+          font-size: 1.12rem;
+        }
+      }
     }
 
     .hint {

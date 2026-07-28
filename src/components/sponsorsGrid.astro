@@ -161,6 +161,8 @@ const tierMark: Record<string, string> = {
 {communitySponsors?.map((sponsor) => <SponsorDialog sponsor={sponsor} />)}
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .tier {
     font-family: var(--rs26-mono);
     font-size: 0.72rem;
@@ -234,5 +236,41 @@ const tierMark: Record<string, string> = {
 
   .community .sponsor-logo {
     height: 44%;
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .spon-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+
+      &.organizing {
+        grid-template-columns: 1fr;
+        max-width: none;
+      }
+
+      &.community {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+    }
+
+    .spon {
+      height: 72px;
+
+      &.spon-lg {
+        height: 110px;
+      }
+    }
+
+    .community .spon {
+      height: 60px;
+    }
+  }
+
+  // The scoped `.spon:hover` above out-specifies the global rule in _base.scss.
+  @media (hover: none) {
+    .spon:hover {
+      transform: none;
+    }
   }
 </style>
