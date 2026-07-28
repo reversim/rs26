@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import logoWhite from "../../assets/logo-white.png";
+import logo from "../../assets/rs-25-logo.png";
 import { event } from "../../config/event";
 import { getAgendaCurrentDay } from "../../helpers/data/getAgendaCurrentDay";
 import HeaderLink from "./headerLink.astro";
@@ -80,7 +80,7 @@ const navbarLinks: HeaderLink[] = [
 <div class="header">
   <div class="inner-container">
     <a class="logo-link" href="/" aria-label="Reversim home">
-      <Image class="logo" src={logoWhite} alt={event.name} height={34} />
+      <Image class="logo" src={logo} alt={event.name} height={34} />
     </a>
     <div class="navbar-container">
       {
