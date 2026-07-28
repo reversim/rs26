@@ -33,6 +33,14 @@ const { label, link, variant } = Astro.props;
       color: var(--rs26-white);
     }
 
+    // Thumb-sized hit area on touch. Inline elements ignore min-height, so the
+    // link becomes inline-flex here.
+    @media (pointer: coarse) {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+    }
+
     &.button {
       border: 1px solid var(--rs26-navy-line);
       background: rgba(108, 140, 199, 0.12);
