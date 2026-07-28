@@ -40,6 +40,7 @@ const yearId = "206e7341-e20f-4ad8-9ca3-c03134165f7f";
 // The back office uses "game-changer" (singular); the site uses "game-changers".
 const tierMap: Record<string, SponsorTier> = {
   organizing: "organizing",
+  organizer: "organizing",
   "game-changer": "game-changers",
   "game-changers": "game-changers",
   community: "community",
