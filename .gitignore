@@ -28,3 +28,5 @@ common-scripts/
 
 claude-design-artifacts/
 design-handoff/
+
+.firebase/hosting.*.cache
