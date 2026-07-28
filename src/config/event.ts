@@ -19,7 +19,6 @@ export const event = {
     lede:
       "Two days of deep engineering as Israel's dev community wires up the " +
       "next generation of autonomous, agentic systems — one node at a time.",
-    metaNote: "Two full days",
     hint: "drag the nodes · they don't bite",
   },
 
