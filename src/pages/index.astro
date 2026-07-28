@@ -23,7 +23,12 @@ import Layout from "../layouts/Layout.astro";
   <footer class="site-foot">
     <div class="foot-grid">
       <div class="foot-brand">
-        <Image class="foot-logo" src={logoWhite} alt={event.name} height={100} />
+        <Image
+          class="foot-logo"
+          src={logoWhite}
+          alt={event.name}
+          height={100}
+        />
         <p class="foot-tag">{event.name} · {event.dates}</p>
       </div>
       <nav class="foot-nav">
@@ -38,6 +43,8 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .site-foot {
     background: var(--rs26-navy-3);
     color: #cdd6ec;
@@ -76,6 +83,28 @@ import Layout from "../layouts/Layout.astro";
 
       a:hover {
         color: var(--rs26-white);
+      }
+    }
+
+    @media (max-width: $breakpoint-medium) {
+      padding-bottom: calc(40px + env(safe-area-inset-bottom));
+
+      .foot-grid {
+        gap: 26px;
+        // Stack brand over nav rather than sitting them side by side.
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .foot-nav {
+        gap: 14px 20px;
+
+        // 44px rather than the spec'd 34px, to clear the touch-target floor.
+        a {
+          min-height: 44px;
+          display: flex;
+          align-items: center;
+        }
       }
     }
   }

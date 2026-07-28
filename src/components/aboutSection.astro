@@ -14,13 +14,15 @@ import { event } from "../config/event";
 </section>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .about-grid {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
     gap: clamp(28px, 5vw, 72px);
     align-items: start;
 
-    @media (max-width: 760px) {
+    @media (max-width: $breakpoint-medium) {
       grid-template-columns: 1fr;
       gap: 20px;
     }
@@ -45,6 +47,16 @@ import { event } from "../config/event";
 
     &:last-child {
       margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .about-lede {
+      max-width: none;
+    }
+
+    .about-body p {
+      font-size: 1rem;
     }
   }
 </style>

@@ -29,6 +29,8 @@ const { company, name, title, picture, slug, pageBase = "about" } = Astro.props;
 </a>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .member {
     display: flex;
     flex-direction: column;
@@ -76,6 +78,25 @@ const { company, name, title, picture, slug, pageBase = "about" } = Astro.props;
       font-size: 0.84rem;
       color: #9fb0d6;
       line-height: 1.35;
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .member {
+      .name {
+        font-size: 0.96rem;
+      }
+
+      .role {
+        font-size: 0.78rem;
+      }
+    }
+  }
+
+  // The scoped `.member:hover` above out-specifies the global rule in _base.scss.
+  @media (hover: none) {
+    .member:hover {
+      transform: none;
     }
   }
 </style>
