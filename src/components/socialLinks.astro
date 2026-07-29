@@ -39,6 +39,11 @@ const entries: SocialEntry[] = Array.isArray(socialList)
 
     &.member-large {
       margin-top: 12px;
+
+      @media (max-width: $breakpoint-medium) {
+        margin-top: 26px;
+        gap: 9px;
+      }
     }
 
     &.member-medium {
