@@ -34,6 +34,8 @@ const { hero, contacts } = sponsorsCall;
 </section>
 
 <style lang="scss">
+  @use "../../styles/breakpoints" as *;
+
   .hero {
     position: relative;
     overflow: hidden;
@@ -127,5 +129,28 @@ const { hero, contacts } = sponsorsCall;
     align-items: center;
     justify-content: center;
     gap: 12px;
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .hero-inner {
+      padding: clamp(40px, 11vw, 72px) 0 clamp(30px, 7vw, 52px);
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 10vw, 3.2rem);
+    }
+
+    .why {
+      font-size: 1.02rem;
+    }
+
+    .contact-pills {
+      flex-direction: column;
+      align-items: stretch;
+
+      :global(.contact-pill) {
+        font-size: 0.9rem;
+      }
+    }
   }
 </style>
