@@ -7,7 +7,7 @@ const agendaUrl = await getAgendaCurrentDay();
 ---
 
 <Layout havePadding={false} displayHeader={false}>
-  <section class="notfound">
+  <section class="notfound" id="scene">
     <div class="snowfield" id="snow" aria-hidden="true"></div>
     <div class="copy">
       <div class="big">
@@ -24,6 +24,24 @@ const agendaUrl = await getAgendaCurrentDay();
         <Button variant="orange" text="↩ Take me home" href="/" />
         <Button variant="ghost" text="See the agenda" href={agendaUrl} />
       </div>
+      <p class="hintline" id="hintline">
+        move your mouse · click anywhere to send the agent there
+      </p>
+    </div>
+
+    <div class="ground" aria-hidden="true"></div>
+
+    <div class="bot" id="bot" aria-hidden="true">
+      <div class="bubble" id="bubble">…where am I?</div>
+      <div class="antenna"></div>
+      <div class="head">
+        <div class="eye l"><span class="pupil"></span></div>
+        <div class="eye r"><span class="pupil"></span></div>
+        <div class="mouth"></div>
+      </div>
+      <div class="scarf"></div>
+      <div class="torso"><div class="screen"></div></div>
+      <div class="legs"><span></span><span></span></div>
     </div>
   </section>
 </Layout>
@@ -52,13 +70,107 @@ const agendaUrl = await getAgendaCurrentDay();
       snow.appendChild(f);
     }
   }
+
+  // The lost bot — a small idle character that wanders toward wherever the
+  // visitor clicks/taps, with an eye-tracking + speech-bubble idle state.
+  const scene = document.getElementById("scene");
+  const bot = document.getElementById("bot");
+  const bubble = document.getElementById("bubble");
+  const hintline = document.getElementById("hintline");
+  const coarse = matchMedia("(hover: none)").matches;
+
+  if (scene && bot && bubble) {
+    if (coarse && hintline) {
+      hintline.textContent = "tap anywhere · the agent will waddle over";
+    }
+
+    const LOST = [
+      "…where am I?",
+      "404: snowball not found.",
+      "I had the page right here.",
+      "Is this /home? Feels like /nowhere.",
+      "Following the footprints…",
+      "cd .. ? cd ..? CD ..?!",
+      "brb, checking the logs.",
+    ];
+    const ARRIVE = [
+      "Found a clue!",
+      "Nope, dead end.",
+      "Maybe it's this way…",
+      "Still 404. But cozy.",
+      "Almost home, I think.",
+    ];
+    const pick = (list: string[]) =>
+      list[Math.floor(Math.random() * list.length)];
+
+    let speakTimer: ReturnType<typeof setTimeout> | undefined;
+    const say = (msg?: string) => {
+      bubble.textContent = msg || pick(LOST);
+      bot.classList.add("speak");
+      clearTimeout(speakTimer);
+      speakTimer = setTimeout(() => bot.classList.remove("speak"), 2400);
+    };
+    setTimeout(() => say(), 700);
+    if (!reduce) {
+      setInterval(() => {
+        if (!document.hidden && !bot.classList.contains("walk")) say();
+      }, 5200);
+    }
+
+    // Walk to wherever the visitor clicks or taps.
+    let walkTimer: ReturnType<typeof setTimeout> | undefined;
+    scene.addEventListener("click", (e) => {
+      if (e.target instanceof Element && e.target.closest("a")) return;
+      const edge = coarse ? 52 : 70;
+      const x = Math.max(edge, Math.min(window.innerWidth - edge, e.clientX));
+      bot.style.left = `${x}px`;
+      bot.classList.add("walk");
+      say(pick(ARRIVE));
+      clearTimeout(walkTimer);
+      walkTimer = setTimeout(() => bot.classList.remove("walk"), 1150);
+    });
+
+    // Eyes follow the cursor; idle blink. Pointer-only, motion-only.
+    if (!reduce && !coarse) {
+      window.addEventListener(
+        "pointermove",
+        (e) => {
+          const head = bot.querySelector<HTMLElement>(".head");
+          if (!head) return;
+          const r = head.getBoundingClientRect();
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+          const dist = Math.min(
+            4,
+            Math.hypot(e.clientX - cx, e.clientY - cy) / 55,
+          );
+          const dx = Math.cos(angle) * dist;
+          const dy = Math.sin(angle) * dist;
+          bot
+            .querySelectorAll<HTMLElement>(".pupil")
+            .forEach((p) => (p.style.transform = `translate(${dx}px,${dy}px)`));
+        },
+        { passive: true },
+      );
+
+      setInterval(() => {
+        if (document.hidden) return;
+        bot.classList.add("blink");
+        setTimeout(() => bot.classList.remove("blink"), 150);
+      }, 2600);
+    }
+  }
 </script>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .notfound {
     position: relative;
     min-height: 100vh;
     overflow: hidden;
+    cursor: crosshair;
     background: radial-gradient(
       120% 90% at 50% -10%,
       #1a2f63,
@@ -98,6 +210,9 @@ const agendaUrl = await getAgendaCurrentDay();
     text-align: center;
     padding: clamp(70px, 12vh, 150px) clamp(20px, 5vw, 56px) 60px;
     max-width: 640px;
+    // Lets clicks on the copy area fall through to the scene, so the bot can
+    // be sent walking there too; the links re-enable pointer events below.
+    pointer-events: none;
 
     .big {
       font-family: var(--rs26-display);
@@ -131,6 +246,330 @@ const agendaUrl = await getAgendaCurrentDay();
       justify-content: center;
       margin-top: 26px;
       flex-wrap: wrap;
+      pointer-events: auto;
+    }
+
+    .hintline {
+      font-family: var(--rs26-mono);
+      font-size: 0.74rem;
+      color: var(--rs26-muted-3);
+      margin-top: 22px;
+    }
+  }
+
+  // The horizon the bot walks along.
+  .ground {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 90px;
+    z-index: 2;
+    pointer-events: none;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 84px;
+      height: 3px;
+      background: rgba(108, 140, 199, 0.25);
+      box-shadow: 0 0 30px rgba(108, 140, 199, 0.3);
+    }
+  }
+
+  .bot {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    z-index: 4;
+    width: 120px;
+    transform: translateX(-50%);
+    transition: left 1.1s cubic-bezier(0.5, 0.05, 0.4, 1);
+    will-change: left;
+    pointer-events: none;
+
+    &.walk {
+      animation: waddle 0.42s ease-in-out infinite;
+    }
+
+    .antenna {
+      width: 4px;
+      height: 20px;
+      background: #5b6f9e;
+      border-radius: 9px;
+      margin: 0 auto;
+
+      &::before {
+        content: "";
+        display: block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--rs26-blue);
+        margin: -7px auto 0;
+        box-shadow: 0 0 14px var(--rs26-blue);
+      }
+    }
+
+    .head {
+      width: 92px;
+      height: 74px;
+      border-radius: 20px;
+      background: var(--rs26-blue);
+      position: relative;
+      margin: 0 auto;
+      box-shadow: inset 0 -8px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    .eye {
+      position: absolute;
+      top: 27px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--rs26-navy);
+      overflow: hidden;
+      transition:
+        height 0.15s,
+        top 0.15s;
+
+      &.l {
+        left: 18px;
+      }
+
+      &.r {
+        right: 18px;
+      }
+    }
+
+    .pupil {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #fff;
+      left: 5px;
+      top: 5px;
+      transition: transform 0.1s linear;
+    }
+
+    &.blink .eye {
+      height: 3px;
+      top: 35px;
+    }
+
+    .mouth {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 10px;
+      border-radius: 0 0 10px 10px;
+      background: rgba(14, 29, 66, 0.5);
+    }
+
+    .scarf {
+      width: 98px;
+      height: 15px;
+      border-radius: 8px;
+      margin: -5px auto 0;
+      position: relative;
+      z-index: 3;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--rs26-orange) 0 9px,
+        color-mix(in srgb, var(--rs26-orange) 70%, #000) 9px 18px
+      );
+    }
+
+    .torso {
+      width: 76px;
+      height: 52px;
+      border-radius: 12px;
+      background: #eef2fb;
+      margin: -4px auto 0;
+      position: relative;
+      box-shadow: inset 0 0 0 3px rgba(14, 29, 66, 0.08);
+
+      .screen {
+        position: absolute;
+        top: 9px;
+        left: 10px;
+        right: 10px;
+        height: 13px;
+        border-radius: 4px;
+        background: var(--rs26-navy);
+      }
+    }
+
+    .legs {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: -2px;
+
+      span {
+        width: 10px;
+        height: 15px;
+        background: #5b6f9e;
+        border-radius: 0 0 5px 5px;
+      }
+    }
+  }
+
+  @keyframes waddle {
+    0%,
+    100% {
+      transform: translateX(-50%) rotate(-2.5deg);
+    }
+    50% {
+      transform: translateX(-50%) rotate(2.5deg);
+    }
+  }
+
+  .bubble {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.6);
+    transform-origin: bottom center;
+    background: #fff;
+    color: var(--rs26-navy);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 9px 13px;
+    border-radius: 13px;
+    width: max-content;
+    max-width: 220px;
+    text-align: center;
+    opacity: 0;
+    transition:
+      opacity 0.2s,
+      transform 0.22s var(--rs26-ease);
+    box-shadow: 0 16px 30px -16px rgba(0, 0, 0, 0.6);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 7px solid transparent;
+      border-top-color: #fff;
+    }
+  }
+
+  .bot.speak .bubble {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .copy {
+      padding-top: calc(clamp(84px, 15vh, 130px) + env(safe-area-inset-top));
+      padding-inline: 22px;
+
+      .big {
+        font-size: clamp(5.5rem, 30vw, 9rem);
+      }
+
+      h1 {
+        font-size: clamp(1.25rem, 6vw, 1.7rem);
+      }
+
+      p {
+        font-size: 0.98rem;
+      }
+
+      .links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-top: 22px;
+
+        :global(.btn) {
+          justify-content: center;
+        }
+      }
+
+      .hintline {
+        margin-top: 18px;
+      }
+    }
+
+    .ground::before {
+      bottom: calc(58px + env(safe-area-inset-bottom));
+    }
+
+    .bot {
+      width: 92px;
+      bottom: calc(64px + env(safe-area-inset-bottom));
+
+      .head {
+        width: 72px;
+        height: 58px;
+        border-radius: 16px;
+      }
+
+      .eye {
+        top: 20px;
+        width: 16px;
+        height: 16px;
+
+        &.l {
+          left: 14px;
+        }
+
+        &.r {
+          right: 14px;
+        }
+      }
+
+      .pupil {
+        width: 7px;
+        height: 7px;
+      }
+
+      &.blink .eye {
+        top: 27px;
+      }
+
+      .scarf {
+        width: 78px;
+        height: 12px;
+      }
+
+      .torso {
+        width: 60px;
+        height: 42px;
+      }
+
+      .legs span {
+        height: 12px;
+      }
+    }
+  }
+
+  // Height query, not width — no $breakpoint-* equivalent (README's own
+  // mapping table calls this one out as "keep as-is").
+  @media (max-height: 560px) {
+    .copy {
+      padding-top: 72px;
+
+      .big {
+        font-size: clamp(3.6rem, 14vh, 6rem);
+      }
+
+      p {
+        display: none;
+      }
+    }
+
+    .bot {
+      display: none;
     }
   }
 </style>
