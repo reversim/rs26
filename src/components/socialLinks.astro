@@ -27,6 +27,8 @@ const entries: SocialEntry[] = Array.isArray(socialList)
 </div>
 
 <style lang="scss">
+  @use "../styles/breakpoints" as *;
+
   .social-links {
     display: flex;
     flex-wrap: wrap;
@@ -43,6 +45,13 @@ const entries: SocialEntry[] = Array.isArray(socialList)
       justify-content: start;
       gap: 6px;
       margin-top: 12px;
+    }
+
+    // Only the sponsor detail page's masthead centres on phones.
+    &.sponsor {
+      @media (max-width: $breakpoint-medium) {
+        justify-content: center;
+      }
     }
   }
 </style>

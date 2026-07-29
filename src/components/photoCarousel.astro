@@ -19,6 +19,13 @@ interface Props {
   showThumbnails?: boolean;
   /** Autoplay interval in ms. */
   interval?: number;
+  /**
+   * Single-image mode only. Overrides `.car-view`'s aspect-ratio at
+   * $breakpoint-medium and below; desktop keeps the default 16/9.
+   */
+  mobileAspectRatio?: string;
+  /** Same idea as `mobileAspectRatio`, for `.car-view`'s border-radius. */
+  mobileBorderRadius?: string;
 }
 
 const {
@@ -27,6 +34,8 @@ const {
   perPage = 1,
   showThumbnails = true,
   interval = 5000,
+  mobileAspectRatio,
+  mobileBorderRadius,
 } = Astro.props;
 
 const total = slides.length;
@@ -39,6 +48,12 @@ const hasCaptions = slides.some((slide) => slide.caption);
   class:list={["photo-carousel", { multi }]}
   data-per-page={perPage}
   data-interval={interval}
+  style={{
+    ...(mobileAspectRatio ? { "--car-ar-mobile": mobileAspectRatio } : {}),
+    ...(mobileBorderRadius
+      ? { "--car-radius-mobile": mobileBorderRadius }
+      : {}),
+  }}
   role="region"
   aria-roledescription="carousel"
   aria-label={ariaLabel}
@@ -521,6 +536,13 @@ const hasCaptions = slides.some((slide) => slide.caption);
     .photo-carousel.multi .car-view :global(.slide-cap) {
       font-size: 0.7rem;
       padding: 26px 13px 12px;
+    }
+
+    // Only takes effect where a consumer sets these vars (the sponsor
+    // detail page); everyone else keeps the desktop defaults.
+    .car-view {
+      aspect-ratio: var(--car-ar-mobile, 16 / 9);
+      border-radius: var(--car-radius-mobile, var(--rs26-r-xl));
     }
   }
 </style>

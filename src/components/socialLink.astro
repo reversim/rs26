@@ -83,5 +83,12 @@ const iconWidth = baseSize + (entry?.sizeBump ?? 0);
     &.member-medium {
       width: 34px;
     }
+
+    // Thumb-sized target on touch, without growing the desktop icon row.
+    @media (pointer: coarse) {
+      &:not(.member-medium) {
+        width: 48px;
+      }
+    }
   }
 </style>
