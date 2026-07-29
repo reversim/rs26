@@ -13,6 +13,8 @@ const { href, label, variant = "filled" } = Astro.props;
 </a>
 
 <style lang="scss">
+  @use "../../styles/breakpoints" as *;
+
   .contact-pill {
     display: inline-flex;
     align-items: center;
@@ -49,6 +51,16 @@ const { href, label, variant = "filled" } = Astro.props;
 
     &:hover {
       filter: brightness(1.06);
+    }
+  }
+
+  // Both consumers (hero, teamCta) stack these full-width on phones and want
+  // centred content + a touch-height floor; per-consumer font-size stays
+  // with whichever component sets it.
+  @media (max-width: $breakpoint-medium) {
+    .contact-pill {
+      justify-content: center;
+      min-height: 52px;
     }
   }
 </style>

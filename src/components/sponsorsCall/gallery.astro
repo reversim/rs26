@@ -14,7 +14,13 @@ const { gallery } = sponsorsCall;
       </div>
     </div>
 
-    <PhotoCarousel slides={gallery.slides} ariaLabel={gallery.ariaLabel} />
+    <PhotoCarousel
+      slides={gallery.slides}
+      ariaLabel={gallery.ariaLabel}
+      mobileAspectRatio="4/3"
+      mobileBorderRadius="var(--rs26-r-lg)"
+      mobileThumbsBleed
+    />
   </div>
 </section>
 

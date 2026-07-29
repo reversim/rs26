@@ -29,6 +29,8 @@ const { teamCta, contacts } = sponsorsCall;
 </section>
 
 <style lang="scss">
+  @use "../../styles/breakpoints" as *;
+
   .block {
     padding: clamp(40px, 7vw, 88px) 0;
   }
@@ -77,6 +79,19 @@ const { teamCta, contacts } = sponsorsCall;
 
     :global(.contact-pill) {
       font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .team-cta {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 20px;
+    }
+
+    .team-contacts {
+      flex-direction: column;
+      align-items: stretch;
     }
   }
 </style>

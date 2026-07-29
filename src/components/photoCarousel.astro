@@ -19,6 +19,19 @@ interface Props {
   showThumbnails?: boolean;
   /** Autoplay interval in ms. */
   interval?: number;
+  /**
+   * Single-image mode only. Overrides `.car-view`'s aspect-ratio at
+   * $breakpoint-medium and below; desktop keeps the default 16/9.
+   */
+  mobileAspectRatio?: string;
+  /** Same idea as `mobileAspectRatio`, for `.car-view`'s border-radius. */
+  mobileBorderRadius?: string;
+  /**
+   * Let the thumbnail strip bleed edge-to-edge at $breakpoint-medium and
+   * below, instead of staying inset with the rest of the section. Default
+   * off so existing consumers (e.g. the sponsor detail page) don't change.
+   */
+  mobileThumbsBleed?: boolean;
 }
 
 const {
@@ -27,6 +40,9 @@ const {
   perPage = 1,
   showThumbnails = true,
   interval = 5000,
+  mobileAspectRatio,
+  mobileBorderRadius,
+  mobileThumbsBleed = false,
 } = Astro.props;
 
 const total = slides.length;
@@ -36,9 +52,15 @@ const hasCaptions = slides.some((slide) => slide.caption);
 ---
 
 <div
-  class:list={["photo-carousel", { multi }]}
+  class:list={["photo-carousel", { multi, "thumbs-bleed": mobileThumbsBleed }]}
   data-per-page={perPage}
   data-interval={interval}
+  style={{
+    ...(mobileAspectRatio ? { "--car-ar-mobile": mobileAspectRatio } : {}),
+    ...(mobileBorderRadius
+      ? { "--car-radius-mobile": mobileBorderRadius }
+      : {}),
+  }}
   role="region"
   aria-roledescription="carousel"
   aria-label={ariaLabel}
@@ -521,6 +543,29 @@ const hasCaptions = slides.some((slide) => slide.caption);
     .photo-carousel.multi .car-view :global(.slide-cap) {
       font-size: 0.7rem;
       padding: 26px 13px 12px;
+    }
+
+    // Only takes effect where a consumer sets these vars (sponsor detail
+    // page, call-for-sponsors gallery); everyone else keeps the defaults.
+    .car-view {
+      aspect-ratio: var(--car-ar-mobile, 16 / 9);
+      border-radius: var(--car-radius-mobile, var(--rs26-r-xl));
+    }
+
+    .car-cap {
+      font-size: 0.9rem;
+    }
+
+    // Opt-in: only the call-for-sponsors gallery sets this class.
+    .photo-carousel.thumbs-bleed .car-thumbs {
+      justify-content: flex-start;
+      margin-inline: calc(-1 * clamp(20px, 5vw, 56px));
+      padding-inline: clamp(20px, 5vw, 56px);
+    }
+
+    .photo-carousel.thumbs-bleed .car-thumb {
+      width: 88px;
+      height: 56px;
     }
   }
 </style>
