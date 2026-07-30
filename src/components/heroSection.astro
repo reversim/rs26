@@ -180,9 +180,18 @@ import { event } from "../config/event";
 
     let t = 0;
     let running = false;
+    let lastTime: number | null = null;
 
-    function frame() {
-      t += 1;
+    function frame(time?: number) {
+      // Drive movement by elapsed time, not by frame count — otherwise
+      // everything moves proportionally faster on high-refresh-rate
+      // displays (e.g. 120Hz ProMotion), since rAF just fires more often.
+      const now = time ?? performance.now();
+      const dt = lastTime === null ? 16.7 : now - lastTime;
+      lastTime = now;
+      const k = Math.min(dt, 100) / 16.7; // clamp to avoid jumps after a stall
+
+      t += k;
       ctx!.clearRect(0, 0, W, H);
 
       // dotted grid (RS heritage)
@@ -199,8 +208,8 @@ import { event } from "../config/event";
       // snow
       for (const f of snow) {
         if (!reduce) {
-          f.y += f.s;
-          f.x += Math.sin(t * 0.01 + f.drift) * 0.25;
+          f.y += f.s * k;
+          f.x += Math.sin(t * 0.01 + f.drift) * 0.25 * k;
           if (f.y > H + 4) {
             f.y = -4;
             f.x = Math.random() * W;
@@ -234,7 +243,7 @@ import { event } from "../config/event";
       }
 
       // auto-dispatched pulses hopping across the mesh
-      if (!reduce && Math.random() < DISPATCH_CHANCE) {
+      if (!reduce && Math.random() < DISPATCH_CHANCE * k) {
         spawnPulse(Math.floor(Math.random() * nodes.length));
       }
       for (const p of pulses) {
@@ -244,7 +253,7 @@ import { event } from "../config/event";
           p.dead = true;
           continue;
         }
-        if (!reduce) p.t += p.speed;
+        if (!reduce) p.t += p.speed * k;
         const x = a.x + (b.x - a.x) * p.t;
         const y = a.y + (b.y - a.y) * p.t;
         ctx!.beginPath();
