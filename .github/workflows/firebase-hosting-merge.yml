@@ -1,0 +1,40 @@
+# deploy on merge to main to firebase hosting
+
+name: Deploy to Firebase Hosting on merge
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "yarn"
+
+      - name: Set timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: Asia/Jerusalem
+
+      - run: yarn install && yarn build
+
+       - name: Generate build timestamp
+        run: |
+          mkdir -p dist
+          echo "{\"builtAt\":\"$(date -u)\"}" > dist/build-metadata.json
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0.11.0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_REVERSIM_26 }}
+          channelId: live
+          projectId: reversim-26
