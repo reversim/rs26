@@ -3,7 +3,7 @@ import type { AgendaSpeaker } from "../../types/agenda";
 
 export async function getSpeakers(): Promise<AgendaSpeaker[]> {
   const result = await fetch(
-    "https://sessionize.com/api/v2/fan6lxrk/view/Speakers",
+    "https://sessionize.com/api/v2/1saptwag/view/Speakers",
   );
 
   const data: AgendaSpeaker[] = await result.json();
