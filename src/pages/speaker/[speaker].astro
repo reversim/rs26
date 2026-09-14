@@ -61,34 +61,37 @@ const image = await getImage({
     picture={image.src}
     title={tagLine}
     bio={bio}
-  />
+  >
+    <div class="talks-container">
+      <h3 class="talks-title">Talks</h3>
 
-  <div class="talks-container">
-    <h3 class="talks-title">Talks</h3>
-
-    {
-      (sessions || []).map((talk) => {
-        return (
-          <a href={`/session/${slugify(talk.name)}`} class="talk-name">
-            {talk.name}
-          </a>
-        );
-      })
-    }
-  </div>
+      {
+        (sessions || []).map((talk) => {
+          return (
+            <a href={`/session/${slugify(talk.name)}`} class="talk-name">
+              {talk.name}
+            </a>
+          );
+        })
+      }
+    </div>
+  </MemberPage>
 </Layout>
 
 <style lang="scss">
   .talks-container {
-    margin-top: 60px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rs26-navy-line);
 
     .talks-title {
       font-family: var(--rs26-mono);
-      font-size: 0.74rem;
-      letter-spacing: 0.16em;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--rs26-mint);
-      margin-bottom: 12px;
+      color: var(--rs26-muted);
+      margin-bottom: 4px;
     }
 
     .talk-name {
