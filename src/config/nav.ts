@@ -8,8 +8,9 @@ export interface NavLink {
 
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "Team" },
   { href: "/#sponsors", label: "Sponsors" },
+  { href: "/speakers", label: "Speakers" },
+  { href: "/about", label: "Team" },
 ];
 
 // Marks the drawer link for the section the visitor is currently in.

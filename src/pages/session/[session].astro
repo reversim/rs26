@@ -112,7 +112,7 @@ const track = getTrackName(session);
 ---
 
 <Layout>
-  <Button variant="back" text="Agenda" href="/agenda" />
+  <Button variant="back" text="Sessions" href="/sessions" />
   <div class="session-container">
     <h2>{title}</h2>
     <p class="description">{description}</p>
@@ -142,8 +142,9 @@ const track = getTrackName(session);
       </div>
     </div>
     <div class="session-information">
-      <h4>Time & Room</h4>
-      <p>{getSessionDate()} <span class="separator">•</span> Room: {room}</p>
+      <!-- TODO - return time & room when we have the data -->
+      <!-- <h4>Time & Room</h4>
+      <p>{getSessionDate()} <span class="separator">•</span> Room: {room}</p> -->
 
       <h4 class="speakers-title">Speakers</h4>
 

@@ -1,0 +1,30 @@
+---
+import { getSpeakers } from "../helpers/data/getSpeakers";
+import HeadingLink from "./headingLink.astro";
+import MemberGrid from "./memberGrid.astro";
+import type { TeamMember } from "../types/team";
+
+const speakers = await getSpeakers();
+
+const speakerCards: TeamMember[] = speakers.map((speaker) => ({
+  id: speaker.id.toString(),
+  slug: speaker.slug ?? "",
+  name: speaker.fullName || "",
+  title: speaker.tagLine || "",
+  company: "",
+  picture: speaker.profilePicture ?? "",
+  bio: speaker.bio || "",
+}));
+---
+
+<section class="block" id="speakers">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">The lineup</p>
+        <h2><HeadingLink href="/speakers">Our speakers</HeadingLink></h2>
+      </div>
+    </div>
+    <MemberGrid members={speakerCards} pageBase="speaker" mobileLayout="swipe" />
+  </div>
+</section>
