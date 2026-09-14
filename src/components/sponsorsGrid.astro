@@ -4,6 +4,7 @@ import { event } from "../config/event";
 import { sponsorTiers } from "../config/sponsorTiers";
 import { getSponsors } from "../helpers/data/getSponsors";
 import Button from "./button.astro";
+import HeadingLink from "./headingLink.astro";
 import SponsorDialog from "./sponsorDialog.astro";
 
 const organizingSponsor = await getSponsors("organizing");
@@ -63,7 +64,7 @@ const tierMark: Record<string, string> = {
     <div class="section-head">
       <div>
         <p class="eyebrow">Powered by</p>
-        <h2>Our sponsors</h2>
+        <h2><HeadingLink href="/#sponsors">Our sponsors</HeadingLink></h2>
       </div>
       <Button
         variant="orange"

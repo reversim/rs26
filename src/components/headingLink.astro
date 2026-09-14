@@ -1,0 +1,64 @@
+---
+import ArrowIcon from "../assets/icons/arrow-right.svg";
+import ExternalLinkIcon from "../assets/icons/external-link.svg";
+
+interface Props {
+  href: string;
+  target?: "_blank";
+}
+
+const { href, target } = Astro.props;
+const isExternal = target === "_blank";
+---
+
+<a
+  class="heading-link"
+  href={href}
+  target={target}
+  rel={isExternal ? "noopener" : undefined}
+>
+  <slot />
+  {
+    isExternal ? (
+      <ExternalLinkIcon class="heading-link-icon" />
+    ) : (
+      <ArrowIcon class="heading-link-icon" />
+    )
+  }
+</a>
+
+<style lang="scss">
+  .heading-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.22em;
+    color: inherit;
+
+    &:hover,
+    &:focus-visible {
+      color: inherit;
+
+      .heading-link-icon {
+        opacity: 0.95;
+        transform: translateX(0);
+      }
+    }
+  }
+
+  .heading-link-icon {
+    width: 0.52em;
+    height: 0.52em;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 0.18s var(--rs26-ease),
+      transform 0.18s var(--rs26-ease);
+  }
+
+  @media (hover: none) {
+    .heading-link-icon {
+      opacity: 0.7;
+      transform: translateX(0);
+    }
+  }
+</style>

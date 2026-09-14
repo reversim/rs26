@@ -1,5 +1,6 @@
 ---
 import { getSpeakers } from "../helpers/data/getSpeakers";
+import HeadingLink from "./headingLink.astro";
 import MemberGrid from "./memberGrid.astro";
 import type { TeamMember } from "../types/team";
 
@@ -21,7 +22,7 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
     <div class="section-head">
       <div>
         <p class="eyebrow">The lineup</p>
-        <h2>Our speakers</h2>
+        <h2><HeadingLink href="/speakers">Our speakers</HeadingLink></h2>
       </div>
     </div>
     <MemberGrid members={speakerCards} pageBase="speaker" mobileLayout="swipe" />

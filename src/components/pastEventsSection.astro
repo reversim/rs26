@@ -1,6 +1,6 @@
 ---
 import { getPastEventsImages } from "../helpers/data/getPastEventsImages";
-import Button from "./button.astro";
+import HeadingLink from "./headingLink.astro";
 import PhotoCarousel from "./photoCarousel.astro";
 import type { CarouselImage } from "../types/slider";
 
@@ -12,14 +12,12 @@ const images: CarouselImage[] = await getPastEventsImages();
     <div class="section-head">
       <div>
         <p class="eyebrow">The story so far</p>
-        <h2>Past events</h2>
+        <h2>
+          <HeadingLink href="https://summit.reversim.com/" target="_blank">
+            Past events
+          </HeadingLink>
+        </h2>
       </div>
-      <Button
-        variant="ghost"
-        text="Explore past events →"
-        href="https://summit.reversim.com/"
-        target="_blank"
-      />
     </div>
     <p class="past-lede">
       Reversim Summit has run every year since 2013 in Israel, providing a
