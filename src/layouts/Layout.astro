@@ -1,6 +1,7 @@
 ---
 import Header from "../components/header/header.astro";
 import { Font } from "astro:assets";
+import { isBlockedPath } from "../config/blockedPaths";
 import "../styles/global.scss";
 
 interface Props {
@@ -14,6 +15,8 @@ const {
   havePaddingBottom = false,
   displayHeader = true,
 } = Astro.props;
+
+const isBlocked = isBlockedPath(Astro.url.pathname);
 
 const description =
   "Reversim Summit 2026 is Israel’s leading community-driven tech conference, bringing together developers, product managers, and data scientists for top-tier content and networking.";
@@ -41,6 +44,16 @@ const ogImage = new URL("/og-image-2026.png", Astro.site);
     <meta name="generator" content={Astro.generator} />
     <title>Reversim 2026</title>
     <meta name="description" content={description} />
+
+    {
+      isBlocked && (
+        <>
+          <meta name="robots" content="noindex" />
+          <meta http-equiv="refresh" content="0;url=/404" />
+          <script is:inline>window.location.replace("/404");</script>
+        </>
+      )
+    }
 
     <meta property="og:title" content="Reversim 2026" />
     <meta property="og:site_name" content="Reversim Summit 2026" />
@@ -76,11 +89,15 @@ const ogImage = new URL("/og-image-2026.png", Astro.site);
     </script>
   </head>
   <body>
-    {displayHeader && <Header />}
-    <div
-      class={`body-container ${havePadding ? "have-padding" : ""} ${havePaddingBottom ? "have-padding-bottom" : ""}`}
-    >
-      <slot class="layout-container" />
-    </div>
+    {!isBlocked && displayHeader && <Header />}
+    {
+      !isBlocked && (
+        <div
+          class={`body-container ${havePadding ? "have-padding" : ""} ${havePaddingBottom ? "have-padding-bottom" : ""}`}
+        >
+          <slot class="layout-container" />
+        </div>
+      )
+    }
   </body>
 </html>
