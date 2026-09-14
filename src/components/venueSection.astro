@@ -1,5 +1,11 @@
 ---
+import Button from "./button.astro";
 
+const VENUE_LAT = 32.106411;
+const VENUE_LNG = 34.810085;
+
+const wazeHref = `https://waze.com/ul?ll=${VENUE_LAT},${VENUE_LNG}&navigate=yes`;
+const googleMapsHref = `https://www.google.com/maps/dir/?api=1&destination=${VENUE_LAT},${VENUE_LNG}`;
 ---
 
 <section class="block" id="venue">
@@ -20,6 +26,19 @@
         <div class="vrow">
           <span class="vk">Address</span>
           <span class="vv">Rokach Blvd 101, Tel Aviv-Yafo</span>
+        </div>
+        <div class="vrow">
+          <span class="vk">Get there</span>
+          <span class="nav-links">
+            <Button text="Waze" href={wazeHref} target="_blank" variant="ghost" size="sm" />
+            <Button
+              text="Google Maps"
+              href={googleMapsHref}
+              target="_blank"
+              variant="ghost"
+              size="sm"
+            />
+          </span>
         </div>
       </div>
       <div class="map-wrapper">
@@ -79,6 +98,12 @@
       font-size: 1.18rem;
       font-weight: 600;
       color: var(--rs26-white);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
   }
 
