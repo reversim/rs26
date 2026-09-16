@@ -111,6 +111,17 @@ h2 { font-size: 20px; margin: 48px 0 4px; letter-spacing: -0.01em; }
 .cloud span.t4 { color: var(--muted); }
 .cloud span:hover { color: var(--s1); }
 
+/* compact table inside a card (no min-width, unlike the wide data table) */
+.mini-tbl { width: 100%; min-width: 0; border-collapse: collapse; font-size: 13px; }
+.mini-tbl th { position: static; background: none; border-bottom: 1px solid var(--axis); padding: 6px 8px; font-size: 12px; }
+.mini-tbl td { padding: 8px; border-bottom: 1px solid var(--grid); }
+.mini-tbl td:first-child { color: var(--ink-2); }
+.mini-tbl th:not(:first-child), .mini-tbl td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mini-tbl tr:last-child td { border-bottom: 0; font-weight: 600; color: var(--ink); }
+.mini-tbl .muted { color: var(--muted); font-weight: 400; margin-left: 4px; }
+.mini-tbl [data-tip] { cursor: default; }
+.mini-tbl [data-tip]:hover { background: var(--track-bg); }
+
 .minis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
 .minis .tile .value { font-size: 26px; }
 
@@ -366,20 +377,33 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
         <h3>Acceptance rate by history</h3>
         <p class="desc">Share of speakers with at least one accepted session</p>
         <div class="bars" id="prior-bars"><div class="bl" title="Spoke at a past Reversim">Spoke at a past Reversim</div>
-      <div class="bt" data-tip="&lt;b&gt;Spoke at a past Reversim&lt;/b&gt;&lt;br&gt;24 of 60 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.4000);background:var(--s1)"></div><span class="bv">40% · 24/60</span></div><div class="bl" title="Submitted before, never spoke">Submitted before, never spoke</div>
-      <div class="bt" data-tip="&lt;b&gt;Submitted before, never spoke&lt;/b&gt;&lt;br&gt;8 of 67 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1194);background:var(--s1)"></div><span class="bv">12% · 8/67</span></div><div class="bl" title="First time at Reversim">First time at Reversim</div>
-      <div class="bt" data-tip="&lt;b&gt;First time at Reversim&lt;/b&gt;&lt;br&gt;29 of 245 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1184);background:var(--s1)"></div><span class="bv">12% · 29/245</span></div></div>
+      <div class="bt" data-tip="&lt;b&gt;Spoke at a past Reversim&lt;/b&gt;&lt;br&gt;60 of this year's 372 speakers had a session accepted at an earlier summit (2021, 2022, 2024 or 2025).&lt;br&gt;24 of those 60 (40%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.4000);background:var(--s1)"></div><span class="bv">40% · 24/60</span></div><div class="bl" title="Submitted before, never spoke">Submitted before, never spoke</div>
+      <div class="bt" data-tip="&lt;b&gt;Submitted before, never spoke&lt;/b&gt;&lt;br&gt;67 of this year's 372 speakers submitted to an earlier summit (2021, 2022, 2024 or 2025) but were never accepted.&lt;br&gt;8 of those 67 (12%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.1194);background:var(--s1)"></div><span class="bv">12% · 8/67</span></div><div class="bl" title="First time at Reversim">First time at Reversim</div>
+      <div class="bt" data-tip="&lt;b&gt;First time at Reversim&lt;/b&gt;&lt;br&gt;245 of this year's 372 speakers have no earlier submission on record.&lt;br&gt;29 of those 245 (12%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.1184);background:var(--s1)"></div><span class="bv">12% · 29/245</span></div></div>
         <div class="foot" id="prior-foot">Overall, 16% of speakers and 11% of sessions were accepted. Speakers who have been on the stage before are 3.4× as likely as first-timers.</div>
       </div>
       <div class="card">
         <h3>By years submitted before</h3>
         <p class="desc">Past years in which the speaker submitted at least one session</p>
         <div class="bars" id="prioryears-bars"><div class="bl" title="Never before">Never before</div>
-      <div class="bt" data-tip="&lt;b&gt;Never before&lt;/b&gt;&lt;br&gt;29 of 245 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1184);background:var(--s1)"></div><span class="bv">12% · 29/245</span></div><div class="bl" title="1 past year">1 past year</div>
-      <div class="bt" data-tip="&lt;b&gt;1 past year&lt;/b&gt;&lt;br&gt;10 of 64 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1563);background:var(--s1)"></div><span class="bv">16% · 10/64</span></div><div class="bl" title="2 past years">2 past years</div>
-      <div class="bt" data-tip="&lt;b&gt;2 past years&lt;/b&gt;&lt;br&gt;8 of 30 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.2667);background:var(--s1)"></div><span class="bv">27% · 8/30</span></div><div class="bl" title="3+ past years">3+ past years</div>
-      <div class="bt" data-tip="&lt;b&gt;3+ past years&lt;/b&gt;&lt;br&gt;14 of 33 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.4242);background:var(--s1)"></div><span class="bv">42% · 14/33</span></div></div>
+      <div class="bt" data-tip="&lt;b&gt;Never before&lt;/b&gt;&lt;br&gt;245 of this year's 372 speakers have no earlier submission on record.&lt;br&gt;29 of those 245 (12%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.1184);background:var(--s1)"></div><span class="bv">12% · 29/245</span></div><div class="bl" title="1 past year">1 past year</div>
+      <div class="bt" data-tip="&lt;b&gt;1 past year&lt;/b&gt;&lt;br&gt;64 of this year's 372 speakers submitted in exactly 1 earlier year, whether or not they were accepted.&lt;br&gt;10 of those 64 (16%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.1563);background:var(--s1)"></div><span class="bv">16% · 10/64</span></div><div class="bl" title="2 past years">2 past years</div>
+      <div class="bt" data-tip="&lt;b&gt;2 past years&lt;/b&gt;&lt;br&gt;30 of this year's 372 speakers submitted in exactly 2 earlier years, whether or not they were accepted.&lt;br&gt;8 of those 30 (27%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.2667);background:var(--s1)"></div><span class="bv">27% · 8/30</span></div><div class="bl" title="3+ past years">3+ past years</div>
+      <div class="bt" data-tip="&lt;b&gt;3+ past years&lt;/b&gt;&lt;br&gt;33 of this year's 372 speakers submitted in three or more earlier years.&lt;br&gt;14 of those 33 (42%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.4242);background:var(--s1)"></div><span class="bv">42% · 14/33</span></div></div>
         <div class="foot">An association, not a cause: people who keep coming back may simply write proposals that fit the conference better.</div>
+      </div>
+      <div class="card span2">
+        <h3>Who is in the pool, and who gets in</h3>
+        <p class="desc">The same speakers counted two ways: what this year's applicant pool is made of, and what the accepted list is made of. Hover any figure to see exactly what it counts.</p>
+        <div id="prior-table"><table class="mini-tbl">
+    <thead><tr><th>Group</th>
+      <th data-tip="Every speaker who submitted at least one session this year: 372 people. Each column adds up to 100%.">Of all submitters</th>
+      <th data-tip="Every speaker on at least one accepted session this year: 61 people. Each column adds up to 100%.">Of accepted speakers</th></tr></thead>
+    <tbody><tr><td data-tip="These are speakers who had a session accepted at an earlier summit (2021, 2022, 2024 or 2025).">Spoke at a past Reversim</td><td data-tip="60 of the 372 speakers who submitted this year had a session accepted at an earlier summit (2021, 2022, 2024 or 2025) — 16% of the applicant pool.">16%<span class="muted">60</span></td><td data-tip="24 of the 61 accepted speakers had a session accepted at an earlier summit (2021, 2022, 2024 or 2025) — 39% of the accepted list.">39%<span class="muted">24</span></td></tr><tr><td data-tip="These are speakers who submitted to an earlier summit (2021, 2022, 2024 or 2025) but were never accepted.">Submitted before, never spoke</td><td data-tip="67 of the 372 speakers who submitted this year submitted to an earlier summit (2021, 2022, 2024 or 2025) but were never accepted — 18% of the applicant pool.">18%<span class="muted">67</span></td><td data-tip="8 of the 61 accepted speakers submitted to an earlier summit (2021, 2022, 2024 or 2025) but were never accepted — 13% of the accepted list.">13%<span class="muted">8</span></td></tr><tr><td data-tip="These are speakers who have no earlier submission on record.">First time at Reversim</td><td data-tip="245 of the 372 speakers who submitted this year have no earlier submission on record — 66% of the applicant pool.">66%<span class="muted">245</span></td><td data-tip="29 of the 61 accepted speakers have no earlier submission on record — 48% of the accepted list.">48%<span class="muted">29</span></td></tr>
+    <tr><td data-tip="Everyone, for reference">Everyone</td>
+      <td data-tip="All 372 speakers who submitted a session this year.">100%<span class="muted">372</span></td>
+      <td data-tip="All 61 speakers on at least one accepted session this year.">100%<span class="muted">61</span></td></tr></tbody></table></div>
+        <div class="foot" id="prior-table-foot">Past speakers are 16% of the people who submitted but 39% of the people who got in — the same pattern as the chart above, read from the other end.</div>
       </div>
     </div>
   </section>
