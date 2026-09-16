@@ -149,7 +149,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
     <p class="lede" id="lede">519 sessions from 372 speakers: who submitted, where they work, which tracks they chose, where the program committee placed them, and what they wrote about.</p>
   </header>
 
-  <section class="hero" id="hero"><div class="tile big"><div class="label">Sessions submitted</div><div class="value">519</div><div class="sub">after removing test entries and duplicates</div></div><div class="tile"><div class="label">Unique speakers</div><div class="value">372</div><div class="sub">4% of sessions are co-presented</div></div><div class="tile"><div class="label">Organizations</div><div class="value">170</div><div class="sub">not counting independents</div></div><div class="tile"><div class="label">Women</div><div class="value">32%</div><div class="sub">of 372 speakers</div></div><div class="tile"><div class="label">Mention AI</div><div class="value">74%</div><div class="sub">385 sessions</div></div></section>
+  <section class="hero" id="hero"><div class="tile big"><div class="label">Sessions submitted</div><div class="value">519</div><div class="sub">after removing test entries and duplicates</div></div><div class="tile"><div class="label">Unique speakers</div><div class="value">372</div><div class="sub">4% of sessions are co-presented</div></div><div class="tile"><div class="label">Organizations</div><div class="value">170</div><div class="sub">not counting independents</div></div><div class="tile"><div class="label">Women</div><div class="value">32%</div><div class="sub">of 372 speakers</div></div><div class="tile"><div class="label">Accepted</div><div class="value">11%</div><div class="sub">56 sessions · 61 speakers</div></div><div class="tile"><div class="label">Mention AI</div><div class="value">74%</div><div class="sub">385 sessions</div></div></section>
 
   <h2>Who submitted</h2>
   <p class="section-lede">Gender comes from speaker profiles. Where a profile left it blank, it was filled in from the speaker's bio, first name or photo.</p>
@@ -358,6 +358,32 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
     </div>
   </div>
 
+  <section id="prior-section">
+    <h2>Does past participation help?</h2>
+    <p class="section-lede">Acceptance rates for this year's call for papers, split by what the speaker did at earlier Reversim summits. People are matched across the yearly CFP exports by email, then by full name.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Acceptance rate by history</h3>
+        <p class="desc">Share of speakers with at least one accepted session</p>
+        <div class="bars" id="prior-bars"><div class="bl" title="Spoke at a past Reversim">Spoke at a past Reversim</div>
+      <div class="bt" data-tip="&lt;b&gt;Spoke at a past Reversim&lt;/b&gt;&lt;br&gt;24 of 60 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.4000);background:var(--s1)"></div><span class="bv">40% · 24/60</span></div><div class="bl" title="Submitted before, never spoke">Submitted before, never spoke</div>
+      <div class="bt" data-tip="&lt;b&gt;Submitted before, never spoke&lt;/b&gt;&lt;br&gt;8 of 67 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1194);background:var(--s1)"></div><span class="bv">12% · 8/67</span></div><div class="bl" title="First time at Reversim">First time at Reversim</div>
+      <div class="bt" data-tip="&lt;b&gt;First time at Reversim&lt;/b&gt;&lt;br&gt;29 of 245 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1184);background:var(--s1)"></div><span class="bv">12% · 29/245</span></div></div>
+        <div class="foot" id="prior-foot">Overall, 16% of speakers and 11% of sessions were accepted. Speakers who have been on the stage before are 3.4× as likely as first-timers.</div>
+      </div>
+      <div class="card">
+        <h3>By years submitted before</h3>
+        <p class="desc">Past years in which the speaker submitted at least one session</p>
+        <div class="bars" id="prioryears-bars"><div class="bl" title="Never before">Never before</div>
+      <div class="bt" data-tip="&lt;b&gt;Never before&lt;/b&gt;&lt;br&gt;29 of 245 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1184);background:var(--s1)"></div><span class="bv">12% · 29/245</span></div><div class="bl" title="1 past year">1 past year</div>
+      <div class="bt" data-tip="&lt;b&gt;1 past year&lt;/b&gt;&lt;br&gt;10 of 64 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.1563);background:var(--s1)"></div><span class="bv">16% · 10/64</span></div><div class="bl" title="2 past years">2 past years</div>
+      <div class="bt" data-tip="&lt;b&gt;2 past years&lt;/b&gt;&lt;br&gt;8 of 30 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.2667);background:var(--s1)"></div><span class="bv">27% · 8/30</span></div><div class="bl" title="3+ past years">3+ past years</div>
+      <div class="bt" data-tip="&lt;b&gt;3+ past years&lt;/b&gt;&lt;br&gt;14 of 33 speakers had a session accepted"><div class="bar" style="width:calc((100% - 7.5em) * 0.4242);background:var(--s1)"></div><span class="bv">42% · 14/33</span></div></div>
+        <div class="foot">An association, not a cause: people who keep coming back may simply write proposals that fit the conference better.</div>
+      </div>
+    </div>
+  </section>
+
   <h2>What they talked about</h2>
   <p class="section-lede" id="topic-lede">"AI" shows up in 54% of all sessions. 74% mention AI-related terms, and no submitted track has fewer than a fifth of its sessions touching AI.</p>
   <div class="grid">
@@ -405,7 +431,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
   </div>
 
   <footer>
-    <div>Source: Reversim Summit 2026 call-for-papers export, 2026-09-15. All figures are aggregates of anonymized submissions.</div>
+    <div>Source: Reversim Summit 2026 call-for-papers export, 2026-09-16. All figures are aggregates of anonymized submissions.</div>
     <ul>
       <li>Counts exclude CFP test entries and same-format duplicate resubmissions. A talk pitched as both a full session and a lightning talk counts as two sessions.</li>
       <li>Speaker totals count each person once. Track and format rows count speaker slots, so a co-presenter counts once per session.</li>
@@ -413,6 +439,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <li>Companies come from speaker taglines and company websites. One-person consultancies are grouped as "Independent".</li>
       <li>"Mentions AI" means the title or description contains terms such as AI, LLM, agent, MCP, RAG, GenAI or prompt.</li>
       <li>Tag cloud: English words only, counted once per session, with common filler words removed.</li>
+      <li>"Accepted" is the program committee's decision on a submission. Past participation is matched against the CFP exports of earlier summits — 2021, 2022, 2024 and 2025; there is no 2023 export — by email, then by full name, so anyone who changed both is counted as a first-timer.</li>
     </ul>
   </footer>
 </div>
