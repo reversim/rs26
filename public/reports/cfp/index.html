@@ -52,6 +52,7 @@ header { margin-bottom: 28px; }
 h1 { font-size: clamp(28px, 4.5vw, 44px); line-height: 1.1; margin: 6px 0 10px; letter-spacing: -0.02em; }
 .lede { color: var(--ink-2); max-width: 68ch; margin: 0; font-size: 15px; }
 h2 { font-size: 20px; margin: 48px 0 4px; letter-spacing: -0.01em; }
+:target { scroll-margin-top: 24px; }
 .section-lede { color: var(--ink-2); margin: 0 0 16px; max-width: 72ch; }
 
 .hero { display: grid; grid-template-columns: minmax(200px, 1.2fr) repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
@@ -162,10 +163,10 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
 
   <section class="hero" id="hero"><div class="tile big"><div class="label">Sessions submitted</div><div class="value">519</div><div class="sub">after removing test entries and duplicates</div></div><div class="tile"><div class="label">Unique speakers</div><div class="value">372</div><div class="sub">4% of sessions are co-presented</div></div><div class="tile"><div class="label">Organizations</div><div class="value">170</div><div class="sub">not counting independents</div></div><div class="tile"><div class="label">Women</div><div class="value">32%</div><div class="sub">of 372 speakers</div></div><div class="tile"><div class="label">Accepted</div><div class="value">11%</div><div class="sub">56 sessions · 61 speakers</div></div><div class="tile"><div class="label">Mention AI</div><div class="value">74%</div><div class="sub">385 sessions</div></div></section>
 
-  <h2>Who submitted</h2>
+  <h2 id="who-submitted">Who submitted</h2>
   <p class="section-lede">Gender comes from speaker profiles. Where a profile left it blank, it was filled in from the speaker's bio, first name or photo.</p>
   <div class="grid">
-    <div class="card span2">
+    <div class="card span2" id="gender-split">
       <h3>Gender split</h3>
       <p class="desc">Unique speakers, then by conference track and format. Track and format rows count speaker slots, so co-presenters each count once per session.</p>
       <div class="legend" id="gender-legend"><span><i style="background:var(--s2)"></i>Female</span><span><i style="background:var(--s1)"></i>Male</span></div>
@@ -174,10 +175,10 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
     </div>
   </div>
 
-  <h2>Where they work</h2>
+  <h2 id="where-they-work">Where they work</h2>
   <p class="section-lede" id="company-lede">331 of 372 speakers named an employer. 171 organizations are represented. The top 10 account for 22% of speakers with a known company, and 118 organizations sent exactly one speaker.</p>
   <div class="grid">
-    <div class="card">
+    <div class="card" id="top-companies">
       <h3>Top companies</h3>
       <p class="desc">Unique speakers per company (hover for sessions)</p>
       <div class="bars" id="company-bars"><div class="bl" title="Wix">Wix</div>
@@ -202,7 +203,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <div class="bt" data-tip="&lt;b&gt;Booking.com&lt;/b&gt;&lt;br&gt;3 speakers · 3 sessions"><div class="bar" style="width:calc((100% - 7.5em) * 0.2500);background:var(--s1)"></div><span class="bv">3</span></div><div class="bl" title="Elementor">Elementor</div>
       <div class="bt" data-tip="&lt;b&gt;Elementor&lt;/b&gt;&lt;br&gt;3 speakers · 3 sessions"><div class="bar" style="width:calc((100% - 7.5em) * 0.2500);background:var(--s1)"></div><span class="bv">3</span></div></div>
     </div>
-    <div class="card">
+    <div class="card" id="long-tail">
       <h3>The long tail</h3>
       <p class="desc">How many companies sent 1, 2, 3… speakers</p>
       <div class="bars" id="tail-bars"><div class="bl" title="1 speaker">1 speaker</div>
@@ -215,7 +216,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <div class="bt" data-tip="&lt;b&gt;7 speakers&lt;/b&gt;&lt;br&gt;Cato Networks, groundcover, monday.com"><div class="bar" style="width:calc((100% - 7.5em) * 0.0254);background:var(--s1)"></div><span class="bv">3 orgs</span></div><div class="bl" title="8 speakers">8 speakers</div>
       <div class="bt" data-tip="&lt;b&gt;8 speakers&lt;/b&gt;&lt;br&gt;Intuit, Microsoft, Teads"><div class="bar" style="width:calc((100% - 7.5em) * 0.0254);background:var(--s1)"></div><span class="bv">3 orgs</span></div><div class="bl" title="12 speakers">12 speakers</div>
       <div class="bt" data-tip="&lt;b&gt;12 speakers&lt;/b&gt;&lt;br&gt;Wix"><div class="bar" style="width:calc((100% - 7.5em) * 0.0085);background:var(--s1)"></div><span class="bv">1 org</span></div></div>
-      <h3 style="margin-top:22px">Type of organization</h3>
+      <h3 style="margin-top:22px" id="org-type">Type of organization</h3>
       <p class="desc">Unique speakers</p>
       <div class="bars" id="org-bars"><div class="bl" title="Industry">Industry</div>
       <div class="bt" data-tip="&lt;b&gt;Industry&lt;/b&gt;&lt;br&gt;287 · 77%"><div class="bar" style="width:calc((100% - 7.5em) * 1.0000);background:var(--s1)"></div><span class="bv">287 · 77%</span></div><div class="bl" title="Not specified">Not specified</div>
@@ -227,10 +228,10 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
     </div>
   </div>
 
-  <h2>What they submitted</h2>
+  <h2 id="what-they-submitted">What they submitted</h2>
   <p class="section-lede">Speakers choose a submitted track when they apply. The program committee then places every session in a conference track that fits the program.</p>
   <div class="grid">
-    <div class="card">
+    <div class="card" id="submitted-tracks">
       <h3>Submitted tracks</h3>
       <p class="desc">As chosen by the submitter</p>
       <div class="bars" id="ext-bars"><div class="bl" title="Culture">Culture</div>
@@ -255,7 +256,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <div class="bt" data-tip="&lt;b&gt;FinOps&lt;/b&gt;&lt;br&gt;2 · 0%"><div class="bar" style="width:calc((100% - 7.5em) * 0.0250);background:var(--s1)"></div><span class="bv">2 · 0%</span></div><div class="bl" title="No track chosen">No track chosen</div>
       <div class="bt" data-tip="&lt;b&gt;No track chosen&lt;/b&gt;&lt;br&gt;80 · 15%"><div class="bar" style="width:calc((100% - 7.5em) * 1.0000);background:var(--neutral-fill)"></div><span class="bv">80 · 15%</span></div></div>
     </div>
-    <div class="card">
+    <div class="card" id="conference-tracks">
       <h3>Conference tracks</h3>
       <p class="desc">As assigned by the committee</p>
       <div class="bars" id="int-bars"><div class="bl" title="Ignites">Ignites</div>
@@ -268,12 +269,12 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <div class="bt" data-tip="&lt;b&gt;Frontend&lt;/b&gt;&lt;br&gt;44 · 8%"><div class="bar" style="width:calc((100% - 7.5em) * 0.3520);background:var(--s5)"></div><span class="bv">44 · 8%</span></div><div class="bl" title="Keynote">Keynote</div>
       <div class="bt" data-tip="&lt;b&gt;Keynote&lt;/b&gt;&lt;br&gt;2 · 0%"><div class="bar" style="width:calc((100% - 7.5em) * 0.0160);background:var(--s8)"></div><span class="bv">2 · 0%</span></div><div class="bl" title="Unassigned">Unassigned</div>
       <div class="bt" data-tip="&lt;b&gt;Unassigned&lt;/b&gt;&lt;br&gt;11 · 2%"><div class="bar" style="width:calc((100% - 7.5em) * 0.0880);background:var(--neutral-fill)"></div><span class="bv">11 · 2%</span></div></div>
-      <h3 style="margin-top:22px">Format</h3>
+      <h3 style="margin-top:22px" id="format">Format</h3>
       <p class="desc">Sessions</p>
       <div class="legend" id="format-legend"><span><i style="background:var(--s1)"></i>Full session (30 min) · 394</span><span><i style="background:var(--s2)"></i>Lightning talk (5 min) · 125</span></div>
       <div class="stacks" id="format-stacks"><div class="bl">All sessions</div><div class="stack big"><div class="seg" style="flex:394 1 0;background:var(--s1)" data-tip="&lt;b&gt;All sessions&lt;/b&gt;&lt;br&gt;Full session: 394 (75.9%)"><span>Full session 76%</span></div><div class="seg" style="flex:125 1 0;background:var(--s2)" data-tip="&lt;b&gt;All sessions&lt;/b&gt;&lt;br&gt;Lightning talk: 125 (24.1%)"></div></div><div class="bv"></div></div>
     </div>
-    <div class="card span2">
+    <div class="card span2" id="track-funnel">
       <h3>Track funnel: submitted → conference</h3>
       <p class="desc">Where each submitted track ended up. Hover a ribbon or a track name to follow it.</p>
       <div class="legend" id="sankey-legend"><span><i style="background:var(--s6)"></i>Ignites</span><span><i style="background:var(--s3)"></i>Craft</span><span><i style="background:var(--s4)"></i>Culture</span><span><i style="background:var(--s2)"></i>Backend</span><span><i style="background:var(--s7)"></i>Infrastructure</span><span><i style="background:var(--s1)"></i>AI/ML</span><span><i style="background:var(--s5)"></i>Frontend</span><span><i style="background:var(--s8)"></i>Keynote</span><span><i style="background:var(--neutral-fill)"></i>Unassigned</span></div>
@@ -373,7 +374,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
     <h2>Does past participation help?</h2>
     <p class="section-lede">Acceptance rates for this year's call for papers, split by what the speaker did at earlier Reversim summits. People are matched across the yearly CFP exports by email, then by full name.</p>
     <div class="grid">
-      <div class="card">
+      <div class="card" id="acceptance-by-history">
         <h3>Acceptance rate by history</h3>
         <p class="desc">Share of speakers with at least one accepted session</p>
         <div class="bars" id="prior-bars"><div class="bl" title="Spoke at a past Reversim">Spoke at a past Reversim</div>
@@ -382,7 +383,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <div class="bt" data-tip="&lt;b&gt;First time at Reversim&lt;/b&gt;&lt;br&gt;245 of this year's 372 speakers have no earlier submission on record.&lt;br&gt;29 of those 245 (12%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.1184);background:var(--s1)"></div><span class="bv">12% · 29/245</span></div></div>
         <div class="foot" id="prior-foot">Overall, 16% of speakers and 11% of sessions were accepted. Speakers who have been on the stage before are 3.4× as likely as first-timers.</div>
       </div>
-      <div class="card">
+      <div class="card" id="by-years-submitted">
         <h3>By years submitted before</h3>
         <p class="desc">Past years in which the speaker submitted at least one session</p>
         <div class="bars" id="prioryears-bars"><div class="bl" title="Never before">Never before</div>
@@ -392,7 +393,7 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <div class="bt" data-tip="&lt;b&gt;3+ past years&lt;/b&gt;&lt;br&gt;33 of this year's 372 speakers submitted in three or more earlier years.&lt;br&gt;14 of those 33 (42%) are on at least one accepted session."><div class="bar" style="width:calc((100% - 7.5em) * 0.4242);background:var(--s1)"></div><span class="bv">42% · 14/33</span></div></div>
         <div class="foot">An association, not a cause: people who keep coming back may simply write proposals that fit the conference better.</div>
       </div>
-      <div class="card span2">
+      <div class="card span2" id="first-timers">
         <h3>Who is in the pool, and who gets in</h3>
         <p class="desc">The same speakers counted two ways: what this year's applicant pool is made of, and what the accepted list is made of. Hover any figure to see exactly what it counts.</p>
         <div id="prior-table"><table class="mini-tbl">
@@ -408,15 +409,15 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
     </div>
   </section>
 
-  <h2>What they talked about</h2>
+  <h2 id="what-they-talked-about">What they talked about</h2>
   <p class="section-lede" id="topic-lede">"AI" shows up in 54% of all sessions. 74% mention AI-related terms, and no submitted track has fewer than a fifth of its sessions touching AI.</p>
   <div class="grid">
-    <div class="card span2">
+    <div class="card span2" id="tag-cloud">
       <h3>Tag cloud</h3>
       <p class="desc">The most common words in English titles and descriptions. Size shows how many sessions use the word. Hover for the count.</p>
       <div class="cloud" id="cloud"><span class="t1" style="font-size:59.0px" data-tip="&lt;b&gt;AI&lt;/b&gt;&lt;br&gt;in 282 sessions (54%)">AI</span><span class="t2" style="font-size:32.4px" data-tip="&lt;b&gt;user&lt;/b&gt;&lt;br&gt;in 70 sessions (13%)">user</span><span class="t2" style="font-size:31.8px" data-tip="&lt;b&gt;failure&lt;/b&gt;&lt;br&gt;in 67 sessions (13%)">failure</span><span class="t4" style="font-size:15.9px" data-tip="&lt;b&gt;large&lt;/b&gt;&lt;br&gt;in 25 sessions (5%)">large</span><span class="t3" style="font-size:24.1px" data-tip="&lt;b&gt;job&lt;/b&gt;&lt;br&gt;in 39 sessions (8%)">job</span><span class="t4" style="font-size:19.4px" data-tip="&lt;b&gt;hidden&lt;/b&gt;&lt;br&gt;in 29 sessions (6%)">hidden</span><span class="t4" style="font-size:18.7px" data-tip="&lt;b&gt;month&lt;/b&gt;&lt;br&gt;in 28 sessions (5%)">month</span><span class="t4" style="font-size:17.1px" data-tip="&lt;b&gt;fail&lt;/b&gt;&lt;br&gt;in 26 sessions (5%)">fail</span><span class="t4" style="font-size:19.4px" data-tip="&lt;b&gt;tech&lt;/b&gt;&lt;br&gt;in 29 sessions (6%)">tech</span><span class="t3" style="font-size:24.1px" data-tip="&lt;b&gt;language&lt;/b&gt;&lt;br&gt;in 39 sessions (8%)">language</span><span class="t4" style="font-size:17.1px" data-tip="&lt;b&gt;behavior&lt;/b&gt;&lt;br&gt;in 26 sessions (5%)">behavior</span><span class="t3" style="font-size:21.1px" data-tip="&lt;b&gt;metric&lt;/b&gt;&lt;br&gt;in 32 sessions (6%)">metric</span><span class="t4" style="font-size:17.1px" data-tip="&lt;b&gt;say&lt;/b&gt;&lt;br&gt;in 26 sessions (5%)">say</span><span class="t3" style="font-size:28.9px" data-tip="&lt;b&gt;design&lt;/b&gt;&lt;br&gt;in 55 sessions (11%)">design</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;request&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">request</span><span class="t3" style="font-size:22.9px" data-tip="&lt;b&gt;gap&lt;/b&gt;&lt;br&gt;in 36 sessions (7%)">gap</span><span class="t4" style="font-size:15.9px" data-tip="&lt;b&gt;state&lt;/b&gt;&lt;br&gt;in 25 sessions (5%)">state</span><span class="t3" style="font-size:23.3px" data-tip="&lt;b&gt;infrastructure&lt;/b&gt;&lt;br&gt;in 37 sessions (7%)">infrastructure</span><span class="t2" style="font-size:32.6px" data-tip="&lt;b&gt;review&lt;/b&gt;&lt;br&gt;in 71 sessions (14%)">review</span><span class="t2" style="font-size:34.0px" data-tip="&lt;b&gt;pattern&lt;/b&gt;&lt;br&gt;in 78 sessions (15%)">pattern</span><span class="t4" style="font-size:19.4px" data-tip="&lt;b&gt;MCP&lt;/b&gt;&lt;br&gt;in 29 sessions (6%)">MCP</span><span class="t1" style="font-size:45.8px" data-tip="&lt;b&gt;tool&lt;/b&gt;&lt;br&gt;in 155 sessions (30%)">tool</span><span class="t2" style="font-size:31.1px" data-tip="&lt;b&gt;context&lt;/b&gt;&lt;br&gt;in 64 sessions (12%)">context</span><span class="t3" style="font-size:28.9px" data-tip="&lt;b&gt;agentic&lt;/b&gt;&lt;br&gt;in 55 sessions (11%)">agentic</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;bug&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">bug</span><span class="t3" style="font-size:20.0px" data-tip="&lt;b&gt;domain&lt;/b&gt;&lt;br&gt;in 30 sessions (6%)">domain</span><span class="t2" style="font-size:42.2px" data-tip="&lt;b&gt;engineering&lt;/b&gt;&lt;br&gt;in 128 sessions (25%)">engineering</span><span class="t4" style="font-size:18.7px" data-tip="&lt;b&gt;feedback&lt;/b&gt;&lt;br&gt;in 28 sessions (5%)">feedback</span><span class="t2" style="font-size:32.6px" data-tip="&lt;b&gt;cost&lt;/b&gt;&lt;br&gt;in 71 sessions (14%)">cost</span><span class="t3" style="font-size:22.9px" data-tip="&lt;b&gt;performance&lt;/b&gt;&lt;br&gt;in 36 sessions (7%)">performance</span><span class="t3" style="font-size:21.6px" data-tip="&lt;b&gt;ask&lt;/b&gt;&lt;br&gt;in 33 sessions (6%)">ask</span><span class="t3" style="font-size:22.9px" data-tip="&lt;b&gt;memory&lt;/b&gt;&lt;br&gt;in 36 sessions (7%)">memory</span><span class="t4" style="font-size:17.1px" data-tip="&lt;b&gt;sometime&lt;/b&gt;&lt;br&gt;in 26 sessions (5%)">sometime</span><span class="t3" style="font-size:24.1px" data-tip="&lt;b&gt;running&lt;/b&gt;&lt;br&gt;in 39 sessions (8%)">running</span><span class="t4" style="font-size:20.0px" data-tip="&lt;b&gt;process&lt;/b&gt;&lt;br&gt;in 30 sessions (6%)">process</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;quality&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">quality</span><span class="t4" style="font-size:17.1px" data-tip="&lt;b&gt;tell&lt;/b&gt;&lt;br&gt;in 26 sessions (5%)">tell</span><span class="t2" style="font-size:36.3px" data-tip="&lt;b&gt;problem&lt;/b&gt;&lt;br&gt;in 90 sessions (17%)">problem</span><span class="t2" style="font-size:32.0px" data-tip="&lt;b&gt;pipeline&lt;/b&gt;&lt;br&gt;in 68 sessions (13%)">pipeline</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;designing&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">designing</span><span class="t1" style="font-size:55.4px" data-tip="&lt;b&gt;agent&lt;/b&gt;&lt;br&gt;in 243 sessions (47%)">agent</span><span class="t3" style="font-size:23.7px" data-tip="&lt;b&gt;ship&lt;/b&gt;&lt;br&gt;in 38 sessions (7%)">ship</span><span class="t3" style="font-size:24.8px" data-tip="&lt;b&gt;security&lt;/b&gt;&lt;br&gt;in 41 sessions (8%)">security</span><span class="t3" style="font-size:28.4px" data-tip="&lt;b&gt;loop&lt;/b&gt;&lt;br&gt;in 53 sessions (10%)">loop</span><span class="t3" style="font-size:20.6px" data-tip="&lt;b&gt;read&lt;/b&gt;&lt;br&gt;in 31 sessions (6%)">read</span><span class="t3" style="font-size:28.9px" data-tip="&lt;b&gt;test&lt;/b&gt;&lt;br&gt;in 55 sessions (11%)">test</span><span class="t2" style="font-size:34.2px" data-tip="&lt;b&gt;developer&lt;/b&gt;&lt;br&gt;in 79 sessions (15%)">developer</span><span class="t4" style="font-size:18.7px" data-tip="&lt;b&gt;evaluation&lt;/b&gt;&lt;br&gt;in 28 sessions (5%)">evaluation</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;architectural&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">architectural</span><span class="t3" style="font-size:28.4px" data-tip="&lt;b&gt;challenge&lt;/b&gt;&lt;br&gt;in 53 sessions (10%)">challenge</span><span class="t2" style="font-size:39.2px" data-tip="&lt;b&gt;data&lt;/b&gt;&lt;br&gt;in 108 sessions (21%)">data</span><span class="t3" style="font-size:21.1px" data-tip="&lt;b&gt;machine&lt;/b&gt;&lt;br&gt;in 32 sessions (6%)">machine</span><span class="t4" style="font-size:18.7px" data-tip="&lt;b&gt;solution&lt;/b&gt;&lt;br&gt;in 28 sessions (5%)">solution</span><span class="t3" style="font-size:28.9px" data-tip="&lt;b&gt;skill&lt;/b&gt;&lt;br&gt;in 55 sessions (11%)">skill</span><span class="t3" style="font-size:27.3px" data-tip="&lt;b&gt;feature&lt;/b&gt;&lt;br&gt;in 49 sessions (9%)">feature</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;found&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">found</span><span class="t3" style="font-size:21.1px" data-tip="&lt;b&gt;claude&lt;/b&gt;&lt;br&gt;in 32 sessions (6%)">claude</span><span class="t3" style="font-size:25.5px" data-tip="&lt;b&gt;api&lt;/b&gt;&lt;br&gt;in 43 sessions (8%)">api</span><span class="t2" style="font-size:37.0px" data-tip="&lt;b&gt;architecture&lt;/b&gt;&lt;br&gt;in 94 sessions (18%)">architecture</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;bottleneck&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">bottleneck</span><span class="t3" style="font-size:21.6px" data-tip="&lt;b&gt;service&lt;/b&gt;&lt;br&gt;in 33 sessions (6%)">service</span><span class="t4" style="font-size:20.0px" data-tip="&lt;b&gt;quietly&lt;/b&gt;&lt;br&gt;in 30 sessions (6%)">quietly</span><span class="t1" style="font-size:49.1px" data-tip="&lt;b&gt;model&lt;/b&gt;&lt;br&gt;in 183 sessions (35%)">model</span><span class="t3" style="font-size:22.1px" data-tip="&lt;b&gt;app&lt;/b&gt;&lt;br&gt;in 34 sessions (7%)">app</span><span class="t1" style="font-size:42.3px" data-tip="&lt;b&gt;building&lt;/b&gt;&lt;br&gt;in 129 sessions (25%)">building</span><span class="t3" style="font-size:20.0px" data-tip="&lt;b&gt;few&lt;/b&gt;&lt;br&gt;in 30 sessions (6%)">few</span><span class="t2" style="font-size:42.3px" data-tip="&lt;b&gt;production&lt;/b&gt;&lt;br&gt;in 129 sessions (25%)">production</span><span class="t3" style="font-size:28.7px" data-tip="&lt;b&gt;coding&lt;/b&gt;&lt;br&gt;in 54 sessions (10%)">coding</span><span class="t3" style="font-size:29.5px" data-tip="&lt;b&gt;scale&lt;/b&gt;&lt;br&gt;in 57 sessions (11%)">scale</span><span class="t1" style="font-size:46.2px" data-tip="&lt;b&gt;code&lt;/b&gt;&lt;br&gt;in 158 sessions (30%)">code</span><span class="t2" style="font-size:32.2px" data-tip="&lt;b&gt;decision&lt;/b&gt;&lt;br&gt;in 69 sessions (13%)">decision</span><span class="t4" style="font-size:15.9px" data-tip="&lt;b&gt;assumption&lt;/b&gt;&lt;br&gt;in 25 sessions (5%)">assumption</span><span class="t2" style="font-size:33.3px" data-tip="&lt;b&gt;change&lt;/b&gt;&lt;br&gt;in 74 sessions (14%)">change</span><span class="t4" style="font-size:19.4px" data-tip="&lt;b&gt;path&lt;/b&gt;&lt;br&gt;in 29 sessions (6%)">path</span><span class="t3" style="font-size:28.7px" data-tip="&lt;b&gt;platform&lt;/b&gt;&lt;br&gt;in 54 sessions (10%)">platform</span><span class="t2" style="font-size:35.4px" data-tip="&lt;b&gt;human&lt;/b&gt;&lt;br&gt;in 85 sessions (16%)">human</span><span class="t4" style="font-size:19.4px" data-tip="&lt;b&gt;small&lt;/b&gt;&lt;br&gt;in 29 sessions (6%)">small</span><span class="t3" style="font-size:26.4px" data-tip="&lt;b&gt;layer&lt;/b&gt;&lt;br&gt;in 46 sessions (9%)">layer</span><span class="t4" style="font-size:18.7px" data-tip="&lt;b&gt;fix&lt;/b&gt;&lt;br&gt;in 28 sessions (5%)">fix</span><span class="t4" style="font-size:15.9px" data-tip="&lt;b&gt;latency&lt;/b&gt;&lt;br&gt;in 25 sessions (5%)">latency</span><span class="t2" style="font-size:31.8px" data-tip="&lt;b&gt;workflow&lt;/b&gt;&lt;br&gt;in 67 sessions (13%)">workflow</span><span class="t3" style="font-size:29.2px" data-tip="&lt;b&gt;framework&lt;/b&gt;&lt;br&gt;in 56 sessions (11%)">framework</span><span class="t3" style="font-size:29.2px" data-tip="&lt;b&gt;prompt&lt;/b&gt;&lt;br&gt;in 56 sessions (11%)">prompt</span><span class="t4" style="font-size:20.0px" data-tip="&lt;b&gt;knowledge&lt;/b&gt;&lt;br&gt;in 30 sessions (6%)">knowledge</span><span class="t1" style="font-size:46.4px" data-tip="&lt;b&gt;team&lt;/b&gt;&lt;br&gt;in 160 sessions (31%)">team</span><span class="t2" style="font-size:33.0px" data-tip="&lt;b&gt;product&lt;/b&gt;&lt;br&gt;in 73 sessions (14%)">product</span><span class="t2" style="font-size:33.0px" data-tip="&lt;b&gt;software&lt;/b&gt;&lt;br&gt;in 73 sessions (14%)">software</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;flow&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">flow</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;risk&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">risk</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;find&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">find</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;expensive&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">expensive</span><span class="t4" style="font-size:15.9px" data-tip="&lt;b&gt;autonomous&lt;/b&gt;&lt;br&gt;in 25 sessions (5%)">autonomous</span><span class="t3" style="font-size:24.8px" data-tip="&lt;b&gt;control&lt;/b&gt;&lt;br&gt;in 41 sessions (8%)">control</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;map&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">map</span><span class="t2" style="font-size:36.3px" data-tip="&lt;b&gt;engineer&lt;/b&gt;&lt;br&gt;in 90 sessions (17%)">engineer</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;file&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">file</span><span class="t4" style="font-size:19.4px" data-tip="&lt;b&gt;deterministic&lt;/b&gt;&lt;br&gt;in 29 sessions (6%)">deterministic</span><span class="t4" style="font-size:20.0px" data-tip="&lt;b&gt;organization&lt;/b&gt;&lt;br&gt;in 30 sessions (6%)">organization</span><span class="t1" style="font-size:48.1px" data-tip="&lt;b&gt;system&lt;/b&gt;&lt;br&gt;in 174 sessions (34%)">system</span><span class="t3" style="font-size:24.1px" data-tip="&lt;b&gt;token&lt;/b&gt;&lt;br&gt;in 39 sessions (8%)">token</span><span class="t3" style="font-size:25.5px" data-tip="&lt;b&gt;trust&lt;/b&gt;&lt;br&gt;in 43 sessions (8%)">trust</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;observability&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">observability</span><span class="t4" style="font-size:17.1px" data-tip="&lt;b&gt;introduce&lt;/b&gt;&lt;br&gt;in 26 sessions (5%)">introduce</span><span class="t2" style="font-size:33.3px" data-tip="&lt;b&gt;break&lt;/b&gt;&lt;br&gt;in 74 sessions (14%)">break</span><span class="t4" style="font-size:15.9px" data-tip="&lt;b&gt;standard&lt;/b&gt;&lt;br&gt;in 25 sessions (5%)">standard</span><span class="t2" style="font-size:40.3px" data-tip="&lt;b&gt;LLM&lt;/b&gt;&lt;br&gt;in 115 sessions (22%)">LLM</span><span class="t4" style="font-size:18.0px" data-tip="&lt;b&gt;stack&lt;/b&gt;&lt;br&gt;in 27 sessions (5%)">stack</span><span class="t4" style="font-size:19.4px" data-tip="&lt;b&gt;honest&lt;/b&gt;&lt;br&gt;in 29 sessions (6%)">honest</span><span class="t4" style="font-size:17.1px" data-tip="&lt;b&gt;working&lt;/b&gt;&lt;br&gt;in 26 sessions (5%)">working</span><span class="t4" style="font-size:13.0px" data-tip="&lt;b&gt;concrete&lt;/b&gt;&lt;br&gt;in 24 sessions (5%)">concrete</span></div>
     </div>
-    <div class="card">
+    <div class="card" id="ai-per-track">
       <h3>How much AI is in each track</h3>
       <p class="desc">Share of sessions whose title or description mentions AI, LLMs, agents, MCP, RAG, GenAI and similar terms</p>
       <div class="bars" id="ai-bars"><div class="bl" title="No track chosen">No track chosen</div>
@@ -439,11 +440,11 @@ footer ul { margin: 6px 0 0; padding-left: 18px; }
       <div class="bt" data-tip="&lt;b&gt;Backend&lt;/b&gt;&lt;br&gt;9 of 19 sessions mention AI"><div class="bar" style="width:calc((100% - 7.5em) * 0.4737);background:var(--s1)"></div><span class="bv">47%</span></div><div class="bl" title="Monitoring">Monitoring</div>
       <div class="bt" data-tip="&lt;b&gt;Monitoring&lt;/b&gt;&lt;br&gt;6 of 13 sessions mention AI"><div class="bar" style="width:calc((100% - 7.5em) * 0.4615);background:var(--s1)"></div><span class="bv">46%</span></div></div>
     </div>
-    <div class="card">
+    <div class="card" id="odds-and-ends">
       <h3>Odds and ends</h3>
       <p class="desc">Patterns across all submissions</p>
       <div class="minis" id="minis"><div class="tile"><div class="label">Hebrew titles</div><div class="value">2%</div><div class="sub">11 sessions</div></div><div class="tile"><div class="label">Title with a colon</div><div class="value">54%</div><div class="sub">"Catchy hook: the real topic"</div></div><div class="tile"><div class="label">Pitched in both formats</div><div class="value">7 talks</div><div class="sub">same talk as a 30-min session and a lightning talk</div></div><div class="tile"><div class="label">Median description</div><div class="value">129 words</div><div class="sub">longest: 479</div></div><div class="tile"><div class="label">“Agent” in the title</div><div class="value">18%</div><div class="sub">93 sessions</div></div><div class="tile"><div class="label">Co-presented</div><div class="value">4%</div><div class="sub">20 sessions with 2+ speakers</div></div></div>
-      <h3 style="margin-top:22px">Submissions per speaker</h3>
+      <h3 style="margin-top:22px" id="submissions-per-speaker">Submissions per speaker</h3>
       <p class="desc">Unique speakers by number of sessions they appear on</p>
       <div class="bars" id="multi-bars"><div class="bl" title="1 session">1 session</div>
       <div class="bt" data-tip="&lt;b&gt;1 session&lt;/b&gt;&lt;br&gt;258 · 69%"><div class="bar" style="width:calc((100% - 7.5em) * 1.0000);background:var(--s1)"></div><span class="bv">258 · 69%</span></div><div class="bl" title="2 sessions">2 sessions</div>
