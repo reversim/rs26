@@ -1,5 +1,6 @@
 import slug from "slug";
 import type { AgendaSpeaker } from "../../types/agenda";
+import speakersDay from "../../data/speakersDay.json";
 
 export async function getSpeakers(): Promise<AgendaSpeaker[]> {
   const result = await fetch(
@@ -7,10 +8,15 @@ export async function getSpeakers(): Promise<AgendaSpeaker[]> {
   );
 
   const data: AgendaSpeaker[] = await result.json();
-  return data.map((speaker) => ({
-    ...speaker,
-    slug: slug(speaker?.fullName || ""),
-  }));
+  return data.map((speaker) => {
+    const { day = 1 } =
+      speakersDay.find((s: { id: string }) => s.id === speaker.id) || speaker;
+    return {
+      ...speaker,
+      slug: slug(speaker?.fullName || ""),
+      day,
+    };
+  });
 }
 
 export async function getSpeakerById(id: string): Promise<AgendaSpeaker> {

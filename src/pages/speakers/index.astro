@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
 import MemberGrid from "../../components/memberGrid.astro";
+import FilterTabs from "../../components/filterTabs.astro";
 import type { TeamMember } from "../../types/team";
 
 const speakers = await getSpeakers();
@@ -14,6 +15,7 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
   company: "",
   picture: speaker.profilePicture ?? "",
   bio: speaker.bio || "",
+  day: speaker.day,
 }));
 ---
 
@@ -27,6 +29,17 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
     engaging exploration of the latest trends and insights across the tech
     landscape!
   </p>
+  <FilterTabs
+    id="speakers-day-filter"
+    attr="day"
+    targetSelector=".member"
+    sticky={true}
+    options={[
+      { value: "all", label: "Both days" },
+      { value: "1", label: "Day 1" },
+      { value: "2", label: "Day 2" },
+    ]}
+  />
   <MemberGrid members={speakerCards} pageBase="speaker" />
 </Layout>
 

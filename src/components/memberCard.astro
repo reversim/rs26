@@ -6,10 +6,23 @@ interface Props extends TeamMember {
   pageBase?: string;
 }
 
-const { company, name, title, picture, slug, pageBase = "about" } = Astro.props;
+const {
+  company,
+  name,
+  title,
+  picture,
+  slug,
+  pageBase = "about",
+  day,
+} = Astro.props;
 ---
 
-<a data-astro-prefetch href={`/${pageBase}/${slug}`} class="member">
+<a
+  data-astro-prefetch
+  href={`/${pageBase}/${slug}`}
+  class="member"
+  data-day={day}
+>
   <div class="photo">
     {
       picture !== "" && (
@@ -39,6 +52,10 @@ const { company, name, title, picture, slug, pageBase = "about" } = Astro.props;
     transition:
       transform 0.2s var(--rs26-ease),
       color 0.2s;
+
+    &.is-filtered-out {
+      display: none;
+    }
 
     &:hover {
       transform: translateY(-3px);
