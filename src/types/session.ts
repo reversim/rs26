@@ -33,6 +33,7 @@ export interface Talk {
   status: any;
   isInformed: boolean;
   isConfirmed: boolean;
+  day?: number;
 }
 
 export interface SessionGroup {

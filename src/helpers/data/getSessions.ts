@@ -1,4 +1,5 @@
 import type { SessionGroup, Talk } from "../../types/session";
+import speakersDay from "../../data/speakersDay.json";
 
 export async function getSessions() {
   const result = await fetch(
@@ -10,7 +11,11 @@ export async function getSessions() {
   const data: SessionGroup[] = await result.json();
   data.forEach((group) => {
     group.sessions.forEach((talk) => {
-      rawSessionsList.push(talk);
+      const { day = 1 } =
+        speakersDay.find(
+          (s: { talkId: number }) => String(s.talkId) === talk.id,
+        ) || talk;
+      rawSessionsList.push({ ...talk, day });
     });
   });
   return { rawData: data, rawSessionsList };

@@ -10,7 +10,7 @@ export async function getSpeakers(): Promise<AgendaSpeaker[]> {
   const data: AgendaSpeaker[] = await result.json();
   return data.map((speaker) => {
     const { day = 1 } =
-      speakersDay.find((s: { id: string }) => s.id === speaker.id) || speaker;
+      speakersDay.find((s: { speakerId: string }) => s.speakerId === speaker.id) || speaker;
     return {
       ...speaker,
       slug: slug(speaker?.fullName || ""),

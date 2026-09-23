@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getSessions } from "../../helpers/data/getSessions";
+import FilterTabs from "../../components/filterTabs.astro";
 import slug from "slug";
 
 const sessions = await getSessions();
@@ -28,13 +29,25 @@ function getTalkInfo(fullText: string): {
 <Layout>
   <h2 class="page-title">Our Sessions</h2>
 
+  <FilterTabs
+    id="sessions-day-filter"
+    attr="day"
+    targetSelector=".card"
+    sticky={true}
+    options={[
+      { value: "all", label: "Both days" },
+      { value: "1", label: "Day 1" },
+      { value: "2", label: "Day 2" },
+    ]}
+  />
+
   <div class="sessions-container">
     {
       sessionsList.map((session) => {
         const descriptionInfo = getTalkInfo(session.description);
         if (descriptionInfo.shouldDisplay) {
           return (
-            <div class="card">
+            <div class="card" data-day={session.day}>
               {!session.isPlenumSession ? (
                 <a
                   href={`/session/${slug(session.title)}`}
@@ -79,6 +92,10 @@ function getTalkInfo(fullText: string): {
     transition:
       transform 0.2s var(--rs26-ease),
       border-color 0.2s var(--rs26-ease);
+
+    &.is-filtered-out {
+      display: none;
+    }
 
     &:hover {
       transform: translateY(-2px);
