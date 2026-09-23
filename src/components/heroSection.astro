@@ -24,11 +24,7 @@ import { event } from "../config/event";
           />
         )
       }
-      <Button
-        variant={event.cfp.display ? "ghost" : "orange"}
-        text={event.sponsor.label}
-        href={event.sponsor.url}
-      />
+      <span class="reg-soon"><i class="dot" aria-hidden="true"></i>Registration opening soon</span>
     </div>
     <div class="meta-row">
       <span><b>{event.dates}</b></span>
@@ -480,6 +476,48 @@ import { event } from "../config/event";
       pointer-events: auto;
     }
 
+    .reg-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65em;
+      font-family: var(--rs26-body);
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 0.85em 1.4em;
+      border-radius: 999px;
+      color: var(--rs26-white);
+      background: rgba(240, 122, 35, 0.12);
+      border: 1.5px solid var(--rs26-orange);
+      box-shadow: 0 8px 22px -10px rgba(240, 122, 35, 0.55);
+
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--rs26-orange);
+        box-shadow: 0 0 0 0 rgba(240, 122, 35, 0.7);
+        animation: reg-pulse 1.8s ease-out infinite;
+      }
+    }
+
+    @keyframes reg-pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(240, 122, 35, 0.55);
+      }
+      70% {
+        box-shadow: 0 0 0 9px rgba(240, 122, 35, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(240, 122, 35, 0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reg-soon .dot {
+        animation: none;
+      }
+    }
+
     .meta-row {
       display: flex;
       gap: 34px;
@@ -563,7 +601,8 @@ import { event } from "../config/event";
 
       // The `fullWidth` prop is unconditional and would follow the buttons up
       // to desktop, so the hero widens them for this tier only.
-      .cta-row :global(.btn) {
+      .cta-row :global(.btn),
+      .cta-row .reg-soon {
         width: 100%;
         justify-content: center;
         font-size: 1.02rem;
