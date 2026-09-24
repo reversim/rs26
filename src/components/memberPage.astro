@@ -130,7 +130,8 @@ const {
     border: 1px solid var(--rs26-navy-line);
     background: var(--rs26-panel-2);
     box-shadow: 0 40px 70px -40px rgba(0, 0, 0, 0.85);
-    position: relative;
+    position: sticky;
+    top: calc(var(--head-h, var(--header-height)) + 24px);
 
     &::after {
       content: "";
@@ -150,29 +151,7 @@ const {
     @media (max-width: $breakpoint-medium) {
       width: min(220px, 58%);
       border-radius: var(--rs26-r-lg);
-    }
-  }
-
-  .m-role {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    margin-bottom: 14px;
-    font-family: var(--rs26-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    padding: 0.4em 0.7em;
-    border-radius: 999px;
-    white-space: nowrap;
-    color: var(--rs26-orange);
-    background: rgba(240, 122, 35, 0.12);
-
-    &::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: currentColor;
+      position: static;
     }
   }
 

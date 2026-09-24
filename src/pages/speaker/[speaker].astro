@@ -1,21 +1,48 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { getImage } from "astro:assets";
+import dayjs from "dayjs";
 import MemberPage from "../../components/memberPage.astro";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
+import { getSessions } from "../../helpers/data/getSessions";
+import { formatTime } from "../../helpers/agenda/agendaHelpers";
 import { supportedSocials } from "../../config/socials";
 import Layout from "../../layouts/Layout.astro";
 import slugify from "slug";
 
 export const getStaticPaths = (async () => {
-  const speakers = await getSpeakers();
+  const [speakers, { rawSessionsList }] = await Promise.all([
+    getSpeakers(),
+    getSessions(),
+  ]);
 
-  return speakers.map((speaker) => ({
-    params: {
-      speaker: speaker.slug,
-    },
-    props: { ...speaker },
-  }));
+  const sessionsById = new Map(
+    rawSessionsList.map((session) => [String(session.id), session]),
+  );
+
+  return speakers.map((speaker) => {
+    const talks = (speaker.sessions || []).map((talk) => {
+      const fullSession = sessionsById.get(String(talk.id));
+
+      return {
+        id: talk.id,
+        name: talk.name,
+        day: fullSession?.day,
+        startsAt: fullSession?.startsAt,
+        endsAt: fullSession?.endsAt,
+        coSpeakers: (fullSession?.speakers || []).filter(
+          (s) => s.id !== speaker.id,
+        ),
+      };
+    });
+
+    return {
+      params: {
+        speaker: speaker.slug,
+      },
+      props: { ...speaker, talks },
+    };
+  });
 }) satisfies GetStaticPaths;
 
 const {
@@ -29,7 +56,7 @@ const {
   tagLine,
   bio,
   links,
-  sessions,
+  talks,
 } = Astro.props;
 
 const socialLinks: Record<string, string> = {};
@@ -51,6 +78,10 @@ const image = await getImage({
   height: 500,
   width: 500,
 });
+
+// TODO: remove this line
+// Hours aren't confirmed as accurate yet — flip this once the schedule's times are trustworthy.
+const showHour = false;
 ---
 
 <Layout havePaddingBottom={true}>
@@ -63,13 +94,31 @@ const image = await getImage({
     bio={bio}
   >
     <div class="talks-container">
-      <h3 class="talks-title">Talks</h3>
+      <h3 class="talks-title">Talk</h3>
 
       {
-        (sessions || []).map((talk) => {
+        (talks || []).map((talk) => {
+          const hasTime = Boolean(talk.startsAt && talk.endsAt);
+
           return (
-            <a href={`/session/${slugify(talk.name)}`} class="talk-name">
-              {talk.name}
+            <a href={`/session/${slugify(talk.name)}`} class="talk">
+              {hasTime && (
+                <div class="talk-when">
+                  <b>Day {talk.day}</b>
+                  {showHour && (
+                    <span>
+                      {formatTime(talk.startsAt!)} – {formatTime(talk.endsAt!)}
+                    </span>
+                  )}
+                  <small>{dayjs(talk.startsAt).format("ddd, MMM D")}</small>
+                </div>
+              )}
+              <div class="talk-body">
+                <h4>{talk.name}</h4>
+                {talk.coSpeakers.length > 0 && (
+                  <p>with {talk.coSpeakers.map((s) => s.name).join(", ")}</p>
+                )}
+              </div>
             </a>
           );
         })
@@ -79,6 +128,8 @@ const image = await getImage({
 </Layout>
 
 <style lang="scss">
+  @use "../../styles/breakpoints" as *;
+
   .talks-container {
     margin-top: 24px;
     padding-top: 24px;
@@ -91,18 +142,111 @@ const image = await getImage({
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--rs26-muted);
-      margin-bottom: 4px;
+      margin-bottom: 14px;
+    }
+  }
+
+  .talk {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(16px, 3vw, 28px);
+    padding: 20px clamp(18px, 2.4vw, 26px);
+    border-radius: var(--rs26-r-lg);
+    background: var(--rs26-panel-2);
+    border: 1.5px solid var(--rs26-dashed);
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 12px 26px -18px rgba(0, 0, 0, 0.7);
+    transition:
+      border-color 0.2s var(--rs26-ease),
+      background 0.2s var(--rs26-ease),
+      box-shadow 0.2s var(--rs26-ease),
+      transform 0.2s var(--rs26-ease);
+
+    & + & {
+      margin-top: 10px;
     }
 
-    .talk-name {
-      display: block;
-      padding-top: 8px;
-      color: var(--rs26-text);
+    &:hover {
+      border-color: var(--rs26-orange);
+      transform: translateY(-2px);
+    }
 
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--rs26-orange);
+      outline-offset: 2px;
+    }
+
+    @media (hover: none) {
       &:hover {
-        color: var(--rs26-blue-bright);
-        text-decoration: underline;
+        transform: none;
       }
+    }
+  }
+
+  .talk-when {
+    display: grid;
+    gap: 4px;
+    padding-right: clamp(16px, 3vw, 28px);
+    border-right: 1px solid var(--rs26-navy-line);
+    font-family: var(--rs26-mono);
+    min-width: 96px;
+
+    b {
+      color: var(--rs26-orange);
+      font-weight: 500;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    span {
+      color: var(--rs26-white);
+      font-size: 0.95rem;
+    }
+
+    small {
+      color: var(--rs26-muted);
+      font-size: 0.76rem;
+    }
+  }
+
+  .talk-body {
+    min-width: 0;
+
+    h4 {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--rs26-white);
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+    }
+
+    p {
+      margin: 6px 0 0;
+      color: var(--rs26-muted);
+      font-size: 0.92rem;
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .talk {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .talk-when {
+      grid-template-columns: auto auto auto;
+      justify-content: start;
+      align-items: baseline;
+      gap: 10px;
+      border-right: 0;
+      padding-right: 0;
+      min-width: 0;
     }
   }
 </style>
