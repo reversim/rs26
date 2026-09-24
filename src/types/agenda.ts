@@ -10,6 +10,7 @@ export interface AgendaSpeaker {
   slug?: string;
   isTopSpeaker?: boolean;
   sessions?: any[];
+  day?: number;
   links?: { title: string; url: string; linkType: string }[];
 }
 

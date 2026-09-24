@@ -1,7 +1,7 @@
 ---
 import Header from "../components/header/header.astro";
 import { Font } from "astro:assets";
-import { isBlockedPath } from "../config/blockedPaths";
+import { getRedirectTarget } from "../config/redirects";
 import "../styles/global.scss";
 
 interface Props {
@@ -16,7 +16,8 @@ const {
   displayHeader = true,
 } = Astro.props;
 
-const isBlocked = isBlockedPath(Astro.url.pathname);
+const redirectTarget = getRedirectTarget(Astro.url.pathname);
+const isBlocked = redirectTarget !== undefined;
 
 const description =
   "Reversim Summit 2026 is Israel’s leading community-driven tech conference, bringing together developers, product managers, and data scientists for top-tier content and networking.";
@@ -49,8 +50,10 @@ const ogImage = new URL("/og-image-2026.png", Astro.site);
       isBlocked && (
         <>
           <meta name="robots" content="noindex" />
-          <meta http-equiv="refresh" content="0;url=/404" />
-          <script is:inline>window.location.replace("/404");</script>
+          <meta http-equiv="refresh" content={`0;url=${redirectTarget}`} />
+          <script is:inline define:vars={{ redirectTarget }}>
+            window.location.replace(redirectTarget);
+          </script>
         </>
       )
     }

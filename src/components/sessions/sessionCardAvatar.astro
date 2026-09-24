@@ -1,0 +1,46 @@
+---
+import { initials } from "../../helpers/initials";
+
+interface Props {
+  name: string;
+  avatarUrl?: string;
+  size?: number;
+}
+
+const { name, avatarUrl, size = 36 } = Astro.props;
+---
+
+<span class="avatar" style={`--avatar-size: ${size}px`}>
+  {
+    avatarUrl ? (
+      <img src={avatarUrl} alt={name} loading="lazy" />
+    ) : (
+      initials(name)
+    )
+  }
+</span>
+
+<style lang="scss">
+  .avatar {
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    flex: 0 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(240, 122, 35, 0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--rs26-display);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--rs26-orange);
+    border: 1px solid var(--rs26-navy-line);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+</style>

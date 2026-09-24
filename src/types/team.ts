@@ -16,4 +16,5 @@ export interface TeamMember {
   medium?: string;
   website?: string;
   role?: string;
+  day?: number;
 }

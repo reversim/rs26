@@ -5,6 +5,7 @@ import { getImage, Image, Picture } from "astro:assets";
 import PhotoCarousel from "../../components/photoCarousel.astro";
 import SocialLinks from "../../components/socialLinks.astro";
 import { getSponsors } from "../../helpers/data/getSponsors";
+import { initials } from "../../helpers/initials";
 import Layout from "../../layouts/Layout.astro";
 
 export const getStaticPaths = (async () => {
@@ -61,15 +62,6 @@ const carouselImagesPromise = await Promise.all(
     return await getImage({ src: image, width: 1000, height: 600 });
   }),
 );
-
-const initials = (name: string) =>
-  (name || "")
-    .trim()
-    .split(/\s+/)
-    .map((word) => word[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
 ---
 
 <Layout havePadding={false}>

@@ -1,111 +1,64 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getSessions } from "../../helpers/data/getSessions";
+import { getSpeakers } from "../../helpers/data/getSpeakers";
+import FilterTabs from "../../components/filterTabs.astro";
+import PageHeader from "../../components/pageHeader.astro";
+import SessionCard from "../../components/sessions/sessionCard.astro";
+import type { AgendaSpeaker } from "../../types/agenda";
 import slug from "slug";
+import { event } from "../../config/event";
 
-const sessions = await getSessions();
-const sessionsList = sessions.rawSessionsList;
+const [sessions, speakers] = await Promise.all([getSessions(), getSpeakers()]);
+const speakersMap = new Map(
+  speakers.map((speaker) => [String(speaker.id), speaker]),
+);
 
-function getTalkInfo(fullText: string): {
-  shouldLoadMore: boolean;
-  text: string;
-  shouldDisplay: boolean;
-} {
-  const maxLength = 150;
-
-  if (!fullText) {
-    return { shouldDisplay: false, shouldLoadMore: false, text: "" };
-  }
-
-  if (fullText?.length <= maxLength) {
-    return { shouldLoadMore: false, text: fullText, shouldDisplay: true };
-  }
-  const truncatedText = fullText?.slice(0, maxLength) + "...";
-  return { text: truncatedText, shouldLoadMore: true, shouldDisplay: true };
-}
+const sessionsList = sessions.rawSessionsList.filter(
+  (session) => session.description,
+);
 ---
 
-<Layout>
-  <h2 class="page-title">Our Sessions</h2>
+<Layout havePaddingBottom={true}>
+  <PageHeader
+    eyebrow="The lineup"
+    title="Our Sessions"
+    description="Two days of deep engineering talks from Israel's dev community, covering everything from autonomous and agentic systems to the infrastructure, tools and practices that power them. Browse the full lineup below and filter by day to plan your schedule."
+  />
+
+  <FilterTabs
+    id="sessions-day-filter"
+    attr="day"
+    targetSelector=".session-card"
+    sticky={true}
+    options={event.days.options}
+  />
 
   <div class="sessions-container">
     {
       sessionsList.map((session) => {
-        const descriptionInfo = getTalkInfo(session.description);
-        if (descriptionInfo.shouldDisplay) {
-          return (
-            <div class="card">
-              {!session.isPlenumSession ? (
-                <a
-                  href={`/session/${slug(session.title)}`}
-                  class="session-link"
-                >
-                  <h4>{session.title}</h4>
-                </a>
-              ) : (
-                <h4>{session.title}</h4>
-              )}
-              <p class="session-description">
-                {descriptionInfo.text}
-                {descriptionInfo.shouldLoadMore && (
-                  <a
-                    href={`/session/${slug(session.title)}`}
-                    class="session-link read-more"
-                  >
-                    Read More
-                  </a>
-                )}
-              </p>
-            </div>
-          );
-        }
+        const resolvedSpeakers = session.speakers
+          .map((speaker) => speakersMap.get(speaker.id))
+          .filter((speaker): speaker is AgendaSpeaker => speaker !== undefined);
+
+        return (
+          <SessionCard
+            title={session.title}
+            description={session.description}
+            href={`/session/${slug(session.title)}`}
+            speakers={resolvedSpeakers}
+            day={session.day}
+          />
+        );
       })
     }
   </div>
 </Layout>
 
 <style lang="scss">
-  .page-title {
-    color: var(--rs26-white);
-    margin-top: 24px;
-  }
-
-  .card {
-    padding: 20px;
-    margin-top: 24px;
-    border-radius: var(--rs26-r-md);
-    background: var(--rs26-panel-2);
-    border: 1px solid var(--rs26-navy-line);
-    transition:
-      transform 0.2s var(--rs26-ease),
-      border-color 0.2s var(--rs26-ease);
-
-    &:hover {
-      transform: translateY(-2px);
-      border-color: var(--rs26-blue);
-    }
-
-    h4 {
-      font-family: var(--rs26-display);
-      font-size: 18px;
-      color: var(--rs26-white);
-    }
-
-    .session-description {
-      margin-top: 8px;
-      font-size: 14px;
-      color: var(--rs26-text);
-
-      .read-more {
-        color: var(--rs26-blue-bright);
-        margin-left: 5px;
-        font-size: 0.9em;
-        cursor: pointer;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
+  .sessions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 </style>

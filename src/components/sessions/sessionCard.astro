@@ -1,0 +1,189 @@
+---
+import dayjs from "dayjs";
+import type { AgendaSpeaker } from "../../types/agenda";
+import SessionCardAvatar from "./sessionCardAvatar.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  href: string;
+  speakers?: AgendaSpeaker[];
+  day?: number | string;
+  /** Off by default; the time column can be re-enabled later by passing showTime + startsAt/endsAt. */
+  showTime?: boolean;
+  startsAt?: string;
+  endsAt?: string;
+}
+
+const {
+  title,
+  description,
+  href,
+  speakers = [],
+  day,
+  showTime = false,
+  startsAt,
+  endsAt,
+} = Astro.props;
+
+const startTime = showTime && startsAt ? dayjs(startsAt).format("H:mm") : null;
+const endTime = showTime && endsAt ? dayjs(endsAt).format("H:mm") : null;
+---
+
+<a href={href} class="session-card" data-day={day}>
+  {
+    showTime && startTime && (
+      <div class="time">
+        <span class="start">{startTime}</span>
+        <span class="end">- {endTime}</span>
+      </div>
+    )
+  }
+
+  <div class="content">
+    <h4 class="title">{title}</h4>
+    {description && <p class="description">{description}</p>}
+    {
+      speakers.length > 0 && (
+        <div class="speakers">
+          {speakers.map((speaker) => (
+            <div class="speaker">
+              <SessionCardAvatar
+                name={speaker.fullName || ""}
+                avatarUrl={speaker.profilePicture}
+              />
+              <span class="speaker-name">{speaker.fullName}</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</a>
+
+<style lang="scss">
+  @use "../../styles/breakpoints" as *;
+
+  .session-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px 28px;
+    border-radius: var(--rs26-r-md);
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 0.2s var(--rs26-ease),
+      border-color 0.2s var(--rs26-ease);
+
+    &.is-filtered-out {
+      display: none;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--rs26-orange);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--rs26-orange);
+      outline-offset: 2px;
+    }
+
+    @media (hover: none) {
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  .time {
+    flex: 0 0 auto;
+    width: 72px;
+    font-family: var(--rs26-mono);
+
+    .start {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--rs26-white);
+    }
+
+    .end {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--rs26-muted);
+    }
+  }
+
+  .content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .title {
+    font-family: var(--rs26-display);
+    font-size: 18px;
+    color: var(--rs26-white);
+  }
+
+  .description {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--rs26-text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .speakers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    margin-top: 16px;
+  }
+
+  .speaker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .speaker-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--rs26-white);
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .session-card {
+      gap: 16px;
+      padding: 18px 20px;
+    }
+
+    .title {
+      font-size: 16px;
+    }
+
+    .time {
+      width: 60px;
+
+      .start {
+        font-size: 14px;
+      }
+
+      .end {
+        font-size: 12px;
+      }
+    }
+
+    .speakers {
+      gap: 10px 18px;
+    }
+  }
+</style>

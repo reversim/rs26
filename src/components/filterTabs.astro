@@ -1,0 +1,285 @@
+---
+export interface FilterOption {
+  value: string;
+  label: string;
+}
+
+export interface Props {
+  /** Unique DOM id for this instance (required for future multi-instance safety). */
+  id: string;
+  /** Pills to render, in order. */
+  options: FilterOption[];
+  /** data-* suffix read off each target element and diffed against the selected pill's value (e.g. "day" reads `data-day`). */
+  attr: string;
+  /** CSS selector, queried against `document`, for the elements this filter shows/hides. */
+  targetSelector: string;
+  /** The option value that means "show everything". */
+  allValue?: string;
+  /** Which option renders active on first paint. Defaults to `allValue`. */
+  activeValue?: string;
+  /** Hide this control below the medium breakpoint. */
+  desktopOnly?: boolean;
+  /**
+   * Keep the control reachable while its containing section/page scrolls
+   * through view: a sticky top bar on desktop, a compact floating toggle
+   * fixed to the bottom of the screen on mobile.
+   */
+  sticky?: boolean;
+}
+
+const {
+  id,
+  options,
+  attr,
+  targetSelector,
+  allValue = "all",
+  activeValue = allValue,
+  desktopOnly = false,
+  sticky = false,
+} = Astro.props;
+
+const activeOption = options.find((option) => option.value === activeValue);
+---
+
+<div
+  id={id}
+  class:list={[
+    "filter-tabs",
+    { "desktop-only": desktopOnly, "is-sticky": sticky },
+  ]}
+  data-attr={attr}
+  data-target={targetSelector}
+  data-all-value={allValue}
+>
+  <button
+    type="button"
+    class="filter-toggle-btn"
+    aria-expanded="false"
+    aria-controls={`${id}-list`}
+  >
+    <span class="filter-toggle-label">{activeOption?.label}</span>
+    <span class="filter-toggle-chevron" aria-hidden="true"></span>
+  </button>
+  <div class="filter-tab-list" id={`${id}-list`}>
+    {
+      options.map((option) => (
+        <button
+          type="button"
+          class:list={[
+            "filter-tab-btn",
+            { active: option.value === activeValue },
+          ]}
+          data-value={option.value}
+        >
+          {option.label}
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  function initFilterTabs(container: HTMLElement) {
+    const targetSelector = container.dataset.target;
+    const attr = container.dataset.attr;
+    const allValue = container.dataset.allValue ?? "all";
+    if (!targetSelector || !attr) return;
+
+    const toggleBtn =
+      container.querySelector<HTMLButtonElement>(".filter-toggle-btn");
+    const toggleLabel = container.querySelector<HTMLElement>(
+      ".filter-toggle-label",
+    );
+    const buttons = Array.from(
+      container.querySelectorAll<HTMLButtonElement>(".filter-tab-btn"),
+    );
+
+    function setExpanded(expanded: boolean) {
+      container.classList.toggle("is-expanded", expanded);
+      toggleBtn?.setAttribute("aria-expanded", String(expanded));
+    }
+
+    function applyFilter(value: string) {
+      const targets = document.querySelectorAll<HTMLElement>(targetSelector!);
+      targets.forEach((el) => {
+        const elValue = el.getAttribute(`data-${attr}`);
+        const matches = value === allValue || elValue === value;
+        el.classList.toggle("is-filtered-out", !matches);
+      });
+    }
+
+    toggleBtn?.addEventListener("click", () => {
+      setExpanded(!container.classList.contains("is-expanded"));
+    });
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const value = btn.dataset.value;
+        if (!value) return;
+        buttons.forEach((b) => b.classList.toggle("active", b === btn));
+        if (toggleLabel)
+          toggleLabel.textContent = btn.textContent?.trim() ?? "";
+        toggleBtn?.classList.toggle("has-active-filter", value !== allValue);
+        applyFilter(value);
+        setExpanded(false);
+      });
+    });
+  }
+
+  function initAllFilterTabs() {
+    document
+      .querySelectorAll<HTMLElement>(".filter-tabs")
+      .forEach(initFilterTabs);
+  }
+
+  document.addEventListener("DOMContentLoaded", initAllFilterTabs);
+</script>
+
+<style lang="scss">
+  @use "../styles/breakpoints" as *;
+
+  .filter-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+
+    // The compact toggle is a mobile-only affordance; desktop always shows
+    // the pill row inline.
+    .filter-toggle-btn {
+      display: none;
+    }
+
+    .filter-tab-list {
+      display: flex;
+      gap: 10px;
+    }
+
+    &.desktop-only {
+      @media (max-width: $breakpoint-medium) {
+        display: none;
+      }
+    }
+
+    // Sticks to the header while its containing section/page scrolls through
+    // view, then scrolls away normally once that container's bottom edge
+    // passes the offset — no scroll listener needed.
+    &.is-sticky {
+      position: sticky;
+      top: var(--header-height);
+      z-index: 10;
+      background: var(--rs26-navy);
+      border-bottom: 1px solid var(--rs26-navy-line);
+      padding-block: 14px;
+    }
+  }
+
+  .filter-tab-btn {
+    font-family: inherit;
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: 999px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--rs26-muted);
+    transition: all 0.3s var(--rs26-ease);
+
+    &:hover {
+      border-color: var(--rs26-blue);
+      color: var(--rs26-white);
+    }
+
+    &.active {
+      background: var(--rs26-orange);
+      border-color: transparent;
+      color: var(--rs26-white);
+
+      &:hover {
+        filter: brightness(1.06);
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-medium) {
+    .filter-tabs {
+      // The pill row moves into a floating panel below; the bar itself no
+      // longer needs its own chrome or flow height on mobile.
+      display: block;
+      margin-bottom: 0;
+
+      &.is-sticky {
+        position: static;
+        background: none;
+        border-bottom: none;
+        padding-block: 0;
+      }
+
+      .filter-toggle-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%);
+        z-index: 50;
+        font-family: inherit;
+        background: var(--rs26-panel-2);
+        border: 1px solid var(--rs26-navy-line);
+        border-radius: 999px;
+        padding: 16px 28px;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--rs26-white);
+        box-shadow: 0 8px 24px rgba(6, 15, 37, 0.45);
+        cursor: pointer;
+        transition: all 0.3s var(--rs26-ease);
+
+        &.has-active-filter {
+          background: var(--rs26-orange);
+          border-color: transparent;
+        }
+      }
+
+      .filter-toggle-chevron {
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 7px solid currentColor;
+        transition: transform 0.25s var(--rs26-ease);
+      }
+
+      &.is-expanded .filter-toggle-chevron {
+        transform: rotate(180deg);
+      }
+
+      .filter-tab-list {
+        position: fixed;
+        left: 50%;
+        bottom: 96px;
+        transform: translateX(-50%) translateY(8px);
+        z-index: 49;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: calc(100% - 32px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.25s var(--rs26-ease);
+      }
+
+      &.is-expanded .filter-tab-list {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .filter-tab-btn {
+        padding: 10px 18px;
+        font-size: 13px;
+        box-shadow: 0 4px 12px rgba(6, 15, 37, 0.35);
+      }
+    }
+  }
+</style>

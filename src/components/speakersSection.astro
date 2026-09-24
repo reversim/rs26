@@ -2,7 +2,9 @@
 import { getSpeakers } from "../helpers/data/getSpeakers";
 import HeadingLink from "./headingLink.astro";
 import MemberGrid from "./memberGrid.astro";
+import FilterTabs from "./filterTabs.astro";
 import type { TeamMember } from "../types/team";
+import { event } from "../config/event";
 
 const speakers = await getSpeakers();
 
@@ -14,6 +16,7 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
   company: "",
   picture: speaker.profilePicture ?? "",
   bio: speaker.bio || "",
+  day: speaker.day,
 }));
 ---
 
@@ -21,10 +24,22 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
   <div class="wrap">
     <div class="section-head">
       <div>
-        <p class="eyebrow">The lineup</p>
+        <p class="eyebrow">Who's speaking</p>
         <h2><HeadingLink href="/speakers">Our speakers</HeadingLink></h2>
       </div>
     </div>
-    <MemberGrid members={speakerCards} pageBase="speaker" mobileLayout="swipe" />
+    <FilterTabs
+      id="speakers-day-filter-home"
+      attr="day"
+      targetSelector=".member"
+      desktopOnly={true}
+      sticky={true}
+      options={event.days.options}
+    />
+    <MemberGrid
+      members={speakerCards}
+      pageBase="speaker"
+      mobileLayout="swipe"
+    />
   </div>
 </section>

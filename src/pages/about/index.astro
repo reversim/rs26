@@ -1,5 +1,6 @@
 ---
 import MemberGrid from "../../components/memberGrid.astro";
+import PageHeader from "../../components/pageHeader.astro";
 import { getTeamMembers } from "../../helpers/data/getTeam";
 import Layout from "../../layouts/Layout.astro";
 
@@ -7,32 +8,11 @@ const teamMembers = await getTeamMembers();
 ---
 
 <Layout havePaddingBottom={true}>
-  <p class="eyebrow">The people behind it</p>
-  <h2>Our team</h2>
-  <p class="team-intro">
-    Reversim Summit 2026 is a testament to community collaboration, driven by a
-    dedicated team of passionate volunteers who are experts in their respective
-    fields. Our content committee, comprised of enthusiastic individuals, works
-    tirelessly to curate an enriching and insightful experience for all
-    attendees.
-  </p>
+  <PageHeader
+    eyebrow="The people behind it"
+    title="Our team"
+    description="Reversim Summit 2026 is a testament to community collaboration, driven by a dedicated team of passionate volunteers who are experts in their respective fields. Our content committee, comprised of enthusiastic individuals, works tirelessly to curate an enriching and insightful experience for all attendees."
+  />
 
   <MemberGrid members={teamMembers} />
 </Layout>
-
-<style lang="scss">
-  .eyebrow {
-    margin-top: 32px;
-  }
-
-  h2 {
-    color: var(--rs26-white);
-    margin: 8px 0 16px;
-  }
-
-  .team-intro {
-    color: var(--rs26-text);
-    max-width: 64ch;
-    margin-bottom: 32px;
-  }
-</style>
