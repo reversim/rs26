@@ -3,19 +3,28 @@ import Layout from "../../layouts/Layout.astro";
 import { getSessions } from "../../helpers/data/getSessions";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
 import FilterTabs from "../../components/filterTabs.astro";
+import PageHeader from "../../components/pageHeader.astro";
 import SessionCard from "../../components/sessions/sessionCard.astro";
 import type { AgendaSpeaker } from "../../types/agenda";
 import slug from "slug";
 import { event } from "../../config/event";
 
 const [sessions, speakers] = await Promise.all([getSessions(), getSpeakers()]);
-const speakersMap = new Map(speakers.map((speaker) => [String(speaker.id), speaker]));
+const speakersMap = new Map(
+  speakers.map((speaker) => [String(speaker.id), speaker]),
+);
 
-const sessionsList = sessions.rawSessionsList.filter((session) => session.description);
+const sessionsList = sessions.rawSessionsList.filter(
+  (session) => session.description,
+);
 ---
 
-<Layout>
-  <h2 class="page-title">Our Sessions</h2>
+<Layout havePaddingBottom={true}>
+  <PageHeader
+    eyebrow="The lineup"
+    title="Our Sessions"
+    description="Two days of deep engineering talks from Israel's dev community, covering everything from autonomous and agentic systems to the infrastructure, tools and practices that power them. Browse the full lineup below and filter by day to plan your schedule."
+  />
 
   <FilterTabs
     id="sessions-day-filter"
@@ -47,11 +56,6 @@ const sessionsList = sessions.rawSessionsList.filter((session) => session.descri
 </Layout>
 
 <style lang="scss">
-  .page-title {
-    color: var(--rs26-white);
-    margin-top: 24px;
-  }
-
   .sessions-container {
     display: flex;
     flex-direction: column;

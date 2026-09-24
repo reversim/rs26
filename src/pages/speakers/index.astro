@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
 import MemberGrid from "../../components/memberGrid.astro";
 import FilterTabs from "../../components/filterTabs.astro";
+import PageHeader from "../../components/pageHeader.astro";
 import type { TeamMember } from "../../types/team";
 import { event } from "../../config/event";
 
@@ -21,15 +22,11 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
 ---
 
 <Layout havePaddingBottom={true}>
-  <p class="eyebrow">The lineup</p>
-  <h2 class="page-title">Our Speakers</h2>
-  <p class="description">
-    We are thrilled to unveil our distinguished speaker lineup for the upcoming
-    Reversim Summit 2026. These accomplished individuals will delve into a
-    diverse array of technology topics during the conference. Get ready for an
-    engaging exploration of the latest trends and insights across the tech
-    landscape!
-  </p>
+  <PageHeader
+    eyebrow="Who's speaking"
+    title="Our Speakers"
+    description="We are thrilled to unveil our distinguished speaker lineup for the upcoming Reversim Summit 2026. These accomplished individuals will delve into a diverse array of technology topics during the conference. Get ready for an engaging exploration of the latest trends and insights across the tech landscape!"
+  />
   <FilterTabs
     id="speakers-day-filter"
     attr="day"
@@ -40,19 +37,3 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
   <MemberGrid members={speakerCards} pageBase="speaker" />
 </Layout>
 
-<style lang="scss">
-  .eyebrow {
-    margin-top: 32px;
-  }
-
-  .page-title {
-    color: var(--rs26-white);
-    margin: 8px 0 16px;
-  }
-
-  .description {
-    margin-bottom: 32px;
-    color: var(--rs26-text);
-    max-width: 64ch;
-  }
-</style>
