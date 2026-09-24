@@ -8,7 +8,7 @@ export async function getSpeakers(): Promise<AgendaSpeaker[]> {
   );
 
   const data: AgendaSpeaker[] = await result.json();
-  return data.map((speaker) => {
+  const speakers = data.map((speaker) => {
     const { day = 1 } =
       speakersDay.find((s: { speakerId: string }) => s.speakerId === speaker.id) || speaker;
     return {
@@ -17,6 +17,17 @@ export async function getSpeakers(): Promise<AgendaSpeaker[]> {
       day,
     };
   });
+
+  return shuffle(speakers);
+}
+
+function shuffle<T>(items: T[]): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }
 
 export async function getSpeakerById(id: string): Promise<AgendaSpeaker> {
