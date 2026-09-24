@@ -6,6 +6,7 @@ import FilterTabs from "../../components/filterTabs.astro";
 import SessionCard from "../../components/sessions/sessionCard.astro";
 import type { AgendaSpeaker } from "../../types/agenda";
 import slug from "slug";
+import { event } from "../../config/event";
 
 const [sessions, speakers] = await Promise.all([getSessions(), getSpeakers()]);
 const speakersMap = new Map(speakers.map((speaker) => [String(speaker.id), speaker]));
@@ -21,11 +22,7 @@ const sessionsList = sessions.rawSessionsList.filter((session) => session.descri
     attr="day"
     targetSelector=".session-card"
     sticky={true}
-    options={[
-      { value: "all", label: "Both days" },
-      { value: "1", label: "Day 1" },
-      { value: "2", label: "Day 2" },
-    ]}
+    options={event.days.options}
   />
 
   <div class="sessions-container">

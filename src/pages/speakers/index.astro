@@ -4,6 +4,7 @@ import { getSpeakers } from "../../helpers/data/getSpeakers";
 import MemberGrid from "../../components/memberGrid.astro";
 import FilterTabs from "../../components/filterTabs.astro";
 import type { TeamMember } from "../../types/team";
+import { event } from "../../config/event";
 
 const speakers = await getSpeakers();
 
@@ -34,11 +35,7 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
     attr="day"
     targetSelector=".member"
     sticky={true}
-    options={[
-      { value: "all", label: "Both days" },
-      { value: "1", label: "Day 1" },
-      { value: "2", label: "Day 2" },
-    ]}
+    options={event.days.options}
   />
   <MemberGrid members={speakerCards} pageBase="speaker" />
 </Layout>

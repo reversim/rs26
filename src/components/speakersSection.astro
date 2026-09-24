@@ -4,6 +4,7 @@ import HeadingLink from "./headingLink.astro";
 import MemberGrid from "./memberGrid.astro";
 import FilterTabs from "./filterTabs.astro";
 import type { TeamMember } from "../types/team";
+import { event } from "../config/event";
 
 const speakers = await getSpeakers();
 
@@ -33,11 +34,7 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
       targetSelector=".member"
       desktopOnly={true}
       sticky={true}
-      options={[
-        { value: "all", label: "Both days" },
-        { value: "1", label: "Day 1" },
-        { value: "2", label: "Day 2" },
-      ]}
+      options={event.days.options}
     />
     <MemberGrid
       members={speakerCards}

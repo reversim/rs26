@@ -1,4 +1,7 @@
 // Single source of truth for the event's headline content.
+
+import type { FilterOption } from "../components/filterTabs.astro";
+
 // Update these once per year instead of hunting through components.
 export const event = {
   name: "Reversim Summit 2026",
@@ -55,5 +58,16 @@ export const event = {
   sponsor: {
     label: "Become a sponsor",
     url: "/sponsors",
+  },
+  days: {
+    options: [
+      { value: "all", label: "All" },
+      { value: "1", label: "Day 1" },
+      { value: "2", label: "Day 2" },
+    ] as FilterOption[],
+    dates: {
+      1: "Nov 30, 2026",
+      2: "Dec 1, 2026",
+    },
   },
 } as const;
