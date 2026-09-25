@@ -24,7 +24,20 @@ import { event } from "../config/event";
           />
         )
       }
-      <span class="reg-soon"><i class="dot" aria-hidden="true"></i>Registration opening soon</span>
+      {
+        event.registration.display ? (
+          <Button
+            variant="orange"
+            text={event.registration.label}
+            href={event.registration.url}
+          />
+        ) : (
+          <span class="reg-soon">
+            <i class="dot" aria-hidden="true" />
+            Registration opening soon
+          </span>
+        )
+      }
     </div>
     <div class="meta-row">
       <span><b>{event.dates}</b></span>

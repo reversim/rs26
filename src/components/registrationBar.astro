@@ -1,0 +1,113 @@
+---
+import { event } from "../config/event";
+---
+
+{
+  event.registration.display && (
+    <div class="registration-bar" id="registrationBar" style="display: none;">
+      <p class="registration-bar-text">{event.registration.announcement}</p>
+      <div class="registration-bar-actions">
+        <a class="registration-bar-link" href={event.registration.url}>
+          {event.registration.label}
+        </a>
+        <button
+          class="registration-bar-close"
+          id="registrationBarClose"
+          type="button"
+          aria-label="Dismiss registration announcement"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  const STORAGE_KEY = "rs26-registration-bar-dismissed";
+  const bar = document.getElementById("registrationBar");
+  if (bar) {
+    if (localStorage.getItem(STORAGE_KEY) === "true") {
+      bar.remove();
+    } else {
+      bar.style.display = "flex";
+      document
+        .getElementById("registrationBarClose")
+        ?.addEventListener("click", () => {
+          localStorage.setItem(STORAGE_KEY, "true");
+          bar.remove();
+        });
+    }
+  }
+</script>
+
+<style lang="scss">
+  @use "../styles/breakpoints" as *;
+
+  .registration-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding: 10px clamp(18px, 4vw, 40px);
+    background: var(--rs26-orange);
+    color: var(--rs26-navy-3);
+    text-align: center;
+  }
+
+  .registration-bar-text {
+    margin: 0;
+    font-family: var(--rs26-body);
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .registration-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .registration-bar-link {
+    font-family: var(--rs26-body);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--rs26-navy-3);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+
+    &:hover {
+      color: var(--rs26-navy);
+    }
+  }
+
+  .registration-bar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(6, 15, 37, 0.12);
+    color: var(--rs26-navy-3);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.18s;
+
+    &:hover {
+      background: rgba(6, 15, 37, 0.22);
+    }
+  }
+
+  @media (max-width: $breakpoint-large) {
+    .registration-bar {
+      justify-content: flex-start;
+      text-align: left;
+    }
+  }
+</style>

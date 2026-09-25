@@ -55,6 +55,15 @@ export const event = {
     label: "CFP is open →",
     url: "https://sessionize.com/reversim-summit-2026/",
   },
+  // Hero CTA + sitewide bar. Flip `display` to true once registration is
+  // live — until then the hero keeps showing the "opening soon" pill and
+  // the bar stays off. Set `url` to the real registration link first.
+  registration: {
+    display: true,
+    label: "Register now →",
+    url: "#",
+    announcement: "Registration for RS26 is open — grab your spot.",
+  },
   sponsor: {
     label: "Become a sponsor",
     url: "/sponsors",
