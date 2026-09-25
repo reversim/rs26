@@ -2,8 +2,8 @@
 import Layout from "../../layouts/Layout.astro";
 import { getSessions } from "../../helpers/data/getSessions";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
-import FilterTabs from "../../components/filterTabs.astro";
-import PageHeader from "../../components/pageHeader.astro";
+import FilterTabs from "../../components/shared/filterTabs.astro";
+import PageTitle from "../../components/shared/pageTitle.astro";
 import SessionCard from "../../components/sessions/sessionCard.astro";
 import type { AgendaSpeaker } from "../../types/agenda";
 import slug from "slug";
@@ -20,7 +20,7 @@ const sessionsList = sessions.rawSessionsList.filter(
 ---
 
 <Layout havePaddingBottom={true}>
-  <PageHeader
+  <PageTitle
     eyebrow="The lineup"
     title="Our Sessions"
     description="Two days of deep engineering talks from Israel's dev community, covering everything from autonomous and agentic systems to the infrastructure, tools and practices that power them. Browse the full lineup below and filter by day to plan your schedule."

@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import { event } from "../config/event";
-import { sponsorTiers } from "../config/sponsorTiers";
-import { getSponsors } from "../helpers/data/getSponsors";
-import Button from "./button.astro";
-import HeadingLink from "./headingLink.astro";
+import { event } from "../../config/event";
+import { sponsorTiers } from "../../config/sponsorTiers";
+import { getSponsors } from "../../helpers/data/getSponsors";
+import Button from "../shared/button.astro";
+import HeadingLink from "../shared/headingLink.astro";
 import SponsorDialog from "./sponsorDialog.astro";
 
 const organizingSponsor = await getSponsors("organizing");
@@ -162,7 +162,7 @@ const tierMark: Record<string, string> = {
 {communitySponsors?.map((sponsor) => <SponsorDialog sponsor={sponsor} />)}
 
 <style lang="scss">
-  @use "../styles/breakpoints" as *;
+  @use "../../styles/breakpoints" as *;
 
   .tier {
     font-family: var(--rs26-mono);

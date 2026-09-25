@@ -1,6 +1,6 @@
 ---
 import MemberCard from "./memberCard.astro";
-import type { TeamMember } from "../types/team";
+import type { TeamMember } from "../../types/team";
 
 interface Props {
   members: TeamMember[];
@@ -21,7 +21,7 @@ const { members, pageBase = "about", mobileLayout = "grid" } = Astro.props;
 </div>
 
 <style lang="scss">
-  @use "../styles/breakpoints" as *;
+  @use "../../styles/breakpoints" as *;
 
   .member-grid {
     display: grid;

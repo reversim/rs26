@@ -1,9 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
-import MemberGrid from "../../components/memberGrid.astro";
-import FilterTabs from "../../components/filterTabs.astro";
-import PageHeader from "../../components/pageHeader.astro";
+import MemberGrid from "../../components/member/memberGrid.astro";
+import FilterTabs from "../../components/shared/filterTabs.astro";
+import PageTitle from "../../components/shared/pageTitle.astro";
 import type { TeamMember } from "../../types/team";
 import { event } from "../../config/event";
 
@@ -22,7 +22,7 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
 ---
 
 <Layout havePaddingBottom={true}>
-  <PageHeader
+  <PageTitle
     eyebrow="Who's speaking"
     title="Our Speakers"
     description="We are thrilled to unveil our distinguished speaker lineup for the upcoming Reversim Summit 2026. These accomplished individuals will delve into a diverse array of technology topics during the conference. Get ready for an engaging exploration of the latest trends and insights across the tech landscape!"

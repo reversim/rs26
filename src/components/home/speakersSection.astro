@@ -1,10 +1,10 @@
 ---
-import { getSpeakers } from "../helpers/data/getSpeakers";
-import HeadingLink from "./headingLink.astro";
-import MemberGrid from "./memberGrid.astro";
-import FilterTabs from "./filterTabs.astro";
-import type { TeamMember } from "../types/team";
-import { event } from "../config/event";
+import { getSpeakers } from "../../helpers/data/getSpeakers";
+import HeadingLink from "../shared/headingLink.astro";
+import MemberGrid from "../member/memberGrid.astro";
+import FilterTabs from "../shared/filterTabs.astro";
+import type { TeamMember } from "../../types/team";
+import { event } from "../../config/event";
 
 const speakers = await getSpeakers();
 

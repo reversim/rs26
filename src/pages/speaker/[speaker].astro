@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getImage } from "astro:assets";
 import dayjs from "dayjs";
-import MemberPage from "../../components/memberPage.astro";
+import MemberPage from "../../components/member/memberPage.astro";
 import { getSpeakers } from "../../helpers/data/getSpeakers";
 import { getSessions } from "../../helpers/data/getSessions";
 import { formatTime } from "../../helpers/agenda/agendaHelpers";
@@ -116,7 +116,9 @@ const showHour = false;
               <div class="talk-body">
                 <h4>{talk.name}</h4>
                 {talk.coSpeakers.length > 0 && (
-                  <p>with {talk.coSpeakers.map((s) => s.name).join(", ")}</p>
+                  <p>
+                    with {talk.coSpeakers.map((s) => s.name).join(", ")}
+                  </p>
                 )}
               </div>
             </a>
@@ -170,6 +172,7 @@ const showHour = false;
 
     &:hover {
       border-color: var(--rs26-orange);
+      box-shadow: 0 16px 30px -16px rgba(240, 122, 35, 0.35);
       transform: translateY(-2px);
     }
 

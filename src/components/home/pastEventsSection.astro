@@ -1,8 +1,8 @@
 ---
-import { getPastEventsImages } from "../helpers/data/getPastEventsImages";
-import HeadingLink from "./headingLink.astro";
-import PhotoCarousel from "./photoCarousel.astro";
-import type { CarouselImage } from "../types/slider";
+import { getPastEventsImages } from "../../helpers/data/getPastEventsImages";
+import HeadingLink from "../shared/headingLink.astro";
+import PhotoCarousel from "../shared/photoCarousel.astro";
+import type { CarouselImage } from "../../types/slider";
 
 const images: CarouselImage[] = await getPastEventsImages();
 ---

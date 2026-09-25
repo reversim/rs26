@@ -1,6 +1,6 @@
 // Single source of truth for the event's headline content.
 
-import type { FilterOption } from "../components/filterTabs.astro";
+import type { FilterOption } from "../components/shared/filterTabs.astro";
 
 // Update these once per year instead of hunting through components.
 export const event = {

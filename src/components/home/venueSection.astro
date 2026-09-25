@@ -1,5 +1,5 @@
 ---
-import Button from "./button.astro";
+import Button from "../shared/button.astro";
 
 const VENUE_LAT = 32.106411;
 const VENUE_LNG = 34.810085;
@@ -59,7 +59,7 @@ const googleMapsHref = `https://www.google.com/maps/dir/?api=1&destination=${VEN
 </section>
 
 <style lang="scss">
-  @use "../styles/breakpoints" as *;
+  @use "../../styles/breakpoints" as *;
 
   .venue-grid {
     display: grid;
