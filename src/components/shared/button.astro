@@ -1,5 +1,6 @@
 ---
 import Arrow from "../../assets/agenda/arrow.svg";
+import { AnalyticsEvent, analyticsAttrs } from "../../config/analytics";
 
 interface Props {
   /** Visible label. For variant="back" it's rendered as "Back to {text}". */
@@ -38,6 +39,11 @@ const classes = [
   .join(" ");
 
 const Tag = href ? "a" : "button";
+const tracking = analyticsAttrs(AnalyticsEvent.ButtonClick, {
+  button_text: text,
+  button_href: href,
+  button_variant: variant,
+});
 ---
 
 <Tag
@@ -46,6 +52,7 @@ const Tag = href ? "a" : "button";
   href={href}
   target={href ? target : undefined}
   rel={href && target === "_blank" ? "noopener" : undefined}
+  {...tracking}
 >
   {
     isBack ? (

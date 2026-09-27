@@ -2,6 +2,7 @@
 import Header from "../components/header/header.astro";
 import { Font } from "astro:assets";
 import { getRedirectTarget } from "../config/redirects";
+import GoogleAnalytics from "../components/shared/googleAnalytics.astro";
 import "../styles/global.scss";
 
 interface Props {
@@ -18,6 +19,8 @@ const {
 
 const redirectTarget = getRedirectTarget(Astro.url.pathname);
 const isBlocked = redirectTarget !== undefined;
+// Redirect stubs aren't real page views, and dev traffic stays out of GA.
+const loadAnalytics = import.meta.env.PROD && !isBlocked;
 
 const description =
   "Reversim Summit 2026 is Israel’s leading community-driven tech conference, bringing together developers, product managers, and data scientists for top-tier content and networking.";
@@ -76,19 +79,10 @@ const ogImage = new URL("/og-image-2026.png", Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Google tag (gtag.js) -->
-    <script
-      type="text/partytown"
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-PSS53H641T"></script>
-    <script type="text/partytown">
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        window.dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-PSS53H641T");
+    {loadAnalytics && <GoogleAnalytics />}
+    <script>
+      import { initAnalytics } from "../helpers/analytics";
+      initAnalytics();
     </script>
   </head>
   <body>

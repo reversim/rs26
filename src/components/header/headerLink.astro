@@ -1,4 +1,10 @@
 ---
+import {
+  AnalyticsEvent,
+  NavLocation,
+  analyticsAttrs,
+} from "../../config/analytics";
+
 interface Props {
   label: string;
   link: string;
@@ -6,12 +12,18 @@ interface Props {
 }
 
 const { label, link, variant } = Astro.props;
+const tracking = analyticsAttrs(AnalyticsEvent.NavClick, {
+  nav_location: NavLocation.HeaderBar,
+  nav_label: label,
+  nav_href: link,
+});
 ---
 
 <a
   class={`header-link ${variant ?? ""}`}
   target={variant === "button" ? "_blank" : "_self"}
   href={link}
+  {...tracking}
 >
   {label}
 </a>

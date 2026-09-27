@@ -1,4 +1,6 @@
 ---
+import { AnalyticsEvent, analyticsAttrs } from "../../config/analytics";
+
 export interface FilterOption {
   value: string;
   label: string;
@@ -70,6 +72,11 @@ const activeOption = options.find((option) => option.value === activeValue);
             { active: option.value === activeValue },
           ]}
           data-value={option.value}
+          {...analyticsAttrs(AnalyticsEvent.FilterClick, {
+            filter_id: id,
+            filter_value: option.value,
+            filter_label: option.label,
+          })}
         >
           {option.label}
         </button>

@@ -2,6 +2,11 @@
 import Button from "../shared/button.astro";
 import { event } from "../../config/event";
 import { isActiveNavLink, navLinks } from "../../config/nav";
+import {
+  AnalyticsEvent,
+  NavLocation,
+  analyticsAttrs,
+} from "../../config/analytics";
 
 // The toggle button itself lives in header.astro so it sits inside the header
 // bar; this component owns the panel and the behaviour for both.
@@ -19,6 +24,11 @@ const pathname = Astro.url.pathname;
             href={link.href}
             style={`--i:${index}`}
             aria-current={isActive ? "page" : undefined}
+            {...analyticsAttrs(AnalyticsEvent.NavClick, {
+              nav_location: NavLocation.Drawer,
+              nav_label: link.label,
+              nav_href: link.href,
+            })}
           >
             {link.label}
           </a>

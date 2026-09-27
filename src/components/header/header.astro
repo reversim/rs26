@@ -6,13 +6,28 @@ import { navLinks } from "../../config/nav";
 import { getAgendaCurrentDay } from "../../helpers/data/getAgendaCurrentDay";
 import HeaderLink from "./headerLink.astro";
 import NavDrawer from "./navDrawer.astro";
+import {
+  AnalyticsEvent,
+  ButtonId,
+  NavLocation,
+  analyticsAttrs,
+} from "../../config/analytics";
 
 const currentDayUrl = await getAgendaCurrentDay();
 ---
 
 <div class="header">
   <div class="inner-container">
-    <a class="logo-link" href="/" aria-label="Reversim home">
+    <a
+      class="logo-link"
+      href="/"
+      aria-label="Reversim home"
+      {...analyticsAttrs(AnalyticsEvent.NavClick, {
+        nav_location: NavLocation.Logo,
+        nav_label: event.name,
+        nav_href: "/",
+      })}
+    >
       <Image class="logo" src={logo} alt={event.name} height={100} />
     </a>
     <div class="navbar-container">
@@ -29,6 +44,9 @@ const currentDayUrl = await getAgendaCurrentDay();
       aria-label="Open menu"
       aria-expanded="false"
       aria-controls="navDrawer"
+      {...analyticsAttrs(AnalyticsEvent.ButtonClick, {
+        button_id: ButtonId.NavMenuToggle,
+      })}
     >
       <i></i><i></i><i></i>
     </button>
