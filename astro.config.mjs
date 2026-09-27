@@ -47,7 +47,9 @@ export default defineConfig({
   integrations: [
     partytown({
       config: {
-        forward: ["dataLayer.push"],
+        // gtag is forwarded so main-thread trackEvent() calls reach the
+        // worker, where gtag.js receives a real `arguments` object.
+        forward: ["dataLayer.push", "gtag"],
       },
     }),
     sitemap(),
