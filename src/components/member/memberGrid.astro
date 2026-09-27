@@ -1,6 +1,6 @@
 ---
 import MemberCard from "./memberCard.astro";
-import type { TeamMember } from "../types/team";
+import type { TeamMember } from "../../types/team";
 
 interface Props {
   members: TeamMember[];
@@ -21,7 +21,7 @@ const { members, pageBase = "about", mobileLayout = "grid" } = Astro.props;
 </div>
 
 <style lang="scss">
-  @use "../styles/breakpoints" as *;
+  @use "../../styles/breakpoints" as *;
 
   .member-grid {
     display: grid;
@@ -49,6 +49,8 @@ const { members, pageBase = "about", mobileLayout = "grid" } = Astro.props;
       -webkit-overflow-scrolling: touch;
       margin-inline: calc(-1 * clamp(20px, 5vw, 56px));
       padding: 8px clamp(20px, 5vw, 56px) 16px;
+      width: 100%;
+      margin: auto;
 
       &::-webkit-scrollbar {
         display: none;

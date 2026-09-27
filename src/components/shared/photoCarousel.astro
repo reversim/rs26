@@ -1,6 +1,11 @@
 ---
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
+import {
+  AnalyticsEvent,
+  ButtonId,
+  analyticsAttrs,
+} from "../../config/analytics";
 
 interface Slide {
   // Local assets get Astro image optimization; plain strings (already
@@ -110,11 +115,21 @@ const hasCaptions = slides.some((slide) => slide.caption);
       )
     }
     {!multi && hasCaptions && <p class="car-cap">{slides[0].caption ?? ""}</p>}
-    <button class="car-btn car-prev" type="button" aria-label="Previous photo"
-      >‹</button
+    <button
+      class="car-btn car-prev"
+      type="button"
+      aria-label="Previous photo"
+      {...analyticsAttrs(AnalyticsEvent.ButtonClick, {
+        button_id: ButtonId.CarouselPrev,
+      })}>‹</button
     >
-    <button class="car-btn car-next" type="button" aria-label="Next photo"
-      >›</button
+    <button
+      class="car-btn car-next"
+      type="button"
+      aria-label="Next photo"
+      {...analyticsAttrs(AnalyticsEvent.ButtonClick, {
+        button_id: ButtonId.CarouselNext,
+      })}>›</button
     >
   </div>
 
@@ -276,7 +291,7 @@ const hasCaptions = slides.some((slide) => slide.caption);
 </script>
 
 <style lang="scss">
-  @use "../styles/breakpoints" as *;
+  @use "../../styles/breakpoints" as *;
 
   .photo-carousel {
     outline: none;

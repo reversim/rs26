@@ -1,8 +1,8 @@
 ---
-import type { TeamMember } from "../types/team";
-import Button from "./button.astro";
+import type { TeamMember } from "../../types/team";
+import Button from "../shared/button.astro";
 import { Picture } from "astro:assets";
-import SocialLinks from "./socialLinks.astro";
+import SocialLinks from "../shared/socialLinks.astro";
 
 interface Props extends Partial<TeamMember> {
   socialList: Record<string, string | undefined>;
@@ -65,7 +65,7 @@ const {
 </div>
 
 <style lang="scss">
-  @use "../styles/breakpoints" as *;
+  @use "../../styles/breakpoints" as *;
 
   .member {
     position: relative;

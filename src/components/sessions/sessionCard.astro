@@ -2,6 +2,11 @@
 import dayjs from "dayjs";
 import type { AgendaSpeaker } from "../../types/agenda";
 import SessionCardAvatar from "./sessionCardAvatar.astro";
+import {
+  AnalyticsEvent,
+  SessionSource,
+  analyticsAttrs,
+} from "../../config/analytics";
 
 interface Props {
   title: string;
@@ -30,7 +35,16 @@ const startTime = showTime && startsAt ? dayjs(startsAt).format("H:mm") : null;
 const endTime = showTime && endsAt ? dayjs(endsAt).format("H:mm") : null;
 ---
 
-<a href={href} class="session-card" data-day={day}>
+<a
+  href={href}
+  class="session-card"
+  data-day={day}
+  {...analyticsAttrs(AnalyticsEvent.SessionSelect, {
+    session_title: title,
+    session_href: href,
+    session_source: SessionSource.SessionsList,
+  })}
+>
   {
     showTime && startTime && (
       <div class="time">

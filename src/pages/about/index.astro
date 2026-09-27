@@ -1,6 +1,6 @@
 ---
-import MemberGrid from "../../components/memberGrid.astro";
-import PageHeader from "../../components/pageHeader.astro";
+import MemberGrid from "../../components/member/memberGrid.astro";
+import PageTitle from "../../components/shared/pageTitle.astro";
 import { getTeamMembers } from "../../helpers/data/getTeam";
 import Layout from "../../layouts/Layout.astro";
 
@@ -8,7 +8,7 @@ const teamMembers = await getTeamMembers();
 ---
 
 <Layout havePaddingBottom={true}>
-  <PageHeader
+  <PageTitle
     eyebrow="The people behind it"
     title="Our team"
     description="Reversim Summit 2026 is a testament to community collaboration, driven by a dedicated team of passionate volunteers who are experts in their respective fields. Our content committee, comprised of enthusiastic individuals, works tirelessly to curate an enriching and insightful experience for all attendees."
