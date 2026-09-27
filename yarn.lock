@@ -44,14 +44,6 @@
     unist-util-visit-parents "^6.0.1"
     vfile "^6.0.3"
 
-"@astrojs/partytown@^2.1.4":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-2.1.8.tgz#9db131fef0738e93fdd6f74b319f54619894541c"
-  integrity sha512-iCRNNPqvdQEORyAYC8jN8nTCN2wW66WS+Pft2fhqq52cj3GcWvzlAZlyfjtpCeiEYI0op6u5OtWqqItiS7INDA==
-  dependencies:
-    "@qwik.dev/partytown" "^0.14.4"
-    mrmime "^2.0.1"
-
 "@astrojs/prism@3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@astrojs/prism/-/prism-3.3.0.tgz#5888fcd5665d416450a4fe55b1b7b701b8d586d9"
@@ -475,11 +467,6 @@
     "@parcel/watcher-win32-arm64" "2.5.0"
     "@parcel/watcher-win32-ia32" "2.5.0"
     "@parcel/watcher-win32-x64" "2.5.0"
-
-"@qwik.dev/partytown@^0.14.4":
-  version "0.14.4"
-  resolved "https://registry.yarnpkg.com/@qwik.dev/partytown/-/partytown-0.14.4.tgz#be93ef489f7b19c521b30056fc8729f01212ae08"
-  integrity sha512-XGBgDuxgG7CsAs4PZ32GUmbD029nAeCR4VGyJRJnNp3r3uVjbZt8Dkxe8cw+f8xY6Dh8VI5cb3ygEZCqSftwtA==
 
 "@rollup/pluginutils@^5.2.0":
   version "5.3.0"
