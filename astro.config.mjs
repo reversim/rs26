@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig, fontProviders } from "astro/config";
-import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
@@ -44,14 +43,5 @@ export default defineConfig({
       },
     ],
   },
-  integrations: [
-    partytown({
-      config: {
-        // gtag is forwarded so main-thread trackEvent() calls reach the
-        // worker, where gtag.js receives a real `arguments` object.
-        forward: ["dataLayer.push", "gtag"],
-      },
-    }),
-    sitemap(),
-  ],
+  integrations: [sitemap()],
 });

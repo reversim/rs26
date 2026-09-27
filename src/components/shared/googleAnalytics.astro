@@ -4,13 +4,34 @@ import { GA_MEASUREMENT_ID } from "../../config/analytics";
 const gtagSrc = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
 ---
 
-<!-- Google tag (gtag.js), run off the main thread by Partytown. -->
-<script is:inline type="text/partytown" async src={gtagSrc}></script>
-<script is:inline type="text/partytown" define:vars={{ GA_MEASUREMENT_ID }}>
+<!--
+  Google tag (gtag.js). The gtag() stub is defined up front so events queue in
+  dataLayer immediately; the library itself loads only once the page is idle,
+  keeping it off the critical path. It runs on the main thread (not Partytown)
+  so GA's own beacon can deliver events from clicks that leave the page.
+-->
+<script is:inline define:vars={{ GA_MEASUREMENT_ID, gtagSrc }}>
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () {
     window.dataLayer.push(arguments);
   };
   window.gtag("js", new Date());
   window.gtag("config", GA_MEASUREMENT_ID);
+
+  const loadGtag = () => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = gtagSrc;
+    document.head.appendChild(script);
+  };
+
+  window.addEventListener(
+    "load",
+    () => {
+      if ("requestIdleCallback" in window)
+        window.requestIdleCallback(loadGtag, { timeout: 2000 });
+      else setTimeout(loadGtag, 0);
+    },
+    { once: true },
+  );
 </script>
