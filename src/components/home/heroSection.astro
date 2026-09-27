@@ -1,6 +1,11 @@
 ---
 import Button from "../shared/button.astro";
 import { event } from "../../config/event";
+import {
+  AnalyticsEvent,
+  RegistrationSource,
+  analyticsAttrs,
+} from "../../config/analytics";
 ---
 
 <section class="hero">
@@ -30,6 +35,10 @@ import { event } from "../../config/event";
             variant="orange"
             text={event.registration.label}
             href={event.registration.url}
+            analytics={analyticsAttrs(AnalyticsEvent.RegistrationClick, {
+              registration_source: RegistrationSource.HeroButton,
+              registration_href: event.registration.url,
+            })}
           />
         ) : (
           <span class="reg-soon">

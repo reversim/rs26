@@ -1,5 +1,10 @@
 ---
 import { event } from "../config/event";
+import {
+  AnalyticsEvent,
+  RegistrationSource,
+  analyticsAttrs,
+} from "../config/analytics";
 ---
 
 {
@@ -7,7 +12,14 @@ import { event } from "../config/event";
     <div class="registration-bar" id="registrationBar" style="display: none;">
       <p class="registration-bar-text">{event.registration.announcement}</p>
       <div class="registration-bar-actions">
-        <a class="registration-bar-link" href={event.registration.url}>
+        <a
+          class="registration-bar-link"
+          href={event.registration.url}
+          {...analyticsAttrs(AnalyticsEvent.RegistrationClick, {
+            registration_source: RegistrationSource.BannerLink,
+            registration_href: event.registration.url,
+          })}
+        >
           {event.registration.label}
         </a>
         <button
@@ -15,6 +27,7 @@ import { event } from "../config/event";
           id="registrationBarClose"
           type="button"
           aria-label="Dismiss registration announcement"
+          {...analyticsAttrs(AnalyticsEvent.RegistrationBannerClose, {})}
         >
           <span aria-hidden="true">&times;</span>
         </button>

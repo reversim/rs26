@@ -12,6 +12,8 @@ export const AnalyticsEvent = {
   NavClick: "nav_click",
   MemberSelect: "member_select",
   SessionSelect: "session_select",
+  RegistrationClick: "registration_click",
+  RegistrationBannerClose: "registration_banner_close",
 } as const;
 
 export type AnalyticsEventName =
@@ -28,6 +30,12 @@ export const NavLocation = {
 export const SessionSource = {
   SessionsList: "sessions_list",
   SpeakerPage: "speaker_page",
+} as const;
+
+// Which registration entry point was clicked.
+export const RegistrationSource = {
+  HeroButton: "hero_button",
+  BannerLink: "banner_link",
 } as const;
 
 // Buttons that aren't the shared <Button> component get a stable id here.
@@ -71,6 +79,11 @@ export interface AnalyticsEventParams {
     session_href: string;
     session_source: ValueOf<typeof SessionSource>;
   };
+  [AnalyticsEvent.RegistrationClick]: {
+    registration_source: ValueOf<typeof RegistrationSource>;
+    registration_href: string;
+  };
+  [AnalyticsEvent.RegistrationBannerClose]: Record<string, never>;
 }
 
 // Declarative tracking: elements carry these attributes and one delegated
