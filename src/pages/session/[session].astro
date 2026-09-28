@@ -163,6 +163,13 @@ const track = getTrackName(session);
     background-color: var(--rs26-panel-2);
     border: 1px solid var(--rs26-navy-line);
   }
+  // Long unbroken strings (URLs, code identifiers) would otherwise push the
+  // card wider than the viewport on mobile.
+  h2,
+  .description {
+    overflow-wrap: anywhere;
+  }
+
   h2 {
     text-align: start;
     margin-top: 24px;
