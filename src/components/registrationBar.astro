@@ -1,0 +1,131 @@
+---
+import { event } from "../config/event";
+import {
+  AnalyticsEvent,
+  RegistrationSource,
+  analyticsAttrs,
+} from "../config/analytics";
+---
+
+{
+  event.registration.display && (
+    <div class="registration-bar" id="registrationBar" style="display: none;">
+      <p class="registration-bar-text">{event.registration.announcement}</p>
+      <a
+        class="registration-bar-link"
+        href={event.registration.url}
+        {...analyticsAttrs(AnalyticsEvent.RegistrationClick, {
+          registration_source: RegistrationSource.BannerLink,
+          registration_href: event.registration.url,
+        })}
+      >
+        {event.registration.label}
+      </a>
+      <button
+        class="registration-bar-close"
+        id="registrationBarClose"
+        type="button"
+        aria-label="Dismiss registration announcement"
+        {...analyticsAttrs(AnalyticsEvent.RegistrationBannerClose, {})}
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  )
+}
+
+<script>
+  const STORAGE_KEY = "rs26-registration-bar-dismissed";
+  const bar = document.getElementById("registrationBar");
+  if (bar) {
+    if (localStorage.getItem(STORAGE_KEY) === "true") {
+      bar.remove();
+    } else {
+      bar.style.display = "flex";
+      document
+        .getElementById("registrationBarClose")
+        ?.addEventListener("click", () => {
+          localStorage.setItem(STORAGE_KEY, "true");
+          bar.remove();
+        });
+    }
+  }
+</script>
+
+<style lang="scss">
+  @use "../styles/breakpoints" as *;
+
+  .registration-bar {
+    --bar-gutter: clamp(18px, 4vw, 40px);
+    --close-size: 26px;
+    --close-space: calc(var(--bar-gutter) + var(--close-size) + 12px);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 18px;
+    row-gap: 4px;
+    flex-wrap: wrap;
+    // Symmetric inline padding keeps the text truly centered while
+    // leaving room for the close button on the right.
+    padding: 10px var(--close-space);
+    background: var(--rs26-orange);
+    color: var(--rs26-navy-3);
+    text-align: center;
+  }
+
+  .registration-bar-text {
+    margin: 0;
+    font-family: var(--rs26-body);
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .registration-bar-link {
+    font-family: var(--rs26-body);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--rs26-navy-3);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+
+    &:hover {
+      color: var(--rs26-navy);
+    }
+  }
+
+  .registration-bar-close {
+    position: absolute;
+    top: 50%;
+    right: var(--bar-gutter);
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--close-size);
+    height: var(--close-size);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(6, 15, 37, 0.12);
+    color: var(--rs26-navy-3);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.18s;
+
+    &:hover {
+      background: rgba(6, 15, 37, 0.22);
+    }
+  }
+
+  @media (max-width: $breakpoint-large) {
+    .registration-bar {
+      justify-content: flex-start;
+      padding-left: var(--bar-gutter);
+      text-align: left;
+    }
+  }
+</style>

@@ -14,6 +14,8 @@ interface Props {
   fullWidth?: boolean;
   id?: string;
   class?: string;
+  /** Tracking attributes from analyticsAttrs(); defaults to a button_click event. */
+  analytics?: Record<string, string>;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   fullWidth = false,
   id,
   class: className = "",
+  analytics,
 } = Astro.props;
 
 const isBack = variant === "back";
@@ -39,11 +42,13 @@ const classes = [
   .join(" ");
 
 const Tag = href ? "a" : "button";
-const tracking = analyticsAttrs(AnalyticsEvent.ButtonClick, {
-  button_text: text,
-  button_href: href,
-  button_variant: variant,
-});
+const tracking =
+  analytics ??
+  analyticsAttrs(AnalyticsEvent.ButtonClick, {
+    button_text: text,
+    button_href: href,
+    button_variant: variant,
+  });
 ---
 
 <Tag

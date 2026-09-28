@@ -1,5 +1,6 @@
 ---
 import Header from "../components/header/header.astro";
+import RegistrationBar from "../components/registrationBar.astro";
 import { Font } from "astro:assets";
 import { getRedirectTarget } from "../config/redirects";
 import GoogleAnalytics from "../components/shared/googleAnalytics.astro";
@@ -86,6 +87,7 @@ const ogImage = new URL("/og-image-2026.png", Astro.site);
     </script>
   </head>
   <body>
+    {!isBlocked && displayHeader && <RegistrationBar />}
     {!isBlocked && displayHeader && <Header />}
     {
       !isBlocked && (
