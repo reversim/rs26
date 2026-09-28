@@ -121,6 +121,12 @@ import {
     }
   }
 
+  // The nav drawer is laid out assuming the header sits at the top of the
+  // viewport; the bar would push the header (logo and X) down over the links.
+  :global(body.nav-open) .registration-bar {
+    display: none !important;
+  }
+
   @media (max-width: $breakpoint-large) {
     .registration-bar {
       justify-content: flex-start;

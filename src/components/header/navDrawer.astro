@@ -5,6 +5,7 @@ import { isActiveNavLink, navLinks } from "../../config/nav";
 import {
   AnalyticsEvent,
   NavLocation,
+  RegistrationSource,
   analyticsAttrs,
 } from "../../config/analytics";
 
@@ -39,7 +40,20 @@ const pathname = Astro.url.pathname;
 
   <div class="drawer-foot">
     <span class="head-date">{event.dates}</span>
-    <Button text={event.sponsor.label} href={event.sponsor.url} />
+    {
+      event.registration.display ? (
+        <Button
+          text={event.registration.label}
+          href={event.registration.url}
+          analytics={analyticsAttrs(AnalyticsEvent.RegistrationClick, {
+            registration_source: RegistrationSource.NavDrawer,
+            registration_href: event.registration.url,
+          })}
+        />
+      ) : (
+        <Button text={event.sponsor.label} href={event.sponsor.url} />
+      )
+    }
   </div>
 </div>
 

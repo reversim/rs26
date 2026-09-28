@@ -36,6 +36,7 @@ export const SessionSource = {
 export const RegistrationSource = {
   HeroButton: "hero_button",
   BannerLink: "banner_link",
+  NavDrawer: "nav_drawer",
 } as const;
 
 // Buttons that aren't the shared <Button> component get a stable id here.
