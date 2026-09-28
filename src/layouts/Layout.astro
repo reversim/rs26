@@ -20,7 +20,6 @@ const {
 
 const redirectTarget = getRedirectTarget(Astro.url.pathname);
 const isBlocked = redirectTarget !== undefined;
-console.log({isBlocked})
 // Redirect stubs aren't real page views, and dev traffic stays out of GA.
 const loadAnalytics = import.meta.env.PROD && !isBlocked;
 
