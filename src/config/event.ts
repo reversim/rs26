@@ -63,8 +63,8 @@ export const event = {
     label: "Register now →",
     url: "https://ti.to/reversim-summit/2026/",
     announcement: "Registration for RS26 is open — grab your spot.",
-    notice:
-      "We're aware of an issue with payments and are working on a fix — it might take some time to resolve.",
+    notice: `We’re currently experiencing issues with ticket payments and are working with our payment provider to resolve them. At the moment, paid tickets cannot be purchased.
+Please check back in a day or two. We apologize for the inconvenience and appreciate your patience.`,
   },
   sponsor: {
     label: "Become a sponsor",

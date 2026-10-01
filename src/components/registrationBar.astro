@@ -28,7 +28,9 @@ import {
           <span class="registration-bar-notice-icon" aria-hidden="true">
             !
           </span>
-          <span>{event.registration.notice}</span>
+          <span class="registration-bar-notice-text">
+            {event.registration.notice}
+          </span>
         </p>
       )}
       <button
@@ -109,12 +111,18 @@ import {
     font-family: var(--rs26-body);
     font-weight: 600;
     font-size: 0.82rem;
+    white-space: pre-wrap;
     line-height: 1.35;
     color: var(--rs26-white);
     background: rgba(6, 15, 37, 0.82);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
     padding: 6px 14px;
+
+    .registration-bar-notice-text {
+      text-align: left;
+      margin-left: 1em;
+    }
   }
 
   .registration-bar-notice-icon {
@@ -124,12 +132,12 @@ import {
     flex-shrink: 0;
     width: 16px;
     height: 16px;
+    line-height: 0;
     border-radius: 50%;
     background: var(--rs26-orange);
     color: var(--rs26-navy-3);
     font-size: 0.7rem;
     font-weight: 800;
-    line-height: 1;
   }
 
   .registration-bar-link {
