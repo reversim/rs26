@@ -63,6 +63,8 @@ export const event = {
     label: "Register now →",
     url: "https://ti.to/reversim-summit/2026/",
     announcement: "Registration for RS26 is open — grab your spot.",
+    notice:
+      "We're aware of an issue with payments and are working on a fix — it might take some time to resolve.",
   },
   sponsor: {
     label: "Become a sponsor",
