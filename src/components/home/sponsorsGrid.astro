@@ -87,7 +87,7 @@ const tierMark: Record<string, string> = {
                 aria-label={sponsor.companyName}
               >
                 <Image
-                  class={`sponsor-logo ${sponsor.slug}`}
+                  class={`sponsor-logo logo-${sponsor.slug}`}
                   src={sponsor.companyNameLogo}
                   width={480}
                   height={240}
@@ -114,7 +114,7 @@ const tierMark: Record<string, string> = {
                 aria-label={sponsor.companyName}
               >
                 <Image
-                  class={`sponsor-logo ${sponsor.slug}`}
+                  class={`sponsor-logo logo-${sponsor.slug}`}
                   src={sponsor.companyNameLogo}
                   width={400}
                   height={200}
@@ -143,7 +143,7 @@ const tierMark: Record<string, string> = {
                 aria-label={sponsor.companyName}
               >
                 <Image
-                  class={`sponsor-logo ${sponsor.slug} clickable-sponsor`}
+                  class={`sponsor-logo logo-${sponsor.slug} clickable-sponsor`}
                   src={sponsor.companyNameLogo}
                   width={300}
                   height={150}
@@ -226,7 +226,7 @@ const tierMark: Record<string, string> = {
     max-width: 72%;
 
     // …except Teads (organizing sponsor keeps its real colors).
-    &.teads {
+    &.logo-teads {
       filter: brightness(1) invert(0);
     }
   }

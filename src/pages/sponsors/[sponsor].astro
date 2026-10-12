@@ -74,7 +74,7 @@ const carouselImagesPromise = await Promise.all(
       <div class="sp-head">
         <div class="sp-logo">
           <Image
-            class={`company-logo ${slug}`}
+            class={`company-logo logo-${slug}`}
             src={companyNameLogo}
             alt={companyName}
             height={500}
@@ -285,7 +285,7 @@ const carouselImagesPromise = await Promise.all(
       object-fit: contain;
       filter: brightness(0) invert(1);
 
-      &.teads {
+      &.logo-teads {
         filter: brightness(1) invert(0);
       }
     }
