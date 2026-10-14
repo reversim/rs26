@@ -319,12 +319,14 @@ const carouselImagesPromise = await Promise.all(
 
   .sp-grid {
     display: grid;
-    grid-template-columns: 1.25fr 0.75fr;
+    // minmax(0, …) so long nowrap chips can't stretch the columns past the
+    // viewport — the chips truncate with an ellipsis instead.
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
     gap: clamp(30px, 5vw, 64px);
     align-items: start;
 
     @media (max-width: $breakpoint-medium) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 36px;
     }
   }
@@ -357,8 +359,11 @@ const carouselImagesPromise = await Promise.all(
     gap: 9px;
 
     .chip {
-      display: inline-flex;
+      display: inline-block;
       align-items: center;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-family: var(--rs26-mono);
       font-size: 0.78rem;
       letter-spacing: 0.04em;
