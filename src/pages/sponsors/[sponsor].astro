@@ -59,7 +59,7 @@ const websiteLabel = website?.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 const carouselImagesPromise = await Promise.all(
   carouselImages.map(async (image) => {
-    return await getImage({ src: image, width: 1000, height: 600 });
+    return await getImage({ src: image, width: 1920, height: 1080 });
   }),
 );
 ---
