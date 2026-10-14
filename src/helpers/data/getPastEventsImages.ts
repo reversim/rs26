@@ -21,8 +21,8 @@ export async function getPastEventsImages(): Promise<CarouselImage[]> {
       .map(async ([path, mod]) => {
         const processed = await getImage({
           src: mod.default,
-          width: 1920,
-          height: 1080,
+          width: 1280,
+          height: 720,
         });
         return {
           src: processed.src,
