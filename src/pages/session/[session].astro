@@ -123,7 +123,7 @@ const speakerNames = joinNames(
 );
 const shareTitle = [withDirectionMark(title), speakerNames]
   .filter(Boolean)
-  .join(" — ");
+  .join(" | ");
 const shareDescription = [
   [speakerNames, `${SITE_NAME}, Day ${day}`].filter(Boolean).join(" · "),
   withDirectionMark(excerpt(description)),

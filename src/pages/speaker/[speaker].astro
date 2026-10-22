@@ -96,7 +96,7 @@ const talkNames = (talks || []).map(
 );
 const shareTitle = [fullName, talkNames.join(" / ")]
   .filter(Boolean)
-  .join(" — ");
+  .join(" | ");
 const shareDescription = [
   tagLine,
   `Speaking at ${SITE_NAME}${day ? `, Day ${day}` : ""}${talkNames.length ? `: ${talkNames.join(", ")}` : ""}`,

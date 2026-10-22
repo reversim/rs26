@@ -31,7 +31,7 @@ export function excerpt(text: string | null | undefined, max = 200): string {
   if (chars.length <= max) return clean;
   const cut = chars.slice(0, max).join("");
   const lastSpace = cut.lastIndexOf(" ");
-  return `${(lastSpace > max / 2 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.\-–—]+$/, "")}…`;
+  return `${(lastSpace > max / 2 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.\-\u2013\u2014]+$/, "")}…`;
 }
 
 /** Joins names as "A", "A & B" or "A, B & C". */
