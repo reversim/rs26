@@ -11,7 +11,7 @@ export interface Redirect {
 
 export type RedirectRule = string | Redirect;
 
-export const redirects: RedirectRule[] = [{from: "/agenda", to: "/sessions"}];
+export const redirects: RedirectRule[] = [{ from: "/agenda", to: "/sessions" }];
 
 // "/agenda" also matches nested routes like "/agenda/day-1".
 export function getRedirectTarget(pathname: string): string | undefined {

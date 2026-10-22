@@ -8,6 +8,7 @@ import { getSessions } from "../../helpers/data/getSessions";
 import { formatTime } from "../../helpers/agenda/agendaHelpers";
 import { supportedSocials } from "../../config/socials";
 import Layout from "../../layouts/Layout.astro";
+import { SITE_NAME, withDirectionMark } from "../../helpers/meta";
 import slugify from "slug";
 import {
   AnalyticsEvent,
@@ -62,6 +63,7 @@ const {
   bio,
   links,
   talks,
+  day,
 } = Astro.props;
 
 const socialLinks: Record<string, string> = {};
@@ -87,9 +89,28 @@ const image = await getImage({
 // TODO: remove this line
 // Hours aren't confirmed as accurate yet — flip this once the schedule's times are trustworthy.
 const showHour = false;
+
+// Link preview: the speaker and their talk, without start times.
+const talkNames = (talks || []).map(
+  (talk) => `“${withDirectionMark(talk.name)}”`,
+);
+const shareTitle = [fullName, talkNames.join(" / ")]
+  .filter(Boolean)
+  .join(" — ");
+const shareDescription = [
+  tagLine,
+  `Speaking at ${SITE_NAME}${day ? `, Day ${day}` : ""}${talkNames.length ? `: ${talkNames.join(", ")}` : ""}`,
+]
+  .filter(Boolean)
+  .join(" · ");
 ---
 
-<Layout havePaddingBottom={true}>
+<Layout
+  havePaddingBottom={true}
+  title={`${fullName} | Reversim 2026`}
+  shareTitle={shareTitle}
+  description={shareDescription}
+>
   <MemberPage
     type="speaker"
     socialList={socialLinks}
