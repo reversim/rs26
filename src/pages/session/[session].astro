@@ -132,11 +132,7 @@ const shareDescription = [
   .join(". ");
 ---
 
-<Layout
-  title={`${title} | Reversim 2026`}
-  shareTitle={shareTitle}
-  description={shareDescription}
->
+<Layout share={{ title: shareTitle, description: shareDescription }}>
   <Button variant="back" text="Sessions" href="/sessions" />
   <div class="session-container">
     <h2>{title}</h2>

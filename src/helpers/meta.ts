@@ -3,14 +3,14 @@
 
 export const SITE_NAME = "Reversim Summit 2026";
 
-const RTL_CHAR = /[֐-ࣿיִ-﷿ﹰ-﻿]/;
-const LTR_CHAR = /[A-Za-zÀ-ɏ]/;
+const RTL_CHAR = /[\u0590-\u08FF\uFB1D-\uFDFF\uFE70-\uFEFF]/;
+const LTR_CHAR = /[A-Za-z\u00C0-\u024F]/;
 // Right-to-left mark: keeps trailing punctuation of Hebrew text on the
 // correct side when a preview renders it in a left-to-right context.
-const RLM = "‏";
+const RLM = "\u200F";
 
 /** True when the text's first strong-direction character is right-to-left. */
-export function isRtl(text: string): boolean {
+function isRtl(text: string): boolean {
   for (const char of text) {
     if (RTL_CHAR.test(char)) return true;
     if (LTR_CHAR.test(char)) return false;
