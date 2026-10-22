@@ -1,0 +1,3446 @@
+{"speakers":
+[
+  {
+    "id": "106e7bd0-4144-4891-b741-781336f92188",
+    "firstName": "Alon",
+    "lastName": "Nativ",
+    "fullName": "Alon Nativ",
+    "bio": "Alon is a developer at heart and a monitoring freak, for the last 15 years he has been building systems as developers, managing large teams and hacking systems. he's passionate about building large scale systems, and the process of making an impact, always looking for a way to improve the development process and optimize the system.\r\n\r\nPublic speaker\r\nTalking about development in reversim podcast (for ~8 years)\r\nMentoring managers & speakers\r\n\r\nAnd most important father of 3 kids and husband of an amazing wife :)",
+    "tagLine": "Problem Solver @ Tomorrow.io",
+    "profilePicture": "https://cdn.sessionize.com/image/a02d-400o400o1-ax9JWRqCa5FFZVKYyP1NK5.jpg",
+    "sessions": [
+      {
+        "id": 1285650,
+        "name": "Stop Lying to Your Agent! Build a Service Graph It Can Trust"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/anativ",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/anativ",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://tomorrow.io",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "cff85485-426e-4194-8608-d7b166bf72fe",
+    "firstName": "Alon",
+    "lastName": "Wolenitz",
+    "fullName": "Alon Wolenitz",
+    "bio": "Veteran software developer and bug detective with 10+ years of experience. Active open source contributor, community organizer, and mentor to young developers. I'm passionate about solving complex problems and making technical knowledge accessible to all. As a speaker, I share practical insights from the trenches, helping developers level up their skills and confidence. Father, educator, and firm believer in the power of community.",
+    "tagLine": "Building Web Search Agents @ Nimble",
+    "profilePicture": "https://cdn.sessionize.com/image/0932-400o400o1-Vtu67UG4a5YygVpxrJqDEP.jpg",
+    "sessions": [
+      {
+        "id": 1295382,
+        "name": "Taste: The Engineering Skill Nobody Taught Us"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/alonwo",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/alonwo/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://medium.com/@alonwo",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.drorsoft.com",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/alonwo",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "28d046f8-2c41-44d1-8cc4-861ea478cea3",
+    "firstName": "Amit",
+    "lastName": "Zur",
+    "fullName": "Amit Zur",
+    "bio": "Amit Zur measures his work by business impact. As an engineer turned manager turned co-founder, he learned that the hardest problems in shipping software are rarely technical: aligning stakeholders, translating vision into systems that actually ship, and questioning processes that have outlived their reasons.\r\n\r\nToday he works with tech organizations and founders as a consultant, helping them find their highest-impact move and clear what's in the way.\r\n\r\nWeirdly enough, he still writes code, and enjoys it as much as ever. Previously a Mozilla TechSpeaker, he has spent years speaking, organizing and volunteering in Israel's developer communities.",
+    "tagLine": "Independent consultant",
+    "profilePicture": "https://cdn.sessionize.com/image/e26d-400o400o1-aekpqG2udynehvYG8CZndo.png",
+    "sessions": [
+      {
+        "id": 1295750,
+        "name": "A Yak Walks into a Standup"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/amitzur",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/amitzur/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/amit-zur",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "c9b7c94c-47dc-4280-91de-5b91640eeb6f",
+    "firstName": "Avi",
+    "lastName": "Kivity",
+    "fullName": "Avi Kivity",
+    "bio": "Author of the Linux Kernel-based Virtual Machine (KVM) hypervisor\r\n\r\nex-Exanet\r\n\r\nAuthor of Seastar, a high-performance asynchronous I/O library\r\n\r\nCo-founder and CTO of ScyllaDB",
+    "tagLine": "CTO @ ScyllaDB",
+    "profilePicture": "https://cdn.sessionize.com/image/7fa8-400o400o1-XcG4UNohjz9aZBVyreZFyY.jpg",
+    "sessions": [
+      {
+        "id": 1242388,
+        "name": "Minicloud: a high-fidelity multi-cloud simulator"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/AviKivity",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/avikivity/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.scylladb.com",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/avi-kivity",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "0c3a95a6-32fd-4aa8-bffc-a178a8f40076",
+    "firstName": "Avinoam",
+    "lastName": "Bitton",
+    "fullName": "Avinoam Bitton",
+    "bio": "Avinoam Bitton is a Research Scientist at Specific AI. He spent several years in IMOD, where he led research teams developing advanced Computer Vision solutions. He later joined Philips, where he developed AI-driven solutions for cardiac ultrasound, enhancing diagnostic consistency and accelerating clinical decision-making. He holds a Master’s degree in Computer Science.",
+    "tagLine": "Applied Research Scientist at Specific AI",
+    "profilePicture": "https://cdn.sessionize.com/image/1fa6-400o400o1-WVQkNqTbdGXmJbHzCDYWs3.jpg",
+    "sessions": [
+      {
+        "id": 1295698,
+        "name": "\"Forward to Shraga!\" — Training a Small Agent to Handle 1M Production Logs a Day"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/avinoam-bitton-70810ba9",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "ec6c2ebd-3765-481b-8bf8-c5abc5a71c9c",
+    "firstName": "Avishai",
+    "lastName": "Ish-Shalom",
+    "fullName": "Avishai Ish-Shalom",
+    "bio": "\"In a world where anything has an API, everything is a software problem\" this insight has guided Avishai Ish-Shalom throughout his diverse career working on improving the complex socio-technical systems that create and operate modern software and promoting the use of Mathematics in system design and operations. Spending 18 years in various software fields and capacities, Avishai has served as Developer advocate for ScyllaDB (the boring database), Engineer in Residence in Aleph VC, engineering manager at Wix.com and co-founder of Fewbytes. Currently Avishai is an independent researcher and consultant.",
+    "tagLine": "Independent researcher",
+    "profilePicture": "https://cdn.sessionize.com/image/f0ac-400o400o1-3HtomKx9A5Mxo6gYdsgTLC.jpg",
+    "sessions": [
+      {
+        "id": 1292058,
+        "name": "Autoscaling: cost optimization turned reliability nightmare"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/nukemberg/",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/nukemberg/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/nukemberg",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "bca0f23a-3388-47d4-b29a-43a70ac95dc6",
+    "firstName": "Barak",
+    "lastName": "Yoresh",
+    "fullName": "Barak Yoresh",
+    "bio": "Computer science graduate from the Hebrew University. At Lightricks for 11 years, currently VP Engineering leading the inference team for LTX Video - Lightricks' open-source video generation model. Focused on shipping fast, efficient video generation at scale.",
+    "tagLine": "VP Engineering, Inference @ Lightricks",
+    "profilePicture": "https://cdn.sessionize.com/image/abb3-400o400o1-nQPmREzze2r4YteV6Fzgf7.jpg",
+    "sessions": [
+      {
+        "id": 1291804,
+        "name": "From a Minute to a Second: The Hardcore Engineering Behind Making Video Generation Fast"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "4dd37c3d-463d-4767-a160-e7f2b55889a4",
+    "firstName": "Dan",
+    "lastName": "Padnos",
+    "fullName": "Dan Padnos",
+    "bio": "Currently Head of AI at Novee Security. Spent 6 years training LLMs and building products on top of them at AI21 Labs, as algorithm developer, team lead and VP Platform. Prior to that, 9 years in the IDF working on computational physics research. Talpiot alumnus and retired astrophysicist.",
+    "tagLine": "Head of AI, Novee Security",
+    "profilePicture": "https://cdn.sessionize.com/image/081a-400o400o1-LUC5b6bKyjHMPWfpW5vLTr.jpg",
+    "sessions": [
+      {
+        "id": 1295666,
+        "name": "Reward Hacking: Fusing the Cultures of AI and Security Research"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/DanPadnos",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/dan-padnos/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://novee.security/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "61b9f9fb-da74-4aa3-a72b-1567ff544b0a",
+    "firstName": "Daniel",
+    "lastName": "Korn",
+    "fullName": "Daniel Korn",
+    "bio": "Daniel is a Senior Director of Engineering at Lemonade, leading the engineering groups across all of Lemonade's insurance product lines.\r\n\r\nHe co-founded and leads a community of over 1,500 engineering managers in Israel (\"Engineering Managers IL\"), facilitating knowledge sharing through virtual discussions and physical monthly meetups.\r\n\r\nDaniel is also the creator of TrialFinder (trialfinder.care), a free, non-profit platform that helps patients and families find clinical trials. \r\n\r\nHe is passionate about leading strong dev teams that build excellent products through technical coaching, growth mentorship, and an emphasis on execution and delivery. In his spare time, he blogs about tech, management, and process, and engages in public speaking on these topics.",
+    "tagLine": "Senior Director of Engineering at Lemonade",
+    "profilePicture": "https://cdn.sessionize.com/image/22e1-400o400o1-VzuzgVxXa354eAJ7CZi2nu.jpg",
+    "sessions": [
+      {
+        "id": 1289916,
+        "name": "TrialFinder: From Personal Loss to a Search Engine for Hope"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/korndaniel1",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/daniel-korn-2876a496/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Instagram",
+        "url": "https://www.instagram.com/danielkornjnael/",
+        "linkType": "Instagram"
+      },
+      {
+        "title": "Blog",
+        "url": "https://danielkorn.io/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.lemonade.com/",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/Daniel_Korn",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "55c6b59b-448d-4e3b-a013-3b23810b6fcd",
+    "firstName": "Daniel",
+    "lastName": "Ostrovsky",
+    "fullName": "Daniel Ostrovsky",
+    "bio": "Daniel is an AI Architect at Payoneer with over two decades of experience leading development teams, both in Israel and abroad, from idea to production. His current focus is AI infrastructure and multi-agent systems in real-world use — the layer that ties together developer tools, knowledge graphs, and product delivery. \r\n\r\nDaniel is a public speaker and a blog writer, and an active contributor to open source. He also runs the \"NG-Heroes\" meetup, a space for the local tech community to meet and share what they're learning. Outside of work, family comes first. He proudly holds the title of \"The Best Developer in the World\" — awarded by his wife, and he has no plans to give it back.",
+    "tagLine": "AI Architect at Payoneer | Full Cycle Development Expert | Public Speaker | Open Source Contributor | ",
+    "profilePicture": "https://cdn.sessionize.com/image/9449-400o400o1-DdL5oXXY5qsJMVkjxnvGmL.png",
+    "sessions": [
+      {
+        "id": 1254926,
+        "name": "Your agent failed. You blamed the model. You were wrong."
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/danduh81",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/danduh/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://medium.com/@danduh",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.payoneer.com/",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Personal",
+        "url": "https://danduh.me",
+        "linkType": "Other"
+      },
+      {
+        "title": "GitHub",
+        "url": "https://github.com/danduh",
+        "linkType": "Other"
+      },
+      {
+        "title": "YouTube",
+        "url": "https://www.youtube.com/@danduh81",
+        "linkType": "Other"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/danduh",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "212a0005-863d-465c-9cd7-8e7c8da215f9",
+    "firstName": "Dean",
+    "lastName": "Langsam",
+    "fullName": "Dean Langsam",
+    "bio": "I’m a data scientist at Neo, passionate about using data to drive insights, innovation, and speaker bios like this one.\r\n\r\nI’m also a hardcore AI boomer, which means I was doing AI before it was cool, but now spend most of my time yelling at damn kids to get their LLMs off my lawn.\r\n\r\nDespite all that, I’ve recently been forced to admit that modern AI can be fun, useful, and occasionally even involve real data.\r\n\r\nI love being Inbal’s husband and Stav and Luna’s dad. They’re the best part of my life, despite their baffling lack of interest in my detailed explanations of the original Transformer’s encoder-decoder architecture.\r\n",
+    "tagLine": "I am not a bot, hopefully.",
+    "profilePicture": "https://cdn.sessionize.com/image/fd3d-400o400o1-heoUtp2CmDRpH6k9mXzCY3.jpg",
+    "sessions": [
+      {
+        "id": 1285713,
+        "name": "LLMs Stole the Fun, Then Gave It Back With Better Data"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/Dean_La",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/deanla/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://deanla.com/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://neo.ai",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/dean-langsam",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "1ce88907-46d6-4cfe-b325-fad908413e4d",
+    "firstName": "Dina",
+    "lastName": "Matveev",
+    "fullName": "Dina Matveev",
+    "bio": "Dina is a software engineer, she builds large-scale ingestion pipelines, distributed workflows, and production-ready AI features.\r\nHer background spans full-stack engineering and data engineering, and she’s drawn to problems that start out messy and unpredictable - she likes breaking them down into clear, maintainable systems and sharing the lessons that come from scaling and debugging them.\r\nWhen she’s not building pipelines, she’s usually at the piano or chasing the perfect cup of coffee.",
+    "tagLine": "Data Engineer at mavens by Zynga ",
+    "profilePicture": "https://cdn.sessionize.com/image/7df9-400o400o1-4p5yD4eDWQAHTnj7SG7ur.jpg",
+    "sessions": [
+      {
+        "id": 1294030,
+        "name": "Scaling AI Image Generation: Patterns That Actually Hold Up"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/dina-matveev-a0a85b152/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "62459c34-11ad-4775-a566-a5e0bf96f647",
+    "firstName": "Dvir",
+    "lastName": "Arad",
+    "fullName": "Dvir Arad",
+    "bio": "Dvir Arad. Independent software engineer specializing in AI agent systems. Helps individuals and teams build agents that run in production, not just in demos. Previously spoke at GeekTime Code and the Node.js Israel community at BigID. Living and breathing JavaScript since 2015.",
+    "tagLine": "Software Engineer, AI Agents Specialist",
+    "profilePicture": "https://cdn.sessionize.com/image/7528-400o400o1-TycRAMAVpiNKkPDQCdHFHh.png",
+    "sessions": [
+      {
+        "id": 1288629,
+        "name": "Six Months Living with a Personal Agent: What Works, What Broke, What I Learned"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/dvir-arad-595bb86b/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://dvirarad.com",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/dvir-arad",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "e9a47346-9b66-42fe-be70-2b0779255aa5",
+    "firstName": "Elad",
+    "lastName": "Laor",
+    "fullName": "Elad Laor",
+    "bio": "Solutions Architect at MongoDB. \r\nSpecializing in fine-tuning and evaluating local AI models.\r\nBackground includes award-winning screenwriting and spoken word.",
+    "tagLine": "AI Solutions Architect",
+    "profilePicture": "https://cdn.sessionize.com/image/a873-400o400o1-S9rpidYzaZwa9ZjvsaycbA.jpg",
+    "sessions": [
+      {
+        "id": 1261010,
+        "name": "Beyond LLM-as-a-Judge: Math-Based Response Evaluation"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/elad-laor",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/elad-laor",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "36da1b40-d276-4b33-910f-3d1e808677a4",
+    "firstName": "Elad",
+    "lastName": "Meged",
+    "fullName": "Elad Meged",
+    "bio": "Elad Meged is a Security Researcher at Novee Security specializing in offensive security research. He holds an M.Sc. in Computer Science and has a background in reverse engineering, platform internals, and application security. He previously worked as a Cyber Security Researcher in the Cyber Security division at the Office of the Prime Minister of Israel.",
+    "tagLine": "Security Researcher, Novee Security",
+    "profilePicture": "https://cdn.sessionize.com/image/8331-400o400o1-p2B9avp85my2tSjXyHXSss.png",
+    "sessions": [
+      {
+        "id": 1295666,
+        "name": "Reward Hacking: Fusing the Cultures of AI and Security Research"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/eladmeged/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://novee.security/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "07e8efd9-c815-4e31-8fac-a63fdc5e0a07",
+    "firstName": "Elai",
+    "lastName": "Eckhaus",
+    "fullName": "Elai Eckhaus",
+    "bio": "Elai Eckhaus is a Senior Software Engineer at Jazz, where he builds a cross-platform endpoint security agent in Rust that detects and prevents data leaks in real time on macOS and Windows. Before Jazz, he spent six years in Israeli Military Intelligence, going from embedded Linux systems to leading real-time robotics AI on constrained hardware. He has been lecturing in the GAMA cybersecurity program since 2023.",
+    "tagLine": "senior software developer at Jazz",
+    "profilePicture": "https://cdn.sessionize.com/image/9bae-400o400o1-nUyARMRMvnvmEiuAFcGoye.jpg",
+    "sessions": [
+      {
+        "id": 1295433,
+        "name": "Ask the Genie for More Wishes 🧞‍♂️: When AI Can’t Keep Up with Real-Time Cyber Security"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/elai-eckhaus-637202263",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.jazz.security",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/elai-eckhaus",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "c8755543-cb69-4c9f-86c9-3d7814768793",
+    "firstName": "Elena",
+    "lastName": "Levi",
+    "fullName": "Elena Levi",
+    "bio": "Elena is a data-driven Director of Product at Payoneer, with a powerful track record of leading AI and machine learning products to success. Over her 16-year career, including 9 years dedicated to this field, she has honed the skill of taking products from a raw idea to a market-leading solution. She brings a rare blend of technical expertise and business acumen to her work, a skillset she built on her B.A. in Management with a specialization in Computer Science. Driven to give back, Elena is a dedicated mentor to product professionals and a fierce advocate for women in tech.",
+    "tagLine": "Director of Product at Payoneer",
+    "profilePicture": "https://cdn.sessionize.com/image/5d09-400o400o1-7YT6VmQbXK6dSa2AWeuZfc.png",
+    "sessions": [
+      {
+        "id": 1274663,
+        "name": "Some Assembly Required: The Skill of Not Falling for the AI Monster You Built"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/elenalevii",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/elena-levi-data/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.voyantis.ai/",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "About me",
+        "url": "https://boldpmm.com/elena-levi/",
+        "linkType": "Other"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/Elena-Levi",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "39d4bafe-2ae1-4ac8-a076-4fdff03b9c8d",
+    "firstName": "Elia",
+    "lastName": "Yehuda",
+    "fullName": "Elia Yehuda",
+    "bio": "Elia is the Co-Founder of ZIMPERIUM Mobile security, is a graduate of MAMRAM, and is a leading authority on security and low-level hacking. Blending white-hat consulting for companies like IBM and OpenBIOS with black-hat expertise in offensive security toolkits, adversarial attacks, and hardware exploitation, he intimately understands the attacker's mindset. He is an avid information seeker, an innovative researcher, and a relentless problem solver. Elia's passion is serving as a security teacher, training the next generation of Israeli youth in advanced offensive and defensive cyber warfare.",
+    "tagLine": "Security specialist. A Hacker turned WhiteHat",
+    "profilePicture": "https://cdn.sessionize.com/image/aeea-400o400o1-QckRxLnqLHqicMaWYNSefd.jpg",
+    "sessions": [
+      {
+        "id": 1243590,
+        "name": "From Black To White"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/z4ziggy",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/z4ziggy/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "9539e857-1538-4e06-9c1b-36efd590a7f5",
+    "firstName": "Eyal",
+    "lastName": "Abbas",
+    "fullName": "Eyal Abbas",
+    "bio": "I lead engineering at OurRitual, where we build AI-driven products for couples therapy — which means I spend my days with clinicians, arguing about what a system should remember and when it should keep its mouth shut. Before that I was Head of Data & AI at retrain.ai, running three teams across data platforms and ML in production, and before that I co-founded a startup and learned most of what I know the expensive way.\r\n\r\nLately I've been writing about memory architecture and what it's actually like to work alongside agents every day — including the parts that go badly.\r\n\r\nI have a wife, two teams, and one agent, and all of them require different kinds of honesty.",
+    "tagLine": "Engineering Team Lead at OurRitual, where the product is relationships and so, increasingly, is the job.",
+    "profilePicture": "https://cdn.sessionize.com/image/7fa6-400o400o1-NR5tBu8UqHB28njBQaUCfi.jpg",
+    "sessions": [
+      {
+        "id": 1295682,
+        "name": "What Couples Therapy Taught Me About Working With AI Agents"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/eyalyoli",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/eyalyoli",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://eyalyoli.medium.com/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.ourritual.com/",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/eyal-abbas",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "e87fd71c-124e-4706-aff1-5d4c6490c68e",
+    "firstName": "Gil",
+    "lastName": "Fink",
+    "fullName": "Gil Fink",
+    "bio": "Gil Fink is a web development expert, Web Technologies GDE and sparXys CEO. He is currently consulting for various enterprises and companies, where he helps to develop web based solutions. He is also co-author of several Microsoft Official Courses (MOCs) and training kits and co-author of \"Pro Single Page Application Development\" book (Apress).\r\n",
+    "tagLine": "CEO and Senior Consultant",
+    "profilePicture": "https://cdn.sessionize.com/image/93b4-400o400o1-nR8Au8QQJDHPGMpA9kkJKL.jpg",
+    "sessions": [
+      {
+        "id": 1279189,
+        "name": "Building On-Device AI Agents for Web Apps"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/gilfink",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/gilfink/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://medium.com/@gilfink/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "http://sparxys.com/",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/gilfink",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "8fa005ab-358c-4f9b-88a4-b1dd3f39b152",
+    "firstName": "Gil",
+    "lastName": "Peled",
+    "fullName": "Gil Peled",
+    "bio": "Gil Peled is a Senior AI Research Engineer at Simply working on applied ML research. He is a Talpiot graduate with an M.Sc. in high-energy physics and an extensive background in signal processing R&D, and is the 2021 ESL World Universities Debating champion. Gil enjoys rowing and puzzling; he lives in Tel Aviv with his wife Dafna and their husky Lily.",
+    "tagLine": "Senior AI research engineer @ Simply",
+    "profilePicture": "https://cdn.sessionize.com/image/6cc9-400o400o1-QTu5ymPPh7CR4cipLJDpAz.jpg",
+    "sessions": [
+      {
+        "id": 1289580,
+        "name": "Teaching AI Glasses to track a drawing in the making"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/gil-peled/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.hellosimply.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "812e6aba-907c-4d0a-ab0e-a7ce4505c0d0",
+    "firstName": "Gil",
+    "lastName": "Tayar",
+    "fullName": "Gil Tayar",
+    "bio": "35 years of experience have not dulled the fascination Gil Tayar has with software development. His passion is distributed systems and figuring out how to scale development to big teams. Extreme modularity and testing are the main tools in his toolbelt, using them to combat the code spaghetti monster as a software architect at companies like Wix, Applitools, and at his current job as software engineer at Microsoft.\r\n\r\nIn his private life, he is a dad to two lovely kids, an avid reader of Science Fiction, and a passionate film buff. Unfortunately for him, he hasn’t answered the big question of his life—what’s more fun, Frontend or Backend? But he’s working on it.",
+    "tagLine": "Principal Software Engineer at Microsoft",
+    "profilePicture": "https://cdn.sessionize.com/image/0910-400o400o1-KW3RJfowonbM4FrcBkPAnM.jpg",
+    "sessions": [
+      {
+        "id": 1269032,
+        "name": "Server-side apps: the real alternative to React"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/giltayar",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/giltayar/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Facebook",
+        "url": "https://www.facebook.com/giltayar",
+        "linkType": "Facebook"
+      },
+      {
+        "title": "Blog",
+        "url": "https://gils-blog.tayar.org/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://gil.tayar.org",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "f117a9c6-9830-4b56-ac1f-4585d201966b",
+    "firstName": "Guy",
+    "lastName": "Nahum",
+    "fullName": "Guy Nahum",
+    "bio": "I am a Software Engineer Team Lead at Wix with over 8 years of experience building resilient, high-scale architectures. I currently lead the Wix Editor Server team. Before that I served in the Ofek 324 Unit as a Software Development Team Lead and Full Stack Developer for 6 years, including MAMRAM programming course. Passionate about engineering culture and mentorship, I serve on Wix's Server Alerts Committee and regularly teach in our Server Crash Course and Production Booster programs. I also hold both a B.Sc. and an M.Sc. in Computer Science from The Open University of Israel.",
+    "tagLine": "Wix, Engineering Team Lead",
+    "profilePicture": "https://cdn.sessionize.com/image/01d1-400o400o1-DkibYrJFGp78md2NmzqwFh.jpg",
+    "sessions": [
+      {
+        "id": 1280690,
+        "name": "Hiring Post-Claude"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/guy-nahum/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://www.wix.engineering/post/how-not-to-add-deadlock-to-your-critical-flow-3-simple-steps",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.wix.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "5082e5dd-6570-4058-8166-0805bdbe7b80",
+    "firstName": "Guy",
+    "lastName": "Wiener",
+    "fullName": "Guy Wiener",
+    "bio": "4X Dad, 10X programmer, H(Θ; X) Data Scientist",
+    "tagLine": "Research Engineer at Ai2",
+    "profilePicture": "https://cdn.sessionize.com/image/d462-400o400o1-VtBTun2XfqFCUaCSxAi45c.png",
+    "sessions": [
+      {
+        "id": 1292120,
+        "name": "Context Diet"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/guywiener",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/wienerguy/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://allenai.org/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "97e8f8a4-e5bc-4a31-9827-a6c260b60d0b",
+    "firstName": "Haim",
+    "lastName": "Cohen",
+    "fullName": "Haim Cohen",
+    "bio": "Haim Cohen is a Senior Data Scientist at Waze (Google), where he develops the conversational AI platform, focusing on the design of AI agents, cost-effective LLM analytics, and evaluation frameworks. He holds an M.Sc. from the Technion with a background in machine learning, and has over a decade of experience building production-grade ML products and data science platforms.",
+    "tagLine": "Senior Data Scientist, Waze (Google)",
+    "profilePicture": "https://cdn.sessionize.com/image/e420-400o400o1-KmhUQFr84ug8giZ6uH2yns.jpg",
+    "sessions": [
+      {
+        "id": 1292090,
+        "name": "Escaping the \"Double-Token Tax\": Scalable LLM Analytics for Conversational Agents"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/haim-cohen/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "1c79c6d0-92c9-46b9-b705-820c7ebcd519",
+    "firstName": "Ifat",
+    "lastName": "Koller",
+    "fullName": "Ifat Koller",
+    "bio": "AI Senior Engineer & Product Manager with 13 years of experience. \r\nLed Cloudinary's Innovation Labs team. Owning the full arc from researching customer intent and defining the concept to execution. \r\nLove data. Love people. Not sure in which order.",
+    "tagLine": "Backend Developer at Cloudinary",
+    "profilePicture": "https://cdn.sessionize.com/image/47fd-400o400o1-LSNxvAWZzGgPpwFqMsafzu.jpg",
+    "sessions": [
+      {
+        "id": 1295783,
+        "name": "What game are you playing?"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "65a0c337-ee07-4398-b0da-9293b6f84220",
+    "firstName": "Iftach",
+    "lastName": "Bar",
+    "fullName": "Iftach Bar",
+    "bio": "Singing stupid songs with my man Yoniz",
+    "tagLine": "CEO @ PlayerStory",
+    "profilePicture": "https://cdn.sessionize.com/image/9fce-400o400o1-JykWW8jbtpUWwKAgq1v31B.jpg",
+    "sessions": [
+      {
+        "id": 1295512,
+        "name": "שיר - יוני ויפתח נפרדים"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/barnashon",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/barnash/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "9d734fde-6473-436f-b7e7-061a49a88ef5",
+    "firstName": "Iftach",
+    "lastName": "Yakar",
+    "fullName": "Iftach Yakar",
+    "bio": "Iftach is a software engineer turned quantum computing researcher. His master's thesis focused on the architecture of  quantum communication networks and repeaters and he currently serves as a software engineer at Qedma.",
+    "tagLine": "Software Engineer & Quantum Researcher",
+    "profilePicture": "https://cdn.sessionize.com/image/702b-400o400o1-375iv32cQWfdVFWPRnQCjg.jpg",
+    "sessions": [
+      {
+        "id": 1270207,
+        "name": "Quantum computers are actually slower!"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/QuantumYakar",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/iftach-yakar-1511b344/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "7b4eee84-5681-4304-a1b4-34a3f638b5fe",
+    "firstName": "Jenia",
+    "lastName": "Barabanov",
+    "fullName": "Jenia Barabanov",
+    "bio": "Experienced software engineer with a deep passion for software products, Jeb has been developing software since the age of 14. When not writing code, catch him kitesurfing or desperately trying to get some tolerable sound out of his drums and guitar.",
+    "tagLine": "Principal Engineer @ Honeybook",
+    "profilePicture": "https://cdn.sessionize.com/image/c7ff-400o400o1-EnC3hiVFT7PmAUTHXc2NJ3.png",
+    "sessions": [
+      {
+        "id": 1293550,
+        "name": "The agent acts, the owner's asleep: trust and control for an always-on AI agent"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/jebbacca",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/justjeb/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://www.justjeb.com",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.wix.com",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Github",
+        "url": "https://github.com/just-jeb",
+        "linkType": "Other"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/jeb",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "59177f6c-e175-41da-aa21-abe6af02cd82",
+    "firstName": "Karina",
+    "lastName": "Nosenko",
+    "fullName": "Karina Nosenko",
+    "bio": "Karina Nosenko is a Software Engineer at Payoneer, building payment decision systems. Before joining Payoneer, she worked on Azure Data Explorer at Microsoft and previously worked on critical systems in the IDF. She is passionate about backend engineering and believes the best way to build reliable systems is to learn from the ways they fail. ",
+    "tagLine": "Software Engineer @ Payoneer",
+    "profilePicture": "https://cdn.sessionize.com/image/6f27-400o400o1-GbK3dBEjHSLzxBRsTdotfy.png",
+    "sessions": [
+      {
+        "id": 1274549,
+        "name": "Paranoia Driven Development: Learning from Production Incidents"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/karina-nosenko",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://medium.com/@karina4nosenko",
+        "linkType": "Blog"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "dac0754e-8bbe-406b-8366-56d783578493",
+    "firstName": "Lea",
+    "lastName": "Cohen Tannoudji",
+    "fullName": "Lea Cohen Tannoudji",
+    "bio": "Lea Cohen Tannoudji is an Engineering Manager at Lightricks. She's a driving force behind the continuous delivery of numerous innovative features in the company's most successful apps, including Videoleap and Facetune. Lea is a salsa instructor, amateur baker, and is determined to change the world - one step at a time.",
+    "tagLine": "Engineering Manager @ Lightricks",
+    "profilePicture": "https://cdn.sessionize.com/image/b563-400o400o1-RGYd2oHVQEZ7hA1nfAWZGW.jpg",
+    "sessions": [
+      {
+        "id": 1292099,
+        "name": "Duck Debugging Deadlocked Humans: A Practical Guide to Getting Unstuck"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/lea-cohen-tannoudji-847a74196/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.lightricks.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "115fd856-2992-4190-90d5-63ab7031ee98",
+    "firstName": "Liad",
+    "lastName": "Yosef",
+    "fullName": "Liad Yosef",
+    "bio": "Liad Yosef is the co-author and maintainer of MCP Apps on the MCP Steering Committee. He is the co-builder of MCP-UI, and previously AI Lead in Shopify's CEO office. Liad is currently a co-founder and CTO, building the future of agentic interfaces at Ora. Liad is a web enthusiast two decades, passionate about crafting developer-first experiences. When he isn't defining open-source standards for the agentic web, he writes poetry and moonlights as an analog astronaut for the European Space Agency.",
+    "tagLine": "Co-creator MCP Apps / Co-founder Ora",
+    "profilePicture": "https://cdn.sessionize.com/image/e823-400o400o1-4RCSKzzcni92mN2kZ7YJBK.jpg",
+    "sessions": [
+      {
+        "id": 1273185,
+        "name": "Agentic Web - Building the Future"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/liadyosef",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/liadyosef",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://ora.ai",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/liad-yosef",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "6f5cde99-2729-446c-a2b5-790e25cfe595",
+    "firstName": "Limor",
+    "lastName": "Lahiani",
+    "fullName": "Limor Lahiani",
+    "bio": "Limor Lahiani is co-founder and CTO of Mindware, building an inner world model for AI agents and the humans behind them. Twenty years of engineering leadership as a group engineering manager at Microsoft, co-founder and CTO at Twang, now Mindware. Advisor and mentor to early-stage CTOs. Back on the speaker stage after a few years off.",
+    "tagLine": "Co-founder & CTO, Mindware",
+    "profilePicture": "https://cdn.sessionize.com/image/a57f-400o400o1-BeXqNC9KUGw9JxMdtfkun5.png",
+    "sessions": [
+      {
+        "id": 1295499,
+        "name": "Your Agent Doesn't Know You"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/LimorLah",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/limorl/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "72bdb282-153c-444b-ab9f-628c1e6a3467",
+    "firstName": "Lital",
+    "lastName": "Goldhaber Hana",
+    "fullName": "Lital Goldhaber Hana",
+    "bio": "Lital Goldhaber is a Senior Data Scientist and Tech Lead at Waze (Google). With over a decade of data science experience, she specializes in designing full-lifecycle data products, ranging from search and ads optimization engines to the architecture and rigorous evaluation of production-grade AI agents. She holds a B.Sc. in Industrial Engineering and Management from Tel Aviv University",
+    "tagLine": "Senior Data Scientist, Waze (Google)",
+    "profilePicture": "https://cdn.sessionize.com/image/56f3-400o400o1-KVVrDkzsu8WDFa4wz3365N.png",
+    "sessions": [
+      {
+        "id": 1295039,
+        "name": "Scaling Waze Road Closure Data Ingestion with GenAI"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/lital-goldhaber/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "83b87c4d-f179-483d-a039-1eeb4cc6ca1c",
+    "firstName": "Manor",
+    "lastName": "Malchi Betzer",
+    "fullName": "Manor Malchi Betzer",
+    "bio": "Manor Malchi Betzer is an ML Senior Product Manager at Booking.com, leading the Supply Intelligence team that develops AI-powered travel content enrichments and helps millions of travelers make better booking decisions. Before moving into product management, she wrote travel guidebooks, researching destinations firsthand, long before generative AI made content creation possible at scale. Today, she brings that unique perspective to building AI products, combining expertise in machine learning, experimentation, and product strategy to explore how AI is transforming the way travel content is created, discovered, and consumed.",
+    "tagLine": "Senior Product Manager @ Booking.com",
+    "profilePicture": "https://cdn.sessionize.com/image/bea2-400o400o1-S3LWFaGJ8XLo8JXSPqKgQz.jpg",
+    "sessions": [
+      {
+        "id": 1292460,
+        "name": "In AI We Trust? Summarizing Hotel Reviews at Booking.com"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/manor-malchi-betzer-32921691/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.booking.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "01d71f09-b6e9-49d7-95b8-d38a9e8a0454",
+    "firstName": "Melanie",
+    "lastName": "Shoresh",
+    "fullName": "Melanie Shoresh",
+    "bio": "Melanie Shoresh is a software engineer with 7+ years of experience building production systems. She works as a Software Engineer at BioCatch, where she deals with real-world systems across cloud infrastructure, data, security, fraud investigation workflows, and production debugging.\r\n\r\nMelanie is also a lecturer and group leader of the Prod AI group at TechGym, where she explores how AI changes the way developers build, debug, and operate software. She is especially interested in the intersection of AI, observability, developer workflows, and production reliability.\r\n",
+    "tagLine": "Software Engineer",
+    "profilePicture": "https://cdn.sessionize.com/image/2650-400o400o1-UkMitCQviCrfD77h3jRNNv.jpg",
+    "sessions": [
+      {
+        "id": 1245237,
+        "name": "Logs for the AI era: observability when humans are no longer the only readers"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/melanie-shoresh",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.biocatch.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "b6f74231-7275-4aa7-b7b3-ab771f1a6f75",
+    "firstName": "Moran",
+    "lastName": "Mizrahi",
+    "fullName": "Moran Mizrahi",
+    "bio": "Moran is a Lead Applied Research Scientist at Specific AI. Her research focuses on methods for effective model distillation, spanning data, evaluation, and the training of small models and agents. She holds a PhD in NLP and Data Science from the Hebrew University, specializing in LLM evaluation and creative textual exploration.",
+    "tagLine": "Lead Applied Research Scientist at Specific AI",
+    "profilePicture": "https://cdn.sessionize.com/image/5766-400o400o1-Lzsc1xLdUqf6Bw5GuaoEQf.jpg",
+    "sessions": [
+      {
+        "id": 1295698,
+        "name": "\"Forward to Shraga!\" — Training a Small Agent to Handle 1M Production Logs a Day"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/moranmiz",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/moran-mizrahi-03272661/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "b32c37d7-752b-412b-9284-982c89fc42e8",
+    "firstName": "Moran",
+    "lastName": "Weber",
+    "fullName": "Moran Weber",
+    "bio": "Moran Weber is an entrepreneur, speaker, software engineer, and social psychologist. Formerly a Tech Lead at Wix, she has over a decade of software development experience and holds an MA in Social Psychology and a BSc in Computer Science & Psychology.\r\n\r\nShe is the founder of Women on Stage, where she has trained hundreds of engineers and technology leaders to communicate with clarity and confidence, and the founder of OnStage AI and GetOnStage, where she combines software engineering, AI, and cognitive psychology to help tech speakers communicate complex ideas more effectively.\r\n\r\nMoran has spoken at international conferences across Europe, the UK, India, and the US, translating psychological research into practical techniques for software engineers.",
+    "tagLine": "Founder | Software Engineer | Social Psychologist",
+    "profilePicture": "https://cdn.sessionize.com/image/6cfd-400o400o1-6NsvVRqv6C7dy4ZnP3zzL.jpg",
+    "sessions": [
+      {
+        "id": 1282123,
+        "name": "Rubber Ducking for LLMs"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/moranWeber",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/moran-weber/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://hackernoon.com/how-to-attract-more-women-and-not-the-way-you-think-372203f5a7d7",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.womenonstage.net/",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "YouTube playlist",
+        "url": "https://www.youtube.com/playlist?list=PLGJbsq2v-4hscKaF1TEljDbTsx97RxEaS",
+        "linkType": "Other"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/moran-weber",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "89325003-a650-42ab-8b34-84a18369b025",
+    "firstName": "Nadav",
+    "lastName": "Beker",
+    "fullName": "Nadav Beker",
+    "bio": "Principal Software Engineer and Architect with over 13 years of experience designing large-scale distributed systems and real-time data platforms. \r\nI led teams and projects from conception to production, worked with various teams and technologies, always aiming for scalability, maintainability, and customer satisfaction. \r\n\r\nI am a mentor and public speaker, leading technical sessions, round tables, and helping drive the community forward by sharing my knowledge and experience.\r\nWhen I’m not coding, you can find me gaming, baking, or singing Disney songs.",
+    "tagLine": "AI Tech Lead @ Finonex",
+    "profilePicture": "https://cdn.sessionize.com/image/3b3d-400o400o1-42fMGzgMQH84YCWBQc2dgA.jpg",
+    "sessions": [
+      {
+        "id": 1264670,
+        "name": "Expired Truths: Engineering Advice That Stopped Being True"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/nadav-kremer/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/Nadav-Beker",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "731dff58-3d1e-452a-bcd2-f7076f305337",
+    "firstName": "Neta",
+    "lastName": "Maimon, PhD",
+    "fullName": "Neta Maimon, PhD",
+    "bio": "Dr. Neta Maimon builds bridges between fields that rarely share a room: music, neuroscience, and the logic that connects them. She trained as a classical and rock cellist before a PhD in Cognitive Psychology from Tel Aviv University, where she now also lectures across the Psychology and Music faculties.\r\n\r\nAs VP of Applied Neuroscience at Neurosteer, she works the whole arc herself: clinical study design, rigorous scientific publication, advanced statistics and data science, and the product it all becomes, an automatic brain health assessment with exportable clinical reports now sold in US clinics for general population brain health. Her own research, validated in top tier peer reviewed publications, is part of why she was named to Globes' 40 Under 40, the newspaper's list of Israel's promising young leaders. It is also why her talks tend to end the same way: live cello, with an EEG on screen showing, in real time, exactly what the music is doing to her brain.",
+    "tagLine": "VP Applied Neuroscience, Neurosteer; Lecturer, Tel Aviv University",
+    "profilePicture": "https://cdn.sessionize.com/image/704a-400o400o1-U6VKe1aNERobtbvdKadg13.jpg",
+    "sessions": [
+      {
+        "id": 1293791,
+        "name": "A Cellist's Path: Three Bets on the Space Between Fields"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/neta-maimon/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.neurosteer.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "051ed9b5-c645-4987-bbe9-ff2c32b2abf4",
+    "firstName": "Noa",
+    "lastName": "Sabar Dvoskin",
+    "fullName": "Noa Sabar Dvoskin",
+    "bio": "Noa Sabar Dvoskin is a design leader who spent six years at Amazon Devices, where she developed the concept of Accidental Conversion — the gap that emerges when products optimize for completing actions before users have truly made a decision. She currently leads design for QuickBooks Bill Pay at Intuit. Her work focuses on designing systems that better understand the difference between user behavior, user intent, and meaningful decisions — especially as AI enables software to act with increasing autonomy.",
+    "tagLine": "Group Design Site Manager, Intuit",
+    "profilePicture": "https://cdn.sessionize.com/image/29fb-400o400o1-DWn2zBBZ3zaymxghP6PqCj.jpg",
+    "sessions": [
+      {
+        "id": 1294066,
+        "name": "Accidental Conversion: When AI Completes Actions Users Never Chose"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/noadvoskin/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "2848544a-2878-4843-8b88-1113d29531fd",
+    "firstName": "Omri",
+    "lastName": "Bar-Zik",
+    "fullName": "Omri Bar-Zik",
+    "bio": "Omri Bar Zik is a Senior Front End Developer at Gong, an open-source contributor, and a tech lecturer. Enthusiast about web, Docker, and everything in between. Working in tech since I was 16 years old",
+    "tagLine": "Senior Frontend Developer @ Gong",
+    "profilePicture": "https://cdn.sessionize.com/image/37e9-400o400o1-NBxincsSMH64gU7Q7ifcwF.png",
+    "sessions": [
+      {
+        "id": 1295208,
+        "name": "How to Navigate a T-Rex-Sized Codebases"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/omri_barzik",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/omri-bar-zik/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.gong.io",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/omri-bar-zik",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "f758e7c5-6edf-40d2-ad99-336ba7e1cd9a",
+    "firstName": "Omri",
+    "lastName": "Mendels",
+    "fullName": "Omri Mendels",
+    "bio": "Omri is a seasoned AI practitioner and leader with more than 15 years of experience from Intel, Microsoft and startups. His focus lies in implementing AI/ML in healthcare scenarios and privacy preserving technologies. He is the co-leader of the open source Presidio privacy toolbox, one of the most popular privacy tools on Github.",
+    "tagLine": "Head of AI, Mindware",
+    "profilePicture": "https://cdn.sessionize.com/image/bb52-400o400o1-QU9PvrWrPu7PmjFsjbNZd8.jpg",
+    "sessions": [
+      {
+        "id": 1295499,
+        "name": "Your Agent Doesn't Know You"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/omrimendels/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://github.com/omri374/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://mindware.health",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/omri-mendels",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "71cfd88c-ede9-4ba3-8e41-647b8d0d177e",
+    "firstName": "Ortal",
+    "lastName": "Ashkenazi",
+    "fullName": "Ortal Ashkenazi",
+    "bio": "Ortal Ashkenazi is a Senior Data Scientist at Wix, where she is part of the engineering group driving the evolution of Wix’s conversational AI. With a deep focus on Action-driven AI, her team is responsible for transforming traditional QA chatbots into autonomous, human-like experts capable of executing complex, real-world actions for users.\r\nHandling over 300,000 monthly conversations, Ortal specializes in the architecture of multi-skill autonomous ecosystems, Context-Aware Routing, and production-grade LLM scaling. She is an experienced speaker, having delivered technical, \"in-the-trenches\" sessions at leading data and AI conferences, including PyData Tel Aviv, AIDevTLV, and Dev AI, sharing her passion for practical AI architecture and solving real-world production challenges.\r\n",
+    "tagLine": "Senior Data Scientist @ Wix",
+    "profilePicture": "https://cdn.sessionize.com/image/a9b6-400o400o1-siYysjpQpub9Du5zo6Ee15.jpg",
+    "sessions": [
+      {
+        "id": 1284271,
+        "name": "From a Single Skill to a Sea of Skills: Architecting LLM Agents in Production"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/ortal-ashkenazi/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/Ortal_Ashkenazi",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "2e16fe09-0f5a-437a-bed6-0979dceee77e",
+    "firstName": "Renana",
+    "lastName": "Keydar",
+    "fullName": "Renana Keydar",
+    "bio": "Prof. Renana Keydar is an Associate Prof. at the Hebrew University's Faculties of Law and Humanities. She is the Academic Director of the Center for Digital Humanities and leads research on mass atrocity testimonies and computational analysis of legal and testimonial corpora. She is a leading member of Edut 710, heading its archive and research effort. ",
+    "tagLine": "Associate Professor of Law and Digital Humanities, Hebrew University; Head of Archive at Edut 710",
+    "profilePicture": "https://cdn.sessionize.com/image/35ee-400o400o1-RFeS1ZwXUromXyBxdfKUvC.png",
+    "sessions": [
+      {
+        "id": 1292150,
+        "name": "Edut 710's Living Archive of the Present. How to Build an Archive of an Event in Real Time."
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "Company Website",
+        "url": "https://renanakeydar.huji.ac.il",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "fd5c1877-eeab-40b7-9b73-bb4a9e65a5d0",
+    "firstName": "Rotem",
+    "lastName": "Pinchover",
+    "fullName": "Rotem Pinchover",
+    "bio": "Rotem is the Head of AI at definity.ai, where she leads the development of innovative AI solutions to reinvent data engineering and observability. Previously, she served as a Senior AI Scientist at Intuit, specializing in building large-scale processes that support customers and deliver measurable business results. Her expertise spans Generative AI (LLMs), Classical ML, and NLP.\r\nRotem holds both an M.Sc. and a B.Sc. in Industrial Engineering from Tel Aviv University. A dedicated advocate for women’s empowerment in the tech industry, she currently serves as the Israeli ambassador for Women in Data Science (WiDS).",
+    "tagLine": "Head of AI at definity",
+    "profilePicture": "https://cdn.sessionize.com/image/24d8-400o400o1-NEdfAJNLv6K8CdSm2b3TA5.jpg",
+    "sessions": [
+      {
+        "id": 1260127,
+        "name": "Who Wants to Be an AI Practitioner? The Million-Token Gameshow"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/rpinchov/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Facebook",
+        "url": "https://www.facebook.com/rpinchov/",
+        "linkType": "Facebook"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/rotem-pinchover",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "9e9ccd2c-0408-4872-b5e8-633e0059dcda",
+    "firstName": "Shahar",
+    "lastName": "Barak",
+    "fullName": "Shahar Barak",
+    "bio": "Shahar Barak leads Cloud Economics at Teads - one of the largest advertising platforms on the open web. He came to cloud architecture through the side door: procurement and business operations. That means he's usually the only person in the room who's seen the contract, the bill, and the architecture diagram for the same decision - and spends his days translating between three groups who don't speak each other's language: vendors, finance, and engineering groups\r\n\r\n",
+    "tagLine": "Teads, Senior Director, Cloud Economics",
+    "profilePicture": "https://cdn.sessionize.com/image/3ff8-400o400o1-LN3Q7FbnApf4n4o63H8jxN.jpg",
+    "sessions": [
+      {
+        "id": 1270916,
+        "name": "How We Merged Outbrain’s and Teads’ Clouds Without Starting a Holy War"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/shahar-barak-69387123/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.teads.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "a9085ce9-7c64-4152-9851-4925b1572032",
+    "firstName": "Shem",
+    "lastName": "Magnezi",
+    "fullName": "Shem Magnezi",
+    "bio": "Shem has more than a decade of experience in software engineering across client and server-side systems, real-time architectures, big data, mobile, and web. Passionate about fostering a growth mindset, Shem focuses intensely on building high-performing, cohesive engineering teams. Following senior IC roles at WeWork and Meta, and serving as CTO and Co-Founder of Wilco- a platform empowering developers to unlock their full potential- Shem is now a Senior Staff Engineer at Lemonade.",
+    "tagLine": "Senior Staff Engineer @ Lemonade",
+    "profilePicture": "https://cdn.sessionize.com/image/722e-400o400o1-DqXp4av9imsjnw7gq2tnL1.jpeg",
+    "sessions": [
+      {
+        "id": 1293845,
+        "name": "I Have a Full-Time Job. My Side Projects Don’t"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/shemag8",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/shem-magnezi/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://shem.dev",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://trywilco.com",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/shem-magnezi",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "9a8ace6c-8256-45b4-b47c-b05185bbdba7",
+    "firstName": "Shikma",
+    "lastName": "Lerer",
+    "fullName": "Shikma Lerer",
+    "bio": "Shikma is the co-founder and CTO of Idea to Product, a structured path from raw idea to launch that guides founders to challenge assumptions, gather real evidence, and decide whether - and what - to build before investing months in it. She brings more than 20 years of experience in various roles, from backend developer to development manager, most of it at early-stage startups, more than once as one of the first employees, building data and infrastructure systems across space, ad-tech, sports tech and healthcare. She loves building things from scratch, diving into problems and creating solutions. Over the years, she realized her energy, time and attention were being wasted. She decided to create simple and practical solutions to create a culture which encourages deep work. Her passion for food is at least as strong as her passion for data - in 2023 she graduated as a professional chef.",
+    "tagLine": "CTO at Idea to Product",
+    "profilePicture": "https://cdn.sessionize.com/image/1d8a-400o400o1-sb4S83i1VQYU8NzBXKBs3t.jpg",
+    "sessions": [
+      {
+        "id": 1295811,
+        "name": "Where's My Context? (Switched.)"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/shikma/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://www.shikook.co.il/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.idea-to-product.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "afad32e5-d5d8-41a7-b596-f8afea2142d6",
+    "firstName": "Shira",
+    "lastName": "Navot",
+    "fullName": "Shira Navot",
+    "bio": "Shira is a Principal AI Researcher at UVeye, specializing in Computer Vision and leading the company's agentic transformation. \r\nShe has led AI projects from whiteboard sketches to production-ready systems, solving real-world problems across various domains. \r\n\r\nWith a B.Sc. in Chemistry from Ben-Gurion University, Shira brings a multidisciplinary perspective to tackling complex algorithmic problems. She's also passionate about building strong tech communities and mentoring the next generation of women in AI. \r\n\r\nWhen she's not maxing out her token budget, Shira is a mother of two and a certified snowboarding instructor.",
+    "tagLine": "Principal AI Researcher at UVeye",
+    "profilePicture": "https://cdn.sessionize.com/image/a019-400o400o1-VrLXr7kt5tZnVHUvxpaTn2.jpg",
+    "sessions": [
+      {
+        "id": 1291865,
+        "name": "Sleep Tight, the Agent’s On-Call: Autonomous Ops in the Real World"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/shira-navot/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "8d9cd1e6-ef93-481c-9d3f-1debdc16d8bd",
+    "firstName": "Shirli",
+    "lastName": "Di-Castro Shashua",
+    "fullName": "Shirli Di-Castro Shashua",
+    "bio": "Shirli is a Staff AI Scientist at Intuit, where she designs and builds production AI agents and agent platforms powered by LLMs. Her work focuses on agent architecture, memory, evaluation, LLM training, and incorporating expert and user feedback into AI systems. Her expertise also includes reinforcement learning, NLP, and classical machine learning.\r\n\r\nShirli holds a Ph.D. and M.Sc. in Electrical and Computer Engineering from the Technion, specializing in Reinforcement Learning, and a B.Sc. in Biomedical Engineering from Ben-Gurion University.",
+    "tagLine": "Staff AI Scientist at Intuit",
+    "profilePicture": "https://cdn.sessionize.com/image/ce40-400o400o1-NQXpSk3eYMFaA2B5hNAgEV.png",
+    "sessions": [
+      {
+        "id": 1295030,
+        "name": "Your Experts Are Not Training Data"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/shirli-di-castro/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/shirlidicastroshashua",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "aa831019-1bcc-44ea-9d75-2291b6b50f93",
+    "firstName": "Shmulik",
+    "lastName": "Cohen",
+    "fullName": "Shmulik Cohen",
+    "bio": "I'm an AI Engineer at Apiiro, where I build AI-powered solutions for application security. I work both sides of the AI-and-security coin: using AI agents to build genuinely useful things, and making sure those agents are secure and trustworthy.\r\n\r\nBefore Apiiro, I spent six years in the IDF's Unit 8200, most recently as a Senior Software Engineer, building large-scale backend systems and bringing AI into air-gapped environments. I'm also pursuing an MSc in Computer Science at Tel Aviv University.\r\n\r\nI write \"AI Superhero\" on Substack and post daily on LinkedIn about agents, LLMs, skills, and the craft of building with AI, with the goal of making complex AI accessible and practical. I'm passionate about software, technical writing, and turning cutting-edge AI into engineering that ships. Recently I've seen how much impact a good talk can have, and I want to get better at giving them.\r\n\r\nRead AI Superhero: https://shmulc.substack.com/about",
+    "tagLine": "AI Engineer at Apiiro ",
+    "profilePicture": "https://cdn.sessionize.com/image/3beb-400o400o1-QHZ5KagHzVnuCggntuyukT.png",
+    "sessions": [
+      {
+        "id": 1264236,
+        "name": "How to Cheat at Hebrew Codenames (Without an LLM)"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/shmulc/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://shmulc.substack.com/about",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://apiiro.com/",
+        "linkType": "Company_Website"
+      },
+      {
+        "title": "GitHub",
+        "url": "https://github.com/shmulc8",
+        "linkType": "Other"
+      },
+      {
+        "title": "Sessionize",
+        "url": "https://sessionize.com/shmulc",
+        "linkType": "Sessionize"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "ce027e18-44e6-44b4-a84c-2a34f88e3062",
+    "firstName": "Tal",
+    "lastName": "Salmona",
+    "fullName": "Tal Salmona",
+    "bio": "Tal is a hands-on engineering leader with 20+ years of experience building and scaling tech teams. He's Co-Founder at Arato.ai,, building a GenAI orchestration platform. Previously, he led engineering teams at Meta, responsible for financial integrity tools and research platforms. Tal held senior engineering leadership roles at Kenshoo, VMware, and HP Software. Earlier, he co-founded DemandSpot and HiveSight, pioneering NLP and real-time analytics. ",
+    "tagLine": "co-founder, eng. lead at Arato.ai",
+    "profilePicture": "https://cdn.sessionize.com/image/797f-400o400o1-hFrfdZteLK48bTFpn8Z6CN.png",
+    "sessions": [
+      {
+        "id": 1279200,
+        "name": "Rebuilding the Software Factory: The Blueprint for Agentic Builders"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://linkedin.com/in/talsalmona",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://arato.ai",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "40910897-7a01-4dba-8c96-70201fa611c4",
+    "firstName": "Tsaela",
+    "lastName": "Pinto-Harel",
+    "fullName": "Tsaela Pinto-Harel",
+    "bio": "Tsaela Pinto-Harel is a technology leader, GenAI transformation lead, and the founder of The Talent Leak Lab - turning research on why women leak out of high-tech leadership into tools organizations can actually use. Over the past two decades she has worked across the tech industry, from software development to senior R&D management. She is currently completing a PhD in Business Administration on women's representation in senior management roles in high tech, bridging technology, research, and the ability to turn invisible organizational dynamics into language people can work with.",
+    "tagLine": "Engineering & GenAI Transformation Leader | Founder, The Talent Leak Lab | PhD Researcher",
+    "profilePicture": "https://cdn.sessionize.com/image/2e57-400o400o1-YEeF7gjasMqiEtBSaE72AK.png",
+    "sessions": [
+      {
+        "id": 1291543,
+        "name": "Inside the Black Box of an Engineering Journey: How Hidden Mechanisms Shape Career Opportunities"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/tsaela/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://thetalentleaklab.com/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "5aaa8024-2b69-4034-a40f-5b2551e877f6",
+    "firstName": "Tsofit",
+    "lastName": "Zazon",
+    "fullName": "Tsofit Zazon",
+    "bio": "Tsofit is an AI Security researcher at Intuit, leveraging her background in hacking and software engineering to find vulnerabilities and develop innovative solutions for cybersecurity. With a B.Sc in Information Systems Engineering and a M.Sc in Systems Engineering, Tsofit's unique perspective allows her to uncover and defend against threats that others may miss. At Intuit, she focuses on blending AI and cybersecurity with a particular focus on multimodal techniques to protect against emerging threats and stay one step ahead of the game.",
+    "tagLine": "Staff AI Security Researcher at Intuit",
+    "profilePicture": "https://cdn.sessionize.com/image/65e7-400o400o1-Q6Fung1UVXarmY3ijzBY35.jpg",
+    "sessions": [
+      {
+        "id": 1290489,
+        "name": "Hear No Evil: When AI Guardrails Can't Hear the Threat"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/tsofit-zazon-401bbb177/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Company Website",
+        "url": "https://www.intuit.com/technology/",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "ba342f15-a5e3-4429-9b6f-2ae71a94e73a",
+    "firstName": "Yael",
+    "lastName": "Netzer",
+    "fullName": "Yael Netzer",
+    "bio": "Yael Netzer is Chief of Research at the Hebrew University of Jerusalem's Center for Digital Humanities, holding a VATAT outstanding researchers appointment. She holds a PhD in Computer Science with a background in computational linguistics. She is a leading member of Edut 710, heading its archive and research effort. ",
+    "tagLine": "HUJI / EDUT 710",
+    "profilePicture": "https://cdn.sessionize.com/image/3541-400o400o1-hmnELHhDPwL7pMBfmkLPvT.jpg",
+    "sessions": [
+      {
+        "id": 1292150,
+        "name": "Edut 710's Living Archive of the Present. How to Build an Archive of an Event in Real Time."
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com/yaelnetzer",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/yael-netzer-a998895/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "ee5be9b1-1bb3-4cf8-8c20-fd7d157e0542",
+    "firstName": "Yonatan",
+    "lastName": "Bergman",
+    "fullName": "Yonatan Bergman",
+    "bio": "Co-Founder & CTO @ Empathy\r\nPreviously VP Engineering @ WeWork, before that PayPal and eBay.",
+    "tagLine": "Co-Founder & CTO @ Empathy",
+    "profilePicture": "https://cdn.sessionize.com/image/3ec6-400o400o1-GGw5QQozZPUkzmSyZ1XL7C.jpg",
+    "sessions": [
+      {
+        "id": 1295351,
+        "name": "Secure Mobile App Development in React Native - Think Like a Hacker"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/yonbergman",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/yonbergman/",
+        "linkType": "LinkedIn"
+      },
+      {
+        "title": "Blog",
+        "url": "https://www.yonbergman.com/",
+        "linkType": "Blog"
+      },
+      {
+        "title": "Company Website",
+        "url": "http://www.empathy.com",
+        "linkType": "Company_Website"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "9f2fc605-364d-4e2f-bcb8-738028ccc2a4",
+    "firstName": "Yonatan",
+    "lastName": "Zusman",
+    "fullName": "Yonatan Zusman",
+    "bio": "Part of the serving group in Teads (ex-Outbrain) for 9 years.\r\nPassionate about simplifying complicated things and complicating simple things :)",
+    "tagLine": "Backend Team Lead @ Teads",
+    "profilePicture": "https://cdn.sessionize.com/image/d0e1-400o400o1-4NqEt932wdf3xcdcL38FJU.jpg",
+    "sessions": [
+      {
+        "id": 1270894,
+        "name": "4+3 strategies to boost your caches"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/yonatan-zusman-51b31111b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "1fbc6b9e-7b7e-4f3a-9ba7-0f0fd33a691a",
+    "firstName": "Yoni",
+    "lastName": "Lindenfeld",
+    "fullName": "Yoni Lindenfeld",
+    "bio": "Funder & CTO @ Any.do\r\nBuilder, Hacker, Tech-nerd @ Life",
+    "tagLine": "CTO & Co-founder, Any.do",
+    "profilePicture": "https://cdn.sessionize.com/image/df52-400o400o1-RKycWS5awjQwmYvZwz3VV2.jpg",
+    "sessions": [
+      {
+        "id": 1290492,
+        "name": "Who's Running Something on Our Servers at 3 AM?"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/yonilindenfeld/",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "43b3ec12-7847-409f-8051-227abd67f744",
+    "firstName": "Yoni",
+    "lastName": "Tsafir",
+    "fullName": "Yoni Tsafir",
+    "bio": "SWE @ Google, Previously JoyTunes\r\nSinging @ Reversim since 2015",
+    "tagLine": "Singer-Codewriter",
+    "profilePicture": "https://cdn.sessionize.com/image/d643-400o400o1-hEg4vJfa2LAri3JyVzbpFh.jpeg",
+    "sessions": [
+      {
+        "id": 1295512,
+        "name": "שיר - יוני ויפתח נפרדים"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://twitter.com/YoniTsafir",
+        "linkType": "Twitter"
+      },
+      {
+        "title": "LinkedIn",
+        "url": "https://il.linkedin.com/in/yonits",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  },
+  {
+    "id": "4de594da-5043-44d5-8039-4d86d10014db",
+    "firstName": "Yuval",
+    "lastName": "Simhi",
+    "fullName": "Yuval Simhi",
+    "bio": "Software Developer & Data Engineer with 8 years in tech, including 5 years at a major company through massive layoffs. Certified in Positive Psychology, Yuval hosts workshops and talks on navigating career disruption with authenticity, grounded tools, and realistic optimism.",
+    "tagLine": "Speaker, workshop host, and data engineer ",
+    "profilePicture": "https://cdn.sessionize.com/image/bed4-400o400o1-wr27KeDmK32MdvL1Zio9mr.jpg",
+    "sessions": [
+      {
+        "id": 1295002,
+        "name": "The Layoff Playbook Nobody Gives You"
+      }
+    ],
+    "isTopSpeaker": false,
+    "links": [
+      {
+        "title": "LinkedIn",
+        "url": "https://www.linkedin.com/in/yuval-simhi-062976129?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
+        "linkType": "LinkedIn"
+      }
+    ],
+    "questionAnswers": [],
+    "categories": []
+  }
+],
+"sessions": 
+[
+  {
+    "groupId": null,
+    "groupName": "All",
+    "sessions": [
+      {
+        "questionAnswers": [],
+        "id": "1279189",
+        "title": "Building On-Device AI Agents for Web Apps",
+        "description": "Cloud-based AI is powerful, but it comes with latency, cost, and privacy trade-offs. What if you could run autonomous AI agents directly on the user's device?\r\n\r\nIn this session, we will explore the new Prompt API and why you will want to use it. Then, we will open our editors and build  AI agents all powered entirely by the browser's built-in models. Join me to write some code and discover how to bring fast, private, and cost-free AI directly to your web app users.",
+        "startsAt": "2026-11-30T09:00:00",
+        "endsAt": "2026-11-30T09:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "e87fd71c-124e-4706-aff1-5d4c6490c68e",
+            "name": "Gil Fink"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1274549",
+        "title": "Paranoia Driven Development: Learning from Production Incidents",
+        "description": "I used to think being a good engineer meant writing code that worked. Then I started working on systems that move real money. When the cost of a mistake is that high, \"move fast and break things\" stops being funny.\r\nThis talk is about Paranoia Driven Development: treating fear of failure not as anxiety, but as an engineering discipline. Through one true, slightly absurd personal story, I'll walk through the anatomy of a production incident – how it really begins, why our first instinct is usually the wrong one, why the bug you see is rarely the real cause, and how to stay prepared long after the incident is \"over.\"\r\nAlthough the story comes from fintech, the mindset applies to any production system where failure has consequences. You'll leave with a different way of thinking about production incidents – and about the software you build every day.",
+        "startsAt": "2026-11-30T09:00:00",
+        "endsAt": "2026-11-30T09:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "59177f6c-e175-41da-aa21-abe6af02cd82",
+            "name": "Karina Nosenko"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1273185",
+        "title": "Agentic Web - Building the Future",
+        "description": "For thirty years we built the web for human eyes. That era is ending. Agents now consume the web headlessly and hand us only the last mile, visually. AI apps are the new browsers.\r\n\r\nWhile everyone watched coding agents, the bigger shift was happening to the web itself.\r\nThere's a strange pattern to every shift this big: the infrastructure for it gets built before the thing it supports actually exists. You don't build for the future, you build the future itself. The catch is that conviction alone isn't enough - you have to build a vision on exisiting tech primitives.\r\n\r\nThis talk is about the agentic web, how to recognize a revolution while it's still forming, and how to lead it rather than merely survive it. From Shopify to GitMCP, MCP Apps, and founding Ora, this is what building the agentic web early taught me. \r\nShape a revolution instead of adapting to it. Understand how to build an agent-ready future, bet on tomorrow's tech, and help lay the tracks the rest of the world will run on.",
+        "startsAt": "2026-11-30T10:20:00",
+        "endsAt": "2026-11-30T10:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "115fd856-2992-4190-90d5-63ab7031ee98",
+            "name": "Liad Yosef"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1285650",
+        "title": "Stop Lying to Your Agent! Build a Service Graph It Can Trust",
+        "description": "Our best engineer never sleeps. It's first responder when production breaks, QA when a bug shows up, architect when we redesign, and the knowledge base we ask anything — our go-to on every topic. It's also an AI agent, and it's only as good as what it knows about our system. What it knew, at first, was lies: decayed diagrams, drifted names, dependencies that don't exist.\r\n\r\nThis talk is how we gave it architecture knowledge it can trust. We used LLMs to extract a dependency graph of 158 microservices from 52 repos — and the extraction was the easy part. I'll walk through the trust model that survived production: separating what the code says from what live systems confirm, tagging every edge with provenance and confidence, keeping contradictions as claims instead of overwriting facts, and gating what the agent may write back. Full of gotchas, postmortem-style war stories (hallucinated log keys, phantom edges), and insights that stick the next time an agent answers with full confidence.",
+        "startsAt": "2026-11-30T11:10:00",
+        "endsAt": "2026-11-30T11:40:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "106e7bd0-4144-4891-b741-781336f92188",
+            "name": "Alon Nativ"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1293845",
+        "title": "I Have a Full-Time Job. My Side Projects Don’t",
+        "description": "There has never been a better time to build something on the side. AI has dramatically lowered the cost of turning an idea into a real product, and suddenly everyone is trying. But when you already have a full-time job, building is only half the challenge - the real constraint is your attention.\r\n\r\nDrawing from my own experiments building and running multiple side projects with AI, I’ll share what worked, what failed, and what I learned along the way: how to choose projects that won’t become a second job, delegate more than just coding to AI, automate as much as possible, and build the tools and controls that let you keep things running without constantly being there.",
+        "startsAt": "2026-11-30T11:10:00",
+        "endsAt": "2026-11-30T11:40:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "a9085ce9-7c64-4152-9851-4925b1572032",
+            "name": "Shem Magnezi"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1285713",
+        "title": "LLMs Stole the Fun, Then Gave It Back With Better Data",
+        "description": "I became a data scientist because I liked getting my hands dirty with data, building models, and slowly turning a mess into something understandable. Then LLMs arrived and seemed to reduce all of that to typing a prompt. I was not impressed.\r\n\r\nWhat changed my mind was not chatbots, agents, or generated code. It was structured output. LLMs can turn sources that were previously unusable at scale into datasets we can validate, query, visualize, and learn from.\r\n\r\nIn this talk, I will move from a tiny extraction example to analyzing hundreds of podcast episodes, then mapping the characters, travel, technology, and plot of my favorite sci-fi books, and finally show how the same pattern applies to real security work at Neo Security.\r\n\r\nThis is how LLMs made data science fun for me again, not by giving me answers, but by helping me create entirely new data.",
+        "startsAt": "2026-11-30T11:10:00",
+        "endsAt": "2026-11-30T11:40:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "212a0005-863d-465c-9cd7-8e7c8da215f9",
+            "name": "Dean Langsam"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295382",
+        "title": "Taste: The Engineering Skill Nobody Taught Us",
+        "description": "Suddenly everyone is talking about “taste.”\r\n\r\nAs AI makes writing code dramatically cheaper, more and more people argue that an engineer’s real value is shifting from writing code to exercising good judgment. “Taste” has become one of the most talked-about ideas in software engineering, but what does it actually mean?\r\n\r\nI don’t claim to have the answer. Instead, let’s explore the question together by examining some of the most influential engineering decisions in software history, from Git and Unix to SQLite, Go, and beyond. We’ll look for recurring patterns, challenge our assumptions, and discuss why this conversation has become so relevant in the age of AI. \r\n\r\nHopefully, we’ll all leave with a richer vocabulary for thinking about engineering judgment, and maybe even a few ideas for developing it ourselves.",
+        "startsAt": "2026-11-30T11:50:00",
+        "endsAt": "2026-11-30T12:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "cff85485-426e-4194-8608-d7b166bf72fe",
+            "name": "Alon Wolenitz"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1269032",
+        "title": "Server-side apps: the real alternative to React",
+        "description": "A new breed of frontend frameworks is proposing an alternative to client-side and server-side rendering and server-side rendering. In both, the app code runs on the browser, with all the problems client-side apps have - large bundle sizes, the need to store state and sync it with the server, etc.\r\n\r\nThese frameworks - chief among them HTMX and Hotwire/Turbo - propose a different solution, harking back to the original web days, but with the added dynamism enabled by modern browsers.\r\n\r\nJoin me to learn how you can write server-side apps - where most of the app code is server-generated HTML, yet has the dynamism and interactivity of client-side apps without the pains that come with running large amounts of code in the browser.\r\n",
+        "startsAt": "2026-11-30T11:50:00",
+        "endsAt": "2026-11-30T12:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "812e6aba-907c-4d0a-ab0e-a7ce4505c0d0",
+            "name": "Gil Tayar"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295039",
+        "title": "Scaling Waze Road Closure Data Ingestion with GenAI",
+        "description": "For Waze, accurate road closure data is critical. Minor errors can cause failed routes and erode user trust. Much of this data comes from public sources. However, the highly flexible and diverse nature of these data sources creates a severe bottleneck, making it difficult to scale via traditional methods.\r\nTo overcome this, we deployed a GenAI powered pipeline, leveraging few-shot in-context learning to autonomously translate data into standardized spatial objects.\r\nThis talk unpacks how we shrunk feed onboarding to minutes. We will explore the architecture behind this scale-up, detailing our rigorous Human-in-the-Loop (HITL) rollout, and offer practical lessons on building decoupled 'LLM-as-a-Judge' evaluation suites to monitor online quality and accelerate iterative model optimization.",
+        "startsAt": "2026-11-30T11:50:00",
+        "endsAt": "2026-11-30T12:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "72bdb282-153c-444b-ab9f-628c1e6a3467",
+            "name": "Lital Goldhaber Hana"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1282123",
+        "title": "Rubber Ducking for LLMs",
+        "description": "Ever wondered why Rubber Duck Debugging actually works?\r\nIt doesn't work because the duck is smart. It works because it forces us to unpack the implicit knowledge we have about our code, expose hidden assumptions, and make what's obvious in our own minds explicit to something with zero prior context.\r\nTurns out, LLMs are the most sophisticated rubber duck we've ever had.\r\nIn this talk, I'll introduce the Cognitive Empathy Framework - a practical model I've been developing, inspired by cognitive psychology, for designing prompts and context for AI coding agents. We'll use real AI engineering examples to explain why techniques like prompt engineering, context engineering, and iterative refinement work so well, and explore the principles that help both humans and AI systems build understanding.\r\nYou'll leave with practical, scientifically backed techniques for writing better prompts, designing more effective AI systems, and collaborating more successfully with LLMs.",
+        "startsAt": "2026-11-30T13:20:00",
+        "endsAt": "2026-11-30T13:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "b32c37d7-752b-412b-9284-982c89fc42e8",
+            "name": "Moran Weber"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295351",
+        "title": "Secure Mobile App Development in React Native - Think Like a Hacker",
+        "description": "Think HTTPS makes you safe? Think again. From poisoned dependencies to deep‑link traps, we’ll peel back the layers of a React Native stack and reveal the places attackers love to hide - plus quick wins to shut them out.",
+        "startsAt": "2026-11-30T13:20:00",
+        "endsAt": "2026-11-30T13:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "ee5be9b1-1bb3-4cf8-8c20-fd7d157e0542",
+            "name": "Yonatan Bergman"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1292120",
+        "title": "Context Diet",
+        "description": "Scale LLM tasks to thousands of items without a giant prompt!\r\n\r\nGenerative AI can feel like magic: you hand the model everything it might need and let it do its thing.\r\nIt works, until the number of items grows, and every call gets slower and more expensive. \r\nThere is a subtler catch: too many similar items make the model's responses inconsistent,\r\neven before the context length becomes a concern - and we have the numbers to prove it.\r\nAt a few thousand items, \"hand it everything\" becomes less attractive as an option.\r\n\r\nThis talk describes a comparative experiment ran by our team at Ai2 on 3 LLM tasks requiring scale-up to thousands of items.\r\nWe will discuss techniques to reduce the number of items required to be in context while preserving quality:\r\ndiverse sampling, incremental labeling, and clustered context.\r\nWe will also look at how to evaluate such cases when no golden labels are available.\r\nEach technique is accompanied with experiment results for a real use-case.",
+        "startsAt": "2026-11-30T13:20:00",
+        "endsAt": "2026-11-30T13:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "5082e5dd-6570-4058-8166-0805bdbe7b80",
+            "name": "Guy Wiener"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1279200",
+        "title": "Rebuilding the Software Factory: The Blueprint for Agentic Builders",
+        "description": "The era of human-written code and manual pull request reviews is over. In the shift toward Agentic Software Engineering, we are no longer typists; we are orchestrators.\r\n\r\nA new role has emerged: the \"Builder.\" Builders are highly creative and independent, acting as agent coaches who manage intent and strategy. However, if multiple independent builders unleash fleets of autonomous agents without governance, the result is a mess - repeated code, duplicated functionlity and architecture and infinite technical debt.\r\n\r\nThis talk explores how to rebuild the \"software factory\" to support these builders. Just as construction workers need an architectural schematic to avoid colliding, agentic builders need a shared digital blueprint - a continuously updated metamodel of the system. We will cover the necessity of deterministic CI/CD guardrails, unified agent infrastructures, and how to define the boundaries that allow builders to innovate safely at maximum speed.",
+        "startsAt": "2026-11-30T14:00:00",
+        "endsAt": "2026-11-30T14:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "ce027e18-44e6-44b4-a84c-2a34f88e3062",
+            "name": "Tal Salmona"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1274663",
+        "title": "Some Assembly Required: The Skill of Not Falling for the AI Monster You Built",
+        "description": "Be honest: that last project you built with AI? You think it's a lot better than it actually is. So does the developer next to you, and so does every product manager who ever fought for their favorite feature. \u2028\u2028It's not ego, it's the IKEA effect: a bias quietly sabotaging the best builders in tech. The more effort you pour into something, the more sure you are it's brilliant, and the less you can walk away. AI poured gasoline on it,  whether you're a product manager, a developer, or just someone who loves to build, you now fall in love faster than ever, and end up defending bloated, unmaintainable things you'll be cursing in a month. \u2028\u2028This talk is your toolkit for dodging that trap: how to catch it in yourself, and exactly what to do instead. Because here's the part nobody wants to hear: like it or not, the human product skills are now the most important ones you've got. \u2028\u2028AI is just a tool. Falling in love with the problem instead of your solution - that's the golden skill.",
+        "startsAt": "2026-11-30T14:00:00",
+        "endsAt": "2026-11-30T14:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "c8755543-cb69-4c9f-86c9-3d7814768793",
+            "name": "Elena Levi"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1291804",
+        "title": "From a Minute to a Second: The Hardcore Engineering Behind Making Video Generation Fast",
+        "description": "Generating a few seconds of video can easily take a minute of compute. Closing that gap isn't AI - it's engineering. A layered stack of low-level optimizations, each with real tradeoffs, and several that will surprise you even if you've been doing systems work for years.\r\nThis talk opens the black box of video inference optimization: attention kernels, quantization, compilation, CUDA graphs - what they actually buy you, what they silently cost you, and where the hardest problems come from places nobody warned you about. Based on hands-on experience optimizing LTX Video's inference engine.",
+        "startsAt": "2026-11-30T14:00:00",
+        "endsAt": "2026-11-30T14:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "bca0f23a-3388-47d4-b29a-43a70ac95dc6",
+            "name": "Barak Yoresh"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295750",
+        "title": "A Yak Walks into a Standup",
+        "description": "Seth Godin gave developers a rule in 2005: don't shave that yak. As a team lead, I found a good reason to break it.\r\n\r\nMy engineers' status updates kept opening the same way: a smile, then a story about the yak they had to shave before getting to the actual task. Not the state I wanted my team in. But every story named something missing: a tool, a piece of infrastructure, a conversation that never happened. Naming it was the first step to fixing it.\r\n\r\nIn five minutes we'll get introduced to the term through a webcomic and an early-2000s sitcom. We'll see what the standard advice throws away, and how a yak story turns into better tooling and the architecture conversations nobody schedules.\r\n\r\nYou'll walk out knowing what to ask when the next yak story starts.",
+        "startsAt": "2026-11-30T14:40:00",
+        "endsAt": "2026-11-30T14:45:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "28d046f8-2c41-44d1-8cc4-861ea478cea3",
+            "name": "Amit Zur"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1261010",
+        "title": "Beyond LLM-as-a-Judge: Math-Based Response Evaluation",
+        "description": "What if you could learn how to read your AI model's pokerface, and predict the likelihood of bluffing, even before he lays his cards on the table?",
+        "startsAt": "2026-11-30T14:45:00",
+        "endsAt": "2026-11-30T14:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "e9a47346-9b66-42fe-be70-2b0779255aa5",
+            "name": "Elad Laor"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295666",
+        "title": "Reward Hacking: Fusing the Cultures of AI and Security Research",
+        "description": "AI researchers and security researchers never really had a reason to collaborate closely - until the agentic revolution. In this lightning talk we - a cyber researcher and an AI researcher - will share what it looks like when we work together to build the world's best AI hacker. We'll talk about where our instincts, tools and approaches clash, what each field can learn from the other and how we facilitate this joint learning. We hope that the lessons we share will be a useful blueprint for building teams that are true mixtures of experts.",
+        "startsAt": "2026-11-30T14:50:00",
+        "endsAt": "2026-11-30T14:55:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "4dd37c3d-463d-4767-a160-e7f2b55889a4",
+            "name": "Dan Padnos"
+          },
+          {
+            "id": "36da1b40-d276-4b33-910f-3d1e808677a4",
+            "name": "Elad Meged"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295002",
+        "title": "The Layoff Playbook Nobody Gives You",
+        "description": "Getting laid off in tech is tough, but the \"toxic positivity\" and social media noise that follow can be even harder. Drawing from personal experience and facilitating workshops for impacted tech workers, this talk offers a practical, honest look at navigating job loss, detoxing from LinkedIn pressure, and separating your self-worth from your professional identity.",
+        "startsAt": "2026-11-30T14:55:00",
+        "endsAt": "2026-11-30T15:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "4de594da-5043-44d5-8039-4d86d10014db",
+            "name": "Yuval Simhi"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1260127",
+        "title": "Who Wants to Be an AI Practitioner? The Million-Token Gameshow",
+        "description": "Welcome to the Reversim ultimate tech reality check game: \"Production Drop or AI Flop?\"\r\nIn this fast-paced interactive lightning session, a live gameshow is coming straight to the crowd. Get ready to answer the ultimate question: Are these genuine engineering wins, or just incredibly expensive architectural illusions?\r\nThe Generative AI gold rush has turned engineering ecosystems into a high-stakes guessing game. Driven by relentless industry FOMO, developers are treating basic API wrappers like architectural triumphs, PMs are shipping features based entirely on hype metrics, and Data Scientists have traded rigorous statistical validation for the chaotic dopamine rush of prompt engineering. The industry has become so blinded by the shiny brilliance of LLMs that deterministic bounds have been completely traded away for probabilistic, \"vibes-based\" outcomes.\r\nNo marketing fluff, no boring slides—just a brutal, hilarious, and deeply necessary intervention for a room full of builders.",
+        "startsAt": "2026-11-30T15:00:00",
+        "endsAt": "2026-11-30T15:05:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "fd5c1877-eeab-40b7-9b73-bb4a9e65a5d0",
+            "name": "Rotem Pinchover"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1290492",
+        "title": "Who's Running Something on Our Servers at 3 AM?",
+        "description": "3:12 AM. A cloud cost alert wakes up the on-call engineer. No deployment is running, no campaign is live, our users are asleep. And yet - something on Any.do's servers is working overtime, and burning money.\r\n\r\nThis is a true story from July 2026, and you'll experience it exactly the way we did: without knowing the ending. We'll follow the investigation clue by clue - the graphs, the logs, the dead ends, and one plot twist nobody in the room will see coming. At every step, you're invited to play detective and guess what's really going on.\r\n\r\nBring your detective instincts. The solution is only revealed in the room.",
+        "startsAt": "2026-11-30T15:05:00",
+        "endsAt": "2026-11-30T15:10:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "1fbc6b9e-7b7e-4f3a-9ba7-0f0fd33a691a",
+            "name": "Yoni Lindenfeld"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295030",
+        "title": "Your Experts Are Not Training Data",
+        "description": "\"We need domain experts.\" Everyone agreed. Nobody knew what we should actually ask them...\r\n\r\nWhile building AI financial and business advisors at Intuit, we learned that the hardest problem wasn't prompting the LLM, it was figuring out how to capture our experts' knowledge in a way that actually improves the product, benefits customers, and doesn't exhaust our advisors (or ourselves).\r\n\r\nIn five fast minutes I'll share the experiments that surprised us: why our \"golden answer\" wasn't so golden, why comparing AI responses beat writing answers from scratch, how disagreement became useful data, and why a simple yes/no question sometimes taught us more than an expert paragraph. Most importantly, how we realized we weren't looking for one perfect answer, we were discovering what \"good advice\" actually means.\r\n\r\nWhether your experts are accountants, doctors, lawyers or your company's \"person who knows everything,\" you'll leave with practical ideas for turning human expertise into better AI.",
+        "startsAt": "2026-11-30T15:10:00",
+        "endsAt": "2026-11-30T15:15:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "8d9cd1e6-ef93-481c-9d3f-1debdc16d8bd",
+            "name": "Shirli Di-Castro Shashua"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295208",
+        "title": "How to Navigate a T-Rex-Sized Codebases",
+        "description": "Google Chrome’s Dinosaur game is one of the most popular in the world, everybody has seen it at least once, but did you really see it? I mean, it’s codebase, Chromium is open source, so let's start digging and find some dinosaur bones 🦴\r\nIn this session, we will dive into chromium’s huge codebase that we have no prior knowledge of. We will see how we can leverage our developers' instincts and AI skills to locate features and bugs in open-source projects. We will see how we can use skills, agents, and efficient context when we explore codebases while avoiding burning through millions of tokens",
+        "startsAt": "2026-11-30T15:50:00",
+        "endsAt": "2026-11-30T16:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "2848544a-2878-4843-8b88-1113d29531fd",
+            "name": "Omri Bar-Zik"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1292460",
+        "title": "In AI We Trust? Summarizing Hotel Reviews at Booking.com",
+        "description": "While AI enthusiasts were publishing blog posts, demos, and browser extensions showing how easy it is to summarize hotel reviews with LLMs, we were busy tackling the much harder challenge of building a feature that actually helps travelers.\r\n\r\nBuilding an AI-powered review summarizer is no longer the hard part. Building one that works consistently across nearly 4 million properties and hundreds of millions of reviews, while measurably helping travelers make better booking decisions, is. Join me to learn about our two-year journey of experimenting with prompts, models, data sources, evaluation methods, and UX at Booking.com. We’ll explore why offline AI metrics are only the beginning, why A/B tests often tell a very different story, and the surprising lessons we learned when real traveler behavior challenged our assumptions.",
+        "startsAt": "2026-11-30T15:50:00",
+        "endsAt": "2026-11-30T16:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "83b87c4d-f179-483d-a039-1eeb4cc6ca1c",
+            "name": "Manor Malchi Betzer"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1289580",
+        "title": "Teaching AI Glasses to track a drawing in the making",
+        "description": "What does it take to turn AI glasses into your very own drawing teaching tool?\r\nWe integrated Meta Ray-Ban AI glasses into our hand-drawing teaching app, in order to provide for the app’s users a complete, drawing-focused timelapse of their sketching process from their own POV. This turns a standard Computer Vision task into an interesting challenge by removing multiple common simplifying assumptions: track a feature-poor, partially-occluded, moving object from a moving perspective, at low FPS, as it is being created from scratch, all while a highly-similar but unwanted target - the app’s reference drawing - is in view.\r\nIn this session we'll discuss integrating the new AI Glasses technology into our app, and solving this novel problem via semantic segmentation models, a custom processing and stabilization pipeline, and strongly in-domain data.",
+        "startsAt": "2026-11-30T15:50:00",
+        "endsAt": "2026-11-30T16:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "8fa005ab-358c-4f9b-88a4-b1dd3f39b152",
+            "name": "Gil Peled"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1284271",
+        "title": "From a Single Skill to a Sea of Skills: Architecting LLM Agents in Production",
+        "description": "Have you written an LLM skill? It starts simple: define its goal, give it a tool, and it works. But what happens when you drop that isolated skill into a live system with hundreds of capabilities?\r\nAt Wix, handling 300K monthly conversations, the challenge isn't just writing a skill—it's finding the right one in a sea of options.\r\nIn this session, we’ll explore the lifecycle of production LLM skills. First, we’ll define what should actually be a skill and where they commonly crash in the wild (e.g., missing exit points, outdated context).\r\nThen, we’ll dive into the routing dilemma: When you have hundreds of actions, how do you trigger the exact right one? Do you retrieve them via RAG? Shove them all into the context window? Or filter them using deterministic code?\r\nJoin us to compare these architectural approaches and learn how to scale autonomous agents effectively.\r\n",
+        "startsAt": "2026-11-30T16:30:00",
+        "endsAt": "2026-11-30T17:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "71cfd88c-ede9-4ba3-8e41-647b8d0d177e",
+            "name": "Ortal Ashkenazi"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1294066",
+        "title": "Accidental Conversion: When AI Completes Actions Users Never Chose",
+        "description": "At Amazon Devices, I worked on a product launch where conversion looked strong, and we were sure we found a winning solution. Until we started reading user forums. People were asking questions about features that didn’t exist in the product they bought, because they hadn’t realized they selected the wrong model. I came to call this Accidental Conversion: when a product successfully drives an action before the user has fully made the decision behind it. The metrics said success; users were confused. \r\n\r\nFor 2 decades, we taught products to remove friction. AI is accelerating that trend, making systems better at predicting, recommending, & completing actions. But it also creates a new blind spot: products can become increasingly good at getting users to “yes” before they actually decided. In this talk I'll share 2 Amazon cases where healthy metrics hid this pattern, what it costs when you miss it, and how to think about conversion differently in products where AI is doing more of the work.",
+        "startsAt": "2026-11-30T16:30:00",
+        "endsAt": "2026-11-30T17:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "051ed9b5-c645-4987-bbe9-ff2c32b2abf4",
+            "name": "Noa Sabar Dvoskin"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295698",
+        "title": "\"Forward to Shraga!\" — Training a Small Agent to Handle 1M Production Logs a Day",
+        "description": "In Ramzor, Hefer survives a high-tech job with zero technical skills using one move: forward everything to Shraga. It works beautifully until Shraga relocates to Silicon Valley and Hefer quits, because the whole system was Shraga. Most teams shipping AI features today are Hefer: every request gets forwarded to a big commercial model, and it works right up until latency, cost, privacy, or a deprecation notice takes Shraga away.\r\n\r\nThis talk is about building your own Shraga — a small model fine-tuned into a capable agent for one specific job. We built an agent that reads IT logs, diagnoses failures, and proposes verified fixes. We’ll take it from a vanilla small model that fails almost on everything to one that holds its own. \r\n\r\nWe'll walk through what it took to get there, while tackling two questions that should come before any training: do we even need an agent for every task? and if so — how do we actually evaluate one?",
+        "startsAt": "2026-11-30T16:30:00",
+        "endsAt": "2026-11-30T17:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "b6f74231-7275-4aa7-b7b3-ab771f1a6f75",
+            "name": "Moran Mizrahi"
+          },
+          {
+            "id": "0c3a95a6-32fd-4aa8-bffc-a178a8f40076",
+            "name": "Avinoam Bitton"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295682",
+        "title": "What Couples Therapy Taught Me About Working With AI Agents",
+        "description": "I work at a company that builds a couples-therapy platform. So when I found myself fighting with my agent again, it hit me: what if I applied the principles we teach couples to this relationship?\r\nBecause here is what was happening. I would curse at it, it would over-explain itself, I was convinced it was an idiot, and its answers fed my anger. I was treating it like a junior who could not keep up - reviewing every line, shipping one PR a day.\r\nSo I brought it to our clinical team, who do this with real couples daily, and together we translated it into daily work with an agent: sit down after a fight, look at the cycle instead of the incident, have each side own its part. What came out of that, technically: a mechanism that lets the agent admit it is stuck without halting the process, and an explicit agreement on how uncertainty gets disclosed instead of bluffed.\r\nFrom 1 PR a day to 3-4. You will leave with tools for working with your agents, and maybe with your actual partner too.",
+        "startsAt": "2026-12-01T09:00:00",
+        "endsAt": "2026-12-01T09:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "9539e857-1538-4e06-9c1b-36efd590a7f5",
+            "name": "Eyal Abbas"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1242388",
+        "title": "Minicloud: a high-fidelity multi-cloud simulator",
+        "description": "Cloud-native applications mean cloud-native testing, and at the end of each month, cloud-native billing for this testing.\r\n\r\nWe present minicloud, a high-fidelity cloud simulator that simulates cloud APIs on your laptop. It is able to launch VMs using real AMIs (which it will auto-download). High fidelity means that great effort was taken so the application will be have exactly as it does on the cloud. Currently AWS and GCP emulation are supported.\r\n\r\nThe project is written in Rust.",
+        "startsAt": "2026-12-01T09:00:00",
+        "endsAt": "2026-12-01T09:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "c9b7c94c-47dc-4280-91de-5b91640eeb6f",
+            "name": "Avi Kivity"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1293791",
+        "title": "A Cellist's Path: Three Bets on the Space Between Fields",
+        "description": "I believe the most interesting problems live between fields, not inside one. As a cellist, I became convinced music and the brain deserved to be one connected field. That belief led me through a PhD, into a neurotech startup betting the same insight could become real technology, and into a team decision to record EEG far beyond standard resolution, on a hunch there was more signal in the data than anyone had proven.\r\nEach bet took years: a real field, a real clinical product, and now AI surfacing patterns in a decade of data once dismissed as noise. I will close by playing live cello while my own brain response streams on screen.\r\nAs AI takes over more technical execution, what becomes rare is you, whatever odd mixture of passions you carry alongside your engineering work. Stick with that other thing long enough to be good at it, and this is the moment to let it merge into what you build. There is room now for the weirdest combinations, mine included.",
+        "startsAt": "2026-12-01T10:20:00",
+        "endsAt": "2026-12-01T10:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "731dff58-3d1e-452a-bcd2-f7076f305337",
+            "name": "Neta Maimon, PhD"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1289916",
+        "title": "TrialFinder: From Personal Loss to a Search Engine for Hope",
+        "description": "When someone you love gets sick, one of the first things you do is search for options. I found myself doing exactly that when my father was facing a serious illness, and quickly discovered that finding clinical trials is a broken process: outdated interfaces, unreadable medical jargon, and thousands of irrelevant results. Years of manually helping patients navigate this maze led me to build TrialFinder, a free, non-profit platform that matches patients with relevant clinical trials: from smart profile-based search and plain-language explanations, through eligibility checks and guidance on speaking with your doctor, to contacting the trial team.\r\n\r\nThis talk covers my journey: how I designed an AI system that handles sensitive medical data without ever storing it, the early viral moment that stress-tested everything, feedback from patients and doctors, and emerging partnerships with hospitals and health funds. This is a story about building a zero-budget tool with nothing but purpose.",
+        "startsAt": "2026-12-01T11:10:00",
+        "endsAt": "2026-12-01T11:40:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "61b9f9fb-da74-4aa3-a72b-1567ff544b0a",
+            "name": "Daniel Korn"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1270916",
+        "title": "How We Merged Outbrain’s and Teads’ Clouds Without Starting a Holy War",
+        "description": "Two companies merged. So did their clouds — and their cultures.\r\nOne company grew up cloud-native: spot instances, managed-everything, move fast and trust the provider. The other spent a decade running its own Data Centers — reserved capacity, predictability, and a deep suspicion of anyone's markup. Then the orgs became one company, and suddenly there was a single cloud bill. On my desk.\r\n\r\nThis is the story of how eng, organisations, systems, culture and tech stack (and tech debt) collapse into a single decision. How a commercial selection process can be warped and skewed in different angles and how the winner is not necessarily the cheapest.  \r\n\r\nA war story about leverage, trust, and the investment in abstraction — told from the seat where the contract, the architecture, and the politics all land at once.\r\n",
+        "startsAt": "2026-12-01T11:10:00",
+        "endsAt": "2026-12-01T11:40:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "9e9ccd2c-0408-4872-b5e8-633e0059dcda",
+            "name": "Shahar Barak"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1254926",
+        "title": "Your agent failed. You blamed the model. You were wrong.",
+        "description": "Every team does the same thing. Agent behaves weirdly in production - retries endlessly, drops tasks, returns confident nonsense. First reaction: swap the model, tweak the prompt.\r\nIt's never the model. \r\nMulti-agent systems aren't an AI problem. They're a distributed systems problem with an AI layer on top. And most teams skip all the boring infra - state management, observability, failure handling, routing - and pay for it later.\r\nWe'll go through 8 agentic patterns (supervisor/worker, swarm, reflection, human-in-the-loop and more), and for each one: what the pattern does, where it breaks, and what infra you actually need before shipping it to production.\r\n\r\n",
+        "startsAt": "2026-12-01T11:10:00",
+        "endsAt": "2026-12-01T11:40:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "55c6b59b-448d-4e3b-a013-3b23810b6fcd",
+            "name": "Daniel Ostrovsky"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1264670",
+        "title": "Expired Truths: Engineering Advice That Stopped Being True",
+        "description": "We're engineers. We measure, we benchmark, we run postmortems. We pride ourselves on not taking things on faith.\r\nSo why do we quote advice we've never traced to its source? Why do we copy architectures off conference talks, and pass \"best practices\" down to juniors without ever asking where they came from?\r\nHere's the uncomfortable part: most of the advice we repeat was genuinely true once — in a specific context that has quietly expired. The conclusion survived; the reasoning didn't. We inherited the answer without the question.\r\nThis talk traces a handful of beliefs we all hold back to the moment they were actually true, watches that moment disappear, and asks what we should do instead. It starts somewhere you won't expect, and ends with a single question that protects you from the next expired truth — including the ones you're teaching right now.",
+        "startsAt": "2026-12-01T11:50:00",
+        "endsAt": "2026-12-01T12:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "89325003-a650-42ab-8b34-84a18369b025",
+            "name": "Nadav Beker"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1292058",
+        "title": "Autoscaling: cost optimization turned reliability nightmare",
+        "description": "Autoscaling gets slapped onto nearly every deployment, and the usual results are surprise bills and cascading failures. Here's the uncomfortable part: autoscaling isn't a scaling solution at all — it's a cost optimization. You still have to design and test for peak load yourself. Worse, the moment you enable it you've adopted a feedback control system — with dead time, gain, and coupling to your load balancer — and almost nobody treats it as one. This talk is about what autoscaling actually is, why \"just turn on the HPA\" produces oscillation and outage amplification, and what responsible use looks like: design for max scale first, keep the scaling units well-behaved, protect upstream resources, and pick your control loop on purpose.",
+        "startsAt": "2026-12-01T11:50:00",
+        "endsAt": "2026-12-01T12:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "ec6c2ebd-3765-481b-8bf8-c5abc5a71c9c",
+            "name": "Avishai Ish-Shalom"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1293550",
+        "title": "The agent acts, the owner's asleep: trust and control for an always-on AI agent",
+        "description": "An agent that drafts text is a demo. An agent that sends invoices, messages clients, and books meetings for a real business, while its owner is asleep, is a liability with a login.\r\n\r\nWe shipped one at HoneyBook. This talk is the chain of problems it forced, where every fix opened the next one.\r\n\r\n\"Ask before acting\" can't live in the prompt, because a prompt can be talked out of anything. So a gate outside the LLM decides what runs, what waits, and what never happens. The gate defers, and now you hold a half-finished thought for eighteen hours across redeploys. Then the owner answers \"sure\", mid-conversation. Which pending action does that bind to? Is the sender really the owner? They approved one action out of three: do the other two run? Is a yes still a yes when the world changed since you asked?\r\n\r\nNone of these problems live in the model. They live in the architecture around it. That architecture is the talk: how a business stays in control of an agent acting while nobody's watching.",
+        "startsAt": "2026-12-01T11:50:00",
+        "endsAt": "2026-12-01T12:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "7b4eee84-5681-4304-a1b4-34a3f638b5fe",
+            "name": "Jenia Barabanov"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295811",
+        "title": "Where's My Context? (Switched.)",
+        "description": "I know multitasking is basically screwing up several things at the same time. \r\nAnd yet, since AI became part of my daily work, I find myself doing exactly that - filling every available moment with something else.\r\n\r\nAI creates gaps while we wait, and a FOMO to fill every gap with another thread. At some point, doing just one thing starts to feel wasteful. Almost useless.\r\n\r\nBut what happens to our context when we work like this? Are we still close enough to the details to make good decisions that move us in the right direction? What do we still need to understand deeply, and what can we safely let go of?\r\n\r\nIn this talk, I’ll revisit deep work in the age of AI: which principles still matter, which are no longer relevant, and which new habits we need now.\r\n\r\nAnd most importantly: can we get the leverage of AI without giving up the depth - and the feeling of being truly inside what we’re doing?",
+        "startsAt": "2026-12-01T13:20:00",
+        "endsAt": "2026-12-01T13:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "9a8ace6c-8256-45b4-b47c-b05185bbdba7",
+            "name": "Shikma Lerer"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1291865",
+        "title": "Sleep Tight, the Agent’s On-Call: Autonomous Ops in the Real World",
+        "description": "Who’s watching your production system at 2 a.m.? For us, it’s an autonomous AI agent.\r\n\r\nAt UVeye, we scan over 3 million vehicle scans monthly across a global fleet of visual-inspection sites. When a camera drifts, a lane stalls, or image quality degrades, system blindness costs customer trust. Static alert rules simply couldn't keep up with physical-world telemetry and visual quality.\r\n\r\nIn this talk, I’ll share how we put an LLM agent on-call. Instead of managing fragile alert rules, we built an agentic system where existing detectors act as dynamic tools. We’ll open up the hood to show the architecture: how the agent independently investigates root causes across logs, metrics, and storage. Finally, we'll walk through a real production catch, detail tool structuring, and tackle the hardest challenge - building enough system trust for engineering teams to act on autonomous findings.",
+        "startsAt": "2026-12-01T13:20:00",
+        "endsAt": "2026-12-01T13:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "afad32e5-d5d8-41a7-b596-f8afea2142d6",
+            "name": "Shira Navot"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1270894",
+        "title": "4+3 strategies to boost your caches",
+        "description": "Caching is a cornerstone of application performance, but are we truly leveraging its full potential? \r\nWith increasing complexity in modern systems, selecting and adapting the right caching strategies can make or break user experience. \r\nIn this talk, we’ll dive deep into the caching strategies we use at Teads to optimize performance, scalability, and reliability. \r\nYou’ll learn the pros and cons of the different strategies, and discover how to combine them for maximum efficiency. \r\nBy exposing real-world challenges, successes, and lessons learned, this session provides actionable insights to help you get the most out of your caching infrastructure.\r\n",
+        "startsAt": "2026-12-01T13:20:00",
+        "endsAt": "2026-12-01T13:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "9f2fc605-364d-4e2f-bcb8-738028ccc2a4",
+            "name": "Yonatan Zusman"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1291543",
+        "title": "Inside the Black Box of an Engineering Journey: How Hidden Mechanisms Shape Career Opportunities",
+        "description": "Engineering organizations are built on the promise of meritocracy: that good work speaks for itself. Often it does not. Long before anyone talks about promotion, visible and hidden mechanisms shape who gets the work that builds a career, whose contribution is credited, and who is considered for the next opportunity.\r\n\r\nDrawing on my PhD research and two decades in engineering and R&D leadership, this talk opens the black box of an engineering journey. We will explore how seemingly neutral practices shape careers over time, and how talent can remain unseen or underused. You will leave with a practical framework for recognizing these mechanisms around you and identifying where you can act to open real career opportunities.",
+        "startsAt": "2026-12-01T14:00:00",
+        "endsAt": "2026-12-01T14:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "40910897-7a01-4dba-8c96-70201fa611c4",
+            "name": "Tsaela Pinto-Harel"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1243590",
+        "title": "From Black To White",
+        "description": "From BlackHat to WhiteHat is a technical and personal journey from breaking systems out of curiosity, ego, and adrenaline, to using the same mindset to protect companies, products, and users.\r\n\r\nThrough real stories from early tinkering, Android rooting, mobile security, RFID hacking, zero-day research, and security advisory work, I will share what changed, what stayed the same, and what I learned about ethics, responsibility, risk, and trust. This is not a morality lecture and not a \"how to hack\" tutorial. It is an honest look at how offensive knowledge can become defensive value.",
+        "startsAt": "2026-12-01T14:00:00",
+        "endsAt": "2026-12-01T14:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "39d4bafe-2ae1-4ac8-a076-4fdff03b9c8d",
+            "name": "Elia Yehuda"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1292090",
+        "title": "Escaping the \"Double-Token Tax\": Scalable LLM Analytics for Conversational Agents",
+        "description": "Running conversational agents in production is expensive, but analyzing their unstructured logs at scale using LLMs introduces a painful \"double-token tax\" - burning budget during the conversation, and again during analysis.\r\nThis session introduces a database-native design pattern to escape this tax and scale conversational LLM analytics to millions of interactions at a fraction of the cost. \r\n\r\nWe present a two-part architecture:\r\n- Insights Surfacing: Automating category distributions and user intent mapping utilizing unsupervised clustering and drift-aware LLM labeling.\r\n- Interactive Semantic Discovery: An interactive natural-language agentic interface enabling ad-hoc semantic queries directly on the data warehouse, analyzing millions of conversations at scale with high quality by combining LLMs and light ML models.\r\n\r\nBy bridging these modes, teams can extract latent user needs hidden in massive log volumes and turn raw dialogues into actionable product improvements.",
+        "startsAt": "2026-12-01T14:00:00",
+        "endsAt": "2026-12-01T14:30:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "97e8f8a4-e5bc-4a31-9827-a6c260b60d0b",
+            "name": "Haim Cohen"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1292099",
+        "title": "Duck Debugging Deadlocked Humans: A Practical Guide to Getting Unstuck",
+        "description": "You’re stuck.\r\nYou’ve tried everything. You’re circling the same dead end. You've considered abandoning tech to become a goat herder in the Alps. \r\nNow what?\r\nThis talk is a fast, focused guide to what actually works when you hit a wall. Spoiler: it’s not more brute force.\r\nI’ll share a practical mental model for switching from Execution Mode to Exploration Mode, with concrete tools to diagnose your stuckness, tighten your feedback loop, and make real progress—whether you’re debugging a tough problem, facing a hard decision, or spiraling in self-doubt.\r\n\r\n*** No ducks were hurt during the making of this talk. \r\n",
+        "startsAt": "2026-12-01T14:40:00",
+        "endsAt": "2026-12-01T14:45:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "dac0754e-8bbe-406b-8366-56d783578493",
+            "name": "Lea Cohen Tannoudji"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1290489",
+        "title": "Hear No Evil: When AI Guardrails Can't Hear the Threat",
+        "description": "Sound is just a wave - and a wave has parameters you can bend: pitch, frequency, amplitude. All it takes is open-source tools and a laptop. Turns out, something unsettling happens: an AI model will refuse a request in text, then comply with the exact same request when it arrives as sound.\r\nIn 5 rapid-fire minutes, I'll walk through adversarial audio attacks on multimodal AI - the same instruction, reshaped acoustically, sliding past the model's defenses without changing a single word.\r\nYou'll see how a shifted frequency confuses a multilingual model, a trimmed waveform slips past prompt-injection detection, and a modulated carrier wave evades transcript-based filters - all without touching the text itself.\r\nPitch, frequency, amplitude: the same tools a sound engineer uses to master a podcast are the tools an attacker uses to jailbreak an AI.",
+        "startsAt": "2026-12-01T14:45:00",
+        "endsAt": "2026-12-01T14:50:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "5aaa8024-2b69-4034-a40f-5b2551e877f6",
+            "name": "Tsofit Zazon"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1280690",
+        "title": "Hiring Post-Claude",
+        "description": "The rise of AI tools like Claude hasn’t just changed our daily git commits—it has completely rewritten the playbook for what makes a great developer and how we build engineering teams. In this fast-paced, 5-minute talk, we will contrast what we used to look for in candidates versus the skills we prioritize now in an AI-driven landscape. We will bust the industry myth that junior engineers are obsolete, and instead explore how their personal growth and onboarding look vastly different today. Finally, you'll get a direct look inside Wix, sharing our internal approach to cultivating the \"xEngineer\" and how we are actively restructuring our programs to turn entry-level talent into AI-native powerhouses",
+        "startsAt": "2026-12-01T14:50:00",
+        "endsAt": "2026-12-01T14:55:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "f117a9c6-9830-4b56-ac1f-4585d201966b",
+            "name": "Guy Nahum"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1264236",
+        "title": "How to Cheat at Hebrew Codenames (Without an LLM)",
+        "description": "Codenames: the spymaster gives one clue word and a number, and the team guesses their cards without hitting the assassin. In an era when we bolt an LLM onto everything, I wanted to see how far classic tools and a little local geometry could go, so I built a Hebrew Codenames copilot that gives better clues than I do. Word vectors, some geometry, zero large language models.\r\n\r\nThe idea: words are vectors. A good clue is the point closest to your cards and farthest from everyone else's, with a heavy penalty for drifting toward the assassin.\r\n\r\nAlong the way, a small static model (fastText) gave stronger, safer clues than a 12B Hebrew LLM, a reminder that this task rewards a clean vocabulary and careful handling of risk more than raw scale. I'll show what worked, why Hebrew makes it genuinely harder, and where the simple approach breaks and how to fix it. No heavy math, and there's a live demo you can try.",
+        "startsAt": "2026-12-01T14:55:00",
+        "endsAt": "2026-12-01T15:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "aa831019-1bcc-44ea-9d75-2291b6b50f93",
+            "name": "Shmulik Cohen"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1270207",
+        "title": "Quantum computers are actually slower!",
+        "description": "\"Quantum computers (QCs) are faster because they try all options in parallel\", we've all heard that trope at some point, but is it any true? This session aims to bust a few very common quantum myths that are widely spread in science journalism and social media. We will address 3 myths that are intertwined: (a) QCs are “faster”, (b) QCs try all possible paths in superposition, and (c) QCs will solve every hard problem from climate change to optimization.\r\nThis lightning session will not include any math, or “intro to QC”. It aims to leave the audience a bit less clueless about this exciting paradigm.",
+        "startsAt": "2026-12-01T15:00:00",
+        "endsAt": "2026-12-01T15:05:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "9d734fde-6473-436f-b7e7-061a49a88ef5",
+            "name": "Iftach Yakar"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295499",
+        "title": "Your Agent Doesn't Know You",
+        "description": "Agent memory got better this year. Awareness of the human is still unsolved. Your Claude Code doesn't know you slept four hours and need to take it slow this morning. Your OpenClaw doesn't know you skipped your run and you're already restless by 10am. So they answer the same way whether you're sharp or fried, and interrupt the same way whether you're deep in flow or staring at the ceiling. \r\n\r\nIn 5 minutes, we’ll introduce the Inner World Model, the missing layer in the agent stack. We’ll cover how to integrate the Inner World Model as an EQ layer of an ai agent, and show a quick demo of what it's like to work with an agent that knows you.\r\n",
+        "startsAt": "2026-12-01T15:05:00",
+        "endsAt": "2026-12-01T15:10:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "6f5cde99-2729-446c-a2b5-790e25cfe595",
+            "name": "Limor Lahiani"
+          },
+          {
+            "id": "f758e7c5-6edf-40d2-ad99-336ba7e1cd9a",
+            "name": "Omri Mendels"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295512",
+        "title": "שיר - יוני ויפתח נפרדים",
+        "description": "הגיע הזמן להיפרד 😢\r\n\r\nלהאזנה לשירים משנים קודמות:\r\nhttps://youtube.com/playlist?list=PLvv1VJsbJ2I62N7VmIy_PcEU9wFmEOVTi&si=duBIRWxO9v0Y4hnq",
+        "startsAt": "2026-12-01T15:10:00",
+        "endsAt": "2026-12-01T15:15:00",
+        "isServiceSession": false,
+        "isPlenumSession": true,
+        "speakers": [
+          {
+            "id": "43b3ec12-7847-409f-8051-227abd67f744",
+            "name": "Yoni Tsafir"
+          },
+          {
+            "id": "65a0c337-ee07-4398-b0da-9293b6f84220",
+            "name": "Iftach Bar"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1292150",
+        "title": "Edut 710's Living Archive of the Present. How to Build an Archive of an Event in Real Time.",
+        "description": "Two days after October 7, before the scale of the disaster was known, dozens of volunteers began recording survivors' testimonies on film. Edut 710 grew out of that effort: a living archive of the present, built in real time with no institutional backing and no budget.\r\nThree years on, the archive holds more than 2,000 video testimonies and a RAG-based search agent that answers natural-language questions and points to the exact moments that support each answer.\r\nWe will show how we designed the infrastructure:\r\na testimony-person-place knowledge model with a unique identifier for every entity;\r\nwitness consent encoded in the schema itself;\r\nfield-level permissions that keep survivors in control of their own stories.\r\nThe talk explores what happens when the humanities and engineering meet under emergency conditions, and argues that modeling knowledge is an ethical practice as much as a technical one, because it determines whether the archive manages to keep its historical and moral context.",
+        "startsAt": "2026-12-01T15:50:00",
+        "endsAt": "2026-12-01T16:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "2e16fe09-0f5a-437a-bed6-0979dceee77e",
+            "name": "Renana Keydar"
+          },
+          {
+            "id": "ba342f15-a5e3-4429-9b6f-2ae71a94e73a",
+            "name": "Yael Netzer"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1245237",
+        "title": "Logs for the AI era: observability when humans are no longer the only readers",
+        "description": "We are adding AI to our workflows, our IDEs, our incident response, and sometimes even our production investigation process. But AI does not see production truth. It sees the signals we give it: logs, metrics, traces, code, dashboards, and runbooks.\r\n\r\nIn this talk, I’ll share a real production story where a feature looked available, the deployment was green, and logs existed — but the feature delivered no value. When we gave the available signals to AI, it produced a confident but wrong direction. We’ll use this story to rethink observability for the AI era: not as “more logs,” but as a way to reduce ambiguity, expose hidden domain context, and help both humans and AI tools reach better hypotheses faster.",
+        "startsAt": "2026-12-01T15:50:00",
+        "endsAt": "2026-12-01T16:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "01d71f09-b6e9-49d7-95b8-d38a9e8a0454",
+            "name": "Melanie Shoresh"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1294030",
+        "title": "Scaling AI Image Generation: Patterns That Actually Hold Up",
+        "description": "Image generation works beautifully in demos and fails the moment real users hit it. \r\nLatency spikes, models collapse under specific prompts, and low quality images slip into production at exactly the wrong time.\r\n\r\nBefore applying the right patterns, the pipeline was slow, inconsistent, and had many unpredictable failures.\r\nAfter restructuring it, latency improved, cache hits reached 50 percent, and failure rates dropped to near zero, even under load.\r\n\r\nThe shift came from three techniques: a strategy-based router that selects the right model per use case, LLM-generated cache keys that massively boost performance, and evaluation filters that prevent weird or unusable images from ever surfacing. These solutions come directly from handling failures at scale.\r\n\r\nYou will leave with a production blueprint for image generation that stays fast, stable, and predictable at scale.",
+        "startsAt": "2026-12-01T15:50:00",
+        "endsAt": "2026-12-01T16:20:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "1ce88907-46d6-4cfe-b325-fad908413e4d",
+            "name": "Dina Matveev"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295783",
+        "title": "What game are you playing?",
+        "description": "Every game has a winning strategy, and it's never written in the rulebook - it emerges from the rules. Change a rule, and a different strategy wins. The same is true of everything we build: products, KPIs, team processes. Each choice quietly makes some behavior the winning move, whether we intended it or not.\r\n\r\nIn this session we'll reverse-engineer everyday apps, working backward from visible behavior to the rule behind it. Why is X the meanest room on the internet while Reddit stays surprisingly honest? Why does everyone sound fake on LinkedIn? Why can you trust an Airbnb review but not an Amazon one - when it's often the same people? Then we'll turn the lens on our own work: retention problems, teams that play it too safe, KPIs that reward exactly the wrong thing.\r\n\r\nYou'll leave with a new reflex: when behavior surprises you, stop blaming the players - find the rule that made winning look like that.",
+        "startsAt": "2026-12-01T16:30:00",
+        "endsAt": "2026-12-01T17:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "1c79c6d0-92c9-46b9-b705-820c7ebcd519",
+            "name": "Ifat Koller"
+          }
+        ],
+        "categories": [],
+        "roomId": 83291,
+        "room": "Main hall",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1295433",
+        "title": "Ask the Genie for More Wishes 🧞‍♂️: When AI Can’t Keep Up with Real-Time Cyber Security",
+        "description": "A simple employee at a cyber security company in Agrabah finds a lamp. The genie inside (a Large Language Genie) promises to solve his impossible job: stopping sensitive data from leaking (DLP) as users paste text, drag files and send emails across dozens of apps, each behaving differently, with verdicts due in milliseconds. But each wish is slow, expensive, and the genie gossips.\r\n\r\nSo he finds the loophole, the one wish every genie forbids: wishing for more wishes. How do you get a genie’s full power on every endpoint without ever rubbing the lamp in production? A whole new world awaits in this session: solving a security agent’s hardest problems with AI.",
+        "startsAt": "2026-12-01T16:30:00",
+        "endsAt": "2026-12-01T17:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "07e8efd9-c815-4e31-8fac-a63fdc5e0a07",
+            "name": "Elai Eckhaus"
+          }
+        ],
+        "categories": [],
+        "roomId": 83292,
+        "room": "A2+A3",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      },
+      {
+        "questionAnswers": [],
+        "id": "1288629",
+        "title": "Six Months Living with a Personal Agent: What Works, What Broke, What I Learned",
+        "description": "Six months ago I stopped playing with AI agents and started living with one.\r\nIt runs 24/7, has persistent memory, sub-agents for dedicated roles,\r\nintegrations with Gmail, Calendar, docs, and 15+ capabilities. Most of the\r\ntime it works. Sometimes it breaks in ways I didn't expect. This talk covers\r\nthe architecture that emerged, three concrete failures (including one where\r\nthe agent replied on my behalf about a sensitive matter), the four principles\r\nthat came out of the mistakes, and one rule that guards against most\r\nproblems. Not a \"how to build an agent\" talk. A \"what happens when you\r\nactually live with one\" talk.",
+        "startsAt": "2026-12-01T16:30:00",
+        "endsAt": "2026-12-01T17:00:00",
+        "isServiceSession": false,
+        "isPlenumSession": false,
+        "speakers": [
+          {
+            "id": "62459c34-11ad-4775-a566-a5e0bf96f647",
+            "name": "Dvir Arad"
+          }
+        ],
+        "categories": [],
+        "roomId": 83293,
+        "room": "A4+A5",
+        "liveUrl": null,
+        "recordingUrl": null,
+        "status": "Accepted",
+        "isInformed": true,
+        "isConfirmed": true
+      }
+    ],
+    "isDefault": false
+  }
+]
+}
