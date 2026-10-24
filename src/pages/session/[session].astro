@@ -13,6 +13,12 @@ import { getSpeakerById } from "../../helpers/data/getSpeakers";
 import type { AgendaSpeaker } from "../../types/agenda";
 import type { Talk } from "../../types/session";
 import Layout from "../../layouts/Layout.astro";
+import {
+  SITE_NAME,
+  excerpt,
+  joinNames,
+  withDirectionMark,
+} from "../../helpers/meta";
 
 export const getStaticPaths = (async () => {
   async function getPrevAndNextOfTrack(sessions: Talk[], session: Talk) {
@@ -75,6 +81,7 @@ const {
   categories,
   id,
   recordingUrl,
+  day,
 } = session;
 
 function getDaySuffix(day: number) {
@@ -109,9 +116,23 @@ function getSessionDate() {
 
 const categoryColor = getTalkCategoryColor(session);
 const track = getTrackName(session);
+
+// Link preview: no start times, as the schedule's hours aren't final yet.
+const speakerNames = joinNames(
+  speakers.map((speaker) => speaker.fullName || speaker.name || ""),
+);
+const shareTitle = [withDirectionMark(title), speakerNames]
+  .filter(Boolean)
+  .join(" | ");
+const shareDescription = [
+  [speakerNames, `${SITE_NAME}, Day ${day}`].filter(Boolean).join(" · "),
+  withDirectionMark(excerpt(description)),
+]
+  .filter(Boolean)
+  .join(". ");
 ---
 
-<Layout>
+<Layout share={{ title: shareTitle, description: shareDescription }}>
   <Button variant="back" text="Sessions" href="/sessions" />
   <div class="session-container">
     <h2>{title}</h2>
