@@ -9,16 +9,76 @@ import {
   loadImage,
   quote,
   resolveFonts,
-} from "./draw.js";
-import { TEMPLATES } from "./templates.js";
+} from "./draw";
+import { TEMPLATES } from "./templates";
+import type { BannerInfo, Format, KitData, KitSession } from "./types";
 
-export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
+type PlatformId = "linkedin" | "x" | "facebook" | "whatsapp" | "story";
+type Step = "session" | "as" | "platform" | "design" | "text" | "post";
+
+/** The wizard's state, read from the URL. */
+interface State {
+  /** Index into the sessions list. */
+  session: number | null;
+  /** Which of the session's speakers is posting. */
+  as: number | null;
+  platform: PlatformId | null;
+  design: string | null;
+  /** The post text has been reviewed. */
+  ready: boolean;
+}
+
+/** URL changes for go(): null removes a key. */
+type Changes = Partial<Record<keyof State, string | number | null>>;
+
+interface Banner {
+  canvas: HTMLCanvasElement;
+  blob: Blob | null;
+  blobPromise: Promise<Blob>;
+  fileName: string;
+}
+
+/** What a post step's action gets to work with. */
+interface ActionCtx {
+  I: BannerInfo;
+  banner: Banner;
+  /** The post text (the session link for stories). */
+  text: () => string;
+}
+
+interface Action {
+  label: string;
+  run: (ctx: ActionCtx) => boolean | Promise<boolean>;
+  hint: string;
+  /** Show the text (or link) this step sends, read-only, next to its button. */
+  payload?: "text" | "url";
+  copyFallback?: boolean;
+}
+type PostStep = Action | { say: string };
+
+interface Platform {
+  label: string;
+  icon: string;
+  format: Format;
+  note: string;
+  /** The suggested post; null for stories, which have no caption. */
+  text: ((I: BannerInfo) => string) | null;
+  /** Character limit, shown as a counter. */
+  limit?: number;
+  steps: () => PostStep[];
+}
+
+export function startWizard({
+  sessions: SESSIONS,
+  logo: LOGO,
+  icons,
+}: KitData) {
   resolveFonts();
 
   // Everything the templates and post texts need, with the poster listed first.
   // Start times aren't final yet, so they're deliberately left out: banners and
   // posts show the day and room only.
-  function describe(session, me) {
+  function describe(session: KitSession, me: number): BannerInfo {
     const speakers = [
       session.speakers[me],
       ...session.speakers.filter((_, i) => i !== me),
@@ -45,10 +105,10 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
   // ---------------------------------------------------------------- post texts
 
   // X weighs most non-Latin code points and emoji as 2, and every URL as 23.
-  function xLength(text) {
+  function xLength(text: string) {
     let n = 0;
     for (const ch of text.replace(/https?:\/\/\S+/g, "x".repeat(23))) {
-      const cp = ch.codePointAt(0);
+      const cp = ch.codePointAt(0)!;
       const light =
         cp <= 4351 ||
         (cp >= 8192 && cp <= 8205) ||
@@ -59,7 +119,7 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     return n;
   }
 
-  const withNames = (I, lead) =>
+  const withNames = (I: BannerInfo, lead: string) =>
     I.others.length ? `${lead}${I.others.map((s) => s.name).join(" & ")}` : "";
 
   // ---------------------------------------------------------------- actions
@@ -76,8 +136,8 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     }
   })();
 
-  let toastTimer;
-  function toast(msg) {
+  let toastTimer: ReturnType<typeof setTimeout> | undefined;
+  function toast(msg: string) {
     const t = $("toast");
     t.textContent = msg;
     t.classList.add("show");
@@ -87,7 +147,7 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
 
   // Synchronous copy first, so a window.open() right after still counts as part of
   // the click (popup blockers); the async clipboard API is the fallback.
-  async function copyText(text) {
+  async function copyText(text: string) {
     const ta = document.createElement("textarea");
     ta.value = text;
     ta.style.position = "fixed";
@@ -108,12 +168,12 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     }
   }
 
-  function openTab(url) {
+  function openTab(url: string) {
     window.open(url, "_blank", "noopener");
     return true;
   }
 
-  async function copyBanner(ctx) {
+  async function copyBanner(ctx: ActionCtx) {
     try {
       // Hand over the promise directly; Safari requires the write to start in the click.
       await navigator.clipboard.write([
@@ -127,9 +187,9 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     }
   }
 
-  function downloadBanner(ctx) {
+  function downloadBanner(ctx: ActionCtx) {
     const a = document.createElement("a");
-    a.href = URL.createObjectURL(ctx.banner.blob);
+    a.href = URL.createObjectURL(ctx.banner.blob!);
     a.download = ctx.banner.fileName;
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
@@ -137,7 +197,7 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
   }
 
   // The first step of most platforms: get the banner onto the clipboard, or disk.
-  const bannerStep = (hint) =>
+  const bannerStep = (hint?: string): Action =>
     canCopyImage
       ? {
           label: "Copy banner",
@@ -157,7 +217,7 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
   // Each platform picks the banner size, writes the post, and lists the actions
   // in the order that platform needs them.
 
-  const PLATFORMS = {
+  const PLATFORMS: Record<PlatformId, Platform> = {
     linkedin: {
       label: "LinkedIn",
       icon: "linkedin",
@@ -194,11 +254,12 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
       format: "landscape",
       note: "Landscape banner",
       text(I) {
-        const mention = (s) => (s.twitter ? `@${s.twitter}` : s.name);
+        const mention = (s: BannerInfo["speakers"][number]) =>
+          s.twitter ? `@${s.twitter}` : s.name;
         const withPart = I.others.length
           ? ` with ${I.others.map(mention).join(" & ")}`
           : "";
-        const build = (title) =>
+        const build = (title: string) =>
           `🎤 I'm speaking at #RS26, Reversim Summit 2026!\n\n${quote(title)}${withPart}\n📅 ${I.dayLong} · ${I.room}\n\nCome say hi 👋\n${I.url}`;
         let title = I.title;
         while (xLength(build(title)) > 280 && title.length > 10)
@@ -301,7 +362,7 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
   };
 
   // Generic chat bubble: the site's icon set has no WhatsApp glyph.
-  const ICONS = {
+  const ICONS: Record<string, string> = {
     ...icons,
     whatsapp:
       '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1C4.13 1 1 3.69 1 7c0 1.62.75 3.09 1.97 4.17L2.3 15l3.73-1.86c.62.15 1.28.23 1.97.23 3.87 0 7-2.69 7-6S11.87 1 8 1z"/></svg>',
@@ -309,73 +370,89 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
 
   // ---------------------------------------------------------------- banners
 
-  const banners = new Map();
+  const banners = new Map<string, Promise<Banner>>();
 
   // Renders (once) one template for the current session and size.
-  function getBanner(st, templateId, fmt) {
-    const I = describe(SESSIONS[st.session], st.as);
+  function getBanner(
+    st: State,
+    templateId: string,
+    fmt: Format,
+  ): Promise<Banner> {
+    const I = info(st);
     const key = [I.session.slug, st.as, fmt, templateId].join("|");
-    if (!banners.has(key)) {
-      banners.set(
-        key,
-        (async () => {
-          const [logoImg, photos] = await Promise.all([
-            loadImage(LOGO),
-            Promise.all(I.speakers.map((s) => loadImage(s.photo))),
-            loadFonts(),
-            // Only fetches emoji subsets if the session text actually contains emoji.
-            document.fonts
-              .load('20px "Noto Color Emoji"', I.title + I.names + I.tagLine)
-              .catch(() => {}),
-          ]);
-          const { w, h } = FORMATS[fmt];
-          const canvas = document.createElement("canvas");
-          canvas.width = w;
-          canvas.height = h;
-          const template = TEMPLATES.find((t) => t.id === templateId);
-          template.draw(canvas.getContext("2d"), fmt, I, {
-            logo: logoImg,
-            photos,
-          });
-          const banner = {
-            canvas,
-            blob: null,
-            blobPromise: new Promise((resolve) =>
-              canvas.toBlob(resolve, "image/png"),
+    let banner = banners.get(key);
+    if (!banner) {
+      banner = (async () => {
+        const [logoImg, photos] = await Promise.all([
+          loadImage(LOGO),
+          Promise.all(I.speakers.map((s) => loadImage(s.photo))),
+          loadFonts(),
+          // Only fetches emoji subsets if the session text actually contains emoji.
+          document.fonts
+            .load('20px "Noto Color Emoji"', I.title + I.names + I.tagLine)
+            .catch(() => {}),
+        ]);
+        const { w, h } = FORMATS[fmt];
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const template = TEMPLATES.find((t) => t.id === templateId)!;
+        template.draw(canvas.getContext("2d")!, fmt, I, {
+          logo: logoImg,
+          photos,
+        });
+        const rendered: Banner = {
+          canvas,
+          blob: null,
+          blobPromise: new Promise((resolve, reject) =>
+            canvas.toBlob(
+              (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
+              "image/png",
             ),
-            fileName: `rs26-${I.session.slug.slice(0, 60)}-${templateId}-${fmt}.png`,
-          };
-          banner.blobPromise.then((b) => (banner.blob = b));
-          return banner;
-        })(),
-      );
+          ),
+          fileName: `rs26-${I.session.slug.slice(0, 60)}-${templateId}-${fmt}.png`,
+        };
+        rendered.blobPromise.then(
+          (b) => (rendered.blob = b),
+          () => {},
+        );
+        return rendered;
+      })();
+      banners.set(key, banner);
     }
-    return banners.get(key);
+    return banner;
   }
 
   // ---------------------------------------------------------------- wizard
   // The URL holds the wizard's state (?session=&as=&platform=&design=&ready=), so the
   // browser's Back button works and any step can be linked to directly.
 
-  const $ = (id) => document.getElementById(id);
+  // Every id the wizard looks up is in the page's static markup.
+  const $ = (id: string) => document.getElementById(id)!;
   const main = $("main");
   // Edited post texts, per session + speaker + platform. Kept in sessionStorage so a
   // reload doesn't lose them.
   const EDITS_KEY = "rs26-speaker-kit-edits";
-  const edited = new Map(
+  const edited = new Map<string, string>(
     (() => {
       try {
-        return JSON.parse(sessionStorage.getItem(EDITS_KEY)) ?? [];
+        return JSON.parse(sessionStorage.getItem(EDITS_KEY) ?? "[]");
       } catch {
         return [];
       }
     })(),
   );
-  const textKey = (st) =>
-    [SESSIONS[st.session].slug, st.as, st.platform].join("|");
-  const postText = (st, I) =>
-    edited.get(textKey(st)) ?? PLATFORMS[st.platform].text(I);
-  function saveText(st, value) {
+
+  // Every step after "session" (and "as") has those set; these read them.
+  const sessionOf = (st: State) => SESSIONS[st.session!];
+  const info = (st: State) => describe(sessionOf(st), st.as!);
+  const platformOf = (st: State) => PLATFORMS[st.platform!];
+
+  const textKey = (st: State) =>
+    [sessionOf(st).slug, st.as, st.platform].join("|");
+  const postText = (st: State, I: BannerInfo) =>
+    edited.get(textKey(st)) ?? platformOf(st).text?.(I) ?? "";
+  function saveText(st: State, value: string | null) {
     if (value === null) edited.delete(textKey(st));
     else edited.set(textKey(st), value);
     try {
@@ -383,34 +460,38 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     } catch {}
   }
   let renderToken = 0;
-  let previewUrl = null;
+  let previewUrl: string | null = null;
 
-  function esc(s) {
-    return String(s).replace(
-      /[&<>"]/g,
-      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
-    );
+  const ENTITIES: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+  };
+  function esc(s: string) {
+    return String(s).replace(/[&<>"]/g, (c) => ENTITIES[c]);
   }
 
-  function readState() {
+  function readState(): State {
     const p = new URLSearchParams(location.search);
     const idx = SESSIONS.findIndex((s) => s.slug === p.get("session"));
     const session = idx >= 0 ? idx : null;
     const n = session === null ? 0 : SESSIONS[session].speakers.length;
     const as = Number(p.get("as"));
+    const platform = p.get("platform");
+    const design = p.get("design");
     return {
       session,
       // Solo talks skip the "who's posting" question.
       as: n === 1 ? 0 : p.has("as") && as >= 0 && as < n ? as : null,
-      platform: PLATFORMS[p.get("platform")] ? p.get("platform") : null,
-      design: TEMPLATES.some((t) => t.id === p.get("design"))
-        ? p.get("design")
-        : null,
+      platform:
+        platform && platform in PLATFORMS ? (platform as PlatformId) : null,
+      design: TEMPLATES.some((t) => t.id === design) ? design : null,
       ready: p.get("ready") === "1",
     };
   }
 
-  function stepOf(st) {
+  function stepOf(st: State): Step {
     if (st.session === null) return "session";
     if (st.as === null) return "as";
     if (!st.platform) return "platform";
@@ -421,11 +502,11 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
   }
 
   // Applies changes to the URL (null removes a key) and renders the new step.
-  function go(changes) {
+  function go(changes: Changes) {
     const p = new URLSearchParams(location.search);
     for (const [k, v] of Object.entries(changes)) {
-      if (v === null) p.delete(k);
-      else p.set(k, v);
+      if (v === null || v === undefined) p.delete(k);
+      else p.set(k, String(v));
     }
     history.pushState(null, "", `${location.pathname}${p.size ? `?${p}` : ""}`);
     render();
@@ -433,16 +514,16 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
   }
   window.addEventListener("popstate", render);
 
-  const RESET = {
+  const RESET: Changes = {
     session: null,
     as: null,
     platform: null,
     design: null,
     ready: null,
   };
-  const isPlural = (st) => SESSIONS[st.session].speakers.length > 1;
+  const isPlural = (st: State) => sessionOf(st).speakers.length > 1;
 
-  function backButton(changes, label) {
+  function backButton(changes: Changes, label: string) {
     const b = document.createElement("button");
     b.className = "back";
     b.textContent = `← ${label}`;
@@ -450,15 +531,18 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     return b;
   }
 
-  function renderProgress(st, step) {
-    const hasText = !st.platform || PLATFORMS[st.platform].text;
-    const steps = [
-      ["session", "Session", RESET],
-      ["platform", "Platform", { platform: null, design: null, ready: null }],
-      ["design", "Design", { design: null }],
-      hasText && ["text", "Text", { ready: null }],
-      ["post", "Post", null],
-    ].filter(Boolean);
+  function renderProgress(st: State, step: Step) {
+    const hasText = !st.platform || !!PLATFORMS[st.platform].text;
+    type Entry = [Step, string, Changes];
+    const steps = (
+      [
+        ["session", "Session", RESET],
+        ["platform", "Platform", { platform: null, design: null, ready: null }],
+        ["design", "Design", { design: null }],
+        hasText && ["text", "Text", { ready: null }],
+        ["post", "Post", {}],
+      ] as (Entry | false)[]
+    ).filter((e): e is Entry => !!e);
     const current = step === "as" ? "session" : step;
     const at = steps.findIndex(([id]) => id === current);
     $("progress").innerHTML = "";
@@ -482,17 +566,21 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     const step = stepOf(st);
     renderProgress(st, step);
     main.innerHTML = "";
-    ({
+    const renderers: Record<
+      Step,
+      (st: State, token: number) => void | Promise<void>
+    > = {
       session: renderSession,
       as: renderAs,
       platform: renderPlatform,
       design: renderDesign,
       text: renderText,
       post: renderPost,
-    })[step](st, token);
+    };
+    renderers[step](st, token);
   }
 
-  function faces(speakers) {
+  function faces(speakers: KitSession["speakers"]) {
     return `<span class="faces">${speakers
       .map(
         (s) =>
@@ -515,8 +603,8 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
       <p class="sub">Pick your talk, and you'll get banners and a ready-to-post text for it.</p>
       <input class="search" type="search" placeholder="Search by your name or your talk's title" aria-label="Search sessions" />
       <ul class="list"></ul>`;
-    const input = main.querySelector(".search");
-    const list = main.querySelector(".list");
+    const input = main.querySelector<HTMLInputElement>(".search")!;
+    const list = main.querySelector<HTMLElement>(".list")!;
     const show = () => {
       const q = input.value.trim().toLowerCase();
       const hits = sortedSessions.filter(
@@ -536,11 +624,12 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     };
     input.oninput = show;
     input.onkeydown = (e) => {
-      if (e.key === "Enter") list.querySelector(".pick")?.click();
+      if (e.key === "Enter")
+        list.querySelector<HTMLButtonElement>(".pick")?.click();
     };
     list.onclick = (e) => {
-      const b = e.target.closest(".pick");
-      if (b) go({ ...RESET, session: SESSIONS[b.dataset.i].slug });
+      const b = (e.target as Element).closest<HTMLElement>(".pick");
+      if (b) go({ ...RESET, session: SESSIONS[Number(b.dataset.i)].slug });
     };
     show();
     input.focus();
@@ -548,8 +637,8 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
 
   // ---- 1b. who's posting (two-speaker sessions only)
 
-  function renderAs(st) {
-    const s = SESSIONS[st.session];
+  function renderAs(st: State) {
+    const s = sessionOf(st);
     main.append(backButton(RESET, "Different session"));
     main.insertAdjacentHTML(
       "beforeend",
@@ -564,16 +653,16 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
          )
          .join("")}</div>`,
     );
-    main.querySelector(".tiles").onclick = (e) => {
-      const b = e.target.closest(".tile");
+    main.querySelector<HTMLElement>(".tiles")!.onclick = (e) => {
+      const b = (e.target as Element).closest<HTMLElement>(".tile");
       if (b) go({ as: b.dataset.i });
     };
   }
 
   // ---- 2. platform
 
-  function renderPlatform(st) {
-    const I = describe(SESSIONS[st.session], st.as);
+  function renderPlatform(st: State) {
+    const I = info(st);
     main.append(
       isPlural(st)
         ? backButton({ as: null }, "Who's posting")
@@ -593,16 +682,16 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
          )
          .join("")}</div>`,
     );
-    main.querySelector(".tiles").onclick = (e) => {
-      const b = e.target.closest(".tile");
+    main.querySelector<HTMLElement>(".tiles")!.onclick = (e) => {
+      const b = (e.target as Element).closest<HTMLElement>(".tile");
       if (b) go({ platform: b.dataset.id, design: null, ready: null });
     };
   }
 
   // ---- 3. design
 
-  function renderDesign(st, token) {
-    const p = PLATFORMS[st.platform];
+  function renderDesign(st: State, token: number) {
+    const p = platformOf(st);
     const { w, h } = FORMATS[p.format];
     main.append(backButton({ platform: null }, "Platform"));
     main.insertAdjacentHTML(
@@ -611,7 +700,7 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
        <p class="sub">For ${esc(p.label)} · ${w}×${h}</p>
        <div class="designs" data-format="${p.format}"></div>`,
     );
-    const grid = main.querySelector(".designs");
+    const grid = main.querySelector(".designs")!;
     for (const t of TEMPLATES) {
       const b = document.createElement("button");
       b.className = "design";
@@ -634,24 +723,20 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
   }
 
   // Shared by the last two stages: waits for the banner and returns a preview URL.
-  async function bannerPreview(st, token) {
-    const banner = await getBanner(
-      st,
-      st.design,
-      PLATFORMS[st.platform].format,
-    );
-    await banner.blobPromise;
+  async function bannerPreview(st: State, token: number) {
+    const banner = await getBanner(st, st.design!, platformOf(st).format);
+    const blob = await banner.blobPromise;
     if (token !== renderToken) return null;
     if (previewUrl) URL.revokeObjectURL(previewUrl);
-    previewUrl = URL.createObjectURL(banner.blob);
+    previewUrl = URL.createObjectURL(blob);
     return banner;
   }
 
   // ---- 4. your post (skipped for stories)
 
-  async function renderText(st, token) {
-    const p = PLATFORMS[st.platform];
-    const I = describe(SESSIONS[st.session], st.as);
+  async function renderText(st: State, token: number) {
+    const p = platformOf(st);
+    const I = info(st);
     if (!(await bannerPreview(st, token))) return;
 
     main.append(backButton({ design: null }, "Design"));
@@ -671,8 +756,8 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
          </div>
        </div>`,
     );
-    const ta = main.querySelector("textarea");
-    const count = main.querySelector(".count");
+    const ta = main.querySelector("textarea")!;
+    const count = main.querySelector(".count")!;
     const update = () => {
       if (!p.limit) return;
       const n = xLength(ta.value);
@@ -685,23 +770,24 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
       update();
     };
     update();
-    main.querySelector(".reset").onclick = () => {
+    main.querySelector<HTMLElement>(".reset")!.onclick = () => {
       saveText(st, null);
       ta.value = postText(st, I);
       update();
     };
-    main.querySelector(".next").onclick = () => go({ ready: "1" });
+    main.querySelector<HTMLElement>(".next")!.onclick = () =>
+      go({ ready: "1" });
   }
 
   // ---- 5. post it
 
-  async function renderPost(st, token) {
-    const p = PLATFORMS[st.platform];
-    const I = describe(SESSIONS[st.session], st.as);
+  async function renderPost(st: State, token: number) {
+    const p = platformOf(st);
+    const I = info(st);
     const banner = await bannerPreview(st, token);
     if (!banner) return;
     const text = p.text ? postText(st, I) : null;
-    const ctx = { I, banner, text: () => text };
+    const ctx: ActionCtx = { I, banner, text: () => text ?? I.url };
 
     main.append(
       p.text
@@ -733,10 +819,10 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
        </div>`,
     );
 
-    const ol = main.querySelector(".steps");
+    const ol = main.querySelector(".steps")!;
     for (const s of p.steps()) {
       const li = document.createElement("li");
-      if (s.say) {
+      if ("say" in s) {
         li.innerHTML = `<span class="say">${esc(s.say)}</span>`;
         ol.append(li);
         continue;
@@ -759,17 +845,18 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
       if (s.payload === "text") {
         body.insertAdjacentHTML(
           "beforeend",
-          `<blockquote class="payload" dir="auto">${esc(text)}</blockquote>
+          `<blockquote class="payload" dir="auto">${esc(ctx.text())}</blockquote>
            <div class="row">
              <button class="ghost edit">Edit post</button>
              ${s.copyFallback ? `<button class="ghost copy">Text didn't show up? Copy it</button>` : ""}
            </div>`,
         );
-        body.querySelector(".edit").onclick = () => go({ ready: null });
-        const copy = body.querySelector(".copy");
+        body.querySelector<HTMLElement>(".edit")!.onclick = () =>
+          go({ ready: null });
+        const copy = body.querySelector<HTMLElement>(".copy");
         if (copy)
           copy.onclick = async () => {
-            if (await copyText(text))
+            if (await copyText(ctx.text()))
               toast("Text copied. Paste it into LinkedIn.");
           };
       } else if (s.payload === "url") {
@@ -783,7 +870,7 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
     }
 
     main.querySelector(".share")?.addEventListener("click", async () => {
-      const file = new File([banner.blob], banner.fileName, {
+      const file = new File([banner.blob!], banner.fileName, {
         type: "image/png",
       });
       try {
@@ -791,16 +878,17 @@ export function startWizard({ sessions: SESSIONS, logo: LOGO, icons }) {
           text ? { files: [file], text } : { files: [file] },
         );
       } catch (err) {
-        if (err.name !== "AbortError")
+        if ((err as Error).name !== "AbortError")
           toast("Sharing didn't work here. Use the steps below.");
       }
     });
-    main.querySelector(".change").onclick = () => go({ design: null });
-    main.querySelector(".other").onclick = () =>
+    main.querySelector<HTMLElement>(".change")!.onclick = () =>
+      go({ design: null });
+    main.querySelector<HTMLElement>(".other")!.onclick = () =>
       go({ platform: null, design: null, ready: null });
-    main.querySelector(".restart").onclick = () => go(RESET);
+    main.querySelector<HTMLElement>(".restart")!.onclick = () => go(RESET);
   }
 
-  $("logo").src = LOGO;
+  ($("logo") as HTMLImageElement).src = LOGO;
   render();
 }

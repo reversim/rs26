@@ -1,6 +1,12 @@
 // Canvas drawing helpers for the speaker kit: palette, fonts, banner sizes,
 // text layout, photos and the RS26 background motifs.
 
+import type { Format, FontFn, TextBlock, TextSpec } from "./types";
+
+type Ctx = CanvasRenderingContext2D;
+type Rand = () => number;
+type Align = "left" | "center" | "right";
+
 const SITE = "https://summit2026.reversim.com";
 const SITE_SHORT = "summit2026.reversim.com";
 const EVENT_DATES = "NOV 30 – DEC 1, 2026";
@@ -28,7 +34,7 @@ const C = {
 
 // The site self-hosts its fonts through Astro, which hashes the family names, so
 // the canvas reads the real font stacks from the site's CSS variables at startup.
-const families = {
+const families: Record<"display" | "body" | "mono", string> = {
   display: '"Space Grotesk"',
   body: '"Hanken Grotesk"',
   mono: '"JetBrains Mono"',
@@ -41,8 +47,9 @@ function resolveFonts() {
     display: "--font-space-grotesk",
     body: "--font-hanken-grotesk",
     mono: "--font-jetbrains-mono",
-  };
-  for (const [key, name] of Object.entries(vars)) {
+  } as const;
+  for (const key of Object.keys(vars) as (keyof typeof vars)[]) {
+    const name = vars[key];
     const stack = css
       .getPropertyValue(name)
       .split(",")
@@ -55,13 +62,21 @@ function resolveFonts() {
 // Heebo and Noto Color Emoji follow every family so Hebrew and emoji in titles always render.
 const EXTRA = 'Heebo, "Noto Color Emoji"';
 const F = {
-  display: (w) => (s) =>
-    `${w} ${s}px ${families.display}, ${EXTRA}, sans-serif`,
-  body: (w) => (s) => `${w} ${s}px ${families.body}, ${EXTRA}, sans-serif`,
-  mono: (w) => (s) => `${w} ${s}px ${families.mono}, ${EXTRA}, monospace`,
+  display:
+    (w: number): FontFn =>
+    (s) =>
+      `${w} ${s}px ${families.display}, ${EXTRA}, sans-serif`,
+  body:
+    (w: number): FontFn =>
+    (s) =>
+      `${w} ${s}px ${families.body}, ${EXTRA}, sans-serif`,
+  mono:
+    (w: number): FontFn =>
+    (s) =>
+      `${w} ${s}px ${families.mono}, ${EXTRA}, monospace`,
 };
 
-const FORMATS = {
+const FORMATS: Record<Format, { w: number; h: number; k: number }> = {
   landscape: {
     w: 1200,
     h: 630,
@@ -82,40 +97,41 @@ const FORMATS = {
 const RTL = /[֐-׿]/;
 
 // Curly quotes get mirrored around right-to-left titles, so those get straight ones.
-const quote = (t) => (RTL.test(t) ? `"${t}"` : `“${t}”`);
+const quote = (t: string) => (RTL.test(t) ? `"${t}"` : `“${t}”`);
 
 // ---------------------------------------------------------------- assets
 
-const imageCache = new Map();
-function loadImage(src) {
-  if (!imageCache.has(src)) {
-    imageCache.set(
-      src,
-      new Promise((resolve) => {
-        const img = new Image();
-        // Sessionize sends Access-Control-Allow-Origin: *, so the canvas stays exportable.
-        img.crossOrigin = "anonymous";
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = src;
-      }),
-    );
+const imageCache = new Map<string, Promise<HTMLImageElement | null>>();
+function loadImage(src: string): Promise<HTMLImageElement | null> {
+  let image = imageCache.get(src);
+  if (!image) {
+    image = new Promise((resolve) => {
+      const img = new Image();
+      // Sessionize sends Access-Control-Allow-Origin: *, so the canvas stays exportable.
+      img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+    imageCache.set(src, image);
   }
-  return imageCache.get(src);
+  return image;
 }
 
-let fontsReady;
-function loadFonts() {
+let fontsReady: Promise<unknown> | undefined;
+function loadFonts(): Promise<unknown> {
   if (!fontsReady) {
     // A face that can't load (e.g. Astro's local("Arial") metric fallback where
     // there's no Arial) just falls back; it shouldn't surface as an error.
-    const load = (font, text) =>
+    const load = (font: string, text: string) =>
       document.fonts.load(font, text).catch(() => []);
-    const latin = [
-      [families.display, [400, 500, 600, 700]],
-      [families.body, [400, 600]],
-      [families.mono, [400, 500, 600, 700]],
-    ].flatMap(([family, weights]) =>
+    const latin = (
+      [
+        [families.display, [400, 500, 600, 700]],
+        [families.body, [400, 600]],
+        [families.mono, [400, 500, 600, 700]],
+      ] as const
+    ).flatMap(([family, weights]) =>
       weights.map((w) => load(`${w} 20px ${family}`, "Aa09 █")),
     );
     const hebrew = [400, 600, 700].map((w) => load(`${w} 20px Heebo`, "אבג"));
@@ -126,7 +142,7 @@ function loadFonts() {
 
 // ---------------------------------------------------------------- drawing helpers
 
-function rng(seed) {
+function rng(seed: string): Rand {
   let a = 0;
   for (const ch of seed) a = (Math.imul(a, 31) + ch.charCodeAt(0)) | 0;
   return () => {
@@ -137,14 +153,14 @@ function rng(seed) {
   };
 }
 
-function setFont(ctx, font, size, spacing = 0) {
+function setFont(ctx: Ctx, font: FontFn, size: number, spacing = 0) {
   ctx.font = font(size);
   if ("letterSpacing" in ctx) ctx.letterSpacing = `${spacing * size}px`;
 }
 
 // Word-wraps to maxW; an explicit "\n" always starts a new line.
-function wrap(ctx, text, maxW) {
-  const lines = [];
+function wrap(ctx: Ctx, text: string, maxW: number): string[] {
+  const lines: string[] = [];
   for (const para of text.split("\n")) {
     let cur = "";
     for (const word of para.split(/\s+/).filter(Boolean)) {
@@ -160,7 +176,7 @@ function wrap(ctx, text, maxW) {
   return lines;
 }
 
-function ellipsize(ctx, line, maxW) {
+function ellipsize(ctx: Ctx, line: string, maxW: number) {
   let s = line;
   while (s.length > 1 && ctx.measureText(`${s}…`).width > maxW)
     s = s.slice(0, -1);
@@ -169,11 +185,17 @@ function ellipsize(ctx, line, maxW) {
 
 // Lays out a text spec: shrinks from spec.size towards spec.minSize until it fits
 // maxW x maxH within spec.maxLines; truncates with an ellipsis as a last resort.
-function measure(ctx, spec, maxW, maxH = Infinity) {
+function measure(
+  ctx: Ctx,
+  spec: TextSpec,
+  maxW: number,
+  maxH = Infinity,
+): TextBlock {
   const lh = spec.lh ?? 1.2;
   const minSize = spec.minSize ?? spec.size;
   const maxLines = spec.maxLines ?? 99;
-  let lines, size;
+  let lines: string[];
+  let size: number;
   for (size = Math.round(spec.size); ; size -= 1) {
     setFont(ctx, spec.font, size, spec.spacing);
     lines = wrap(ctx, spec.text, maxW);
@@ -205,7 +227,13 @@ function measure(ctx, spec, maxW, maxH = Infinity) {
 }
 
 // y is the top of the block's first line box.
-function paint(ctx, block, x, y, align = "left") {
+function paint(
+  ctx: Ctx,
+  block: TextBlock,
+  x: number,
+  y: number,
+  align: Align = "left",
+) {
   setFont(ctx, block.font, block.size, block.spacing);
   ctx.fillStyle = block.color;
   ctx.textAlign = align;
@@ -222,25 +250,38 @@ function paint(ctx, block, x, y, align = "left") {
 // whatever height the others leave over. Falsy specs and empty texts are skipped.
 // With dry: true nothing is painted; use it to measure the stack's height first.
 function stack(
-  ctx,
-  specs,
-  { x, top, bottom, maxW, align = "left", valign = "top", dry = false },
+  ctx: Ctx,
+  specs: (TextSpec | false | null | undefined)[],
+  {
+    x,
+    top,
+    bottom,
+    maxW,
+    align = "left",
+    valign = "top",
+    dry = false,
+  }: {
+    x: number;
+    top: number;
+    bottom: number;
+    maxW: number;
+    align?: Align;
+    valign?: "top" | "center" | "bottom";
+    dry?: boolean;
+  },
 ) {
-  specs = specs.filter((s) => s && s.text);
-  const gapOf = (s, i) => (i ? (s.gap ?? 0) : 0);
+  const kept = specs.filter((s): s is TextSpec => !!s && !!s.text);
+  const gapOf = (s: TextSpec, i: number) => (i ? (s.gap ?? 0) : 0);
   const fixed = new Map(
-    specs.filter((s) => !s.grow).map((s) => [s, measure(ctx, s, maxW)]),
+    kept.filter((s) => !s.grow).map((s) => [s, measure(ctx, s, maxW)]),
   );
   const used =
     [...fixed.values()].reduce((a, b) => a + b.height, 0) +
-    specs.reduce((a, s, i) => a + gapOf(s, i), 0);
-  const blocks = specs.map((s) =>
-    s.grow ? measure(ctx, s, maxW, bottom - top - used) : fixed.get(s),
+    kept.reduce((a, s, i) => a + gapOf(s, i), 0);
+  const blocks = kept.map((s) =>
+    s.grow ? measure(ctx, s, maxW, bottom - top - used) : fixed.get(s)!,
   );
-  const total = blocks.reduce(
-    (a, b, i) => a + b.height + gapOf(specs[i], i),
-    0,
-  );
+  const total = blocks.reduce((a, b, i) => a + b.height + gapOf(kept[i], i), 0);
   let y =
     valign === "center"
       ? top + (bottom - top - total) / 2
@@ -252,7 +293,7 @@ function stack(
   const ax =
     align === "center" ? x + maxW / 2 : align === "right" ? x + maxW : x;
   blocks.forEach((b, i) => {
-    y += gapOf(specs[i], i);
+    y += gapOf(kept[i], i);
     if (!dry) paint(ctx, b, ax, y, align);
     y += b.height;
   });
@@ -261,11 +302,25 @@ function stack(
 
 // Single line of text at a baseline, shrunk to fit maxW if given.
 function label(
-  ctx,
-  text,
-  x,
-  baseline,
-  { font, size, color, align = "left", spacing = 0, maxW = Infinity },
+  ctx: Ctx,
+  text: string,
+  x: number,
+  baseline: number,
+  {
+    font,
+    size,
+    color,
+    align = "left",
+    spacing = 0,
+    maxW = Infinity,
+  }: {
+    font: FontFn;
+    size: number;
+    color: string;
+    align?: Align;
+    spacing?: number;
+    maxW?: number;
+  },
 ) {
   let s = size;
   setFont(ctx, font, s, spacing);
@@ -281,7 +336,14 @@ function label(
 }
 
 // Largest size (<= maxSize) at which every text fits on one line within maxW.
-function sharedSize(ctx, texts, font, maxW, maxSize, spacing = 0) {
+function sharedSize(
+  ctx: Ctx,
+  texts: string[],
+  font: FontFn,
+  maxW: number,
+  maxSize: number,
+  spacing = 0,
+) {
   setFont(ctx, font, 100, spacing);
   const widest = Math.max(...texts.map((t) => ctx.measureText(t).width));
   // 2% slack: text width doesn't scale perfectly linearly with font size, and a
@@ -289,7 +351,7 @@ function sharedSize(ctx, texts, font, maxW, maxSize, spacing = 0) {
   return Math.min(maxSize, Math.floor((98 * maxW) / widest));
 }
 
-function rr(ctx, x, y, w, h, r) {
+function rr(ctx: Ctx, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
   ctx.arcTo(x + w, y, x + w, y + h, r);
@@ -299,13 +361,21 @@ function rr(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function circle(ctx, x, y, r) {
+function circle(ctx: Ctx, x: number, y: number, r: number) {
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
 }
 
 // focusY 0.15: headshots keep the face in the upper part of the frame.
-function drawCover(ctx, img, x, y, w, h, focusY = 0.15) {
+function drawCover(
+  ctx: Ctx,
+  img: HTMLImageElement,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  focusY = 0.15,
+) {
   const s = Math.max(w / img.width, h / img.height);
   const sw = w / s;
   const sh = h / s;
@@ -322,7 +392,7 @@ function drawCover(ctx, img, x, y, w, h, focusY = 0.15) {
   );
 }
 
-function initials(name) {
+function initials(name: string) {
   return name
     .split(/\s+/)
     .map((p) => p[0])
@@ -332,7 +402,15 @@ function initials(name) {
 }
 
 // A photo box (rect) with initials as the fallback when the photo didn't load.
-function photoRect(ctx, img, name, x, y, w, h) {
+function photoRect(
+  ctx: Ctx,
+  img: HTMLImageElement | null,
+  name: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+) {
   if (img) drawCover(ctx, img, x, y, w, h);
   else {
     ctx.fillStyle = C.panel2;
@@ -347,13 +425,17 @@ function photoRect(ctx, img, name, x, y, w, h) {
 }
 
 function avatar(
-  ctx,
-  img,
-  name,
-  cx,
-  cy,
-  r,
-  { ring = C.orange, ringW = r * 0.05, glow = null } = {},
+  ctx: Ctx,
+  img: HTMLImageElement | null,
+  name: string,
+  cx: number,
+  cy: number,
+  r: number,
+  {
+    ring = C.orange,
+    ringW = r * 0.05,
+    glow = null,
+  }: { ring?: string | null; ringW?: number; glow?: string | null } = {},
 ) {
   if (glow) {
     ctx.save();
@@ -377,7 +459,13 @@ function avatar(
   }
 }
 
-function background(ctx, W, H, rand, { glow = true } = {}) {
+function background(
+  ctx: Ctx,
+  W: number,
+  H: number,
+  rand: Rand,
+  { glow = true }: { glow?: boolean } = {},
+) {
   ctx.fillStyle = C.navy;
   ctx.fillRect(0, 0, W, H);
   if (glow) {
@@ -410,7 +498,21 @@ function background(ctx, W, H, rand, { glow = true } = {}) {
 
 // The hero's node graph: small colored nodes joined to their nearest neighbours.
 // Anchors (where photos go) take part in the edges but are drawn by the caller.
-function constellation(ctx, rand, box, anchors = [], count = 9) {
+interface GraphNode {
+  x: number;
+  y: number;
+  r: number;
+  anchor?: boolean;
+  color?: string;
+}
+
+function constellation(
+  ctx: Ctx,
+  rand: Rand,
+  box: { x: number; y: number; w: number; h: number },
+  anchors: { x: number; y: number; r: number }[] = [],
+  count = 9,
+) {
   const colors = [
     C.blue,
     C.mint,
@@ -420,7 +522,7 @@ function constellation(ctx, rand, box, anchors = [], count = 9) {
     C.mint,
     C.blue,
   ];
-  const nodes = anchors.map((a) => ({ ...a, anchor: true }));
+  const nodes: GraphNode[] = anchors.map((a) => ({ ...a, anchor: true }));
   for (
     let tries = 0;
     nodes.length < anchors.length + count && tries < 400;
@@ -437,10 +539,10 @@ function constellation(ctx, rand, box, anchors = [], count = 9) {
         color: colors[Math.floor(rand() * colors.length)],
       });
   }
-  const edges = new Set();
+  const edges = new Set<string>();
   nodes.forEach((n, i) => {
     const near = nodes
-      .map((o, j) => [j, Math.hypot(o.x - n.x, o.y - n.y)])
+      .map((o, j): [number, number] => [j, Math.hypot(o.x - n.x, o.y - n.y)])
       .filter(([j]) => j !== i)
       .sort((a, b) => a[1] - b[1]);
     const take = rand() < 0.5 ? 2 : 1;
@@ -463,10 +565,10 @@ function constellation(ctx, rand, box, anchors = [], count = 9) {
     .filter((n) => !n.anchor)
     .forEach((n) => {
       ctx.save();
-      ctx.shadowColor = n.color;
+      ctx.shadowColor = n.color!;
       ctx.shadowBlur = 18;
       circle(ctx, n.x, n.y, n.r);
-      ctx.fillStyle = n.color;
+      ctx.fillStyle = n.color!;
       ctx.fill();
       ctx.restore();
       circle(ctx, n.x, n.y, n.r);
@@ -476,17 +578,41 @@ function constellation(ctx, rand, box, anchors = [], count = 9) {
     });
 }
 
-function logo(ctx, img, x, y, w) {
+function logo(
+  ctx: Ctx,
+  img: HTMLImageElement | null,
+  x: number,
+  y: number,
+  w: number,
+) {
   if (img) ctx.drawImage(img, x, y, w, (w * img.height) / img.width);
 }
 
 // Rounded "pill" chips in a row; wraps when maxW is exceeded. Returns the bottom y.
 function pills(
-  ctx,
-  items,
-  x,
-  y,
-  { size, h, padX, gap, color, stroke, fill = null, maxW },
+  ctx: Ctx,
+  items: string[],
+  x: number,
+  y: number,
+  {
+    size,
+    h,
+    padX,
+    gap,
+    color,
+    stroke,
+    fill = null,
+    maxW,
+  }: {
+    size: number;
+    h: number;
+    padX: number;
+    gap: number;
+    color: string;
+    stroke: string;
+    fill?: string | null;
+    maxW: number;
+  },
 ) {
   let cx = x;
   let cy = y;

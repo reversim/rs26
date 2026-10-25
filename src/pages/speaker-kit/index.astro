@@ -111,7 +111,7 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
-      import { startWizard } from "../../helpers/speakerKit/wizard.js";
+      import { startWizard } from "../../helpers/speakerKit/wizard";
 
       const data = document.getElementById("speaker-kit-data")!.textContent!;
       startWizard(JSON.parse(data));

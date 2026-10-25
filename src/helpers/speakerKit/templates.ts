@@ -22,13 +22,19 @@ import {
   rr,
   sharedSize,
   stack,
-} from "./draw.js";
+} from "./draw";
+import type { BannerInfo, Template } from "./types";
 
 // Each template draws one banner for a session at the given format.
 // Coordinates are per format; font sizes scale by the format's k.
 
 // A slightly rotated rubber-stamp mark ("SPEAKER") for the Ticket design.
-function stamp(ctx, { cx, cy, w, h }, I, rand) {
+function stamp(
+  ctx: CanvasRenderingContext2D,
+  { cx, cy, w, h }: { cx: number; cy: number; w: number; h: number },
+  I: BannerInfo,
+  rand: () => number,
+) {
   ctx.save();
   ctx.translate(cx, cy);
   ctx.rotate(-0.12);
@@ -75,7 +81,7 @@ function stamp(ctx, { cx, cy, w, h }, I, rand) {
   ctx.restore();
 }
 
-export const TEMPLATES = [
+export const TEMPLATES: Template[] = [
   {
     id: "constellation",
     name: "Constellation",
@@ -83,50 +89,52 @@ export const TEMPLATES = [
     draw(ctx, fmt, I, A) {
       const { w: W, h: H, k } = FORMATS[fmt];
       const rand = rng(I.session.slug + this.id + fmt);
-      const L = {
-        landscape: {
-          pad: 64,
-          logo: [64, 52, 230],
-          photos: I.plural
-            ? [
-                [870, 190, 135],
-                [1040, 410, 135],
-              ]
-            : [[930, 290, 190]],
-          box: { x: 690, y: 30, w: 480, h: 480 },
-          text: { top: 140, bottom: 528, maxW: 590 },
-          title: [56, 30],
-          base: 574,
-        },
-        square: {
-          pad: 72,
-          logo: [72, 64, 260],
-          photos: I.plural
-            ? [
-                [370, 335, 165],
-                [710, 375, 165],
-              ]
-            : [[540, 345, 215]],
-          box: { x: 40, y: 130, w: 1000, h: 420 },
-          text: { top: 590, bottom: 950, maxW: 936 },
-          title: [68, 34],
-          base: 1010,
-        },
-        story: {
-          pad: 80,
-          logo: [80, 110, 320],
-          photos: I.plural
-            ? [
-                [330, 590, 240],
-                [750, 880, 240],
-              ]
-            : [[540, 690, 330]],
-          box: { x: 40, y: 250, w: 1000, h: 860 },
-          text: { top: 1150, bottom: 1700, maxW: 920 },
-          title: [92, 46],
-          base: 1800,
-        },
-      }[fmt];
+      const L = (
+        {
+          landscape: {
+            pad: 64,
+            logo: [64, 52, 230],
+            photos: I.plural
+              ? [
+                  [870, 190, 135],
+                  [1040, 410, 135],
+                ]
+              : [[930, 290, 190]],
+            box: { x: 690, y: 30, w: 480, h: 480 },
+            text: { top: 140, bottom: 528, maxW: 590 },
+            title: [56, 30],
+            base: 574,
+          },
+          square: {
+            pad: 72,
+            logo: [72, 64, 260],
+            photos: I.plural
+              ? [
+                  [370, 335, 165],
+                  [710, 375, 165],
+                ]
+              : [[540, 345, 215]],
+            box: { x: 40, y: 130, w: 1000, h: 420 },
+            text: { top: 590, bottom: 950, maxW: 936 },
+            title: [68, 34],
+            base: 1010,
+          },
+          story: {
+            pad: 80,
+            logo: [80, 110, 320],
+            photos: I.plural
+              ? [
+                  [330, 590, 240],
+                  [750, 880, 240],
+                ]
+              : [[540, 690, 330]],
+            box: { x: 40, y: 250, w: 1000, h: 860 },
+            text: { top: 1150, bottom: 1700, maxW: 920 },
+            title: [92, 46],
+            base: 1800,
+          },
+        } as const
+      )[fmt];
 
       background(ctx, W, H, rand);
       const anchors = L.photos.map(([x, y, r]) => ({ x, y, r }));
@@ -136,7 +144,8 @@ export const TEMPLATES = [
           glow: "rgba(240,122,35,0.45)",
         }),
       );
-      logo(ctx, A.logo, ...L.logo);
+      const [lx, ly, lw] = L.logo;
+      logo(ctx, A.logo, lx, ly, lw);
 
       stack(
         ctx,
@@ -220,7 +229,7 @@ export const TEMPLATES = [
       background(ctx, W, H, rand, { glow: !wide });
       const n = I.speakers.length;
       // Two speakers split the photo area side by side.
-      const photos = (px, py, pw, ph) => {
+      const photos = (px: number, py: number, pw: number, ph: number) => {
         I.speakers.forEach((s, i) =>
           photoRect(
             ctx,
@@ -238,31 +247,35 @@ export const TEMPLATES = [
         }
       };
 
-      const L = {
-        landscape: {
-          pad: 64,
-          logo: [64, 52, 220],
-          text: { top: 130, bottom: 478, maxW: 590 },
-          title: [54, 30],
-          pills: 518,
-        },
-        square: {
-          pad: 72,
-          logo: [72, 72, 250],
-          photo: [600, 72, 408, 408],
-          text: { top: 520, bottom: 905, maxW: 936 },
-          title: [66, 34],
-          pills: 950,
-        },
-        story: {
-          pad: 80,
-          logo: [80, 96, 300],
-          photo: [160, 230, 760, 760],
-          text: { top: 1070, bottom: 1630, maxW: 920 },
-          title: [92, 46],
-          pills: 1680,
-        },
-      }[fmt];
+      const L = (
+        {
+          landscape: {
+            pad: 64,
+            logo: [64, 52, 220],
+            // Landscape is full-bleed, so it has no framed photo.
+            photo: null,
+            text: { top: 130, bottom: 478, maxW: 590 },
+            title: [54, 30],
+            pills: 518,
+          },
+          square: {
+            pad: 72,
+            logo: [72, 72, 250],
+            photo: [600, 72, 408, 408],
+            text: { top: 520, bottom: 905, maxW: 936 },
+            title: [66, 34],
+            pills: 950,
+          },
+          story: {
+            pad: 80,
+            logo: [80, 96, 300],
+            photo: [160, 230, 760, 760],
+            text: { top: 1070, bottom: 1630, maxW: 920 },
+            title: [92, 46],
+            pills: 1680,
+          },
+        } as const
+      )[fmt];
 
       if (wide) {
         // Full-bleed photo on the right, fading into the navy text side.
@@ -275,7 +288,7 @@ export const TEMPLATES = [
         ctx.fillRect(700, 0, fw, H);
       } else {
         // Sessionize photos are only 400px, so tall formats frame them instead of going full-bleed.
-        const [px, py, pw, ph] = L.photo;
+        const [px, py, pw, ph] = L.photo!;
         const off = 18 * k;
         rr(ctx, px + off, py + off, pw, ph, 28 * k);
         ctx.fillStyle = C.orange;
@@ -286,7 +299,8 @@ export const TEMPLATES = [
         photos(px, py, pw, ph);
         ctx.restore();
       }
-      logo(ctx, A.logo, ...L.logo);
+      const [lx, ly, lw] = L.logo;
+      logo(ctx, A.logo, lx, ly, lw);
 
       const eyebrow = {
         text: I.speaking + " AT RS26",
@@ -407,33 +421,36 @@ export const TEMPLATES = [
 
       // area is the vertical band the window may use; tall formats shrink the window to fit
       // its content and center it there, landscape always fills it.
-      const L = {
-        landscape: {
-          x: 56,
-          w: 1088,
-          area: [100, 574],
-          logo: [56, 34, 190],
-          dates: [1144, 66, "right"],
-          url: [56, 610, "left"],
-        },
-        square: {
-          x: 60,
-          w: 960,
-          area: [170, 960],
-          logo: [60, 64, 250],
-          dates: [1020, 108, "right"],
-          url: [60, 1030, "left"],
-        },
-        story: {
-          x: 60,
-          w: 960,
-          area: [800, 1640],
-          logo: [330, 150, 420],
-          dates: [540, 330, "center"],
-          url: [540, 1720, "center"],
-        },
-      }[fmt];
-      logo(ctx, A.logo, ...L.logo);
+      const L = (
+        {
+          landscape: {
+            x: 56,
+            w: 1088,
+            area: [100, 574],
+            logo: [56, 34, 190],
+            dates: [1144, 66, "right"],
+            url: [56, 610, "left"],
+          },
+          square: {
+            x: 60,
+            w: 960,
+            area: [170, 960],
+            logo: [60, 64, 250],
+            dates: [1020, 108, "right"],
+            url: [60, 1030, "left"],
+          },
+          story: {
+            x: 60,
+            w: 960,
+            area: [800, 1640],
+            logo: [330, 150, 420],
+            dates: [540, 330, "center"],
+            url: [540, 1720, "center"],
+          },
+        } as const
+      )[fmt];
+      const [lx, ly, lw] = L.logo;
+      logo(ctx, A.logo, lx, ly, lw);
       label(ctx, EVENT_DATES, L.dates[0], L.dates[1], {
         font: F.mono(500),
         size: 18 * k,
@@ -454,14 +471,16 @@ export const TEMPLATES = [
       // Story is too narrow to put a big photo beside the text, so there the
       // photo sits above the window instead of inside it.
       const above = fmt === "story";
-      const r = {
-        landscape: I.plural ? 92 : 125,
-        square: I.plural ? 100 : 135,
-        story: I.plural ? 150 : 190,
-      }[fmt];
+      const r = (
+        {
+          landscape: I.plural ? 92 : 125,
+          square: I.plural ? 100 : 135,
+          story: I.plural ? 150 : 190,
+        } as const
+      )[fmt];
       const avatarSpace = above ? 0 : I.plural ? r * 3.6 : r * 2.6;
       const cursorH = 18 * k + 24 * k;
-      const prompt = (text, gap) => ({
+      const prompt = (text: string, gap?: number) => ({
         text,
         font: F.mono(500),
         size: 20 * k,
@@ -562,7 +581,7 @@ export const TEMPLATES = [
       });
 
       const top = y + bar + pad / 1.2;
-      const spots = above
+      const spots: (readonly [number, number])[] = above
         ? I.plural
           ? [
               [W / 2 - r * 0.7, 540],
@@ -608,11 +627,13 @@ export const TEMPLATES = [
       const rand = rng(I.session.slug + this.id + fmt);
       background(ctx, W, H, rand, { glow: false });
       const wide = fmt === "landscape";
-      const L = {
-        landscape: { card: [50, 55, 1100, 520], stub: 360, notch: 22 },
-        square: { card: [60, 60, 960, 960], stub: 470, notch: 26 },
-        story: { card: [70, 170, 940, 1580], stub: 760, notch: 32 },
-      }[fmt];
+      const L = (
+        {
+          landscape: { card: [50, 55, 1100, 520], stub: 360, notch: 22 },
+          square: { card: [60, 60, 960, 960], stub: 470, notch: 26 },
+          story: { card: [70, 170, 940, 1580], stub: 760, notch: 32 },
+        } as const
+      )[fmt];
       const [x, y, w, h] = L.card;
       // Card with an orange stub; the stub is the left (wide) or top (tall) part.
       ctx.save();
@@ -691,26 +712,28 @@ export const TEMPLATES = [
           align: "center",
           spacing: 0.24,
         });
-      const ph = {
-        landscape: I.plural
-          ? [
-              [180, 290, 98],
-              [290, 385, 98],
-            ]
-          : [[230, 315, 130]],
-        square: I.plural
-          ? [
-              [450, 295, 130],
-              [640, 340, 130],
-            ]
-          : [[540, 300, 165]],
-        story: I.plural
-          ? [
-              [400, 540, 180],
-              [680, 660, 180],
-            ]
-          : [[540, 575, 245]],
-      }[fmt];
+      const ph = (
+        {
+          landscape: I.plural
+            ? [
+                [180, 290, 98],
+                [290, 385, 98],
+              ]
+            : [[230, 315, 130]],
+          square: I.plural
+            ? [
+                [450, 295, 130],
+                [640, 340, 130],
+              ]
+            : [[540, 300, 165]],
+          story: I.plural
+            ? [
+                [400, 540, 180],
+                [680, 660, 180],
+              ]
+            : [[540, 575, 245]],
+        } as const
+      )[fmt];
       ph.forEach(([cx, cy, r], i) =>
         avatar(ctx, A.photos[i], I.speakers[i].name, cx, cy, r, {
           ring: C.paper,
@@ -835,50 +858,52 @@ export const TEMPLATES = [
     draw(ctx, fmt, I, A) {
       const { w: W, h: H, k } = FORMATS[fmt];
       const rand = rng(I.session.slug + this.id + fmt);
-      const L = {
-        landscape: {
-          pad: 64,
-          photos: I.plural
-            ? [
-                [935, 205, 115],
-                [1065, 400, 115],
-              ]
-            : [[1000, 290, 160]],
-          box: { x: 800, y: 30, w: 370, h: 500 },
-          text: { top: 56, bottom: 520, maxW: 720 },
-          hero: 92,
-          base: 574,
-          logo: [W - 64 - 200, 574 - 40, 200],
-        },
-        square: {
-          pad: 72,
-          photos: I.plural
-            ? [
-                [790, 175, 115],
-                [945, 255, 115],
-              ]
-            : [[880, 200, 150]],
-          box: { x: 480, y: 30, w: 570, h: 330 },
-          text: { top: 390, bottom: 940, maxW: 936 },
-          hero: 120,
-          base: 1008,
-          logo: [72, 64, 240],
-        },
-        story: {
-          pad: 80,
-          photos: I.plural
-            ? [
-                [380, 500, 215],
-                [700, 690, 215],
-              ]
-            : [[540, 560, 290]],
-          box: { x: 40, y: 200, w: 1000, h: 740 },
-          text: { top: 940, bottom: 1700, maxW: 920 },
-          hero: 150,
-          base: 1790,
-          logo: [80, 100, 300],
-        },
-      }[fmt];
+      const L = (
+        {
+          landscape: {
+            pad: 64,
+            photos: I.plural
+              ? [
+                  [935, 205, 115],
+                  [1065, 400, 115],
+                ]
+              : [[1000, 290, 160]],
+            box: { x: 800, y: 30, w: 370, h: 500 },
+            text: { top: 56, bottom: 520, maxW: 720 },
+            hero: 92,
+            base: 574,
+            logo: [W - 64 - 200, 574 - 40, 200],
+          },
+          square: {
+            pad: 72,
+            photos: I.plural
+              ? [
+                  [790, 175, 115],
+                  [945, 255, 115],
+                ]
+              : [[880, 200, 150]],
+            box: { x: 480, y: 30, w: 570, h: 330 },
+            text: { top: 390, bottom: 940, maxW: 936 },
+            hero: 120,
+            base: 1008,
+            logo: [72, 64, 240],
+          },
+          story: {
+            pad: 80,
+            photos: I.plural
+              ? [
+                  [380, 500, 215],
+                  [700, 690, 215],
+                ]
+              : [[540, 560, 290]],
+            box: { x: 40, y: 200, w: 1000, h: 740 },
+            text: { top: 940, bottom: 1700, maxW: 920 },
+            hero: 150,
+            base: 1790,
+            logo: [80, 100, 300],
+          },
+        } as const
+      )[fmt];
       background(ctx, W, H, rand);
       constellation(
         ctx,
@@ -892,7 +917,8 @@ export const TEMPLATES = [
           ring: i ? C.mint : C.orange,
         }),
       );
-      logo(ctx, A.logo, ...L.logo);
+      const [lx, ly, lw] = L.logo;
+      logo(ctx, A.logo, lx, ly, lw);
 
       const hero = [I.speaking, "AT REVERSIM", "SUMMIT 2026"];
       const size = sharedSize(
@@ -903,7 +929,7 @@ export const TEMPLATES = [
         L.hero,
         -0.02,
       );
-      const heroLine = (text, color, gap) => ({
+      const heroLine = (text: string, color: string, gap?: number) => ({
         text,
         font: F.display(700),
         size,
@@ -980,41 +1006,43 @@ export const TEMPLATES = [
     // (Sessionize photos are 400px, so full-width would look soft there).
     draw(ctx, fmt, I, A) {
       const { w: W, h: H, k } = FORMATS[fmt];
-      const L = {
-        landscape: {
-          photo: [0, 0, 630, 630],
-          radius: 0,
-          block: { x: 700, maxW: 440, top: 0, bottom: H, align: "left" },
-          name: 50,
-          logoW: 320,
-        },
-        square: {
-          photo: [210, 70, 660, 660],
-          radius: 32,
-          block: {
-            x: 72,
-            maxW: 936,
-            top: 750,
-            bottom: 1050,
-            align: "center",
+      const L = (
+        {
+          landscape: {
+            photo: [0, 0, 630, 630],
+            radius: 0,
+            block: { x: 700, maxW: 440, top: 0, bottom: H, align: "left" },
+            name: 50,
+            logoW: 320,
           },
-          name: 58,
-          logoW: 300,
-        },
-        story: {
-          photo: [160, 250, 760, 760],
-          radius: 40,
-          block: {
-            x: 80,
-            maxW: 920,
-            top: 1070,
-            bottom: 1760,
-            align: "center",
+          square: {
+            photo: [210, 70, 660, 660],
+            radius: 32,
+            block: {
+              x: 72,
+              maxW: 936,
+              top: 750,
+              bottom: 1050,
+              align: "center",
+            },
+            name: 58,
+            logoW: 300,
           },
-          name: 92,
-          logoW: 480,
-        },
-      }[fmt];
+          story: {
+            photo: [160, 250, 760, 760],
+            radius: 40,
+            block: {
+              x: 80,
+              maxW: 920,
+              top: 1070,
+              bottom: 1760,
+              align: "center",
+            },
+            name: 92,
+            logoW: 480,
+          },
+        } as const
+      )[fmt];
 
       // Plain navy with one soft glow behind the photo; no stars or graph.
       const [px, py, pw, ph] = L.photo;
@@ -1118,59 +1146,61 @@ export const TEMPLATES = [
     // No name, day or room: the talk title is the hook, the post text has the rest.
     draw(ctx, fmt, I, A) {
       const { w: W, h: H, k } = FORMATS[fmt];
-      const L = {
-        landscape: {
-          photos: I.plural
-            ? [
-                [230, 245, 190],
-                [430, 395, 190],
-              ]
-            : [[315, 315, 260]],
-          block: {
-            x: 640,
-            maxW: 500,
-            top: 70,
-            bottom: 560,
-            align: "left",
+      const L = (
+        {
+          landscape: {
+            photos: I.plural
+              ? [
+                  [230, 245, 190],
+                  [430, 395, 190],
+                ]
+              : [[315, 315, 260]],
+            block: {
+              x: 640,
+              maxW: 500,
+              top: 70,
+              bottom: 560,
+              align: "left",
+            },
+            title: [50, 28],
+            logoW: 250,
           },
-          title: [50, 28],
-          logoW: 250,
-        },
-        square: {
-          photos: I.plural
-            ? [
-                [420, 300, 200],
-                [660, 370, 200],
-              ]
-            : [[540, 320, 265]],
-          block: {
-            x: 80,
-            maxW: 920,
-            top: 630,
-            bottom: 1010,
-            align: "center",
+          square: {
+            photos: I.plural
+              ? [
+                  [420, 300, 200],
+                  [660, 370, 200],
+                ]
+              : [[540, 320, 265]],
+            block: {
+              x: 80,
+              maxW: 920,
+              top: 630,
+              bottom: 1010,
+              align: "center",
+            },
+            title: [62, 34],
+            logoW: 280,
           },
-          title: [62, 34],
-          logoW: 280,
-        },
-        story: {
-          photos: I.plural
-            ? [
-                [370, 560, 280],
-                [710, 750, 280],
-              ]
-            : [[540, 620, 380]],
-          block: {
-            x: 80,
-            maxW: 920,
-            top: 1080,
-            bottom: 1760,
-            align: "center",
+          story: {
+            photos: I.plural
+              ? [
+                  [370, 560, 280],
+                  [710, 750, 280],
+                ]
+              : [[540, 620, 380]],
+            block: {
+              x: 80,
+              maxW: 920,
+              top: 1080,
+              bottom: 1760,
+              align: "center",
+            },
+            title: [88, 46],
+            logoW: 420,
           },
-          title: [88, 46],
-          logoW: 420,
-        },
-      }[fmt];
+        } as const
+      )[fmt];
 
       // Same plain navy + single glow as Minimal.
       ctx.fillStyle = C.navy;
