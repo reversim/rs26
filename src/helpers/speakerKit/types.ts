@@ -17,6 +17,8 @@ export interface KitSession {
   dayShort: string;
   /** e.g. "Monday, Nov 30" */
   dayLong: string;
+  /** e.g. "יום שני, 30 בנובמבר" */
+  dayLongHe: string;
   speakers: KitSpeaker[];
 }
 
@@ -41,6 +43,7 @@ export interface BannerInfo {
   tagLine: string;
   dayShort: string;
   dayLong: string;
+  dayLongHe: string;
   room: string;
   dateLine: string;
   speaking: string;

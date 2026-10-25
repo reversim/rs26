@@ -15,6 +15,8 @@ import type { BannerInfo, Format, KitData, KitSession } from "./types";
 
 type PlatformId = "linkedin" | "x" | "facebook" | "whatsapp" | "story";
 type Step = "session" | "as" | "platform" | "design" | "text" | "post";
+/** The post text's language. */
+type Lang = "he" | "en";
 
 /** The wizard's state, read from the URL. */
 interface State {
@@ -26,6 +28,7 @@ interface State {
   design: string | null;
   /** The post text has been reviewed. */
   ready: boolean;
+  lang: Lang;
 }
 
 /** URL changes for go(): null removes a key. */
@@ -62,7 +65,7 @@ interface Platform {
   format: Format;
   note: string;
   /** The suggested post; null for stories, which have no caption. */
-  text: ((I: BannerInfo) => string) | null;
+  text: ((I: BannerInfo, lang: Lang) => string) | null;
   /** Character limit, shown as a counter. */
   limit?: number;
   steps: () => PostStep[];
@@ -84,7 +87,7 @@ export function startWizard({
       ...session.speakers.filter((_, i) => i !== me),
     ];
     const plural = speakers.length > 1;
-    const { dayShort, dayLong } = session;
+    const { dayShort, dayLong, dayLongHe } = session;
     return {
       session,
       speakers,
@@ -95,6 +98,7 @@ export function startWizard({
       tagLine: plural ? "" : speakers[0].tagLine,
       dayShort,
       dayLong,
+      dayLongHe,
       room: session.room,
       dateLine: `${dayShort} · ${session.room}`.toUpperCase(),
       speaking: plural ? "WE'RE SPEAKING" : "I'M SPEAKING",
@@ -121,6 +125,10 @@ export function startWizard({
 
   const withNames = (I: BannerInfo, lead: string) =>
     I.others.length ? `${lead}${I.others.map((s) => s.name).join(" & ")}` : "";
+
+  // Curly quotes get mirrored in right-to-left text, so Hebrew posts use straight ones.
+  const quoteIn = (lang: Lang, title: string) =>
+    lang === "he" ? `"${title}"` : quote(title);
 
   // ---------------------------------------------------------------- actions
 
@@ -223,7 +231,14 @@ export function startWizard({
       icon: "linkedin",
       format: "landscape",
       note: "Landscape banner",
-      text(I) {
+      text(I, lang) {
+        if (lang === "he")
+          return (
+            `🎤 אני מרצה ב-Reversim Summit 2026!\n\n${quoteIn(lang, I.title)}${withNames(I, "\nיחד עם ")}\n\n` +
+            `📅 ${I.dayLongHe}\n📍 ${I.room}\n\n` +
+            `RS26 הוא כנס קהילתי בן יומיים לתעשיית התוכנה הישראלית (30.11–1.12). ` +
+            `מגיעים? בואו להגיד היי.\n\nפרטי ההרצאה והאג'נדה המלאה: ${I.url}\n\n#RS26 #Reversim #ReversimSummit`
+          );
         return (
           `🎤 I'm speaking at Reversim Summit 2026!\n\n${quote(I.title)}${withNames(I, "\nTogether with ")}\n\n` +
           `📅 ${I.dayLong}\n📍 ${I.room}\n\n` +
@@ -256,14 +271,17 @@ export function startWizard({
       icon: "x-twitter",
       format: "landscape",
       note: "Landscape banner",
-      text(I) {
+      text(I, lang) {
         const mention = (s: BannerInfo["speakers"][number]) =>
-          s.twitter ? `@${s.twitter}` : s.name;
+          s.twitter ? `${lang === "he" ? "\u200E" : ""}@${s.twitter}` : s.name;
         const withPart = I.others.length
-          ? ` with ${I.others.map(mention).join(" & ")}`
+          ? `${lang === "he" ? " יחד עם" : " with"} ${I.others.map(mention).join(" & ")}`
           : "";
         const build = (title: string) =>
-          `🎤 I'm speaking at #RS26, @reversim Summit 2026!\n\n${quote(title)}${withPart}\n📅 ${I.dayLong} · ${I.room}\n\nCome say hi 👋\n${I.url}`;
+          // The invisible left-to-right mark keeps the "@" on the handle's left inside Hebrew text.
+          lang === "he"
+            ? `🎤 אני מרצה בכנס \u200E@reversim 26\n\n${quoteIn(lang, title)}${withPart}\n📅 ${I.dayLongHe} · ${I.room}\n\nבואו להגיד היי 👋\n${I.url}`
+            : `🎤 I'm speaking at #RS26, @reversim Summit 2026!\n\n${quote(title)}${withPart}\n📅 ${I.dayLong} · ${I.room}\n\nCome say hi 👋\n${I.url}`;
         let title = I.title;
         while (xLength(build(title)) > 280 && title.length > 10)
           title = title.slice(0, -2).trimEnd() + "…";
@@ -289,7 +307,12 @@ export function startWizard({
       icon: "facebook",
       format: "landscape",
       note: "Landscape banner",
-      text(I) {
+      text(I, lang) {
+        if (lang === "he")
+          return (
+            `🎤 אני מרצה ב-Reversim Summit 2026${withNames(I, " יחד עם ")}!\n\n${quoteIn(lang, I.title)}\n📅 ${I.dayLongHe} · ${I.room}\n\n` +
+            `מגיעים ל-RS26? בואו להגיד היי 👋\n${I.url}\n\n#RS26 #Reversim`
+          );
         return (
           `🎤 I'm speaking at Reversim Summit 2026${withNames(I, " together with ")}!\n\n${quote(I.title)}\n📅 ${I.dayLong} · ${I.room}\n\n` +
           `Coming to RS26? Come say hi 👋\n${I.url}\n\n#RS26 #Reversim`
@@ -321,7 +344,9 @@ export function startWizard({
       format: "square",
       note: "Square banner",
       // No emoji: WhatsApp Web/Desktop can turn emoji passed in a share link into "�".
-      text(I) {
+      text(I, lang) {
+        if (lang === "he")
+          return `אני מרצה ב-*Reversim Summit 2026*${withNames(I, " יחד עם ")}!\n\n*${I.title}*\n${I.dayLongHe} · ${I.room}\n\n${I.url}`;
         return `I'm speaking at *Reversim Summit 2026*${withNames(I, " together with ")}!\n\n*${I.title}*\n${I.dayLong} · ${I.room}\n\n${I.url}`;
       },
       steps: () => [
@@ -452,9 +477,9 @@ export function startWizard({
   const platformOf = (st: State) => PLATFORMS[st.platform!];
 
   const textKey = (st: State) =>
-    [sessionOf(st).slug, st.as, st.platform].join("|");
+    [sessionOf(st).slug, st.as, st.platform, st.lang].join("|");
   const postText = (st: State, I: BannerInfo) =>
-    edited.get(textKey(st)) ?? platformOf(st).text?.(I) ?? "";
+    edited.get(textKey(st)) ?? platformOf(st).text?.(I, st.lang) ?? "";
   function saveText(st: State, value: string | null) {
     if (value === null) edited.delete(textKey(st));
     else edited.set(textKey(st), value);
@@ -491,6 +516,8 @@ export function startWizard({
         platform && platform in PLATFORMS ? (platform as PlatformId) : null,
       design: TEMPLATES.some((t) => t.id === design) ? design : null,
       ready: p.get("ready") === "1",
+      // Hebrew unless asked otherwise.
+      lang: p.get("lang") === "en" ? "en" : "he",
     };
   }
 
@@ -505,15 +532,18 @@ export function startWizard({
   }
 
   // Applies changes to the URL (null removes a key) and renders the new step.
-  function go(changes: Changes) {
+  // With replace, the change doesn't get its own history entry.
+  function go(changes: Changes, replace = false) {
     const p = new URLSearchParams(location.search);
     for (const [k, v] of Object.entries(changes)) {
       if (v === null || v === undefined) p.delete(k);
       else p.set(k, String(v));
     }
-    history.pushState(null, "", `${location.pathname}${p.size ? `?${p}` : ""}`);
+    const url = `${location.pathname}${p.size ? `?${p}` : ""}`;
+    if (replace) history.replaceState(null, "", url);
+    else history.pushState(null, "", url);
     render();
-    window.scrollTo(0, 0);
+    if (!replace) window.scrollTo(0, 0);
   }
   window.addEventListener("popstate", render);
 
@@ -750,8 +780,12 @@ export function startWizard({
        <div class="post" data-format="${p.format}">
          <div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>
          <div>
+           <div class="lang" role="group" aria-label="Post language">
+             <button data-lang="he" lang="he" aria-pressed="${st.lang === "he"}">עברית</button>
+             <button data-lang="en" aria-pressed="${st.lang === "en"}">English</button>
+           </div>
            <label class="fieldlabel" for="text"><span>Post text</span><span class="count"></span></label>
-           <textarea id="text" spellcheck="true"></textarea>
+           <textarea id="text" spellcheck="true" dir="auto" lang="${st.lang}"></textarea>
            <div class="row">
              <button class="next">Looks good →</button>
              <button class="ghost reset">Reset to our suggestion</button>
@@ -778,6 +812,13 @@ export function startWizard({
       ta.value = postText(st, I);
       update();
     };
+    main.querySelectorAll<HTMLElement>(".lang button").forEach((b) => {
+      b.onclick = () => {
+        const lang = b.dataset.lang!;
+        // Hebrew is the default, so it's left out of the URL.
+        if (lang !== st.lang) go({ lang: lang === "he" ? null : lang }, true);
+      };
+    });
     main.querySelector<HTMLElement>(".next")!.onclick = () =>
       go({ ready: "1" });
   }
