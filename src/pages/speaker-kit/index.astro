@@ -67,7 +67,9 @@ const data = {
     instagram: instagramIcon,
   },
 };
-// Escape "<" so session text can never close the inline <script>.
+// Escape "<" so session text can never end the inline JSON block early.
+// (Don't spell out the tag name in comments here: Vite's dependency scan finds
+// script tags with a plain-text search of this file.)
 const json = JSON.stringify(data).replace(/</g, "\\u003c");
 ---
 
