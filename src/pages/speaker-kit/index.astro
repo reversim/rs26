@@ -29,7 +29,9 @@ function dayLabels(day: number) {
       month: "short",
       day: "numeric",
     });
+  const pad = (n: number) => String(n).padStart(2, "0");
   return {
+    date: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
     dayShort: format("short"),
     dayLong: format("long"),
     dayLongHe: date.toLocaleDateString("he-IL", {
@@ -578,6 +580,11 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
   }
   input.own::placeholder {
     color: var(--muted);
+  }
+  /* dir="auto" goes by the typed text, so an empty field would lay a Hebrew
+     placeholder out left to right. */
+  input.own[lang="he"]:placeholder-shown {
+    direction: rtl;
   }
   .ownhint {
     margin: -6px 0 18px;

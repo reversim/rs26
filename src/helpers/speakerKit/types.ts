@@ -13,6 +13,8 @@ export interface KitSession {
   slug: string;
   title: string;
   room: string;
+  /** The conference day, "YYYY-MM-DD". */
+  date: string;
   /** e.g. "Mon, Nov 30" */
   dayShort: string;
   /** e.g. "Monday, Nov 30" */

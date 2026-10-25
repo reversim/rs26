@@ -134,6 +134,16 @@ export function startWizard({
     return n;
   }
 
+  // Whole days from today to a "YYYY-MM-DD" date, in the viewer's time zone.
+  function daysUntil(date: string) {
+    const [y, m, d] = date.split("-").map(Number);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.round(
+      (new Date(y, m - 1, d).getTime() - today.getTime()) / 864e5,
+    );
+  }
+
   const withNames = (I: BannerInfo, lead: string) =>
     I.others.length ? `${lead}${I.others.map((s) => s.name).join(" & ")}` : "";
 
@@ -282,8 +292,8 @@ export function startWizard({
       icon: "x-twitter",
       format: "landscape",
       note: "Landscape banner",
-      // X is for conversation: give people something to react to and a question they
-      // can actually answer, and lead with the talk rather than the logistics.
+      // X is for conversation: a short hook, something to react to, and a question
+      // people can actually answer. Title, day and room are on the banner already.
       text(I, lang, own) {
         const he = lang === "he";
         // Inside Hebrew text, an invisible left-to-right mark keeps each "@" on its handle's left.
@@ -291,18 +301,41 @@ export function startWizard({
         const others = I.others
           .map((s) => (s.twitter ? at(s.twitter) : s.name))
           .join(" & ");
-        const point = own.point.trim() ? `${own.point.trim()}\n\n` : "";
+        const days = daysUntil(I.session.date);
+        const point = own.point.trim();
         const question = own.question.trim();
-        const build = (title: string) =>
-          he
-            ? `ההרצאה ${I.plural ? "שלנו" : "שלי"} ב-${at("reversim")} 26:\n${quoteIn(lang, title)}${others ? `\nיחד עם ${others}` : ""}\n\n` +
-              `${point}${question || `השקפים עוד בעבודה. מה הייתם רוצים ש${I.plural ? "נכסה" : "אכסה"}?`}\n\n📅 ${I.dayLongHe} · ${I.room}\n${I.url}`
-            : `${I.plural ? "Our" : "My"} talk at @reversim 26:\n${quote(title)}${others ? `\nWith ${others}` : ""}\n\n` +
-              `${point}${question || `Slides are still in the works. What would you want ${I.plural ? "us" : "me"} to cover?`}\n\n📅 ${I.dayLong} · ${I.room}\n${I.url}`;
-        let title = I.title;
-        while (xLength(build(title)) > 280 && title.length > 10)
-          title = title.slice(0, -2).trimEnd() + "…";
-        return build(title);
+        if (he) {
+          const who = others ? `אני ו-${others}` : "אני";
+          const when =
+            days > 2
+              ? `עוד ${days} ימים `
+              : days === 2
+                ? "עוד יומיים "
+                : days === 1
+                  ? "מחר "
+                  : days === 0
+                    ? "היום "
+                    : "";
+          return (
+            `${when}${who} על הבמה ב-${at("reversim")} 26 🎤\n` +
+            `${point || `ממש ${I.plural ? "מחכים" : "מחכה"} לזה 🔥`}\n` +
+            `${question || "מי עוד יהיה שם? 👇"}\n\n${I.url}`
+          );
+        }
+        const who = others ? `${others} and I are` : "I'm";
+        const when =
+          days > 1
+            ? `${days} days until `
+            : days === 1
+              ? "Tomorrow "
+              : days === 0
+                ? "Today "
+                : "";
+        return (
+          `${when}${who} on stage at @reversim 26 🎤\n` +
+          `${point || `Really looking forward to this one 🔥`}\n` +
+          `${question || "Who else is coming? 👇"}\n\n${I.url}`
+        );
       },
       limit: 280,
       ownWords: true,
@@ -798,9 +831,14 @@ export function startWizard({
 
   // ---- 4. your post (skipped for stories)
 
-  function ownField(field: OwnField, label: string, placeholder: string) {
+  function ownField(
+    field: OwnField,
+    label: string,
+    lang: Lang,
+    placeholder: string,
+  ) {
     return `<label class="fieldlabel" for="own-${field}"><span>${esc(label)}</span></label>
-      <input id="own-${field}" class="own" data-field="${field}" dir="auto" maxlength="140" placeholder="${esc(placeholder)}" />`;
+      <input id="own-${field}" class="own" data-field="${field}" dir="auto" lang="${lang}" maxlength="140" placeholder="${esc(placeholder)}" />`;
   }
 
   async function renderText(st: State, token: number) {
@@ -822,9 +860,9 @@ export function startWizard({
            </div>
            ${
              p.ownWords
-               ? `${ownField("point", "A point from your talk (optional)", st.lang === "he" ? "למשל: רוב התקלות שלנו לא היו בקוד, אלא בהנחות" : "e.g. Most of our outages weren't in the code, they were in our assumptions")}
-                  ${ownField("question", "Your question to followers (optional)", st.lang === "he" ? "למשל: מי עוד מריץ את זה בפרודקשן?" : "e.g. Anyone else running this in production?")}
-                  <span class="hint ownhint">A point gives people something to react to, and a real question gives them a reason to reply. Leave the question empty and we'll ask what they'd like you to cover.</span>
+               ? `${ownField("point", "A point from your talk (optional)", st.lang, st.lang === "he" ? "למשל: קוברנטיס גמורה" : "e.g. Kubernetes is dead")}
+                  ${ownField("question", "Your question to followers (optional)", st.lang, st.lang === "he" ? "למשל: מישהו עדיין מריץ את הזבל הזה בפרודקשן?" : "e.g. Is anyone still running this garbage in production?")}
+                  <span class="hint ownhint">A point gives people something to react to, and a real question gives them a reason to reply. Leave the question empty and we'll ask who else is coming.</span>
                   <span class="hint ownhint" hidden>You edited the post, so these aren't added. Reset to our suggestion to bring them in.</span>`
                : ""
            }
