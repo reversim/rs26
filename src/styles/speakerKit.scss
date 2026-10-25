@@ -1,0 +1,720 @@
+// SPEAKER KIT
+// Global styles for src/pages/speaker-kit/index.astro. That page skips the site
+// Layout and global.scss; the wizard builds its markup at runtime, outside
+// Astro's scoping, so everything here is global.
+
+// The site's --rs26-* tokens.
+@use "variables";
+
+:root {
+  // Heebo covers Hebrew session titles; it's loaded on this page only.
+  --kit-display: var(--font-space-grotesk), "Heebo", system-ui, sans-serif;
+  --kit-body: var(--font-hanken-grotesk), "Heebo", system-ui, sans-serif;
+  --kit-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --kit-orange-hover: #ff8a36;
+}
+
+// ---------------------------------------------------------------- mixins
+
+// Small uppercase mono text: tags, notes, field labels.
+@mixin eyebrow($spacing: 0.1em) {
+  font: 500 12px var(--kit-mono);
+  letter-spacing: $spacing;
+  text-transform: uppercase;
+}
+
+// A clickable card that lights up orange on hover.
+@mixin card($radius) {
+  background: var(--rs26-panel-2);
+  border: 1px solid var(--rs26-navy-line);
+  border-radius: $radius;
+  text-align: left;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
+
+  &:hover {
+    border-color: var(--rs26-orange);
+  }
+}
+
+@mixin lift-on-hover {
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// A field on a panel background.
+@mixin field($radius) {
+  width: 100%;
+  background: var(--rs26-panel);
+  color: #fff;
+  border: 1px solid var(--rs26-dashed);
+  border-radius: $radius;
+}
+
+// A solid orange call to action.
+@mixin cta {
+  border: 0;
+  background: var(--rs26-orange);
+  color: #fff;
+
+  &:hover {
+    background: var(--kit-orange-hover);
+  }
+}
+
+// A text-only button.
+@mixin bare-button {
+  background: none;
+  border: 0;
+}
+
+// ---------------------------------------------------------------- base
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--rs26-navy);
+  color: var(--rs26-text);
+  font: 16px/1.5 var(--kit-body);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button,
+input,
+textarea,
+a {
+  &:focus-visible {
+    outline: 2px solid var(--rs26-orange);
+    outline-offset: 2px;
+  }
+}
+
+// The wizard moves focus to each step's heading; it isn't a control, so no ring.
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+// ---------------------------------------------------------------- chrome
+
+.top {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 20px 16px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+
+  img {
+    height: 34px;
+    width: auto;
+    display: block;
+  }
+
+  .tag {
+    @include eyebrow(0.14em);
+    color: var(--rs26-mint);
+  }
+
+  nav {
+    margin-left: auto;
+
+    @media (max-width: 640px) {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
+.progress {
+  @include eyebrow(0.08em);
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--rs26-dashed);
+
+    + li::before {
+      content: "";
+      width: 16px;
+      height: 1px;
+      background: var(--rs26-navy-line);
+    }
+
+    &.done {
+      color: var(--rs26-muted);
+    }
+
+    &.current {
+      color: var(--rs26-orange);
+    }
+  }
+
+  button {
+    @include bare-button;
+    padding: 4px 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+.back {
+  @include bare-button;
+  padding: 6px 0;
+  margin-bottom: 8px;
+  font: 600 14px var(--kit-body);
+  color: var(--rs26-muted);
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+h1 {
+  font: 700 clamp(28px, 4.4vw, 44px) / 1.08 var(--kit-display);
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 8px;
+
+  em {
+    font-style: normal;
+    color: var(--rs26-orange);
+  }
+}
+
+.sub {
+  margin: 0 0 24px;
+  color: var(--rs26-muted);
+  max-width: 720px;
+
+  strong {
+    color: var(--rs26-text);
+    font-weight: 600;
+  }
+}
+
+.hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--rs26-muted);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 14px;
+}
+
+.ghost {
+  @include bare-button;
+  padding: 4px 0;
+  font: 600 15px var(--kit-body);
+  color: var(--rs26-blue-bright);
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 20px);
+  max-width: calc(100% - 32px);
+  background: #fff;
+  color: var(--rs26-navy);
+  font: 600 15px var(--kit-body);
+  padding: 12px 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+
+  &.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+// ---------------------------------------------------------------- 1. session
+
+.search {
+  @include field(14px);
+  font: 17px var(--kit-body);
+  padding: 14px 16px;
+}
+
+.list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.pick {
+  @include card(14px);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  .who {
+    font: 600 15px var(--kit-body);
+    color: #fff;
+  }
+
+  .what {
+    font-size: 14px;
+    color: var(--rs26-muted);
+  }
+}
+
+// Overlapping speaker photos.
+.faces {
+  display: flex;
+  flex: none;
+
+  img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rs26-panel-2);
+    background: var(--rs26-panel);
+
+    + img {
+      margin-left: -14px;
+    }
+  }
+}
+
+// "Recent" and "All sessions", labelled only while there are recent picks.
+.group {
+  margin-top: 12px;
+
+  // Room between the search box and the Recent label, and between the groups.
+  &.recent {
+    padding-top: 16px;
+  }
+
+  + .group {
+    margin-top: 24px;
+  }
+
+  .list {
+    margin: 0;
+  }
+
+  .fieldlabel {
+    align-items: baseline;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    margin: 0;
+    font: inherit;
+  }
+
+  .clear {
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+  }
+
+  .fieldlabel + .list {
+    margin-top: 8px;
+  }
+}
+
+.none {
+  padding: 24px 0;
+  color: var(--rs26-muted);
+}
+
+// ---------------------------------------------------------------- 1b/2. tiles (who's posting, platform)
+
+.tiles {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr));
+}
+
+.tile {
+  @include card(22px);
+  @include lift-on-hover;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+
+  svg {
+    width: 30px;
+    height: 30px;
+    color: #fff;
+  }
+
+  img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .name {
+    font: 600 19px var(--kit-display);
+    color: #fff;
+  }
+
+  .note {
+    @include eyebrow(0.06em);
+    color: var(--rs26-muted);
+  }
+}
+
+// ---------------------------------------------------------------- 3. design
+
+.designs {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+
+  &[data-format="square"] {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  }
+
+  &[data-format="story"] {
+    grid-template-columns: repeat(auto-fill, minmax(min(46%, 190px), 1fr));
+  }
+}
+
+.design {
+  @include card(18px);
+  @include lift-on-hover;
+  padding: 0;
+  overflow: hidden;
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--rs26-navy-3);
+  }
+
+  .name {
+    display: block;
+    padding: 10px 14px;
+    font: 600 15px var(--kit-display);
+    color: #fff;
+  }
+}
+
+// ---------------------------------------------------------------- 4/5. text and post: banner preview + panel
+
+.post {
+  display: grid;
+  gap: 28px;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+  &[data-format="story"] {
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  }
+
+  &[data-format="square"] {
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  }
+
+  @media (max-width: 820px) {
+    &,
+    &[data-format] {
+      grid-template-columns: 1fr;
+    }
+
+    &[data-format="story"] .preview {
+      max-width: 300px;
+    }
+  }
+}
+
+.preview img {
+  display: block;
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--rs26-navy-line);
+}
+
+// ---------------------------------------------------------------- 4. your post
+
+// Hebrew / English switch.
+.lang {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border: 1px solid var(--rs26-dashed);
+  border-radius: 999px;
+  padding: 3px;
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    padding: 5px 14px;
+    background: none;
+    color: var(--rs26-muted);
+    font: 600 14px var(--kit-body);
+
+    &[aria-pressed="true"] {
+      background: var(--rs26-panel-2);
+      color: #fff;
+    }
+  }
+}
+
+.fieldlabel {
+  @include eyebrow;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--rs26-muted);
+  margin-bottom: 6px;
+}
+
+// Character counter (X only).
+.count {
+  font: 500 12px var(--kit-mono);
+  letter-spacing: 0.06em;
+  color: var(--rs26-muted);
+  white-space: nowrap;
+
+  &.over {
+    color: var(--rs26-orange);
+  }
+}
+
+// The speaker's own words: a point and a question.
+input.own {
+  @include field(12px);
+  margin-bottom: 14px;
+  font: 15px/1.5 var(--kit-body);
+  padding: 10px 14px;
+
+  &::placeholder {
+    color: var(--rs26-muted);
+  }
+
+  // dir="auto" goes by the typed text, so an empty field would lay a Hebrew
+  // placeholder out left to right.
+  &[lang="he"]:placeholder-shown {
+    direction: rtl;
+  }
+}
+
+.ownhint {
+  margin: -6px 0 18px;
+}
+
+textarea {
+  @include field(14px);
+  min-height: 320px;
+  resize: vertical;
+  font: 15px/1.5 var(--kit-body);
+  padding: 12px 14px;
+}
+
+.next {
+  @include cta;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font: 700 16px var(--kit-body);
+}
+
+// ---------------------------------------------------------------- 5. post it
+
+// One-tap native share, above the step-by-step list.
+.share {
+  width: 100%;
+  padding: 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--rs26-orange);
+  color: #fff;
+  font: 700 17px var(--kit-body);
+}
+
+.or {
+  @include eyebrow;
+  margin: 14px 0 6px;
+  color: var(--rs26-muted);
+}
+
+// Numbered steps; a step turns into a check mark once done.
+ol.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  counter-reset: step;
+
+  li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+    align-items: start;
+
+    &::before {
+      content: counter(step);
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--rs26-dashed);
+      font: 600 14px var(--kit-mono);
+      color: var(--rs26-orange);
+    }
+
+    &.done::before {
+      content: "✓";
+      background: var(--rs26-mint);
+      border-color: var(--rs26-mint);
+      color: var(--rs26-navy);
+    }
+  }
+}
+
+.act {
+  @include cta;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--rs26-orange);
+  font: 600 15px var(--kit-body);
+
+  li.done & {
+    background: transparent;
+    border-color: var(--rs26-dashed);
+  }
+}
+
+// A step with no button: just what to do.
+.say {
+  font: 600 16px/32px var(--kit-body);
+  color: #fff;
+}
+
+// A step that carries the post text: button, caption and the read-only text in
+// one card, so it's clear the text travels with the click.
+.carry {
+  border: 1px solid var(--rs26-dashed);
+  border-radius: 16px;
+  background: var(--rs26-panel);
+  padding: 12px;
+
+  .hint {
+    margin-top: 8px;
+  }
+
+  .row {
+    margin-top: 6px;
+    gap: 4px 18px;
+  }
+
+  .ghost {
+    font-size: 14px;
+  }
+}
+
+.payload {
+  margin: 8px 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--rs26-orange);
+  border-radius: 0 10px 10px 0;
+  background: var(--rs26-navy-2);
+  color: var(--rs26-text);
+  font: 14px/1.5 var(--kit-body);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 168px;
+  overflow: auto;
+
+  &.url {
+    font: 14px var(--kit-mono);
+    color: var(--rs26-blue-bright);
+  }
+}
+
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rs26-navy-line);
+}
+
+// Secondary to the orange step buttons, but more than a text link.
+.other {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--rs26-blue);
+  background: var(--rs26-panel-2);
+  color: #fff;
+  font: 600 15px var(--kit-body);
+
+  &:hover {
+    border-color: var(--rs26-blue-bright);
+    background: var(--rs26-navy-line);
+  }
+}
