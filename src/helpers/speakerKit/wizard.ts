@@ -144,6 +144,9 @@ export function startWizard({
     );
   }
 
+  // A left-to-right mark: keeps a leading "#" or "@" on its word's left inside Hebrew text.
+  const LRM = "\u200E";
+
   const withNames = (I: BannerInfo, lead: string) =>
     I.others.length ? `${lead}${I.others.map((s) => s.name).join(" & ")}` : "";
 
@@ -259,7 +262,7 @@ export function startWizard({
             `🎤 אני מרצה ב-Reversim Summit 2026!\n\n${quoteIn(lang, I.title)}${withNames(I, "\nיחד עם ")}\n\n` +
             `📅 ${I.dayLongHe}\n📍 ${I.room}\n\n` +
             `RS26 הוא כנס קהילתי בן יומיים לתעשיית התוכנה הישראלית (30.11–1.12). ` +
-            `מגיעים? בואו להגיד היי.\n\nפרטי ההרצאה והאג'נדה המלאה: ${I.url}\n\n#RS26 #Reversim #ReversimSummit`
+            `מגיעים? בואו להגיד היי.\n\nפרטי ההרצאה והאג'נדה המלאה: ${I.url}\n\n${LRM}#RS26 #Reversim #ReversimSummit`
           );
         return (
           `🎤 I'm speaking at Reversim Summit 2026!\n\n${quote(I.title)}${withNames(I, "\nTogether with ")}\n\n` +
@@ -284,9 +287,14 @@ export function startWizard({
           // LinkedIn's pre-fill is unofficial, so offer the text by hand too.
           copyFallback: true,
         },
+        // The session link brings up a link preview, and while it's there LinkedIn
+        // hides the photo button (a post has a link preview or media, not both).
+        {
+          say: "Close the link preview (×) at the bottom of the post. The photo button shows up.",
+        },
         // A pre-filled "@..." stays plain text; only LinkedIn's own picker makes a real tag.
         {
-          say: "Tag us (type @Reversim Summit and pick the page from the list). Attach the banner you downloaded with the photo button, then post.",
+          say: "Attach the banner you downloaded with the photo button. Tag us (type @Reversim Summit and pick the page from the list), then post.",
         },
       ],
     },
@@ -365,7 +373,7 @@ export function startWizard({
         if (lang === "he")
           return (
             `🎤 אני מרצה ב-Reversim Summit 2026${withNames(I, " יחד עם ")}!\n\n${quoteIn(lang, I.title)}\n📅 ${I.dayLongHe} · ${I.room}\n\n` +
-            `מגיעים ל-RS26? בואו להגיד היי 👋\n${I.url}\n\n#RS26 #Reversim`
+            `מגיעים ל-RS26? בואו להגיד היי 👋\n${I.url}\n\n${LRM}#RS26 #Reversim`
           );
         return (
           `🎤 I'm speaking at Reversim Summit 2026${withNames(I, " together with ")}!\n\n${quote(I.title)}\n📅 ${I.dayLong} · ${I.room}\n\n` +
