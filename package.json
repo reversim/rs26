@@ -8,8 +8,7 @@
     "preview": "astro preview",
     "lint": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "astro": "astro",
-    "speaker-kit": "node speaker-kit/build.mjs"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.5.1",

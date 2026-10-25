@@ -37,11 +37,14 @@ export default defineConfig({
         provider: fontProviders.google(),
         name: "JetBrains Mono",
         cssVariable: "--font-jetbrains-mono",
-        weights: ["400", "500", "700"],
+        weights: ["400", "500", "600", "700"],
         styles: ["normal"],
         display: "swap",
       },
     ],
   },
-  integrations: [sitemap()],
+  integrations: [
+    // The speaker kit is shared with speakers directly and kept out of search.
+    sitemap({ filter: (page) => !page.includes("/speaker-kit") }),
+  ],
 });

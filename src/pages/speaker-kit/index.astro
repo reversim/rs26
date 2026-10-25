@@ -1,0 +1,655 @@
+---
+// Speaker kit: speakers pick their session and get ready-made banners plus a post
+// for X, LinkedIn, Facebook, WhatsApp or a story. Shared with speakers directly:
+// it's kept out of search engines and AI crawlers (noindex here, an X-Robots-Tag
+// header in firebase.json, robots.txt, and excluded from the sitemap).
+import { Font } from "astro:assets";
+import slug from "slug";
+import { event } from "../../config/event";
+import { getSessions } from "../../helpers/data/getSessions";
+import { getSpeakers } from "../../helpers/data/getSpeakers";
+import logo from "../../assets/logo-white.png";
+import xIcon from "../../assets/socials/x-twitter.svg?raw";
+import linkedinIcon from "../../assets/socials/linkedin.svg?raw";
+import facebookIcon from "../../assets/socials/facebook.svg?raw";
+import instagramIcon from "../../assets/socials/instagram.svg?raw";
+import type { AgendaSpeaker } from "../../types/agenda";
+
+const { rawSessionsList } = await getSessions();
+const speakersById = new Map(
+  (await getSpeakers()).map((s) => [String(s.id), s]),
+);
+
+// "Mon, Nov 30" / "Monday, Nov 30" for a conference day (1 or 2).
+function dayLabels(day: number) {
+  const date = new Date(event.days.dates[day as 1 | 2]);
+  const format = (weekday: "short" | "long") =>
+    date.toLocaleDateString("en-US", {
+      weekday,
+      month: "short",
+      day: "numeric",
+    });
+  return { dayShort: format("short"), dayLong: format("long") };
+}
+
+function twitterHandle(speaker?: AgendaSpeaker) {
+  const link = speaker?.links?.find((l) => l.linkType === "Twitter");
+  return link?.url.match(/(?:twitter|x)\.com\/@?([A-Za-z0-9_]+)/)?.[1] ?? null;
+}
+
+// Only what the kit draws or links to goes into the page.
+const sessions = rawSessionsList
+  .filter((s) => !s.isServiceSession && s.speakers.length > 0)
+  .map((s) => ({
+    // Same slug as the session page, src/pages/session/[session].astro.
+    slug: slug(s.title),
+    title: s.title.trim(),
+    room: s.room,
+    ...dayLabels(s.day ?? 1),
+    speakers: s.speakers.map(({ id, name }) => {
+      const sp = speakersById.get(String(id));
+      return {
+        name: (sp?.fullName ?? name).trim(),
+        tagLine: (sp?.tagLine ?? "").trim(),
+        photo: sp?.profilePicture ?? "",
+        twitter: twitterHandle(sp),
+      };
+    }),
+  }));
+
+const data = {
+  sessions,
+  logo: logo.src,
+  icons: {
+    "x-twitter": xIcon,
+    linkedin: linkedinIcon,
+    facebook: facebookIcon,
+    instagram: instagramIcon,
+  },
+};
+// Escape "<" so session text can never close the inline <script>.
+const json = JSON.stringify(data).replace(/</g, "\\u003c");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Speaker Kit · Reversim Summit 2026</title>
+    <meta
+      name="description"
+      content="Make a banner and a post for your Reversim Summit 2026 talk."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon-dark-mode.png" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon-light-mode.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <Font cssVariable="--font-space-grotesk" preload />
+    <Font cssVariable="--font-hanken-grotesk" preload />
+    <Font cssVariable="--font-jetbrains-mono" preload />
+    <!-- Fallbacks for Hebrew titles and emoji, used only on this page. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Noto+Color+Emoji&display=block"
+    />
+    <script type="application/json" id="speaker-kit-data" set:html={json} />
+  </head>
+  <body>
+    <div class="top">
+      <img id="logo" alt="RS26 · Reversim Winter Summit" />
+      <span class="tag">Speaker kit</span>
+      <ol class="progress" id="progress"></ol>
+    </div>
+    <main id="main" aria-live="polite"></main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      import { startWizard } from "../../helpers/speakerKit/wizard.js";
+
+      const data = document.getElementById("speaker-kit-data")!.textContent!;
+      startWizard(JSON.parse(data));
+    </script>
+  </body>
+</html>
+
+<!-- Global: the wizard builds its markup at runtime, outside Astro's scoping. -->
+<style is:global>
+  :root {
+    --navy: #0e1d42;
+    --navy-2: #0a1631;
+    --navy-3: #060f25;
+    --line: #1e2f58;
+    --panel: #0a1736;
+    --panel-2: #10204a;
+    --blue: #6c8cc7;
+    --blue-bright: #84a2da;
+    --orange: #f07a23;
+    --mint: #7ccfa8;
+    --text: #c3cdea;
+    --muted: #8fa0c8;
+    --dashed: #3a4d7a;
+    --display: var(--font-space-grotesk), "Heebo", system-ui, sans-serif;
+    --body: var(--font-hanken-grotesk), "Heebo", system-ui, sans-serif;
+    --mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    margin: 0;
+  }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font: 16px/1.5 var(--body);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--orange);
+    outline-offset: 2px;
+  }
+  [hidden] {
+    display: none !important;
+  }
+
+  /* ------------------------------------------------ chrome */
+  .top {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 20px 16px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+  }
+  .top img {
+    height: 34px;
+    display: block;
+  }
+  .top .tag {
+    font: 500 12px var(--mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mint);
+  }
+  .progress {
+    display: flex;
+    gap: 6px;
+    margin: 0 0 0 auto;
+    padding: 0;
+    list-style: none;
+    font: 500 12px var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .progress li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--dashed);
+  }
+  .progress li + li::before {
+    content: "";
+    width: 16px;
+    height: 1px;
+    background: var(--line);
+  }
+  .progress li.done {
+    color: var(--muted);
+  }
+  .progress li.current {
+    color: var(--orange);
+  }
+  .progress button {
+    background: none;
+    border: 0;
+    padding: 4px 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+  }
+  .progress button:hover {
+    color: #fff;
+  }
+  main {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 16px 64px;
+  }
+  .back {
+    background: none;
+    border: 0;
+    padding: 6px 0;
+    margin-bottom: 8px;
+    font: 600 14px var(--body);
+    color: var(--muted);
+  }
+  .back:hover {
+    color: #fff;
+  }
+  h1 {
+    font: 700 clamp(28px, 4.4vw, 44px) / 1.08 var(--display);
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin: 0 0 8px;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--orange);
+  }
+  .sub {
+    margin: 0 0 24px;
+    color: var(--muted);
+    max-width: 720px;
+  }
+  .sub strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* ------------------------------------------------ step: session */
+  .search {
+    width: 100%;
+    background: var(--panel);
+    color: #fff;
+    border: 1px solid var(--dashed);
+    border-radius: 14px;
+    font: 17px var(--body);
+    padding: 14px 16px;
+  }
+  .list {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .pick {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    transition:
+      border-color 0.15s,
+      transform 0.15s;
+  }
+  .pick:hover {
+    border-color: var(--orange);
+  }
+  .pick:active {
+    transform: scale(0.99);
+  }
+  .faces {
+    display: flex;
+    flex: none;
+  }
+  .faces img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--panel-2);
+    background: var(--panel);
+  }
+  .faces img + img {
+    margin-left: -14px;
+  }
+  .pick .who {
+    font: 600 15px var(--body);
+    color: #fff;
+  }
+  .pick .what {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .none {
+    padding: 24px 0;
+    color: var(--muted);
+  }
+
+  /* ------------------------------------------------ tiles (as / platform) */
+  .tiles {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr));
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px;
+    text-align: left;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    transition:
+      border-color 0.15s,
+      transform 0.15s;
+  }
+  .tile:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+  }
+  .tile svg {
+    width: 30px;
+    height: 30px;
+    color: #fff;
+  }
+  .tile img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .tile .name {
+    font: 600 19px var(--display);
+    color: #fff;
+  }
+  .tile .note {
+    font: 500 12px var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ------------------------------------------------ step: design */
+  .designs {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  }
+  .designs[data-format="square"] {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  }
+  .designs[data-format="story"] {
+    grid-template-columns: repeat(auto-fill, minmax(min(46%, 190px), 1fr));
+  }
+  .design {
+    padding: 0;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    text-align: left;
+    transition:
+      border-color 0.15s,
+      transform 0.15s;
+  }
+  .design:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+  }
+  .design canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--navy-3);
+  }
+  .design .name {
+    display: block;
+    padding: 10px 14px;
+    font: 600 15px var(--display);
+    color: #fff;
+  }
+
+  /* ------------------------------------------------ step: post */
+  .post {
+    display: grid;
+    gap: 28px;
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .post[data-format="story"] {
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  }
+  .post[data-format="square"] {
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  }
+  @media (max-width: 820px) {
+    .post,
+    .post[data-format] {
+      grid-template-columns: 1fr;
+    }
+    .post[data-format="story"] .preview {
+      max-width: 300px;
+    }
+  }
+  .preview img {
+    display: block;
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+  }
+  .preview .change {
+    margin-top: 8px;
+  }
+  .share {
+    width: 100%;
+    padding: 16px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--orange);
+    color: #fff;
+    font: 700 17px var(--body);
+  }
+  .or {
+    margin: 14px 0 6px;
+    font: 500 12px var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  ol.steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    counter-reset: step;
+  }
+  ol.steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--dashed);
+    font: 600 14px var(--mono);
+    color: var(--orange);
+  }
+  ol.steps li.done::before {
+    content: "✓";
+    background: var(--mint);
+    border-color: var(--mint);
+    color: var(--navy);
+  }
+  .act {
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--orange);
+    background: var(--orange);
+    color: #fff;
+    font: 600 15px var(--body);
+  }
+  .act:hover {
+    background: #ff8a36;
+  }
+  li.done .act {
+    background: transparent;
+    border-color: var(--dashed);
+  }
+  .hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .say {
+    font: 600 16px/32px var(--body);
+    color: #fff;
+  }
+  /* ------------------------------------------------ step: your post */
+  .fieldlabel {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font: 500 12px var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .count {
+    font: 500 12px var(--mono);
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .count.over {
+    color: var(--orange);
+  }
+  textarea {
+    width: 100%;
+    min-height: 320px;
+    resize: vertical;
+    background: var(--panel);
+    color: #fff;
+    border: 1px solid var(--dashed);
+    border-radius: 14px;
+    font: 15px/1.5 var(--body);
+    padding: 12px 14px;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    margin-top: 14px;
+  }
+  .next {
+    padding: 12px 24px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--orange);
+    color: #fff;
+    font: 700 16px var(--body);
+  }
+  .next:hover {
+    background: #ff8a36;
+  }
+
+  /* A step that carries the post text: button, caption and the read-only text in
+         one card, so it's clear the text travels with the click. */
+  .carry {
+    border: 1px solid var(--dashed);
+    border-radius: 16px;
+    background: var(--panel);
+    padding: 12px;
+  }
+  .carry .hint {
+    margin-top: 8px;
+  }
+  .payload {
+    margin: 8px 0 0;
+    padding: 10px 14px;
+    border-left: 3px solid var(--orange);
+    border-radius: 0 10px 10px 0;
+    background: var(--navy-2);
+    color: var(--text);
+    font: 14px/1.5 var(--body);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 168px;
+    overflow: auto;
+  }
+  .payload.url {
+    font: 14px var(--mono);
+    color: var(--blue-bright);
+  }
+  .carry .row {
+    margin-top: 6px;
+    gap: 4px 18px;
+  }
+  .carry .ghost {
+    font-size: 14px;
+  }
+  .more {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .ghost {
+    background: none;
+    border: 0;
+    padding: 4px 0;
+    font: 600 15px var(--body);
+    color: var(--blue-bright);
+  }
+  .ghost:hover {
+    color: #fff;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translate(-50%, 20px);
+    max-width: calc(100% - 32px);
+    background: #fff;
+    color: var(--navy);
+    font: 600 15px var(--body);
+    padding: 12px 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  @media (max-width: 640px) {
+    .progress {
+      width: 100%;
+      margin: 0;
+    }
+  }
+</style>

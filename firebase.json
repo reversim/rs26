@@ -4,6 +4,14 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
+        "source": "/speaker-kit",
+        "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+      },
+      {
+        "source": "/speaker-kit/**",
+        "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+      },
+      {
         "source": "**/*.@(jpg|jpeg|gif|png|svg|woff2|webp|ico|ttf|eot|woff|pdf|zip|rar|xml)",
         "headers": [{ "key": "Cache-Control", "value": "max-age=31536000" }]
       }

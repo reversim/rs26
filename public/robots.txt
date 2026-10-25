@@ -1,0 +1,25 @@
+# AI crawlers: keep out of the speaker kit (shared with speakers directly).
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: anthropic-ai
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: CCBot
+User-agent: Bytespider
+User-agent: meta-externalagent
+User-agent: Amazonbot
+User-agent: cohere-ai
+Disallow: /speaker-kit
+
+# Everyone else, including search engines: the kit page itself says noindex,
+# which they can only see if they're allowed to fetch it.
+User-agent: *
+Allow: /
+
+Sitemap: https://summit2026.reversim.com/sitemap-index.xml
