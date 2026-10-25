@@ -15,6 +15,8 @@ import type { BannerInfo, Format, KitData, KitSession } from "./types";
 
 type PlatformId = "linkedin" | "x" | "facebook" | "whatsapp" | "story";
 type Step = "session" | "as" | "platform" | "design" | "text" | "post";
+/** The post text's language. */
+type Lang = "he" | "en";
 
 /** The wizard's state, read from the URL. */
 interface State {
@@ -26,6 +28,7 @@ interface State {
   design: string | null;
   /** The post text has been reviewed. */
   ready: boolean;
+  lang: Lang;
 }
 
 /** URL changes for go(): null removes a key. */
@@ -56,13 +59,24 @@ interface Action {
 }
 type PostStep = Action | { say: string };
 
+/** What the speaker adds in their own words; empty when they skip it. */
+interface OwnWords {
+  /** A lesson or angle from the talk. */
+  point: string;
+  /** A question to their followers, in place of ours. */
+  question: string;
+}
+type OwnField = keyof OwnWords;
+
 interface Platform {
   label: string;
   icon: string;
   format: Format;
   note: string;
   /** The suggested post; null for stories, which have no caption. */
-  text: ((I: BannerInfo) => string) | null;
+  text: ((I: BannerInfo, lang: Lang, own: OwnWords) => string) | null;
+  /** Ask the speaker for OwnWords, which text() works in. */
+  ownWords?: boolean;
   /** Character limit, shown as a counter. */
   limit?: number;
   steps: () => PostStep[];
@@ -84,7 +98,7 @@ export function startWizard({
       ...session.speakers.filter((_, i) => i !== me),
     ];
     const plural = speakers.length > 1;
-    const { dayShort, dayLong } = session;
+    const { dayShort, dayLong, dayLongHe } = session;
     return {
       session,
       speakers,
@@ -95,6 +109,7 @@ export function startWizard({
       tagLine: plural ? "" : speakers[0].tagLine,
       dayShort,
       dayLong,
+      dayLongHe,
       room: session.room,
       dateLine: `${dayShort} · ${session.room}`.toUpperCase(),
       speaking: plural ? "WE'RE SPEAKING" : "I'M SPEAKING",
@@ -119,8 +134,25 @@ export function startWizard({
     return n;
   }
 
+  // Whole days from today to a "YYYY-MM-DD" date, in the viewer's time zone.
+  function daysUntil(date: string) {
+    const [y, m, d] = date.split("-").map(Number);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.round(
+      (new Date(y, m - 1, d).getTime() - today.getTime()) / 864e5,
+    );
+  }
+
+  // A left-to-right mark: keeps a leading "#" or "@" on its word's left inside Hebrew text.
+  const LRM = "\u200E";
+
   const withNames = (I: BannerInfo, lead: string) =>
     I.others.length ? `${lead}${I.others.map((s) => s.name).join(" & ")}` : "";
+
+  // Curly quotes get mirrored in right-to-left text, so Hebrew posts use straight ones.
+  const quoteIn = (lang: Lang, title: string) =>
+    lang === "he" ? `"${title}"` : quote(title);
 
   // ---------------------------------------------------------------- actions
 
@@ -196,6 +228,11 @@ export function startWizard({
     return true;
   }
 
+  const downloadStep = (hint?: string): Action => ({
+    label: "Download banner",
+    run: downloadBanner,
+    hint: hint ?? "Saves the banner as a PNG.",
+  });
   // The first step of most platforms: get the banner onto the clipboard, or disk.
   const bannerStep = (hint?: string): Action =>
     canCopyImage
@@ -204,11 +241,7 @@ export function startWizard({
           run: copyBanner,
           hint: hint ?? "Puts the banner on your clipboard.",
         }
-      : {
-          label: "Download banner",
-          run: downloadBanner,
-          hint: hint ?? "Saves the banner as a PNG.",
-        };
+      : downloadStep(hint);
   const pasteIt = canCopyImage
     ? "Paste the banner into the post (Ctrl/⌘+V)"
     : "Attach the banner you downloaded";
@@ -223,7 +256,14 @@ export function startWizard({
       icon: "linkedin",
       format: "landscape",
       note: "Landscape banner",
-      text(I) {
+      text(I, lang) {
+        if (lang === "he")
+          return (
+            `🎤 אני מרצה ב-Reversim Summit 2026!\n\n${quoteIn(lang, I.title)}${withNames(I, "\nיחד עם ")}\n\n` +
+            `📅 ${I.dayLongHe}\n📍 ${I.room}\n\n` +
+            `RS26 הוא כנס קהילתי בן יומיים לתעשיית התוכנה הישראלית (30.11–1.12). ` +
+            `מגיעים? בואו להגיד היי.\n\nפרטי ההרצאה והאג'נדה המלאה: ${I.url}\n\n${LRM}#RS26 #Reversim #ReversimSummit`
+          );
         return (
           `🎤 I'm speaking at Reversim Summit 2026!\n\n${quote(I.title)}${withNames(I, "\nTogether with ")}\n\n` +
           `📅 ${I.dayLong}\n📍 ${I.room}\n\n` +
@@ -231,8 +271,10 @@ export function startWizard({
           `If you're coming, come say hi.\n\nSession details and the full agenda: ${I.url}\n\n#RS26 #Reversim #ReversimSummit`
         );
       },
+      // LinkedIn's composer doesn't reliably take a pasted image, so the banner is
+      // always downloaded and attached.
       steps: () => [
-        bannerStep(),
+        downloadStep(),
         {
           label: "Open LinkedIn",
           // Unofficial but working pre-fill.
@@ -245,7 +287,15 @@ export function startWizard({
           // LinkedIn's pre-fill is unofficial, so offer the text by hand too.
           copyFallback: true,
         },
-        { say: `${pasteIt}, then post.` },
+        // The session link brings up a link preview, and while it's there LinkedIn
+        // hides the photo button (a post has a link preview or media, not both).
+        {
+          say: "Close the link preview (×) at the bottom of the post. The photo button shows up.",
+        },
+        // A pre-filled "@..." stays plain text; only LinkedIn's own picker makes a real tag.
+        {
+          say: "Attach the banner you downloaded with the photo button. Tag us (type @Reversim Summit and pick the page from the list), then post.",
+        },
       ],
     },
     x: {
@@ -253,20 +303,53 @@ export function startWizard({
       icon: "x-twitter",
       format: "landscape",
       note: "Landscape banner",
-      text(I) {
-        const mention = (s: BannerInfo["speakers"][number]) =>
-          s.twitter ? `@${s.twitter}` : s.name;
-        const withPart = I.others.length
-          ? ` with ${I.others.map(mention).join(" & ")}`
-          : "";
-        const build = (title: string) =>
-          `🎤 I'm speaking at #RS26, Reversim Summit 2026!\n\n${quote(title)}${withPart}\n📅 ${I.dayLong} · ${I.room}\n\nCome say hi 👋\n${I.url}`;
-        let title = I.title;
-        while (xLength(build(title)) > 280 && title.length > 10)
-          title = title.slice(0, -2).trimEnd() + "…";
-        return build(title);
+      // X is for conversation: a short hook, something to react to, and a question
+      // people can actually answer. Title, day and room are on the banner already.
+      text(I, lang, own) {
+        const he = lang === "he";
+        // Inside Hebrew text, an invisible left-to-right mark keeps each "@" on its handle's left.
+        const at = (handle: string) => `${he ? "\u200E" : ""}@${handle}`;
+        const others = I.others
+          .map((s) => (s.twitter ? at(s.twitter) : s.name))
+          .join(" & ");
+        const days = daysUntil(I.session.date);
+        const point = own.point.trim();
+        const question = own.question.trim();
+        if (he) {
+          const who = others ? `אני ו-${others}` : "אני";
+          const when =
+            days > 2
+              ? `עוד ${days} ימים `
+              : days === 2
+                ? "עוד יומיים "
+                : days === 1
+                  ? "מחר "
+                  : days === 0
+                    ? "היום "
+                    : "";
+          return (
+            `${when}${who} על הבמה ב-${at("reversim")} 26 🎤\n` +
+            `${point || `ממש ${I.plural ? "מחכים" : "מחכה"} לזה 🔥`}\n` +
+            `${question || "מי עוד יהיה שם? 👇"}\n\n${I.url}`
+          );
+        }
+        const who = others ? `${others} and I are` : "I'm";
+        const when =
+          days > 1
+            ? `${days} days until `
+            : days === 1
+              ? "Tomorrow "
+              : days === 0
+                ? "Today "
+                : "";
+        return (
+          `${when}${who} on stage at @reversim 26 🎤\n` +
+          `${point || `Really looking forward to this one 🔥`}\n` +
+          `${question || "Who else is coming? 👇"}\n\n${I.url}`
+        );
       },
       limit: 280,
+      ownWords: true,
       steps: () => [
         bannerStep(),
         {
@@ -286,7 +369,12 @@ export function startWizard({
       icon: "facebook",
       format: "landscape",
       note: "Landscape banner",
-      text(I) {
+      text(I, lang) {
+        if (lang === "he")
+          return (
+            `🎤 אני מרצה ב-Reversim Summit 2026${withNames(I, " יחד עם ")}!\n\n${quoteIn(lang, I.title)}\n📅 ${I.dayLongHe} · ${I.room}\n\n` +
+            `מגיעים ל-RS26? בואו להגיד היי 👋\n${I.url}\n\n${LRM}#RS26 #Reversim`
+          );
         return (
           `🎤 I'm speaking at Reversim Summit 2026${withNames(I, " together with ")}!\n\n${quote(I.title)}\n📅 ${I.dayLong} · ${I.room}\n\n` +
           `Coming to RS26? Come say hi 👋\n${I.url}\n\n#RS26 #Reversim`
@@ -318,7 +406,9 @@ export function startWizard({
       format: "square",
       note: "Square banner",
       // No emoji: WhatsApp Web/Desktop can turn emoji passed in a share link into "�".
-      text(I) {
+      text(I, lang) {
+        if (lang === "he")
+          return `אני מרצה ב-*Reversim Summit 2026*${withNames(I, " יחד עם ")}!\n\n*${I.title}*\n${I.dayLongHe} · ${I.room}\n\n${I.url}`;
         return `I'm speaking at *Reversim Summit 2026*${withNames(I, " together with ")}!\n\n*${I.title}*\n${I.dayLong} · ${I.room}\n\n${I.url}`;
       },
       steps: () => [
@@ -430,18 +520,33 @@ export function startWizard({
   // Every id the wizard looks up is in the page's static markup.
   const $ = (id: string) => document.getElementById(id)!;
   const main = $("main");
-  // Edited post texts, per session + speaker + platform. Kept in sessionStorage so a
-  // reload doesn't lose them.
-  const EDITS_KEY = "rs26-speaker-kit-edits";
-  const edited = new Map<string, string>(
-    (() => {
-      try {
-        return JSON.parse(sessionStorage.getItem(EDITS_KEY) ?? "[]");
-      } catch {
-        return [];
-      }
-    })(),
-  );
+  // A Map kept in sessionStorage, so a reload doesn't lose what's in it.
+  function storedMap(storageKey: string) {
+    const map = new Map<string, string>(
+      (() => {
+        try {
+          return JSON.parse(sessionStorage.getItem(storageKey) ?? "[]");
+        } catch {
+          return [];
+        }
+      })(),
+    );
+    return {
+      get: (k: string) => map.get(k),
+      has: (k: string) => map.has(k),
+      // null removes the entry.
+      set(k: string, value: string | null) {
+        if (value === null) map.delete(k);
+        else map.set(k, value);
+        try {
+          sessionStorage.setItem(storageKey, JSON.stringify([...map]));
+        } catch {}
+      },
+    };
+  }
+  // Edited post texts and the speaker's own words, per session + speaker + platform + language.
+  const edited = storedMap("rs26-speaker-kit-edits");
+  const ownWords = storedMap("rs26-speaker-kit-own-words");
 
   // Every step after "session" (and "as") has those set; these read them.
   const sessionOf = (st: State) => SESSIONS[st.session!];
@@ -449,16 +554,17 @@ export function startWizard({
   const platformOf = (st: State) => PLATFORMS[st.platform!];
 
   const textKey = (st: State) =>
-    [sessionOf(st).slug, st.as, st.platform].join("|");
+    [sessionOf(st).slug, st.as, st.platform, st.lang].join("|");
+  const ownKey = (st: State, field: OwnField) => `${textKey(st)}|${field}`;
   const postText = (st: State, I: BannerInfo) =>
-    edited.get(textKey(st)) ?? platformOf(st).text?.(I) ?? "";
-  function saveText(st: State, value: string | null) {
-    if (value === null) edited.delete(textKey(st));
-    else edited.set(textKey(st), value);
-    try {
-      sessionStorage.setItem(EDITS_KEY, JSON.stringify([...edited]));
-    } catch {}
-  }
+    edited.get(textKey(st)) ??
+    platformOf(st).text?.(I, st.lang, {
+      point: ownWords.get(ownKey(st, "point")) ?? "",
+      question: ownWords.get(ownKey(st, "question")) ?? "",
+    }) ??
+    "";
+  const saveText = (st: State, value: string | null) =>
+    edited.set(textKey(st), value);
   let renderToken = 0;
   let previewUrl: string | null = null;
 
@@ -488,6 +594,8 @@ export function startWizard({
         platform && platform in PLATFORMS ? (platform as PlatformId) : null,
       design: TEMPLATES.some((t) => t.id === design) ? design : null,
       ready: p.get("ready") === "1",
+      // Hebrew unless asked otherwise.
+      lang: p.get("lang") === "en" ? "en" : "he",
     };
   }
 
@@ -502,15 +610,18 @@ export function startWizard({
   }
 
   // Applies changes to the URL (null removes a key) and renders the new step.
-  function go(changes: Changes) {
+  // With replace, the change doesn't get its own history entry.
+  function go(changes: Changes, replace = false) {
     const p = new URLSearchParams(location.search);
     for (const [k, v] of Object.entries(changes)) {
       if (v === null || v === undefined) p.delete(k);
       else p.set(k, String(v));
     }
-    history.pushState(null, "", `${location.pathname}${p.size ? `?${p}` : ""}`);
+    const url = `${location.pathname}${p.size ? `?${p}` : ""}`;
+    if (replace) history.replaceState(null, "", url);
+    else history.pushState(null, "", url);
     render();
-    window.scrollTo(0, 0);
+    if (!replace) window.scrollTo(0, 0);
   }
   window.addEventListener("popstate", render);
 
@@ -523,10 +634,11 @@ export function startWizard({
   };
   const isPlural = (st: State) => sessionOf(st).speakers.length > 1;
 
-  function backButton(changes: Changes, label: string) {
+  // Always "Back", whatever step it goes to: one less thing to read.
+  function backButton(changes: Changes) {
     const b = document.createElement("button");
     b.className = "back";
-    b.textContent = `← ${label}`;
+    b.textContent = "← Back";
     b.onclick = () => go(changes);
     return b;
   }
@@ -639,7 +751,7 @@ export function startWizard({
 
   function renderAs(st: State) {
     const s = sessionOf(st);
-    main.append(backButton(RESET, "Different session"));
+    main.append(backButton(RESET));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Who's <em>posting</em>?</h1>
@@ -663,11 +775,7 @@ export function startWizard({
 
   function renderPlatform(st: State) {
     const I = info(st);
-    main.append(
-      isPlural(st)
-        ? backButton({ as: null }, "Who's posting")
-        : backButton(RESET, "Different session"),
-    );
+    main.append(isPlural(st) ? backButton({ as: null }) : backButton(RESET));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Where are you <em>posting</em>?</h1>
@@ -693,7 +801,7 @@ export function startWizard({
   function renderDesign(st: State, token: number) {
     const p = platformOf(st);
     const { w, h } = FORMATS[p.format];
-    main.append(backButton({ platform: null }, "Platform"));
+    main.append(backButton({ platform: null }));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Pick a <em>design</em></h1>
@@ -734,12 +842,22 @@ export function startWizard({
 
   // ---- 4. your post (skipped for stories)
 
+  function ownField(
+    field: OwnField,
+    label: string,
+    lang: Lang,
+    placeholder: string,
+  ) {
+    return `<label class="fieldlabel" for="own-${field}"><span>${esc(label)}</span></label>
+      <input id="own-${field}" class="own" data-field="${field}" dir="auto" lang="${lang}" maxlength="140" placeholder="${esc(placeholder)}" />`;
+  }
+
   async function renderText(st: State, token: number) {
     const p = platformOf(st);
     const I = info(st);
     if (!(await bannerPreview(st, token))) return;
 
-    main.append(backButton({ design: null }, "Design"));
+    main.append(backButton({ design: null }));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Your <em>post</em></h1>
@@ -747,8 +865,20 @@ export function startWizard({
        <div class="post" data-format="${p.format}">
          <div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>
          <div>
+           <div class="lang" role="group" aria-label="Post language">
+             <button data-lang="he" lang="he" aria-pressed="${st.lang === "he"}">עברית</button>
+             <button data-lang="en" aria-pressed="${st.lang === "en"}">English</button>
+           </div>
+           ${
+             p.ownWords
+               ? `${ownField("point", "A point from your talk (optional)", st.lang, st.lang === "he" ? "למשל: קוברנטיס גמורה" : "e.g. Kubernetes is dead")}
+                  ${ownField("question", "Your question to followers (optional)", st.lang, st.lang === "he" ? "למשל: מישהו עדיין מריץ את הזבל הזה בפרודקשן?" : "e.g. Is anyone still running this garbage in production?")}
+                  <span class="hint ownhint">A point gives people something to react to, and a real question gives them a reason to reply. Leave the question empty and we'll ask who else is coming.</span>
+                  <span class="hint ownhint" hidden>You edited the post, so these aren't added. Reset to our suggestion to bring them in.</span>`
+               : ""
+           }
            <label class="fieldlabel" for="text"><span>Post text</span><span class="count"></span></label>
-           <textarea id="text" spellcheck="true"></textarea>
+           <textarea id="text" spellcheck="true" dir="auto" lang="${st.lang}"></textarea>
            <div class="row">
              <button class="next">Looks good →</button>
              <button class="ghost reset">Reset to our suggestion</button>
@@ -764,17 +894,46 @@ export function startWizard({
       count.textContent = `${n} / ${p.limit}`;
       count.classList.toggle("over", n > p.limit);
     };
-    ta.value = postText(st, I);
+    // The speaker's own words go into our suggestion, so they only show while the
+    // post hasn't been edited by hand.
+    const [whyHint, editedHint] =
+      main.querySelectorAll<HTMLElement>(".ownhint");
+    // One hint at a time: why to add them, or why they aren't showing.
+    const showHint = (isEdited: boolean) => {
+      if (!whyHint) return;
+      whyHint.hidden = isEdited;
+      editedHint.hidden = !isEdited;
+    };
+    const refresh = () => {
+      ta.value = postText(st, I);
+      showHint(edited.has(textKey(st)));
+      update();
+    };
+    main.querySelectorAll<HTMLInputElement>(".own").forEach((input) => {
+      const key = ownKey(st, input.dataset.field as OwnField);
+      input.value = ownWords.get(key) ?? "";
+      input.oninput = () => {
+        ownWords.set(key, input.value || null);
+        if (!edited.has(textKey(st))) refresh();
+      };
+    });
     ta.oninput = () => {
       saveText(st, ta.value);
+      showHint(true);
       update();
     };
-    update();
+    refresh();
     main.querySelector<HTMLElement>(".reset")!.onclick = () => {
       saveText(st, null);
-      ta.value = postText(st, I);
-      update();
+      refresh();
     };
+    main.querySelectorAll<HTMLElement>(".lang button").forEach((b) => {
+      b.onclick = () => {
+        const lang = b.dataset.lang!;
+        // Hebrew is the default, so it's left out of the URL.
+        if (lang !== st.lang) go({ lang: lang === "he" ? null : lang }, true);
+      };
+    });
     main.querySelector<HTMLElement>(".next")!.onclick = () =>
       go({ ready: "1" });
   }
@@ -790,19 +949,14 @@ export function startWizard({
     const ctx: ActionCtx = { I, banner, text: () => text ?? I.url };
 
     main.append(
-      p.text
-        ? backButton({ ready: null }, "Your post")
-        : backButton({ design: null }, "Design"),
+      p.text ? backButton({ ready: null }) : backButton({ design: null }),
     );
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>${p.text ? `Post it on <em>${esc(p.label)}</em>` : "Post it to your <em>story</em>"}</h1>
        <p class="sub">Follow the steps in order.</p>
        <div class="post" data-format="${p.format}">
-         <div class="preview">
-           <img src="${previewUrl}" alt="Your banner" />
-           <button class="ghost change">← Change design</button>
-         </div>
+         <div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>
          <div>
            ${
              canShareFiles
@@ -814,8 +968,7 @@ export function startWizard({
          </div>
        </div>
        <div class="more">
-         <button class="ghost other">Post on another platform too →</button>
-         <button class="ghost restart">Start over</button>
+         <button class="other">↻ Post on another platform too</button>
        </div>`,
     );
 
@@ -846,13 +999,8 @@ export function startWizard({
         body.insertAdjacentHTML(
           "beforeend",
           `<blockquote class="payload" dir="auto">${esc(ctx.text())}</blockquote>
-           <div class="row">
-             <button class="ghost edit">Edit post</button>
-             ${s.copyFallback ? `<button class="ghost copy">Text didn't show up? Copy it</button>` : ""}
-           </div>`,
+           ${s.copyFallback ? `<div class="row"><button class="ghost copy">Text didn't show up? Copy it</button></div>` : ""}`,
         );
-        body.querySelector<HTMLElement>(".edit")!.onclick = () =>
-          go({ ready: null });
         const copy = body.querySelector<HTMLElement>(".copy");
         if (copy)
           copy.onclick = async () => {
@@ -882,11 +1030,8 @@ export function startWizard({
           toast("Sharing didn't work here. Use the steps below.");
       }
     });
-    main.querySelector<HTMLElement>(".change")!.onclick = () =>
-      go({ design: null });
     main.querySelector<HTMLElement>(".other")!.onclick = () =>
       go({ platform: null, design: null, ready: null });
-    main.querySelector<HTMLElement>(".restart")!.onclick = () => go(RESET);
   }
 
   ($("logo") as HTMLImageElement).src = LOGO;

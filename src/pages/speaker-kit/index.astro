@@ -20,7 +20,7 @@ const speakersById = new Map(
   (await getSpeakers()).map((s) => [String(s.id), s]),
 );
 
-// "Mon, Nov 30" / "Monday, Nov 30" for a conference day (1 or 2).
+// "Mon, Nov 30" / "Monday, Nov 30" / "יום שני, 30 בנובמבר" for a conference day (1 or 2).
 function dayLabels(day: number) {
   const date = new Date(event.days.dates[day as 1 | 2]);
   const format = (weekday: "short" | "long") =>
@@ -29,7 +29,17 @@ function dayLabels(day: number) {
       month: "short",
       day: "numeric",
     });
-  return { dayShort: format("short"), dayLong: format("long") };
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return {
+    date: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+    dayShort: format("short"),
+    dayLong: format("long"),
+    dayLongHe: date.toLocaleDateString("he-IL", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    }),
+  };
 }
 
 function twitterHandle(speaker?: AgendaSpeaker) {
@@ -446,9 +456,6 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
     border-radius: 14px;
     border: 1px solid var(--line);
   }
-  .preview .change {
-    margin-top: 8px;
-  }
   .share {
     width: 100%;
     padding: 16px;
@@ -523,6 +530,25 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
     color: #fff;
   }
   /* ------------------------------------------------ step: your post */
+  .lang {
+    display: inline-flex;
+    margin-bottom: 14px;
+    border: 1px solid var(--dashed);
+    border-radius: 999px;
+    padding: 3px;
+  }
+  .lang button {
+    border: 0;
+    border-radius: 999px;
+    padding: 5px 14px;
+    background: none;
+    color: var(--muted);
+    font: 600 14px var(--body);
+  }
+  .lang button[aria-pressed="true"] {
+    background: var(--panel-2);
+    color: #fff;
+  }
   .fieldlabel {
     display: flex;
     justify-content: space-between;
@@ -541,6 +567,27 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
   }
   .count.over {
     color: var(--orange);
+  }
+  input.own {
+    width: 100%;
+    margin-bottom: 14px;
+    background: var(--panel);
+    color: #fff;
+    border: 1px solid var(--dashed);
+    border-radius: 12px;
+    font: 15px/1.5 var(--body);
+    padding: 10px 14px;
+  }
+  input.own::placeholder {
+    color: var(--muted);
+  }
+  /* dir="auto" goes by the typed text, so an empty field would lay a Hebrew
+     placeholder out left to right. */
+  input.own[lang="he"]:placeholder-shown {
+    direction: rtl;
+  }
+  .ownhint {
+    margin: -6px 0 18px;
   }
   textarea {
     width: 100%;
@@ -614,6 +661,19 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
     margin-top: 28px;
     padding-top: 20px;
     border-top: 1px solid var(--line);
+  }
+  /* Secondary to the orange step buttons, but more than a text link. */
+  .other {
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--blue);
+    background: var(--panel-2);
+    color: #fff;
+    font: 600 15px var(--body);
+  }
+  .other:hover {
+    border-color: var(--blue-bright);
+    background: var(--line);
   }
   .ghost {
     background: none;
