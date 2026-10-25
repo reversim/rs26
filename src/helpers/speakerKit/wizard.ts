@@ -245,7 +245,10 @@ export function startWizard({
           // LinkedIn's pre-fill is unofficial, so offer the text by hand too.
           copyFallback: true,
         },
-        { say: `${pasteIt}, then post.` },
+        // A pre-filled "@..." stays plain text; only LinkedIn's own picker makes a real tag.
+        {
+          say: `Tag us (type @Reversim Summit and pick the page from the list). ${pasteIt}, then post.`,
+        },
       ],
     },
     x: {
@@ -260,7 +263,7 @@ export function startWizard({
           ? ` with ${I.others.map(mention).join(" & ")}`
           : "";
         const build = (title: string) =>
-          `🎤 I'm speaking at #RS26, Reversim Summit 2026!\n\n${quote(title)}${withPart}\n📅 ${I.dayLong} · ${I.room}\n\nCome say hi 👋\n${I.url}`;
+          `🎤 I'm speaking at #RS26, @reversim Summit 2026!\n\n${quote(title)}${withPart}\n📅 ${I.dayLong} · ${I.room}\n\nCome say hi 👋\n${I.url}`;
         let title = I.title;
         while (xLength(build(title)) > 280 && title.length > 10)
           title = title.slice(0, -2).trimEnd() + "…";
