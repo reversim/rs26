@@ -225,6 +225,11 @@ export function startWizard({
     return true;
   }
 
+  const downloadStep = (hint?: string): Action => ({
+    label: "Download banner",
+    run: downloadBanner,
+    hint: hint ?? "Saves the banner as a PNG.",
+  });
   // The first step of most platforms: get the banner onto the clipboard, or disk.
   const bannerStep = (hint?: string): Action =>
     canCopyImage
@@ -233,11 +238,7 @@ export function startWizard({
           run: copyBanner,
           hint: hint ?? "Puts the banner on your clipboard.",
         }
-      : {
-          label: "Download banner",
-          run: downloadBanner,
-          hint: hint ?? "Saves the banner as a PNG.",
-        };
+      : downloadStep(hint);
   const pasteIt = canCopyImage
     ? "Paste the banner into the post (Ctrl/⌘+V)"
     : "Attach the banner you downloaded";
@@ -267,8 +268,10 @@ export function startWizard({
           `If you're coming, come say hi.\n\nSession details and the full agenda: ${I.url}\n\n#RS26 #Reversim #ReversimSummit`
         );
       },
+      // LinkedIn's composer doesn't reliably take a pasted image, so the banner is
+      // always downloaded and attached.
       steps: () => [
-        bannerStep(),
+        downloadStep(),
         {
           label: "Open LinkedIn",
           // Unofficial but working pre-fill.
@@ -283,7 +286,7 @@ export function startWizard({
         },
         // A pre-filled "@..." stays plain text; only LinkedIn's own picker makes a real tag.
         {
-          say: `Tag us (type @Reversim Summit and pick the page from the list). ${pasteIt}, then post.`,
+          say: "Tag us (type @Reversim Summit and pick the page from the list). Attach the banner you downloaded with the photo button, then post.",
         },
       ],
     },
