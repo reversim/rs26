@@ -59,13 +59,24 @@ interface Action {
 }
 type PostStep = Action | { say: string };
 
+/** What the speaker adds in their own words; empty when they skip it. */
+interface OwnWords {
+  /** A lesson or angle from the talk. */
+  point: string;
+  /** A question to their followers, in place of ours. */
+  question: string;
+}
+type OwnField = keyof OwnWords;
+
 interface Platform {
   label: string;
   icon: string;
   format: Format;
   note: string;
   /** The suggested post; null for stories, which have no caption. */
-  text: ((I: BannerInfo, lang: Lang) => string) | null;
+  text: ((I: BannerInfo, lang: Lang, own: OwnWords) => string) | null;
+  /** Ask the speaker for OwnWords, which text() works in. */
+  ownWords?: boolean;
   /** Character limit, shown as a counter. */
   limit?: number;
   steps: () => PostStep[];
@@ -271,23 +282,30 @@ export function startWizard({
       icon: "x-twitter",
       format: "landscape",
       note: "Landscape banner",
-      text(I, lang) {
-        const mention = (s: BannerInfo["speakers"][number]) =>
-          s.twitter ? `${lang === "he" ? "\u200E" : ""}@${s.twitter}` : s.name;
-        const withPart = I.others.length
-          ? `${lang === "he" ? " יחד עם" : " with"} ${I.others.map(mention).join(" & ")}`
-          : "";
+      // X is for conversation: give people something to react to and a question they
+      // can actually answer, and lead with the talk rather than the logistics.
+      text(I, lang, own) {
+        const he = lang === "he";
+        // Inside Hebrew text, an invisible left-to-right mark keeps each "@" on its handle's left.
+        const at = (handle: string) => `${he ? "\u200E" : ""}@${handle}`;
+        const others = I.others
+          .map((s) => (s.twitter ? at(s.twitter) : s.name))
+          .join(" & ");
+        const point = own.point.trim() ? `${own.point.trim()}\n\n` : "";
+        const question = own.question.trim();
         const build = (title: string) =>
-          // The invisible left-to-right mark keeps the "@" on the handle's left inside Hebrew text.
-          lang === "he"
-            ? `🎤 אני מרצה בכנס \u200E@reversim 26\n\n${quoteIn(lang, title)}${withPart}\n📅 ${I.dayLongHe} · ${I.room}\n\nבואו להגיד היי 👋\n${I.url}`
-            : `🎤 I'm speaking at #RS26, @reversim Summit 2026!\n\n${quote(title)}${withPart}\n📅 ${I.dayLong} · ${I.room}\n\nCome say hi 👋\n${I.url}`;
+          he
+            ? `ההרצאה ${I.plural ? "שלנו" : "שלי"} ב-${at("reversim")} 26:\n${quoteIn(lang, title)}${others ? `\nיחד עם ${others}` : ""}\n\n` +
+              `${point}${question || `השקפים עוד בעבודה. מה הייתם רוצים ש${I.plural ? "נכסה" : "אכסה"}?`}\n\n📅 ${I.dayLongHe} · ${I.room}\n${I.url}`
+            : `${I.plural ? "Our" : "My"} talk at @reversim 26:\n${quote(title)}${others ? `\nWith ${others}` : ""}\n\n` +
+              `${point}${question || `Slides are still in the works. What would you want ${I.plural ? "us" : "me"} to cover?`}\n\n📅 ${I.dayLong} · ${I.room}\n${I.url}`;
         let title = I.title;
         while (xLength(build(title)) > 280 && title.length > 10)
           title = title.slice(0, -2).trimEnd() + "…";
         return build(title);
       },
       limit: 280,
+      ownWords: true,
       steps: () => [
         bannerStep(),
         {
@@ -458,18 +476,33 @@ export function startWizard({
   // Every id the wizard looks up is in the page's static markup.
   const $ = (id: string) => document.getElementById(id)!;
   const main = $("main");
-  // Edited post texts, per session + speaker + platform. Kept in sessionStorage so a
-  // reload doesn't lose them.
-  const EDITS_KEY = "rs26-speaker-kit-edits";
-  const edited = new Map<string, string>(
-    (() => {
-      try {
-        return JSON.parse(sessionStorage.getItem(EDITS_KEY) ?? "[]");
-      } catch {
-        return [];
-      }
-    })(),
-  );
+  // A Map kept in sessionStorage, so a reload doesn't lose what's in it.
+  function storedMap(storageKey: string) {
+    const map = new Map<string, string>(
+      (() => {
+        try {
+          return JSON.parse(sessionStorage.getItem(storageKey) ?? "[]");
+        } catch {
+          return [];
+        }
+      })(),
+    );
+    return {
+      get: (k: string) => map.get(k),
+      has: (k: string) => map.has(k),
+      // null removes the entry.
+      set(k: string, value: string | null) {
+        if (value === null) map.delete(k);
+        else map.set(k, value);
+        try {
+          sessionStorage.setItem(storageKey, JSON.stringify([...map]));
+        } catch {}
+      },
+    };
+  }
+  // Edited post texts and the speaker's own words, per session + speaker + platform + language.
+  const edited = storedMap("rs26-speaker-kit-edits");
+  const ownWords = storedMap("rs26-speaker-kit-own-words");
 
   // Every step after "session" (and "as") has those set; these read them.
   const sessionOf = (st: State) => SESSIONS[st.session!];
@@ -478,15 +511,16 @@ export function startWizard({
 
   const textKey = (st: State) =>
     [sessionOf(st).slug, st.as, st.platform, st.lang].join("|");
+  const ownKey = (st: State, field: OwnField) => `${textKey(st)}|${field}`;
   const postText = (st: State, I: BannerInfo) =>
-    edited.get(textKey(st)) ?? platformOf(st).text?.(I, st.lang) ?? "";
-  function saveText(st: State, value: string | null) {
-    if (value === null) edited.delete(textKey(st));
-    else edited.set(textKey(st), value);
-    try {
-      sessionStorage.setItem(EDITS_KEY, JSON.stringify([...edited]));
-    } catch {}
-  }
+    edited.get(textKey(st)) ??
+    platformOf(st).text?.(I, st.lang, {
+      point: ownWords.get(ownKey(st, "point")) ?? "",
+      question: ownWords.get(ownKey(st, "question")) ?? "",
+    }) ??
+    "";
+  const saveText = (st: State, value: string | null) =>
+    edited.set(textKey(st), value);
   let renderToken = 0;
   let previewUrl: string | null = null;
 
@@ -767,6 +801,11 @@ export function startWizard({
 
   // ---- 4. your post (skipped for stories)
 
+  function ownField(field: OwnField, label: string, placeholder: string) {
+    return `<label class="fieldlabel" for="own-${field}"><span>${esc(label)}</span></label>
+      <input id="own-${field}" class="own" data-field="${field}" dir="auto" maxlength="140" placeholder="${esc(placeholder)}" />`;
+  }
+
   async function renderText(st: State, token: number) {
     const p = platformOf(st);
     const I = info(st);
@@ -784,6 +823,14 @@ export function startWizard({
              <button data-lang="he" lang="he" aria-pressed="${st.lang === "he"}">עברית</button>
              <button data-lang="en" aria-pressed="${st.lang === "en"}">English</button>
            </div>
+           ${
+             p.ownWords
+               ? `${ownField("point", "A point from your talk (optional)", st.lang === "he" ? "למשל: רוב התקלות שלנו לא היו בקוד, אלא בהנחות" : "e.g. Most of our outages weren't in the code, they were in our assumptions")}
+                  ${ownField("question", "Your question to followers (optional)", st.lang === "he" ? "למשל: מי עוד מריץ את זה בפרודקשן?" : "e.g. Anyone else running this in production?")}
+                  <span class="hint ownhint">A point gives people something to react to, and a real question gives them a reason to reply. Leave the question empty and we'll ask what they'd like you to cover.</span>
+                  <span class="hint ownhint" hidden>You edited the post, so these aren't added. Reset to our suggestion to bring them in.</span>`
+               : ""
+           }
            <label class="fieldlabel" for="text"><span>Post text</span><span class="count"></span></label>
            <textarea id="text" spellcheck="true" dir="auto" lang="${st.lang}"></textarea>
            <div class="row">
@@ -801,16 +848,38 @@ export function startWizard({
       count.textContent = `${n} / ${p.limit}`;
       count.classList.toggle("over", n > p.limit);
     };
-    ta.value = postText(st, I);
-    ta.oninput = () => {
-      saveText(st, ta.value);
+    // The speaker's own words go into our suggestion, so they only show while the
+    // post hasn't been edited by hand.
+    const [whyHint, editedHint] =
+      main.querySelectorAll<HTMLElement>(".ownhint");
+    // One hint at a time: why to add them, or why they aren't showing.
+    const showHint = (isEdited: boolean) => {
+      if (!whyHint) return;
+      whyHint.hidden = isEdited;
+      editedHint.hidden = !isEdited;
+    };
+    const refresh = () => {
+      ta.value = postText(st, I);
+      showHint(edited.has(textKey(st)));
       update();
     };
-    update();
+    main.querySelectorAll<HTMLInputElement>(".own").forEach((input) => {
+      const key = ownKey(st, input.dataset.field as OwnField);
+      input.value = ownWords.get(key) ?? "";
+      input.oninput = () => {
+        ownWords.set(key, input.value || null);
+        if (!edited.has(textKey(st))) refresh();
+      };
+    });
+    ta.oninput = () => {
+      saveText(st, ta.value);
+      showHint(true);
+      update();
+    };
+    refresh();
     main.querySelector<HTMLElement>(".reset")!.onclick = () => {
       saveText(st, null);
-      ta.value = postText(st, I);
-      update();
+      refresh();
     };
     main.querySelectorAll<HTMLElement>(".lang button").forEach((b) => {
       b.onclick = () => {

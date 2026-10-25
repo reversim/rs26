@@ -569,6 +569,22 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
   .count.over {
     color: var(--orange);
   }
+  input.own {
+    width: 100%;
+    margin-bottom: 14px;
+    background: var(--panel);
+    color: #fff;
+    border: 1px solid var(--dashed);
+    border-radius: 12px;
+    font: 15px/1.5 var(--body);
+    padding: 10px 14px;
+  }
+  input.own::placeholder {
+    color: var(--muted);
+  }
+  .ownhint {
+    margin: -6px 0 18px;
+  }
   textarea {
     width: 100%;
     min-height: 320px;
