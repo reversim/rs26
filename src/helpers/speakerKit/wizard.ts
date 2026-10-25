@@ -517,7 +517,7 @@ export function startWizard({
   // The URL holds the wizard's state (?session=&as=&platform=&design=&ready=), so the
   // browser's Back button works and any step can be linked to directly.
 
-  // Every id the wizard looks up is in the page's static markup.
+  // Every id the wizard looks up (main, progress, toast) is in the page's static markup.
   const $ = (id: string) => document.getElementById(id)!;
   const main = $("main");
   // A Map kept in sessionStorage, so a reload doesn't lose what's in it.
@@ -620,10 +620,25 @@ export function startWizard({
     const url = `${location.pathname}${p.size ? `?${p}` : ""}`;
     if (replace) history.replaceState(null, "", url);
     else history.pushState(null, "", url);
-    render();
-    if (!replace) window.scrollTo(0, 0);
+    const rendered = render();
+    if (!replace) {
+      window.scrollTo(0, 0);
+      focusStep(rendered);
+    }
   }
-  window.addEventListener("popstate", render);
+  window.addEventListener("popstate", () => focusStep(render()));
+
+  // A new step replaces the page's content, so screen readers and keyboards start
+  // over at its heading, unless the step focused something itself (the search).
+  async function focusStep(rendered: void | Promise<void>) {
+    const token = renderToken;
+    await rendered;
+    if (token !== renderToken || main.contains(document.activeElement)) return;
+    const h1 = main.querySelector("h1");
+    if (!h1) return;
+    h1.tabIndex = -1;
+    h1.focus({ preventScroll: true });
+  }
 
   const RESET: Changes = {
     session: null,
@@ -689,7 +704,7 @@ export function startWizard({
       text: renderText,
       post: renderPost,
     };
-    renderers[step](st, token);
+    return renderers[step](st, token);
   }
 
   function faces(speakers: KitSession["speakers"]) {
@@ -709,39 +724,99 @@ export function startWizard({
     s,
   })).sort((a, b) => a.who.localeCompare(b.who));
 
+  // Sessions picked before, newest first, kept in localStorage so they're still
+  // there on the next visit. Stored by slug; ones no longer in the agenda drop out.
+  const RECENT_KEY = "rs26-speaker-kit-recent";
+  const MAX_RECENT = 3;
+  const recent = {
+    read(): typeof sortedSessions {
+      let slugs: unknown = [];
+      try {
+        slugs = JSON.parse(localStorage.getItem(RECENT_KEY) ?? "[]");
+      } catch {}
+      if (!Array.isArray(slugs)) return [];
+      return slugs
+        .map((slug) => sortedSessions.find(({ s }) => s.slug === slug))
+        .filter((e) => e !== undefined);
+    },
+    write(slugs: string[]) {
+      try {
+        if (slugs.length)
+          localStorage.setItem(RECENT_KEY, JSON.stringify(slugs));
+        else localStorage.removeItem(RECENT_KEY);
+      } catch {}
+    },
+    add(slug: string) {
+      const slugs = recent.read().map(({ s }) => s.slug);
+      recent.write(
+        [slug, ...slugs.filter((s) => s !== slug)].slice(0, MAX_RECENT),
+      );
+    },
+  };
+
   function renderSession() {
     main.innerHTML = `
       <h1>Which session is <em>yours</em>?</h1>
       <p class="sub">Pick your talk, and you'll get banners and a ready-to-post text for it.</p>
       <input class="search" type="search" placeholder="Search by your name or your talk's title" aria-label="Search sessions" />
-      <ul class="list"></ul>`;
+      <div class="picker">
+        <section class="group recent" aria-labelledby="recent-label" hidden>
+          <div class="fieldlabel">
+            <h2 id="recent-label">Recent</h2>
+            <button class="ghost clear">Clear</button>
+          </div>
+          <ul class="list"></ul>
+        </section>
+        <section class="group all" aria-labelledby="all-label">
+          <div class="fieldlabel" hidden><h2 id="all-label">All sessions</h2></div>
+          <ul class="list"></ul>
+        </section>
+      </div>`;
     const input = main.querySelector<HTMLInputElement>(".search")!;
-    const list = main.querySelector<HTMLElement>(".list")!;
+    const recentGroup = main.querySelector<HTMLElement>(".recent")!;
+    const allLabel = main.querySelector<HTMLElement>(".all .fieldlabel")!;
+    const [recentList, list] = main.querySelectorAll<HTMLElement>(".list");
+    const items = (entries: typeof sortedSessions) =>
+      entries
+        .map(
+          ({ i, who, s }) => `
+          <li><button class="pick" data-i="${i}">
+            ${faces(s.speakers)}
+            <span><span class="who">${esc(who)}</span><br /><span class="what" dir="auto">${esc(s.title)}</span></span>
+          </button></li>`,
+        )
+        .join("");
     const show = () => {
       const q = input.value.trim().toLowerCase();
+      // Recent picks only while the search is empty; a search covers them anyway.
+      const recents = q ? [] : recent.read();
+      recentGroup.hidden = allLabel.hidden = !recents.length;
+      recentList.innerHTML = items(recents);
       const hits = sortedSessions.filter(
         ({ who, s }) => !q || `${who} ${s.title}`.toLowerCase().includes(q),
       );
       list.innerHTML = hits.length
-        ? hits
-            .map(
-              ({ i, who, s }) => `
-              <li><button class="pick" data-i="${i}">
-                ${faces(s.speakers)}
-                <span><span class="who">${esc(who)}</span><br /><span class="what" dir="auto">${esc(s.title)}</span></span>
-              </button></li>`,
-            )
-            .join("")
+        ? items(hits)
         : `<li class="none">No session matches “${esc(input.value)}”.</li>`;
     };
     input.oninput = show;
     input.onkeydown = (e) => {
       if (e.key === "Enter")
-        list.querySelector<HTMLButtonElement>(".pick")?.click();
+        main.querySelector<HTMLButtonElement>(".pick")?.click();
     };
-    list.onclick = (e) => {
-      const b = (e.target as Element).closest<HTMLElement>(".pick");
-      if (b) go({ ...RESET, session: SESSIONS[Number(b.dataset.i)].slug });
+    main.querySelector<HTMLElement>(".picker")!.onclick = (e) => {
+      const target = e.target as Element;
+      if (target.closest(".clear")) {
+        recent.write([]);
+        show();
+        input.focus();
+        return;
+      }
+      const b = target.closest<HTMLElement>(".pick");
+      if (!b) return;
+      const { slug } = SESSIONS[Number(b.dataset.i)];
+      recent.add(slug);
+      go({ ...RESET, session: slug });
     };
     show();
     input.focus();
@@ -1034,6 +1109,5 @@ export function startWizard({
       go({ platform: null, design: null, ready: null });
   }
 
-  ($("logo") as HTMLImageElement).src = LOGO;
   render();
 }
