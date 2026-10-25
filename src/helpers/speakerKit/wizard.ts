@@ -590,10 +590,11 @@ export function startWizard({
   };
   const isPlural = (st: State) => sessionOf(st).speakers.length > 1;
 
-  function backButton(changes: Changes, label: string) {
+  // Always "Back", whatever step it goes to: one less thing to read.
+  function backButton(changes: Changes) {
     const b = document.createElement("button");
     b.className = "back";
-    b.textContent = `← ${label}`;
+    b.textContent = "← Back";
     b.onclick = () => go(changes);
     return b;
   }
@@ -706,7 +707,7 @@ export function startWizard({
 
   function renderAs(st: State) {
     const s = sessionOf(st);
-    main.append(backButton(RESET, "Different session"));
+    main.append(backButton(RESET));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Who's <em>posting</em>?</h1>
@@ -730,11 +731,7 @@ export function startWizard({
 
   function renderPlatform(st: State) {
     const I = info(st);
-    main.append(
-      isPlural(st)
-        ? backButton({ as: null }, "Who's posting")
-        : backButton(RESET, "Different session"),
-    );
+    main.append(isPlural(st) ? backButton({ as: null }) : backButton(RESET));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Where are you <em>posting</em>?</h1>
@@ -760,7 +757,7 @@ export function startWizard({
   function renderDesign(st: State, token: number) {
     const p = platformOf(st);
     const { w, h } = FORMATS[p.format];
-    main.append(backButton({ platform: null }, "Platform"));
+    main.append(backButton({ platform: null }));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Pick a <em>design</em></h1>
@@ -811,7 +808,7 @@ export function startWizard({
     const I = info(st);
     if (!(await bannerPreview(st, token))) return;
 
-    main.append(backButton({ design: null }, "Design"));
+    main.append(backButton({ design: null }));
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Your <em>post</em></h1>
@@ -903,19 +900,14 @@ export function startWizard({
     const ctx: ActionCtx = { I, banner, text: () => text ?? I.url };
 
     main.append(
-      p.text
-        ? backButton({ ready: null }, "Your post")
-        : backButton({ design: null }, "Design"),
+      p.text ? backButton({ ready: null }) : backButton({ design: null }),
     );
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>${p.text ? `Post it on <em>${esc(p.label)}</em>` : "Post it to your <em>story</em>"}</h1>
        <p class="sub">Follow the steps in order.</p>
        <div class="post" data-format="${p.format}">
-         <div class="preview">
-           <img src="${previewUrl}" alt="Your banner" />
-           <button class="ghost change">← Change design</button>
-         </div>
+         <div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>
          <div>
            ${
              canShareFiles
@@ -927,8 +919,7 @@ export function startWizard({
          </div>
        </div>
        <div class="more">
-         <button class="ghost other">Post on another platform too →</button>
-         <button class="ghost restart">Start over</button>
+         <button class="other">↻ Post on another platform too</button>
        </div>`,
     );
 
@@ -959,13 +950,8 @@ export function startWizard({
         body.insertAdjacentHTML(
           "beforeend",
           `<blockquote class="payload" dir="auto">${esc(ctx.text())}</blockquote>
-           <div class="row">
-             <button class="ghost edit">Edit post</button>
-             ${s.copyFallback ? `<button class="ghost copy">Text didn't show up? Copy it</button>` : ""}
-           </div>`,
+           ${s.copyFallback ? `<div class="row"><button class="ghost copy">Text didn't show up? Copy it</button></div>` : ""}`,
         );
-        body.querySelector<HTMLElement>(".edit")!.onclick = () =>
-          go({ ready: null });
         const copy = body.querySelector<HTMLElement>(".copy");
         if (copy)
           copy.onclick = async () => {
@@ -995,11 +981,8 @@ export function startWizard({
           toast("Sharing didn't work here. Use the steps below.");
       }
     });
-    main.querySelector<HTMLElement>(".change")!.onclick = () =>
-      go({ design: null });
     main.querySelector<HTMLElement>(".other")!.onclick = () =>
       go({ platform: null, design: null, ready: null });
-    main.querySelector<HTMLElement>(".restart")!.onclick = () => go(RESET);
   }
 
   ($("logo") as HTMLImageElement).src = LOGO;

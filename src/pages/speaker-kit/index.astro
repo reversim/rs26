@@ -454,9 +454,6 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
     border-radius: 14px;
     border: 1px solid var(--line);
   }
-  .preview .change {
-    margin-top: 8px;
-  }
   .share {
     width: 100%;
     padding: 16px;
@@ -657,6 +654,19 @@ const json = JSON.stringify(data).replace(/</g, "\\u003c");
     margin-top: 28px;
     padding-top: 20px;
     border-top: 1px solid var(--line);
+  }
+  /* Secondary to the orange step buttons, but more than a text link. */
+  .other {
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--blue);
+    background: var(--panel-2);
+    color: #fff;
+    font: 600 15px var(--body);
+  }
+  .other:hover {
+    border-color: var(--blue-bright);
+    background: var(--line);
   }
   .ghost {
     background: none;
