@@ -4,8 +4,6 @@
 // current route matches an entry here. A bare path blocks it outright
 // (redirecting to /404); give it a `to` instead to send visitors somewhere
 // specific, e.g. a route that moved.
-// firebase.json mirrors these as server-side redirects (skipping the stub
-// page load); keep its `redirects` in sync when changing this list.
 export interface Redirect {
   from: string;
   to: string;

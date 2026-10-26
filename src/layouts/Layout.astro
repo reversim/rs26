@@ -3,6 +3,7 @@ import Header from "../components/header/header.astro";
 import RegistrationBar from "../components/registrationBar.astro";
 import { Font } from "astro:assets";
 import { getRedirectTarget } from "../config/redirects";
+import { publicPathname } from "../helpers/pathname";
 import GoogleAnalytics from "../components/shared/googleAnalytics.astro";
 import "../styles/global.scss";
 
@@ -24,7 +25,8 @@ const {
   share,
 } = Astro.props;
 
-const redirectTarget = getRedirectTarget(Astro.url.pathname);
+const pathname = publicPathname(Astro.url.pathname);
+const redirectTarget = getRedirectTarget(pathname);
 const isBlocked = redirectTarget !== undefined;
 // Redirect stubs aren't real page views, and dev traffic stays out of GA.
 const loadAnalytics = import.meta.env.PROD && !isBlocked;
@@ -35,7 +37,7 @@ const ogImage = new URL("/og-image-2026.png", Astro.site);
 const ogTitle = share?.title ?? "Reversim 2026";
 const ogDescription = share?.description ?? description;
 const ogUrl = share
-  ? new URL(Astro.url.pathname, Astro.site)
+  ? new URL(pathname, Astro.site)
   : "https://summit2026.reversim.com/";
 ---
 
