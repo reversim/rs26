@@ -53,8 +53,10 @@ interface Action {
   label: string;
   run: (ctx: ActionCtx) => boolean | Promise<boolean>;
   hint: string;
-  /** Show the text (or link) this step sends, read-only, next to its button. */
-  payload?: "text" | "url";
+  /** Show the link this step sends, read-only, next to its button. (The post
+   * text needs no copy here: it's in the preview beside the steps.) */
+  payload?: "url";
+  /** Offer to copy the post text, in case the platform didn't pick it up. */
   copyFallback?: boolean;
 }
 type PostStep = Action | { say: string };
@@ -79,6 +81,8 @@ interface Platform {
   ownWords?: boolean;
   /** Character limit, shown as a counter. */
   limit?: number;
+  /** Lines a feed shows before "…see more" (on mobile); none if it shows it all. */
+  fold?: number;
   steps: () => PostStep[];
 }
 
@@ -256,6 +260,7 @@ export function startWizard({
       icon: "linkedin",
       format: "landscape",
       note: "Landscape banner",
+      fold: 3,
       text(I, lang) {
         if (lang === "he")
           return (
@@ -282,8 +287,7 @@ export function startWizard({
             openTab(
               `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(ctx.text())}`,
             ),
-          hint: "Opens LinkedIn with this post filled in:",
-          payload: "text",
+          hint: "Opens LinkedIn with your post filled in.",
           // LinkedIn's pre-fill is unofficial, so offer the text by hand too.
           copyFallback: true,
         },
@@ -358,8 +362,7 @@ export function startWizard({
             openTab(
               `https://x.com/intent/post?text=${encodeURIComponent(ctx.text())}`,
             ),
-          hint: "Opens X with this post filled in:",
-          payload: "text",
+          hint: "Opens X with your post filled in.",
         },
         { say: `${pasteIt}, then post.` },
       ],
@@ -369,6 +372,7 @@ export function startWizard({
       icon: "facebook",
       format: "landscape",
       note: "Landscape banner",
+      fold: 5,
       text(I, lang) {
         if (lang === "he")
           return (
@@ -389,8 +393,7 @@ export function startWizard({
             openTab("https://www.facebook.com/");
             return ok;
           },
-          hint: "Facebook doesn't let other sites fill in a post, so this copies it. Start a new post and paste:",
-          payload: "text",
+          hint: "Facebook doesn't let other sites fill in a post, so this copies it. Start a new post and paste.",
         },
         bannerStep(
           canCopyImage
@@ -420,8 +423,7 @@ export function startWizard({
               // Not wa.me: its redirect is the usual culprit for mangled characters.
               `https://api.whatsapp.com/send?text=${encodeURIComponent(ctx.text())}`,
             ),
-          hint: "Opens WhatsApp with this message filled in. You pick the chat:",
-          payload: "text",
+          hint: "Opens WhatsApp with your message filled in. You pick the chat.",
         },
         { say: `${pasteIt}, then send.` },
       ],
@@ -576,6 +578,22 @@ export function startWizard({
   };
   function esc(s: string) {
     return String(s).replace(/[&<>"]/g, (c) => ENTITIES[c]);
+  }
+
+  // A post's text as a feed shows it: each line sets its own direction, like the
+  // platforms do, and links, hashtags and mentions are highlighted.
+  function postHtml(text: string) {
+    return text
+      .split("\n")
+      .map((line) =>
+        line.trim()
+          ? `<div dir="auto">${esc(line).replace(
+              /https?:\/\/[^\s<]+|[#@][\w-]+/g,
+              (m) => `<span class="lp-link">${m}</span>`,
+            )}</div>`
+          : `<div class="lp-gap"></div>`,
+      )
+      .join("");
   }
 
   function readState(): State {
@@ -956,6 +974,48 @@ export function startWizard({
       <input id="own-${field}" class="own" data-field="${field}" dir="auto" lang="${lang}" maxlength="140" placeholder="${esc(placeholder)}" />`;
   }
 
+  // The post as a feed would show it: speaker, text, banner. See postHtml().
+  // Whatever's in footer goes under it.
+  function livePost(st: State, I: BannerInfo, footer = "") {
+    const p = platformOf(st);
+    return `<aside class="livepost" aria-label="Post preview">
+      <div class="fieldlabel"><span>Preview</span><span>Approximate · on mobile</span></div>
+      <div class="lp" data-platform="${st.platform}">
+        <div class="lp-head">
+          <img class="lp-avatar" src="${esc(I.speakers[0].photo)}" alt="" crossorigin="anonymous" />
+          <span class="lp-name">${esc(I.speakers[0].name)}</span>
+          <span class="lp-icon">${ICONS[p.icon] ?? ""}</span>
+        </div>
+        <div class="lp-text"></div>
+        <button class="lp-more" hidden>…see more</button>
+        <img class="lp-banner" src="${previewUrl}" alt="Your banner" />
+      </div>
+      ${footer}
+    </aside>`;
+  }
+
+  // Wires the livePost() on the page; the returned function shows a text in it.
+  // Feeds that fold long posts show the fold, until "…see more" is clicked, like
+  // the real thing.
+  function fillLivePost(p: Platform) {
+    const lpText = main.querySelector<HTMLElement>(".lp-text")!;
+    const more = main.querySelector<HTMLElement>(".lp-more")!;
+    let expanded = false;
+    let shown = "";
+    const show = (text: string) => {
+      shown = text;
+      lpText.innerHTML = postHtml(text);
+      if (!p.fold) return;
+      lpText.style.maxHeight = expanded ? "" : `${p.fold * 1.4}em`;
+      more.hidden = expanded || lpText.scrollHeight <= lpText.clientHeight + 1;
+    };
+    more.onclick = () => {
+      expanded = true;
+      show(shown);
+    };
+    return show;
+  }
+
   async function renderText(st: State, token: number) {
     const p = platformOf(st);
     const I = info(st);
@@ -966,8 +1026,7 @@ export function startWizard({
       "beforeend",
       `<h1>Your <em>post</em></h1>
        <p class="sub">We wrote one for ${esc(p.label)}. Make it yours, or keep it as is.</p>
-       <div class="post" data-format="${p.format}">
-         <div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>
+       <div class="compose">
          <div>
            <div class="lang" role="group" aria-label="Post language">
              <button data-lang="he" lang="he" aria-pressed="${st.lang === "he"}">עברית</button>
@@ -984,15 +1043,18 @@ export function startWizard({
            <label class="fieldlabel" for="text"><span>Post text</span><span class="count"></span></label>
            <textarea id="text" spellcheck="true" dir="auto" lang="${st.lang}"></textarea>
            <div class="row">
-             <button class="next">Looks good →</button>
              <button class="ghost reset">Reset to our suggestion</button>
            </div>
          </div>
+         ${livePost(st, I, `<div class="row end"><button class="next">Looks good →</button></div>`)}
        </div>`,
     );
     const ta = main.querySelector("textarea")!;
     const count = main.querySelector(".count")!;
+    // The preview follows the text as it changes.
+    const renderPreview = fillLivePost(p);
     const update = () => {
+      renderPreview(ta.value);
       if (!p.limit) return;
       const n = xLength(ta.value);
       count.textContent = `${n} / ${p.limit}`;
@@ -1059,8 +1121,8 @@ export function startWizard({
       "beforeend",
       `<h1>${p.text ? `Post it on <em>${esc(p.label)}</em>` : "Post it to your <em>story</em>"}</h1>
        <p class="sub">Follow the steps in order.</p>
-       <div class="post" data-format="${p.format}">
-         <div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>
+       <div class="${text === null ? "post" : "compose"}" data-format="${p.format}">
+         ${text === null ? `<div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>` : ""}
          <div>
            ${
              canShareFiles
@@ -1070,11 +1132,13 @@ export function startWizard({
            }
            <ol class="steps"></ol>
          </div>
+         ${text === null ? "" : livePost(st, I)}
        </div>
        <div class="more">
          <button class="other">↻ Post on another platform too</button>
        </div>`,
     );
+    if (text !== null) fillLivePost(p)(text);
 
     const ol = main.querySelector(".steps")!;
     for (const s of p.steps()) {
@@ -1091,7 +1155,7 @@ export function startWizard({
         if (await s.run(ctx)) li.classList.add("done");
       };
       // Button and hint share the column next to the step number. A step that
-      // sends the text (or link) shows it, read-only, in the same card.
+      // sends the link shows it, read-only, in the same card.
       const body = document.createElement("div");
       if (s.payload) body.className = "carry";
       body.append(b);
@@ -1099,19 +1163,17 @@ export function startWizard({
         "beforeend",
         `<span class="hint">${esc(s.hint)}</span>`,
       );
-      if (s.payload === "text") {
+      if (s.copyFallback) {
         body.insertAdjacentHTML(
           "beforeend",
-          `<blockquote class="payload" dir="auto">${esc(ctx.text())}</blockquote>
-           ${s.copyFallback ? `<div class="row"><button class="ghost copy">Text didn't show up? Copy it</button></div>` : ""}`,
+          `<div class="row"><button class="ghost copy">Text didn't show up? Copy it</button></div>`,
         );
-        const copy = body.querySelector<HTMLElement>(".copy");
-        if (copy)
-          copy.onclick = async () => {
-            if (await copyText(ctx.text()))
-              toast("Text copied. Paste it into LinkedIn.");
-          };
-      } else if (s.payload === "url") {
+        body.querySelector<HTMLElement>(".copy")!.onclick = async () => {
+          if (await copyText(ctx.text()))
+            toast(`Text copied. Paste it into ${p.label}.`);
+        };
+      }
+      if (s.payload === "url") {
         body.insertAdjacentHTML(
           "beforeend",
           `<div class="payload url">${esc(I.url)}</div>`,
