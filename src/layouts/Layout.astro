@@ -24,7 +24,11 @@ const {
   share,
 } = Astro.props;
 
-const redirectTarget = getRedirectTarget(Astro.url.pathname);
+// Public URLs have no trailing slash; see `trailingSlash` in astro.config.mjs.
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const canonicalUrl = new URL(pathname, Astro.site);
+const isNotFound = pathname === "/404";
+const redirectTarget = getRedirectTarget(pathname);
 const isBlocked = redirectTarget !== undefined;
 // Redirect stubs aren't real page views, and dev traffic stays out of GA.
 const loadAnalytics = import.meta.env.PROD && !isBlocked;
@@ -34,9 +38,7 @@ const description =
 const ogImage = new URL("/og-image-2026.png", Astro.site);
 const ogTitle = share?.title ?? "Reversim 2026";
 const ogDescription = share?.description ?? description;
-const ogUrl = share
-  ? new URL(Astro.url.pathname, Astro.site)
-  : "https://summit2026.reversim.com/";
+const ogUrl = share ? canonicalUrl : "https://summit2026.reversim.com/";
 ---
 
 <!doctype html>
@@ -44,13 +46,14 @@ const ogUrl = share
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon-dark-mode.png" />
+    <link rel="icon" type="image/png" href="/favicon-dark-mode.png" />
     <link
       rel="icon"
-      type="image/svg+xml"
+      type="image/png"
       href="/favicon-light-mode.png"
       media="(prefers-color-scheme: light)"
     />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -60,6 +63,24 @@ const ogUrl = share
     <meta name="generator" content={Astro.generator} />
     <title>Reversim 2026</title>
     <meta name="description" content={description} />
+
+    {!isBlocked && !isNotFound && <link rel="canonical" href={canonicalUrl} />}
+    <!--
+      Browsers that cached the old `/page` -> `/page/` 301 land on the slash
+      form, which Firebase serves as-is. Tidy the address bar without a
+      redirect; an HTTP redirect here would loop.
+    -->
+    <script is:inline>
+      if (/.\/$/.test(location.pathname)) {
+        history.replaceState(
+          history.state,
+          "",
+          location.pathname.replace(/\/+$/, "") +
+            location.search +
+            location.hash,
+        );
+      }
+    </script>
 
     {
       isBlocked && (

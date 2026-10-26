@@ -23,6 +23,7 @@ const pathname = Astro.url.pathname;
           <a
             class:list={["drawer-link", { active: isActive }]}
             href={link.href}
+            data-astro-prefetch="viewport"
             style={`--i:${index}`}
             aria-current={isActive ? "page" : undefined}
             {...analyticsAttrs(AnalyticsEvent.NavClick, {

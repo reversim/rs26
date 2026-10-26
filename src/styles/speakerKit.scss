@@ -388,6 +388,72 @@ h1 {
   color: var(--rs26-muted);
 }
 
+// ---------------------------------------------------------------- stickers (not tied to a session)
+
+.stickers {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rs26-navy-line);
+
+  h2 {
+    margin: 0 0 4px;
+    font: 600 22px var(--kit-display);
+  }
+}
+
+// A link to the stickers below, with a thumbnail, on the first step.
+.sticker-teaser {
+  @include card(14px);
+  @include lift-on-hover;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 520px;
+  margin-bottom: 20px;
+  padding: 10px 16px 10px 10px;
+  text-decoration: none;
+  color: var(--rs26-text);
+
+  img {
+    flex: none;
+    width: 112px;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  strong {
+    display: block;
+    font: 600 16px var(--kit-display);
+    color: #fff;
+  }
+}
+
+.sticker-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+}
+
+.sticker {
+  @include card(18px);
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--rs26-navy-3);
+  }
+
+  .ghost {
+    display: block;
+    padding: 12px 14px;
+  }
+}
+
 // ---------------------------------------------------------------- 1b/2. tiles (who's posting, platform)
 
 .tiles {
