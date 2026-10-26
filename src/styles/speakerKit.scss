@@ -579,6 +579,130 @@ textarea {
   font: 700 16px var(--kit-body);
 }
 
+// Editor on the left, the live preview on the right (below it on small screens).
+.compose {
+  display: grid;
+  gap: 28px;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 375px);
+
+  @media (max-width: 820px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.livepost {
+  position: sticky;
+  top: 16px;
+
+  @media (max-width: 820px) {
+    position: static;
+    max-width: 375px;
+  }
+}
+
+// The post as a feed shows it: light, system font, phone width. Generic on
+// purpose: each platform's flavor is only its order and link color.
+.lp {
+  --lp-link: #1d9bf0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #fff;
+  color: #0f1419;
+  font:
+    15px/1.4 system-ui,
+    sans-serif;
+
+  &[data-platform="linkedin"] {
+    --lp-link: #0a66c2;
+  }
+
+  &[data-platform="facebook"] {
+    --lp-link: #1877f2;
+  }
+
+  // A chat bubble: no header, the image above the text.
+  &[data-platform="whatsapp"] {
+    --lp-link: #027eb5;
+    background: #d9fdd3;
+    border-radius: 12px 0 12px 12px;
+    padding: 6px 6px 10px;
+
+    .lp-head {
+      display: none;
+    }
+
+    .lp-banner {
+      order: -1;
+      border-radius: 8px;
+    }
+
+    .lp-text {
+      padding: 0 6px;
+    }
+  }
+}
+
+.lp-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lp-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e1e8ed;
+}
+
+.lp-name {
+  flex: 1;
+  font-weight: 700;
+}
+
+.lp-icon svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  color: #536471;
+}
+
+.lp-text {
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.lp-gap {
+  height: 1.4em;
+}
+
+.lp-link {
+  color: var(--lp-link);
+}
+
+.lp-more {
+  align-self: flex-start;
+  margin-top: -8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #536471;
+  font: inherit;
+  font-weight: 600;
+}
+
+.lp-banner {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e1e8ed;
+}
+
 // ---------------------------------------------------------------- 5. post it
 
 // One-tap native share, above the step-by-step list.

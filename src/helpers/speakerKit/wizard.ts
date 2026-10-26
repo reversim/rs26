@@ -79,6 +79,8 @@ interface Platform {
   ownWords?: boolean;
   /** Character limit, shown as a counter. */
   limit?: number;
+  /** Lines a feed shows before "…see more" (on mobile); none if it shows it all. */
+  fold?: number;
   steps: () => PostStep[];
 }
 
@@ -256,6 +258,7 @@ export function startWizard({
       icon: "linkedin",
       format: "landscape",
       note: "Landscape banner",
+      fold: 3,
       text(I, lang) {
         if (lang === "he")
           return (
@@ -369,6 +372,7 @@ export function startWizard({
       icon: "facebook",
       format: "landscape",
       note: "Landscape banner",
+      fold: 5,
       text(I, lang) {
         if (lang === "he")
           return (
@@ -576,6 +580,22 @@ export function startWizard({
   };
   function esc(s: string) {
     return String(s).replace(/[&<>"]/g, (c) => ENTITIES[c]);
+  }
+
+  // A post's text as a feed shows it: each line sets its own direction, like the
+  // platforms do, and links, hashtags and mentions are highlighted.
+  function postHtml(text: string) {
+    return text
+      .split("\n")
+      .map((line) =>
+        line.trim()
+          ? `<div dir="auto">${esc(line).replace(
+              /https?:\/\/[^\s<]+|[#@][\w-]+/g,
+              (m) => `<span class="lp-link">${m}</span>`,
+            )}</div>`
+          : `<div class="lp-gap"></div>`,
+      )
+      .join("");
   }
 
   function readState(): State {
@@ -937,8 +957,7 @@ export function startWizard({
       "beforeend",
       `<h1>Your <em>post</em></h1>
        <p class="sub">We wrote one for ${esc(p.label)}. Make it yours, or keep it as is.</p>
-       <div class="post" data-format="${p.format}">
-         <div class="preview"><img src="${previewUrl}" alt="Your banner" /></div>
+       <div class="compose">
          <div>
            <div class="lang" role="group" aria-label="Post language">
              <button data-lang="he" lang="he" aria-pressed="${st.lang === "he"}">עברית</button>
@@ -959,11 +978,40 @@ export function startWizard({
              <button class="ghost reset">Reset to our suggestion</button>
            </div>
          </div>
+         <aside class="livepost" aria-label="Post preview">
+           <div class="fieldlabel"><span>Preview</span><span>Approximate · on mobile</span></div>
+           <div class="lp" data-platform="${st.platform}">
+             <div class="lp-head">
+               <img class="lp-avatar" src="${esc(I.speakers[0].photo)}" alt="" crossorigin="anonymous" />
+               <span class="lp-name">${esc(I.speakers[0].name)}</span>
+               <span class="lp-icon">${ICONS[p.icon] ?? ""}</span>
+             </div>
+             <div class="lp-text"></div>
+             <button class="lp-more" hidden>…see more</button>
+             <img class="lp-banner" src="${previewUrl}" alt="Your banner" />
+           </div>
+         </aside>
        </div>`,
     );
     const ta = main.querySelector("textarea")!;
     const count = main.querySelector(".count")!;
+    // The preview follows the text as it changes. Feeds that fold long posts show
+    // the fold, until "…see more" is clicked, like the real thing.
+    const lpText = main.querySelector<HTMLElement>(".lp-text")!;
+    const more = main.querySelector<HTMLElement>(".lp-more")!;
+    let expanded = false;
+    const renderPreview = () => {
+      lpText.innerHTML = postHtml(ta.value);
+      if (!p.fold) return;
+      lpText.style.maxHeight = expanded ? "" : `${p.fold * 1.4}em`;
+      more.hidden = expanded || lpText.scrollHeight <= lpText.clientHeight + 1;
+    };
+    more.onclick = () => {
+      expanded = true;
+      renderPreview();
+    };
     const update = () => {
+      renderPreview();
       if (!p.limit) return;
       const n = xLength(ta.value);
       count.textContent = `${n} / ${p.limit}`;
