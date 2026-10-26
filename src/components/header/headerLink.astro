@@ -23,6 +23,7 @@ const tracking = analyticsAttrs(AnalyticsEvent.NavClick, {
   class={`header-link ${variant ?? ""}`}
   target={variant === "button" ? "_blank" : "_self"}
   href={link}
+  data-astro-prefetch="viewport"
   {...tracking}
 >
   {label}

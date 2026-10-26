@@ -21,7 +21,6 @@ const href = `/${pageBase}/${slug}`;
 ---
 
 <a
-  data-astro-prefetch
   href={href}
   class="member"
   data-day={day}
@@ -35,12 +34,14 @@ const href = `/${pageBase}/${slug}`;
     {
       picture !== "" && (
         <Picture
-          formats={["avif", "webp"]}
+          formats={["avif"]}
+          fallbackFormat="webp"
           class="image"
           alt={name}
           src={picture}
           width="340"
           height="840"
+          fit="contain"
         />
       )
     }

@@ -4,7 +4,7 @@ import HeadingLink from "../shared/headingLink.astro";
 import PhotoCarousel from "../shared/photoCarousel.astro";
 import type { CarouselImage } from "../../types/slider";
 
-const images: CarouselImage[] = await getPastEventsImages();
+const images: CarouselImage[] = getPastEventsImages();
 ---
 
 <section class="block band" id="past-events">
