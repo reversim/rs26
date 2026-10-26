@@ -1,7 +1,5 @@
-import type { ImageMetadata } from "astro";
-
 export interface CarouselImage {
-  src: ImageMetadata;
+  src: string;
   alt: string;
 }
 
