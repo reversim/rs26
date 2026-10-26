@@ -3,6 +3,7 @@ import Header from "../components/header/header.astro";
 import RegistrationBar from "../components/registrationBar.astro";
 import { Font } from "astro:assets";
 import { getRedirectTarget } from "../config/redirects";
+import { publicPathname } from "../helpers/pathname";
 import GoogleAnalytics from "../components/shared/googleAnalytics.astro";
 import "../styles/global.scss";
 
@@ -24,7 +25,8 @@ const {
   share,
 } = Astro.props;
 
-const redirectTarget = getRedirectTarget(Astro.url.pathname);
+const pathname = publicPathname(Astro.url.pathname);
+const redirectTarget = getRedirectTarget(pathname);
 const isBlocked = redirectTarget !== undefined;
 // Redirect stubs aren't real page views, and dev traffic stays out of GA.
 const loadAnalytics = import.meta.env.PROD && !isBlocked;
@@ -35,7 +37,7 @@ const ogImage = new URL("/og-image-2026.png", Astro.site);
 const ogTitle = share?.title ?? "Reversim 2026";
 const ogDescription = share?.description ?? description;
 const ogUrl = share
-  ? new URL(Astro.url.pathname, Astro.site)
+  ? new URL(pathname, Astro.site)
   : "https://summit2026.reversim.com/";
 ---
 
@@ -44,13 +46,14 @@ const ogUrl = share
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon-dark-mode.png" />
+    <link rel="icon" type="image/png" href="/favicon-dark-mode.png" />
     <link
       rel="icon"
-      type="image/svg+xml"
+      type="image/png"
       href="/favicon-light-mode.png"
       media="(prefers-color-scheme: light)"
     />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />

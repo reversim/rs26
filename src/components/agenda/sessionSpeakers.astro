@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { createSpeakerUrl } from "../../helpers/agenda/agendaHelpers";
 import type { AgendaSpeaker } from "../../types/agenda";
 import SocialLinks from "../shared/socialLinks.astro";
@@ -18,7 +19,15 @@ const { speakers, variant = "default" } = Astro.props;
           {variant === "session-page" ? (
             <div class="session-speaker">
               <a href={createSpeakerUrl(speaker.fullName || "")}>
-                <img src={speaker.profilePicture} alt={speaker.fullName} />
+                {speaker.profilePicture && (
+                  <Image
+                    src={speaker.profilePicture}
+                    alt={speaker.fullName ?? ""}
+                    width={154}
+                    height={154}
+                    densities={[1, 2]}
+                  />
+                )}
               </a>
               <div class="session-speaker-info">
                 <a href={createSpeakerUrl(speaker.fullName || "")}>
