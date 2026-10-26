@@ -4,13 +4,17 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  prefetch: true,
+  // Prefetch every internal link: on hover for desktop, and nav links opt into
+  // "viewport" (see headerLink/navDrawer) so touch devices benefit too.
+  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
   site: "https://summit2026.reversim.com",
 
-  // Emit `about.html` rather than `about/index.html` so Firebase's cleanUrls
-  // serves `/about` directly, without a 301 to `/about/`.
-  build: { format: "file" },
-  trailingSlash: "never",
+  // Canonical URLs end in "/" (e.g. `/about/`). Production has always 301'd
+  // `/about` -> `/about/`, and browsers cache that redirect indefinitely, so
+  // URLs must never flip to the no-slash form: a server-side `/about/` ->
+  // `/about` redirect loops for every returning visitor. Internal links use
+  // the trailing slash so clicks are served directly with no redirect.
+  trailingSlash: "always",
   // Astro 7 defaults to JSX-style whitespace stripping, which can glue inline
   // elements together; keep the pre-7 behavior our templates were written for.
   compressHTML: true,

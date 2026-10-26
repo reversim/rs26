@@ -3,7 +3,6 @@ import Header from "../components/header/header.astro";
 import RegistrationBar from "../components/registrationBar.astro";
 import { Font } from "astro:assets";
 import { getRedirectTarget } from "../config/redirects";
-import { publicPathname } from "../helpers/pathname";
 import GoogleAnalytics from "../components/shared/googleAnalytics.astro";
 import "../styles/global.scss";
 
@@ -25,7 +24,7 @@ const {
   share,
 } = Astro.props;
 
-const pathname = publicPathname(Astro.url.pathname);
+const pathname = Astro.url.pathname;
 const redirectTarget = getRedirectTarget(pathname);
 const isBlocked = redirectTarget !== undefined;
 // Redirect stubs aren't real page views, and dev traffic stays out of GA.

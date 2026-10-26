@@ -113,7 +113,7 @@ const { currentDay } = Astro.props;
     if (searchParams.get("scroll") === "now") {
       // If today is a conference day and differs from the page, redirect to today's page
       if (isConferenceToday && todaySlug !== daySlug) {
-        window.location.replace(`/agenda/${todaySlug}?scroll=now`);
+        window.location.replace(`/agenda/${todaySlug}/?scroll=now`);
         return;
       }
       // Only scroll if we are on the correct day and during the conference
@@ -132,7 +132,7 @@ const { currentDay } = Astro.props;
         CONFERENCE_DAYS.includes(todaySlugClick) &&
         todaySlugClick !== daySlug
       ) {
-        window.location.href = `/agenda/${todaySlugClick}?scroll=now`;
+        window.location.href = `/agenda/${todaySlugClick}/?scroll=now`;
         return;
       }
 

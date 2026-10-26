@@ -69,7 +69,7 @@ export const event = {
   },
   sponsor: {
     label: "Become a sponsor",
-    url: "/sponsors",
+    url: "/sponsors/",
   },
   days: {
     options: [

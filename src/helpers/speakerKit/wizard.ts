@@ -113,7 +113,7 @@ export function startWizard({
       room: session.room,
       dateLine: `${dayShort} · ${session.room}`.toUpperCase(),
       speaking: plural ? "WE'RE SPEAKING" : "I'M SPEAKING",
-      url: `${SITE}/session/${session.slug}`,
+      url: `${SITE}/session/${session.slug}/`,
     };
   }
 

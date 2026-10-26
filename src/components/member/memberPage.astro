@@ -26,7 +26,7 @@ const {
   <Button
     variant="back"
     text={type === "about" ? "Team" : "Speakers"}
-    href={type === "about" ? `/about` : `/speakers`}
+    href={type === "about" ? `/about/` : `/speakers/`}
   />
 
   <div class:list={["m-content", type === "speaker" && "m-card"]}>

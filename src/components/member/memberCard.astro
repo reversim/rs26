@@ -17,11 +17,10 @@ const {
   day,
 } = Astro.props;
 
-const href = `/${pageBase}/${slug}`;
+const href = `/${pageBase}/${slug}/`;
 ---
 
 <a
-  data-astro-prefetch
   href={href}
   class="member"
   data-day={day}
