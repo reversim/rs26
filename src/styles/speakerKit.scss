@@ -244,6 +244,11 @@ h1 {
   align-items: center;
   gap: 12px 20px;
   margin-top: 14px;
+
+  // Moving on sits on the right, the way the wizard goes.
+  &.end {
+    justify-content: flex-end;
+  }
 }
 
 .ghost {

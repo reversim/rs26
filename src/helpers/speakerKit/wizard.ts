@@ -946,7 +946,8 @@ export function startWizard({
   }
 
   // The post as a feed would show it: speaker, text, banner. See postHtml().
-  function livePost(st: State, I: BannerInfo) {
+  // Whatever's in footer goes under it.
+  function livePost(st: State, I: BannerInfo, footer = "") {
     const p = platformOf(st);
     return `<aside class="livepost" aria-label="Post preview">
       <div class="fieldlabel"><span>Preview</span><span>Approximate · on mobile</span></div>
@@ -960,6 +961,7 @@ export function startWizard({
         <button class="lp-more" hidden>…see more</button>
         <img class="lp-banner" src="${previewUrl}" alt="Your banner" />
       </div>
+      ${footer}
     </aside>`;
   }
 
@@ -1012,11 +1014,10 @@ export function startWizard({
            <label class="fieldlabel" for="text"><span>Post text</span><span class="count"></span></label>
            <textarea id="text" spellcheck="true" dir="auto" lang="${st.lang}"></textarea>
            <div class="row">
-             <button class="next">Looks good →</button>
              <button class="ghost reset">Reset to our suggestion</button>
            </div>
          </div>
-         ${livePost(st, I)}
+         ${livePost(st, I, `<div class="row end"><button class="next">Looks good →</button></div>`)}
        </div>`,
     );
     const ta = main.querySelector("textarea")!;
