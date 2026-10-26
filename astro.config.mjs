@@ -7,11 +7,18 @@ export default defineConfig({
   prefetch: true,
   site: "https://summit2026.reversim.com",
 
+  // Emit `about.html` rather than `about/index.html` so Firebase's cleanUrls
+  // serves `/about` directly, without a 301 to `/about/`.
+  build: { format: "file" },
+  trailingSlash: "never",
+
   image: {
-    // Authorize the back office asset host so remote sponsor/team images are
-    // downloaded and optimized at build time instead of hotlinked.
+    // Authorize the back office and Sessionize asset hosts so remote
+    // sponsor/team/speaker images are downloaded and optimized at build time
+    // instead of hotlinked.
     remotePatterns: [
       { protocol: "https", hostname: "raw.githubusercontent.com" },
+      { protocol: "https", hostname: "cdn.sessionize.com" },
     ],
   },
 

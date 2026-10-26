@@ -4,6 +4,8 @@
 // current route matches an entry here. A bare path blocks it outright
 // (redirecting to /404); give it a `to` instead to send visitors somewhere
 // specific, e.g. a route that moved.
+// firebase.json mirrors these as server-side redirects (skipping the stub
+// page load); keep its `redirects` in sync when changing this list.
 export interface Redirect {
   from: string;
   to: string;
@@ -11,7 +13,9 @@ export interface Redirect {
 
 export type RedirectRule = string | Redirect;
 
-export const redirects: RedirectRule[] = [{from: "/agenda", to: "/sessions"}];
+// IMPORTANT: firebase.json mirrors these as server-side redirects (skipping the stub
+// IMPORTANT: page load); keep its `redirects` in sync when changing this list.
+export const redirects: RedirectRule[] = [{ from: "/agenda", to: "/sessions" }];
 
 // "/agenda" also matches nested routes like "/agenda/day-1".
 export function getRedirectTarget(pathname: string): string | undefined {
