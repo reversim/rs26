@@ -1,4 +1,6 @@
-// The speaker-kit wizard: session → platform → design → post text → post it.
+// The speaker-kit wizard. It starts by asking what the speaker is after:
+//   a post about their talk: session → platform → design → post text → post it;
+//   an "I'm a speaker" sticker: platform → the image (no session, no text).
 // startWizard() takes the build-time data (see src/pages/speaker-kit/index.astro).
 
 import {
@@ -14,12 +16,23 @@ import { TEMPLATES } from "./templates";
 import type { BannerInfo, Format, KitData, KitSession } from "./types";
 
 type PlatformId = "linkedin" | "x" | "facebook" | "whatsapp" | "story";
-type Step = "session" | "as" | "platform" | "design" | "text" | "post";
+type Step =
+  | "kind"
+  | "session"
+  | "as"
+  | "platform"
+  | "design"
+  | "text"
+  | "post"
+  | "sticker";
+/** What the speaker is making. */
+type Kind = "post" | "sticker";
 /** The post text's language. */
 type Lang = "he" | "en";
 
 /** The wizard's state, read from the URL. */
 interface State {
+  kind: Kind | null;
   /** Index into the sessions list. */
   session: number | null;
   /** Which of the session's speakers is posting. */
@@ -460,6 +473,18 @@ export function startWizard({
       '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1C4.13 1 1 3.69 1 7c0 1.62.75 3.09 1.97 4.17L2.3 15l3.73-1.86c.62.15 1.28.23 1.97.23 3.87 0 7-2.69 7-6S11.87 1 8 1z"/></svg>',
   };
 
+  // The "I'm a speaker" stickers, in public/speaker-kit/stickers: the same image for
+  // everyone, so they need no session. Only the platforms with a sticker size.
+  const STICKERS: Partial<
+    Record<PlatformId, { file: string; size: [number, number] }>
+  > = {
+    linkedin: { file: "im-a-speaker-linkedin.png", size: [1200, 627] },
+    x: { file: "im-a-speaker-x.png", size: [1600, 900] },
+    facebook: { file: "im-a-speaker-facebook.png", size: [1200, 630] },
+  };
+  const stickerSrc = (id: PlatformId) =>
+    `/speaker-kit/stickers/${STICKERS[id]!.file}`;
+
   // ---------------------------------------------------------------- banners
 
   const banners = new Map<string, Promise<Banner>>();
@@ -516,7 +541,7 @@ export function startWizard({
   }
 
   // ---------------------------------------------------------------- wizard
-  // The URL holds the wizard's state (?session=&as=&platform=&design=&ready=), so the
+  // The URL holds the wizard's state (?kind=&session=&as=&platform=&design=&ready=), so the
   // browser's Back button works and any step can be linked to directly.
 
   // Every id the wizard looks up (main, progress, toast) is in the page's static markup.
@@ -604,12 +629,18 @@ export function startWizard({
     const as = Number(p.get("as"));
     const platform = p.get("platform");
     const design = p.get("design");
+    // Links from before the sticker/post choice have a session but no kind.
+    const kind = p.get("kind");
+    const isKind = kind === "post" || kind === "sticker";
     return {
+      kind: isKind ? kind : session === null ? null : "post",
       session,
       // Solo talks skip the "who's posting" question.
       as: n === 1 ? 0 : p.has("as") && as >= 0 && as < n ? as : null,
       platform:
-        platform && platform in PLATFORMS ? (platform as PlatformId) : null,
+        platform && platform in (kind === "sticker" ? STICKERS : PLATFORMS)
+          ? (platform as PlatformId)
+          : null,
       design: TEMPLATES.some((t) => t.id === design) ? design : null,
       ready: p.get("ready") === "1",
       // Hebrew unless asked otherwise.
@@ -618,6 +649,8 @@ export function startWizard({
   }
 
   function stepOf(st: State): Step {
+    if (!st.kind) return "kind";
+    if (st.kind === "sticker") return st.platform ? "sticker" : "platform";
     if (st.session === null) return "session";
     if (st.as === null) return "as";
     if (!st.platform) return "platform";
@@ -679,14 +712,27 @@ export function startWizard({
   function renderProgress(st: State, step: Step) {
     const hasText = !st.platform || !!PLATFORMS[st.platform].text;
     type Entry = [Step, string, Changes];
+    const start: Entry = ["kind", "Start", { ...RESET, kind: null }];
+    // Before the speaker picks, it shows the post's steps: that's what most come for.
     const steps = (
-      [
-        ["session", "Session", RESET],
-        ["platform", "Platform", { platform: null, design: null, ready: null }],
-        ["design", "Design", { design: null }],
-        hasText && ["text", "Text", { ready: null }],
-        ["post", "Post", {}],
-      ] as (Entry | false)[]
+      (st.kind === "sticker"
+        ? [
+            start,
+            ["platform", "Platform", { platform: null }],
+            ["sticker", "Sticker", {}],
+          ]
+        : [
+            start,
+            ["session", "Session", RESET],
+            [
+              "platform",
+              "Platform",
+              { platform: null, design: null, ready: null },
+            ],
+            ["design", "Design", { design: null }],
+            hasText && ["text", "Text", { ready: null }],
+            ["post", "Post", {}],
+          ]) as (Entry | false)[]
     ).filter((e): e is Entry => !!e);
     const current = step === "as" ? "session" : step;
     const at = steps.findIndex(([id]) => id === current);
@@ -715,18 +761,16 @@ export function startWizard({
       Step,
       (st: State, token: number) => void | Promise<void>
     > = {
+      kind: renderKind,
       session: renderSession,
       as: renderAs,
       platform: renderPlatform,
       design: renderDesign,
       text: renderText,
       post: renderPost,
+      sticker: renderSticker,
     };
-    // The first step has its own stickers section; every later step ends with one.
-    return Promise.resolve(renderers[step](st, token)).then(() => {
-      if (step !== "session" && token === renderToken)
-        main.insertAdjacentHTML("beforeend", stickersHtml());
-    });
+    return renderers[step](st, token);
   }
 
   function faces(speakers: KitSession["speakers"]) {
@@ -736,6 +780,28 @@ export function startWizard({
           `<img src="${esc(s.photo)}" alt="" crossorigin="anonymous" loading="lazy" />`,
       )
       .join("")}</span>`;
+  }
+
+  // ---- 0. a post or a sticker
+
+  function renderKind() {
+    main.innerHTML = `
+      <h1>What are you <em>posting</em>?</h1>
+      <p class="sub">Tell people you're speaking at Reversim Summit 2026.</p>
+      <div class="tiles kinds">
+        <button class="tile" data-kind="post">
+          <span class="name">A post about your talk</span>
+          <span class="hint">A banner with your session, and a post text we wrote for you.</span>
+        </button>
+        <button class="tile" data-kind="sticker">
+          <span class="name">An “I'm a speaker” sticker</span>
+          <span class="hint">Just an image. No session to pick, no text to write.</span>
+        </button>
+      </div>`;
+    main.querySelector<HTMLElement>(".tiles")!.onclick = (e) => {
+      const b = (e.target as Element).closest<HTMLElement>(".tile");
+      if (b) go({ kind: b.dataset.kind });
+    };
   }
 
   // ---- 1. session
@@ -776,34 +842,10 @@ export function startWizard({
     },
   };
 
-  // Not tied to a session: the same files for everyone (public/speaker-kit/stickers).
-  const STICKERS = [
-    { file: "im-a-speaker-linkedin.png", label: "LinkedIn", size: [1200, 627] },
-    { file: "im-a-speaker-x.png", label: "X", size: [1600, 900] },
-    { file: "im-a-speaker-facebook.png", label: "Facebook", size: [1200, 630] },
-  ] as const;
-
-  const stickersHtml = () => `
-    <section class="stickers" id="stickers" aria-labelledby="stickers-label">
-      <h2 id="stickers-label">Stickers</h2>
-      <p class="sub">Add one to your post or your profile.</p>
-      <ul class="sticker-grid">${STICKERS.map(
-        ({ file, label, size }) => `
-        <li class="sticker">
-          <img src="/speaker-kit/stickers/${file}" alt="I'm a speaker at Reversim Summit 2026, ${label} size" width="${size[0]}" height="${size[1]}" loading="lazy" />
-          <a class="ghost" href="/speaker-kit/stickers/${file}" download>${label} · ${size[0]}×${size[1]} ↓</a>
-        </li>`,
-      ).join("")}</ul>
-    </section>`;
-
   function renderSession() {
     main.innerHTML = `
       <h1>Which session is <em>yours</em>?</h1>
       <p class="sub">Pick your talk, and you'll get banners and a ready-to-post text for it.</p>
-      <a class="sticker-teaser" href="#stickers">
-        <img src="/speaker-kit/stickers/${STICKERS[0].file}" alt="" width="${STICKERS[0].size[0]}" height="${STICKERS[0].size[1]}" />
-        <span><strong>“I'm a speaker” stickers</strong><span class="hint">Not tied to a session. Grab one for your profile or post ↓</span></span>
-      </a>
       <input class="search" type="search" placeholder="Search by your name or your talk's title" aria-label="Search sessions" />
       <div class="picker">
         <section class="group recent" aria-labelledby="recent-label" hidden>
@@ -817,8 +859,8 @@ export function startWizard({
           <div class="fieldlabel" hidden><h2 id="all-label">All sessions</h2></div>
           <ul class="list"></ul>
         </section>
-      </div>
-      ${stickersHtml()}`;
+      </div>`;
+    main.prepend(backButton({ kind: null }));
     const input = main.querySelector<HTMLInputElement>(".search")!;
     const recentGroup = main.querySelector<HTMLElement>(".recent")!;
     const allLabel = main.querySelector<HTMLElement>(".all .fieldlabel")!;
@@ -895,19 +937,28 @@ export function startWizard({
 
   // ---- 2. platform
 
+  // The sticker comes in fewer sizes, so it has fewer platforms to pick from.
   function renderPlatform(st: State) {
-    const I = info(st);
-    main.append(isPlural(st) ? backButton({ as: null }) : backButton(RESET));
+    const sticker = st.kind === "sticker";
+    if (sticker) main.append(backButton({ kind: null }));
+    else
+      main.append(isPlural(st) ? backButton({ as: null }) : backButton(RESET));
+    const sub = sticker
+      ? "You'll get the sticker in that platform's size."
+      : `<strong dir="auto">${esc(info(st).title)}</strong> · ${esc(info(st).names)}`;
     main.insertAdjacentHTML(
       "beforeend",
       `<h1>Where are you <em>posting</em>?</h1>
-       <p class="sub"><strong dir="auto">${esc(I.title)}</strong> · ${esc(I.names)}</p>
-       <div class="tiles">${Object.entries(PLATFORMS)
+       <p class="sub">${sub}</p>
+       <div class="tiles">${(
+         Object.entries(PLATFORMS) as [PlatformId, Platform][]
+       )
+         .filter(([id]) => !sticker || id in STICKERS)
          .map(
            ([id, p]) => `<button class="tile" data-id="${id}">
              ${ICONS[p.icon] ?? ""}
              <span class="name">${esc(p.label)}</span>
-             <span class="note">${esc(p.note)}</span>
+             <span class="note">${sticker ? STICKERS[id]!.size.join("×") : esc(p.note)}</span>
            </button>`,
          )
          .join("")}</div>`,
@@ -1136,6 +1187,7 @@ export function startWizard({
        </div>
        <div class="more">
          <button class="other">↻ Post on another platform too</button>
+         <button class="other to-sticker">Get an “I'm a speaker” sticker too</button>
        </div>`,
     );
     if (text !== null) fillLivePost(p)(text);
@@ -1198,6 +1250,55 @@ export function startWizard({
     });
     main.querySelector<HTMLElement>(".other")!.onclick = () =>
       go({ platform: null, design: null, ready: null });
+    main.querySelector<HTMLElement>(".to-sticker")!.onclick = () =>
+      go({
+        ...RESET,
+        kind: "sticker",
+        platform: st.platform! in STICKERS ? st.platform : null,
+      });
+  }
+
+  // ---- the sticker: just the image, to share or download
+
+  function renderSticker(st: State) {
+    const p = platformOf(st);
+    const { file, size } = STICKERS[st.platform!]!;
+    const src = stickerSrc(st.platform!);
+    // Fetched up front, so Share can hand it over while the click still counts.
+    const blob = fetch(src).then((r) => (r.ok ? r.blob() : Promise.reject()));
+    blob.catch(() => {});
+    main.append(backButton({ platform: null }));
+    main.insertAdjacentHTML(
+      "beforeend",
+      `<h1>Your <em>sticker</em> for ${esc(p.label)}</h1>
+       <p class="sub">Attach it to a post, or put it on your profile.</p>
+       <div class="sticker-out">
+         <img src="${src}" alt="I'm a speaker at Reversim Summit 2026" width="${size[0]}" height="${size[1]}" />
+         <div class="row">
+           <a class="act" href="${src}" download>Download sticker</a>
+           ${canShareFiles ? `<button class="act share-sticker">Share…</button>` : ""}
+         </div>
+       </div>
+       <div class="more">
+         <button class="other">↻ Get it for another platform</button>
+         <button class="other to-post">Post about your talk too</button>
+       </div>`,
+    );
+    main
+      .querySelector(".share-sticker")
+      ?.addEventListener("click", async () => {
+        try {
+          const png = new File([await blob], file, { type: "image/png" });
+          await navigator.share({ files: [png] });
+        } catch (err) {
+          if ((err as Error | undefined)?.name !== "AbortError")
+            toast("Sharing didn't work here. Download the sticker instead.");
+        }
+      });
+    main.querySelector<HTMLElement>(".other")!.onclick = () =>
+      go({ platform: null });
+    main.querySelector<HTMLElement>(".to-post")!.onclick = () =>
+      go({ kind: "post", platform: null });
   }
 
   render();
