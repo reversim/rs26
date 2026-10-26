@@ -35,13 +35,11 @@ const {
         {
           picture !== "" && (
             <Picture
-              formats={["avif"]}
-              fallbackFormat="webp"
+              formats={["avif", "webp"]}
               src={picture || ""}
               alt={name || ""}
               width="500"
               height="500"
-              fit="contain"
             />
           )
         }

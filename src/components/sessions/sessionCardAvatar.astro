@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { initials } from "../../helpers/initials";
 
 interface Props {
@@ -14,14 +13,7 @@ const { name, avatarUrl, size = 36 } = Astro.props;
 <span class="avatar" style={`--avatar-size: ${size}px`}>
   {
     avatarUrl ? (
-      <Image
-        src={avatarUrl}
-        alt={name}
-        width={size}
-        height={size}
-        densities={[1, 2]}
-        loading="lazy"
-      />
+      <img src={avatarUrl} alt={name} loading="lazy" />
     ) : (
       initials(name)
     )

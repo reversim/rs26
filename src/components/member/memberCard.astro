@@ -35,14 +35,12 @@ const href = `/${pageBase}/${slug}`;
     {
       picture !== "" && (
         <Picture
-          formats={["avif"]}
-          fallbackFormat="webp"
+          formats={["avif", "webp"]}
           class="image"
           alt={name}
           src={picture}
           width="340"
           height="840"
-          fit="contain"
         />
       )
     }

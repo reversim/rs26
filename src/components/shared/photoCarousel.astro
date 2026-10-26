@@ -54,11 +54,6 @@ const total = slides.length;
 const pad = (n: number) => String(n).padStart(2, "0");
 const multi = perPage > 1;
 const hasCaptions = slides.some((slide) => slide.caption);
-// Mirrors the Splide breakpoints below so multi-card slides don’t download
-// full-width images: 1 card (82%) at ≤768px, 2 at ≤992px, perPage above.
-const slideSizes = multi
-  ? `(max-width: 768px) 82vw, (max-width: 992px) 50vw, ${Math.round(1240 / perPage)}px`
-  : "(max-width: 1240px) 100vw, 1240px";
 ---
 
 <div
@@ -96,8 +91,8 @@ const slideSizes = multi
                   <Image
                     src={slide.src}
                     alt={slide.alt}
-                    widths={[420, 640, 1000, 1400]}
-                    sizes={slideSizes}
+                    widths={[640, 1000, 1400]}
+                    sizes="(max-width: 1240px) 100vw, 1240px"
                     loading={i < 2 ? "eager" : "lazy"}
                     draggable={false}
                   />

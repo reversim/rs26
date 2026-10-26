@@ -63,9 +63,6 @@ export const event = {
     label: "Register now →",
     url: "https://ti.to/reversim-summit/2026/",
     announcement: "Registration for RS26 is open — grab your spot.",
-    // Optional warning shown under the bar (e.g. payment issues); leave
-    // undefined to hide it.
-    notice: undefined as string | undefined,
   },
   sponsor: {
     label: "Become a sponsor",
