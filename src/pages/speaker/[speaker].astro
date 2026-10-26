@@ -123,7 +123,7 @@ const shareDescription = [
       {
         (talks || []).map((talk) => {
           const hasTime = Boolean(talk.startsAt && talk.endsAt);
-          const talkHref = `/session/${slugify(talk.name)}/`;
+          const talkHref = `/session/${slugify(talk.name)}`;
 
           return (
             <a

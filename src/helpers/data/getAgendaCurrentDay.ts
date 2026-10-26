@@ -13,11 +13,11 @@ export async function getAgendaCurrentDay() {
   );
 
   if (currentConferenceDay) {
-    return `/agenda/${currentDate}/`;
+    return `/agenda/${currentDate}`;
   }
 
   const firstDaySlug =
     rawAgendaDays[0].slug ||
     new Date(rawAgendaDays[0].date).toISOString().split("T")[0];
-  return `/agenda/${firstDaySlug}/`;
+  return `/agenda/${firstDaySlug}`;
 }

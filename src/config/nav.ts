@@ -9,9 +9,9 @@ export interface NavLink {
 export const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/#sponsors", label: "Sponsors" },
-  { href: "/speakers/", label: "Speakers" },
-  { href: "/sessions/", label: "Sessions" },
-  { href: "/about/", label: "Team" },
+  { href: "/speakers", label: "Speakers" },
+  { href: "/sessions", label: "Sessions" },
+  { href: "/about", label: "Team" },
 ];
 
 // Marks the drawer link for the section the visitor is currently in.
@@ -19,7 +19,6 @@ export const navLinks: NavLink[] = [
 // sub-pages, so /about/some-member still highlights "Team".
 export function isActiveNavLink(href: string, pathname: string): boolean {
   const path = pathname.replace(/\/+$/, "") || "/";
-  const base = href.replace(/\/+$/, "") || "/";
-  if (base === "/") return path === "/";
-  return path === base || path.startsWith(`${base}/`);
+  if (href === "/") return path === "/";
+  return path === href || path.startsWith(`${href}/`);
 }

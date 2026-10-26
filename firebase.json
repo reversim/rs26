@@ -2,10 +2,10 @@
   "hosting": {
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "trailingSlash": true,
+    "cleanUrls": true,
     "redirects": [
-      { "source": "/agenda", "destination": "/sessions/", "type": 302 },
-      { "source": "/agenda/**", "destination": "/sessions/", "type": 302 }
+      { "source": "/agenda", "destination": "/sessions", "type": 302 },
+      { "source": "/agenda/**", "destination": "/sessions", "type": 302 }
     ],
     "headers": [
       {

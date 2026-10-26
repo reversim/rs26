@@ -45,7 +45,7 @@ const sessionsList = sessions.rawSessionsList.filter(
           <SessionCard
             title={session.title}
             description={session.description}
-            href={`/session/${slug(session.title)}/`}
+            href={`/session/${slug(session.title)}`}
             speakers={resolvedSpeakers}
             day={session.day}
           />

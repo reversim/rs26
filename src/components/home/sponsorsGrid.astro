@@ -83,7 +83,7 @@ const tierMark: Record<string, string> = {
             {organizingSponsor.map((sponsor) => (
               <a
                 class="spon spon-lg"
-                href={`/sponsors/${sponsor.slug}/`}
+                href={`/sponsors/${sponsor.slug}`}
                 aria-label={sponsor.companyName}
               >
                 <Image
@@ -111,7 +111,7 @@ const tierMark: Record<string, string> = {
             {gameChangersSponsors.map((sponsor) => (
               <a
                 class="spon"
-                href={`/sponsors/${sponsor.slug}/`}
+                href={`/sponsors/${sponsor.slug}`}
                 aria-label={sponsor.companyName}
               >
                 <Image

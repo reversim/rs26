@@ -368,7 +368,7 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
     likedContainer.innerHTML = likedSessions
       .map((session) => {
         const speakers = session.speakers
-          .map((s) => `<a href="/speaker/${slugify(s.name)}/">${s.name}</a>`)
+          .map((s) => `<a href="/speaker/${slugify(s.name)}">${s.name}</a>`)
           .join(", ");
         const startTime = formatTime(session.startsAt);
         const endTime = formatTime(session.endsAt);
@@ -388,7 +388,7 @@ const allSessions: AgendaSession[] = currentDay.rooms.flatMap(
           <div class="liked-talk-content">
             <div class="liked-talk-header">
               <h4 class="liked-talk-title">
-                <a href="/session/${slugify(session.title)}/">${session.title}</a>
+                <a href="/session/${slugify(session.title)}">${session.title}</a>
               </h4>
             </div>
             <div class="liked-talk-info">

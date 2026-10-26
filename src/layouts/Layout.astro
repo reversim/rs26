@@ -24,7 +24,10 @@ const {
   share,
 } = Astro.props;
 
-const pathname = Astro.url.pathname;
+// Public URLs have no trailing slash; see `trailingSlash` in astro.config.mjs.
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const canonicalUrl = new URL(pathname, Astro.site);
+const isNotFound = pathname === "/404";
 const redirectTarget = getRedirectTarget(pathname);
 const isBlocked = redirectTarget !== undefined;
 // Redirect stubs aren't real page views, and dev traffic stays out of GA.
@@ -35,9 +38,7 @@ const description =
 const ogImage = new URL("/og-image-2026.png", Astro.site);
 const ogTitle = share?.title ?? "Reversim 2026";
 const ogDescription = share?.description ?? description;
-const ogUrl = share
-  ? new URL(pathname, Astro.site)
-  : "https://summit2026.reversim.com/";
+const ogUrl = share ? canonicalUrl : "https://summit2026.reversim.com/";
 ---
 
 <!doctype html>
@@ -62,6 +63,24 @@ const ogUrl = share
     <meta name="generator" content={Astro.generator} />
     <title>Reversim 2026</title>
     <meta name="description" content={description} />
+
+    {!isBlocked && !isNotFound && <link rel="canonical" href={canonicalUrl} />}
+    <!--
+      Browsers that cached the old `/page` -> `/page/` 301 land on the slash
+      form, which Firebase serves as-is. Tidy the address bar without a
+      redirect; an HTTP redirect here would loop.
+    -->
+    <script is:inline>
+      if (/.\/$/.test(location.pathname)) {
+        history.replaceState(
+          history.state,
+          "",
+          location.pathname.replace(/\/+$/, "") +
+            location.search +
+            location.hash,
+        );
+      }
+    </script>
 
     {
       isBlocked && (

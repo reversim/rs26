@@ -13,9 +13,7 @@ export type RedirectRule = string | Redirect;
 
 // IMPORTANT: firebase.json mirrors these as server-side redirects (skipping the stub
 // IMPORTANT: page load); keep its `redirects` in sync when changing this list.
-export const redirects: RedirectRule[] = [
-  { from: "/agenda", to: "/sessions/" },
-];
+export const redirects: RedirectRule[] = [{ from: "/agenda", to: "/sessions" }];
 
 // "/agenda" also matches nested routes like "/agenda/day-1".
 export function getRedirectTarget(pathname: string): string | undefined {

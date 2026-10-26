@@ -9,12 +9,13 @@ export default defineConfig({
   prefetch: { prefetchAll: true, defaultStrategy: "hover" },
   site: "https://summit2026.reversim.com",
 
-  // Canonical URLs end in "/" (e.g. `/about/`). Production has always 301'd
-  // `/about` -> `/about/`, and browsers cache that redirect indefinitely, so
-  // URLs must never flip to the no-slash form: a server-side `/about/` ->
-  // `/about` redirect loops for every returning visitor. Internal links use
-  // the trailing slash so clicks are served directly with no redirect.
-  trailingSlash: "always",
+  // Canonical URLs have no trailing slash (e.g. `/about`). Pages are still
+  // built as `about/index.html`: the site used to 301 `/about` -> `/about/`,
+  // browsers cache that indefinitely, so `/about/` must keep serving the page
+  // (never redirect it to `/about`, which loops for returning visitors).
+  // Firebase serves both forms as 200; Layout.astro sets the canonical URL
+  // and tidies the address bar.
+  trailingSlash: "never",
   // Astro 7 defaults to JSX-style whitespace stripping, which can glue inline
   // elements together; keep the pre-7 behavior our templates were written for.
   compressHTML: true,

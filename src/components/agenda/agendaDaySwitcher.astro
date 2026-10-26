@@ -13,7 +13,7 @@ const { availableDays, currentDaySlug } = Astro.props;
   {
     availableDays.map((day: AgendaDay) => (
       <a
-        href={`/agenda/${day.slug}/`}
+        href={`/agenda/${day.slug}`}
         class={`day-switch-btn ${day.slug === currentDaySlug ? "active" : ""}`}
       >
         {day.label}

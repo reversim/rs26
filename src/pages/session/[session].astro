@@ -133,7 +133,7 @@ const shareDescription = [
 ---
 
 <Layout share={{ title: shareTitle, description: shareDescription }}>
-  <Button variant="back" text="Sessions" href="/sessions/" />
+  <Button variant="back" text="Sessions" href="/sessions" />
   <div class="session-container">
     <h2>{title}</h2>
     <p class="description">{description}</p>
@@ -146,7 +146,7 @@ const shareDescription = [
         <button disabled={!prev} class="track-navigator prev">
           {
             prev ? (
-              <a href={`/session/${slug(prev.title)}/`}>
+              <a href={`/session/${slug(prev.title)}`}>
                 <Arrow class="arrow" />
               </a>
             ) : null
@@ -155,7 +155,7 @@ const shareDescription = [
         <button disabled={!next} class="track-navigator next">
           {
             next ? (
-              <a href={`/session/${slug(next.title)}/`}>
+              <a href={`/session/${slug(next.title)}`}>
                 <Arrow class="arrow" />
               </a>
             ) : null

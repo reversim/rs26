@@ -25,12 +25,12 @@ export function getTrackName(session: AgendaSession): string | null {
 
 // Helper function to create speaker URL
 export function createSpeakerUrl(speakerName: string): string {
-  return `/speaker/${slugify(speakerName)}/`;
+  return `/speaker/${slugify(speakerName)}`;
 }
 
 // Helper function to create session URL
 export function createSessionUrl(talkTitle: string): string {
-  return `/session/${slugify(talkTitle)}/`;
+  return `/session/${slugify(talkTitle)}`;
 }
 
 // Helper function to format time
