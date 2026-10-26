@@ -704,7 +704,11 @@ export function startWizard({
       text: renderText,
       post: renderPost,
     };
-    return renderers[step](st, token);
+    // The first step has its own stickers section; every later step ends with one.
+    return Promise.resolve(renderers[step](st, token)).then(() => {
+      if (step !== "session" && token === renderToken)
+        main.insertAdjacentHTML("beforeend", stickersHtml());
+    });
   }
 
   function faces(speakers: KitSession["speakers"]) {
@@ -754,10 +758,34 @@ export function startWizard({
     },
   };
 
+  // Not tied to a session: the same files for everyone (public/speaker-kit/stickers).
+  const STICKERS = [
+    { file: "im-a-speaker-linkedin.png", label: "LinkedIn", size: [1200, 627] },
+    { file: "im-a-speaker-x.png", label: "X", size: [1600, 900] },
+    { file: "im-a-speaker-facebook.png", label: "Facebook", size: [1200, 630] },
+  ] as const;
+
+  const stickersHtml = () => `
+    <section class="stickers" id="stickers" aria-labelledby="stickers-label">
+      <h2 id="stickers-label">Stickers</h2>
+      <p class="sub">Add one to your post or your profile.</p>
+      <ul class="sticker-grid">${STICKERS.map(
+        ({ file, label, size }) => `
+        <li class="sticker">
+          <img src="/speaker-kit/stickers/${file}" alt="I'm a speaker at Reversim Summit 2026, ${label} size" width="${size[0]}" height="${size[1]}" loading="lazy" />
+          <a class="ghost" href="/speaker-kit/stickers/${file}" download>${label} · ${size[0]}×${size[1]} ↓</a>
+        </li>`,
+      ).join("")}</ul>
+    </section>`;
+
   function renderSession() {
     main.innerHTML = `
       <h1>Which session is <em>yours</em>?</h1>
       <p class="sub">Pick your talk, and you'll get banners and a ready-to-post text for it.</p>
+      <a class="sticker-teaser" href="#stickers">
+        <img src="/speaker-kit/stickers/${STICKERS[0].file}" alt="" width="${STICKERS[0].size[0]}" height="${STICKERS[0].size[1]}" />
+        <span><strong>“I'm a speaker” stickers</strong><span class="hint">Not tied to a session. Grab one for your profile or post ↓</span></span>
+      </a>
       <input class="search" type="search" placeholder="Search by your name or your talk's title" aria-label="Search sessions" />
       <div class="picker">
         <section class="group recent" aria-labelledby="recent-label" hidden>
@@ -771,7 +799,8 @@ export function startWizard({
           <div class="fieldlabel" hidden><h2 id="all-label">All sessions</h2></div>
           <ul class="list"></ul>
         </section>
-      </div>`;
+      </div>
+      ${stickersHtml()}`;
     const input = main.querySelector<HTMLInputElement>(".search")!;
     const recentGroup = main.querySelector<HTMLElement>(".recent")!;
     const allLabel = main.querySelector<HTMLElement>(".all .fieldlabel")!;
