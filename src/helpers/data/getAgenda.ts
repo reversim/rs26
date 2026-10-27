@@ -59,7 +59,7 @@ export function buildDayGrid(day: AgendaDay) {
         s.lengthMinutes =
           (new Date(s.endsAt).getTime() - new Date(s.startsAt).getTime()) /
           60000;
-      const tName = getTrackName(s)
+      const tName = getTrackName(s);
       if (tName === "Ignites" && (s.lengthMinutes ?? 999) <= 6) {
         s.isLightning = true;
         if (s.isPlenumSession) s.isPlenumSession = false;

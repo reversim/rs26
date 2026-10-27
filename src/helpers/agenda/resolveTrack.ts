@@ -8,8 +8,8 @@ export function resolveTrack(session: {categories?: Category[]}): string | null 
   if (!item) return null;
   const raw = item.name;
   if (raw === "Frontend") {
-    return "Frontend/Product"
+    return "Frontend/Product";
   }
 
-  return raw
+  return raw;
 }
