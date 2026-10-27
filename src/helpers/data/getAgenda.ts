@@ -4,7 +4,7 @@ import type {
   Cell,
   RawGridDay,
 } from "../../types/agenda";
-import { resolveTrack } from "../agenda/trackName";
+import { resolveTrack } from "../agenda/resolveTrack";
 
 const AGENDA_URL = "https://sessionize.com/api/v2/fan6lxrk/view/GridSmart";
 

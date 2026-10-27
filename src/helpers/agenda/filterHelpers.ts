@@ -1,5 +1,5 @@
 import { findSessionById } from "./agendaHelpers";
-import { resolveTrack } from "./trackName";
+import { resolveTrack } from "./resolveTrack";
 
 const LIKED_TALKS_KEY = "reversim-liked-talks";
 const FILTERS_KEY = "reversim-filters";
