@@ -11,5 +11,11 @@ export function resolveTrack(session: {categories?: Category[]}): string | null 
     return "Frontend/Product";
   }
 
+  if (raw === "AI Apps" || raw === "AI Infra") {
+    // This is a leftover from last year's edition. Once we fetch this year's agenda we will stop seeing
+    // these values in our sessions
+    return "AI";
+  }
+
   return raw;
 }
