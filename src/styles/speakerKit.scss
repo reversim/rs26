@@ -443,6 +443,46 @@ h1 {
   }
 }
 
+// A small picture of what each choice makes, the same height for both.
+.sample {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--rs26-navy-2);
+  overflow: hidden;
+
+  .tile & img,
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    background: var(--rs26-navy-3);
+  }
+
+  // Stand-ins for the post's text.
+  .lines span {
+    display: block;
+    height: 6px;
+    margin-bottom: 7px;
+    border-radius: 3px;
+    background: var(--rs26-navy-line);
+
+    &:nth-child(2) {
+      width: 85%;
+    }
+
+    &:nth-child(3) {
+      width: 55%;
+      margin-bottom: 12px;
+    }
+  }
+}
+
 // ---------------------------------------------------------------- 3. design
 
 .designs {
