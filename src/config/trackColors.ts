@@ -5,6 +5,7 @@ export const TRACK_COLOR_FALLBACK = "#6c8cc7";
 // Aliases (e.g. "front" / "frontend") intentionally share a color.
 export const trackColors: Record<string, string> = {
   frontend: "#84a2da",
+  "frontend/product": "#84a2da",
   front: "#84a2da",
   backend: "#6c8cc7",
   back: "#6c8cc7",

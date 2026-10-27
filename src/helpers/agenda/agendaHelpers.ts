@@ -1,6 +1,6 @@
 import type { AgendaSession } from "../../types/agenda";
 import { getTrackColor } from "../../config/trackColors";
-import { resolveTrack } from "./trackName";
+import { resolveTrack } from "./resolveTrack";
 import slugify from "slug";
 
 // Category color from a full session (server-side version)
