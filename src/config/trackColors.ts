@@ -16,6 +16,7 @@ export const trackColors: Record<string, string> = {
   infra: "#7ccfa8",
   infrastructure: "#7ccfa8",
   security: "#f3a0c5",
+  "frontend/product": "#f3a0c5",
   "ui/ux": "#f3a0c5",
   design: "#f3a0c5",
   culture: "#f3a0c5",
