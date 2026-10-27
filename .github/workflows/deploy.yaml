@@ -37,6 +37,10 @@ jobs:
         with:
           timezoneLinux: Asia/Jerusalem
 
+      # Type cheking and such. astro build does not do that so a dedicated step is needed.
+      - name: Check 
+        run: yarn astro-check
+
       # Build the Astro app
       - name: Build the Astro app
         run: yarn build
