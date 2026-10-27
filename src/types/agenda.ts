@@ -1,3 +1,5 @@
+import type { Category } from "./session";
+
 export interface AgendaSpeaker {
   id: string | number;
   name?: string;
@@ -25,7 +27,7 @@ export interface AgendaSession {
   speakers: AgendaSpeaker[];
   isServiceSession?: boolean;
   isPlenumSession?: boolean;
-  categories?: any[];
+  categories?: Category[];
   lengthMinutes?: number;
   isLightningGroup?: boolean;
   lightningChildren?: AgendaSession[];
