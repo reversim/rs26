@@ -8,6 +8,6 @@ export function resolveTrack(session: {categories?: Category[]}): string | null 
   const item = trackCategory?.categoryItems?.[0];
   if (!item) return null;
   const raw = item.name;
-  if (raw === "AI Apps" || raw === "AI Infra") return "AI";
+  if (raw === "Frontend") return "Frontend/Product"
   return raw;
 }
