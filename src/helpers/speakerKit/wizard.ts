@@ -487,16 +487,44 @@ export function startWizard({
 
   // ---------------------------------------------------------------- banners
 
+  // A head and shoulders, for the sample session's photo.
+  const SILHOUETTE = `data:image/svg+xml,${encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">' +
+      '<rect width="400" height="400" fill="#10204a"/>' +
+      '<circle cx="200" cy="165" r="72" fill="#3b5590"/>' +
+      '<path d="M60 400C60 315 125 262 200 262S340 315 340 400Z" fill="#3b5590"/></svg>',
+  )}`;
+
+  // Stands in for the speaker's session before they've picked one. The day and room
+  // are a real session's, so it lays out like a real banner.
+  const SAMPLE: KitSession | undefined = SESSIONS[0] && {
+    ...SESSIONS[0],
+    slug: "sample",
+    title: "Your talk's title",
+    speakers: [
+      {
+        name: "Your Name",
+        tagLine: "Your tagline",
+        photo: SILHOUETTE,
+        twitter: null,
+      },
+    ],
+  };
+
   const banners = new Map<string, Promise<Banner>>();
 
   // Renders (once) one template for the current session and size.
-  function getBanner(
-    st: State,
+  const getBanner = (st: State, templateId: string, fmt: Format) =>
+    bannerFor(info(st), st.as!, templateId, fmt);
+
+  // The same for any session, seen by its speaker number `as`.
+  function bannerFor(
+    I: BannerInfo,
+    as: number,
     templateId: string,
     fmt: Format,
   ): Promise<Banner> {
-    const I = info(st);
-    const key = [I.session.slug, st.as, fmt, templateId].join("|");
+    const key = [I.session.slug, as, fmt, templateId].join("|");
     let banner = banners.get(key);
     if (!banner) {
       banner = (async () => {
@@ -784,16 +812,27 @@ export function startWizard({
 
   // ---- 0. a post or a sticker
 
-  function renderKind() {
+  // Each choice shows what it makes: a post is text over a banner, a sticker is
+  // just the image. The banner is the speaker's own if they've been here before
+  // (their latest pick), else a placeholder one.
+  function renderKind(_: State, token: number) {
+    const { w, h } = FORMATS.landscape;
     main.innerHTML = `
       <h1>What are you <em>posting</em>?</h1>
       <p class="sub">Tell people you're speaking at Reversim Summit 2026.</p>
       <div class="tiles kinds">
         <button class="tile" data-kind="post">
+          <span class="sample" aria-hidden="true">
+            <span class="lines"><span></span><span></span><span></span></span>
+            <canvas width="${w}" height="${h}"></canvas>
+          </span>
           <span class="name">A post about your talk</span>
           <span class="hint">A banner with your session, and a post text we wrote for you.</span>
         </button>
         <button class="tile" data-kind="sticker">
+          <span class="sample" aria-hidden="true">
+            <img src="${stickerSrc("linkedin")}" alt="" />
+          </span>
           <span class="name">An “I'm a speaker” sticker</span>
           <span class="hint">Just an image. No session to pick, no text to write.</span>
         </button>
@@ -802,6 +841,14 @@ export function startWizard({
       const b = (e.target as Element).closest<HTMLElement>(".tile");
       if (b) go({ kind: b.dataset.kind });
     };
+    const session = recent.read()[0]?.s ?? SAMPLE;
+    if (!session) return;
+    const ph = main.querySelector(".sample canvas")!;
+    bannerFor(describe(session, 0), 0, TEMPLATES[0].id, "landscape").then(
+      (banner) => {
+        if (token === renderToken) ph.replaceWith(banner.canvas);
+      },
+    );
   }
 
   // ---- 1. session
