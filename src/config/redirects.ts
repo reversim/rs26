@@ -15,8 +15,13 @@ export type RedirectRule = string | Redirect;
 // IMPORTANT: page load); keep its `redirects` in sync when changing this list.
 export const redirects: RedirectRule[] = [{ from: "/agenda", to: "/sessions" }];
 
+// Preview builds (`npm run deploy:preview`) render every hidden page so the team
+// can review it before launch.
+export const isPreview = import.meta.env.PUBLIC_PREVIEW === "true";
+
 // "/agenda" also matches nested routes like "/agenda/day-1".
 export function getRedirectTarget(pathname: string): string | undefined {
+  if (isPreview) return undefined;
   const path = pathname.replace(/\/+$/, "") || "/";
   const rule = redirects.find((entry) => {
     const from = typeof entry === "string" ? entry : entry.from;

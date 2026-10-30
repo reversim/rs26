@@ -2,7 +2,7 @@
 import Header from "../components/header/header.astro";
 import RegistrationBar from "../components/registrationBar.astro";
 import { Font } from "astro:assets";
-import { getRedirectTarget } from "../config/redirects";
+import { getRedirectTarget, isPreview } from "../config/redirects";
 import GoogleAnalytics from "../components/shared/googleAnalytics.astro";
 import "../styles/global.scss";
 
@@ -30,8 +30,8 @@ const canonicalUrl = new URL(pathname, Astro.site);
 const isNotFound = pathname === "/404";
 const redirectTarget = getRedirectTarget(pathname);
 const isBlocked = redirectTarget !== undefined;
-// Redirect stubs aren't real page views, and dev traffic stays out of GA.
-const loadAnalytics = import.meta.env.PROD && !isBlocked;
+// Redirect stubs aren't real page views, and dev/preview traffic stays out of GA.
+const loadAnalytics = import.meta.env.PROD && !isPreview && !isBlocked;
 
 const description =
   "Reversim Summit 2026 is Israel’s leading community-driven tech conference, bringing together developers, product managers, and data scientists for top-tier content and networking.";
@@ -81,6 +81,8 @@ const ogUrl = share ? canonicalUrl : "https://summit2026.reversim.com/";
         );
       }
     </script>
+
+    {isPreview && <meta name="robots" content="noindex, nofollow" />}
 
     {
       isBlocked && (
