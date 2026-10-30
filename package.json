@@ -7,6 +7,7 @@
     "build": "astro build",
     "astro-check": "astro check",
     "preview": "astro preview",
+    "deploy:preview": "node scripts/deploy-preview.mjs",
     "lint": "prettier --check .",
     "lint:fix": "prettier --write .",
     "astro": "astro"

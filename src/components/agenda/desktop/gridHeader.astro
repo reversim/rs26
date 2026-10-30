@@ -3,12 +3,14 @@ import DayHeader from "../dayHeader.astro";
 
 interface Props {
   dayLabel: string;
+  prevSlug?: string;
+  nextSlug?: string;
   desiredRooms: string[];
 }
-const { dayLabel, desiredRooms } = Astro.props;
+const { dayLabel, prevSlug, nextSlug, desiredRooms } = Astro.props;
 ---
 
-<DayHeader dayLabel={dayLabel} />
+<DayHeader dayLabel={dayLabel} prevSlug={prevSlug} nextSlug={nextSlug} />
 <div class="grid-header">
   <div class="time-column-header">Time</div>
   {

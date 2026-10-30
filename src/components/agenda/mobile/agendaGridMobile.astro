@@ -12,7 +12,11 @@ const { currentDay } = Astro.props;
 
 <div class="agenda-main agenda-container mobile-only">
   <div class="day-section active">
-    <DayHeader dayLabel={currentDay.label} />
+    <DayHeader
+      dayLabel={currentDay.label}
+      prevSlug={currentDay.prevSlug}
+      nextSlug={currentDay.nextSlug}
+    />
     {
       currentDay.grid.map((row, rowIndex) => (
         <div

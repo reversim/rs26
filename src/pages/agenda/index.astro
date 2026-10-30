@@ -12,9 +12,11 @@ import ScrollToNowButton from "../../components/agenda/scrollToNowButton.astro";
 
 const availableDays = await getAgendaDays();
 
+const todaySlug = new Date().toLocaleDateString("en-CA", {
+  timeZone: "Asia/Jerusalem",
+});
 const day =
-  availableDays.find((day) => day.date === new Date().toISOString()) ||
-  availableDays[0];
+  availableDays.find((day) => day.slug === todaySlug) || availableDays[0];
 
 const grid = buildDayGrid(day);
 const currentDay = {
@@ -38,7 +40,7 @@ const currentDay = {
 
     <FilterSessions currentDay={currentDay} />
 
-    <ScrollToNowButton currentDay={currentDay} />
+    <ScrollToNowButton currentDay={currentDay} availableDays={availableDays} />
 
     <!-- Desktop Grid-based Schedule View -->
     <AgendaGridDesktop currentDay={currentDay} />

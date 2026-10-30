@@ -6,7 +6,7 @@ import type {
 } from "../../types/agenda";
 import { resolveTrack } from "../agenda/resolveTrack";
 
-const AGENDA_URL = "https://sessionize.com/api/v2/fan6lxrk/view/GridSmart";
+const AGENDA_URL = "https://sessionize.com/api/v2/1saptwag/view/GridSmart";
 
 function formatDayLabel(dateStr: string) {
   const d = new Date(dateStr);
@@ -17,8 +17,11 @@ function formatDayLabel(dateStr: string) {
   });
 }
 
+// Sessionize dates are venue-local wall time without an offset
+// ("2026-11-30T00:00:00"), so take the calendar date as-is rather than
+// round-tripping through UTC, which shifts it a day back in Israel.
 function dateSlug(dateStr: string) {
-  return new Date(dateStr).toISOString().split("T")[0];
+  return dateStr.slice(0, 10);
 }
 
 export async function getAgendaDays(): Promise<AgendaDay[]> {
@@ -26,19 +29,15 @@ export async function getAgendaDays(): Promise<AgendaDay[]> {
   if (!res.ok) throw new Error("Failed fetching agenda");
   const raw: RawGridDay[] = await res.json();
 
-  // Stable desired order by room id (Main Hall, A2+A3, A4+A5, Dining Hall, Entrance)
-  const ROOM_ORDER = [59470, 59471, 59472, 70835, 70834];
-  const orderIndex = new Map(ROOM_ORDER.map((id, i) => [id, i] as const));
+  // Stable desired order by room name; Sessionize room ids change every edition.
+  const ROOM_ORDER = ["Main hall", "A2+A3", "A4+A5", "Dining Hall", "Entrance"];
+  const orderIndex = new Map(ROOM_ORDER.map((name, i) => [name, i] as const));
 
   const days: AgendaDay[] = raw.map((day) => ({
     ...day,
     rooms: [...day.rooms].sort((a, b) => {
-      const ai = orderIndex.has(a.id)
-        ? orderIndex.get(a.id)!
-        : ROOM_ORDER.length + a.id;
-      const bi = orderIndex.has(b.id)
-        ? orderIndex.get(b.id)!
-        : ROOM_ORDER.length + b.id;
+      const ai = orderIndex.get(a.name) ?? ROOM_ORDER.length + a.id;
+      const bi = orderIndex.get(b.name) ?? ROOM_ORDER.length + b.id;
       return ai - bi;
     }),
     slug: dateSlug(day.date),
@@ -46,6 +45,10 @@ export async function getAgendaDays(): Promise<AgendaDay[]> {
   }));
 
   days.sort((a, b) => a.slug.localeCompare(b.slug));
+  days.forEach((day, i) => {
+    day.prevSlug = days[i - 1]?.slug;
+    day.nextSlug = days[i + 1]?.slug;
+  });
   return days;
 }
 

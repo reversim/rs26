@@ -111,16 +111,10 @@ export function findSessionById(
   | AgendaSession
   | { id: string; room: string; isIgnites: boolean }
   | undefined {
-  if (sessionId === "lightning-2025-10-27") {
+  // Synthetic per-day Ignites block built by buildDayGrid().
+  if (sessionId.startsWith("lightning-")) {
     return {
-      id: "lightning-2025-10-27",
-      room: "Main hall",
-      isIgnites: true,
-    };
-  }
-  if (sessionId === "lightning-2025-10-28") {
-    return {
-      id: "lightning-2025-10-28",
+      id: sessionId,
       room: "Main hall",
       isIgnites: true,
     };
