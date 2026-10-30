@@ -41,7 +41,7 @@ const { currentDay, availableDays } = Astro.props;
 
     <FilterSessions currentDay={currentDay} />
 
-    <ScrollToNowButton currentDay={currentDay} />
+    <ScrollToNowButton currentDay={currentDay} availableDays={availableDays} />
 
     <!-- Desktop Grid-based Schedule View -->
     <AgendaGridDesktop currentDay={currentDay} />

@@ -1,17 +1,19 @@
 ---
-import type { CurrentDay } from "../../types/agenda";
+import type { AgendaDay, CurrentDay } from "../../types/agenda";
 
 interface Props {
   currentDay: CurrentDay;
+  availableDays: AgendaDay[];
 }
 
-const { currentDay } = Astro.props;
+const { currentDay, availableDays } = Astro.props;
 ---
 
 <button
   id="scroll-to-now-btn"
   class="scroll-to-now-btn"
   data-day-slug={currentDay.slug}
+  data-conference-days={availableDays.map((day) => day.slug).join(",")}
 >
   <span>What's on now?</span>
 </button>
@@ -98,8 +100,10 @@ const { currentDay } = Astro.props;
     const daySlug = button.getAttribute("data-day-slug");
     if (!daySlug) return;
 
-    // Show/hide button based on current real date (only 2025-10-27 or 2025-10-28)
-    const CONFERENCE_DAYS = ["2025-10-27", "2025-10-28"];
+    // Show/hide button based on current real date (only on conference days)
+    const CONFERENCE_DAYS = (
+      button.getAttribute("data-conference-days") ?? ""
+    ).split(",");
     const todaySlug = dateToSlug(toLocalDateOnly(new Date()));
     const isConferenceToday = CONFERENCE_DAYS.includes(todaySlug);
     if (!isConferenceToday) {

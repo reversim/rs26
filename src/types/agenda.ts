@@ -51,6 +51,8 @@ export interface RawGridDay {
 export interface AgendaDay extends RawGridDay {
   slug: string;
   label: string;
+  prevSlug?: string;
+  nextSlug?: string;
 }
 
 export interface Cell {
@@ -69,6 +71,8 @@ export interface CurrentDay {
   }[];
   slug: string;
   label: string;
+  prevSlug?: string;
+  nextSlug?: string;
   date: string;
   isDefault?: boolean;
   rooms: AgendaRoom[];

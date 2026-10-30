@@ -3,22 +3,25 @@ import Arrow from "../../assets/agenda/arrow.svg";
 
 interface Props {
   dayLabel: string;
+  prevSlug?: string;
+  nextSlug?: string;
 }
-const { dayLabel } = Astro.props;
-const displayNextDay = dayLabel.includes("27");
+const { dayLabel, prevSlug, nextSlug } = Astro.props;
 ---
 
 <div class="day-header">
   <span> {dayLabel}</span>
   {
-    displayNextDay ? (
-      <a href="/agenda/2025-10-28" class="next">
+    nextSlug ? (
+      <a href={`/agenda/${nextSlug}`} class="next">
         <Arrow class="arrow" />
       </a>
     ) : (
-      <a href="/agenda/2025-10-27" class="prev">
-        <Arrow class="arrow" />
-      </a>
+      prevSlug && (
+        <a href={`/agenda/${prevSlug}`} class="prev">
+          <Arrow class="arrow" />
+        </a>
+      )
     )
   }
 </div>

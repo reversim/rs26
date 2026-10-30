@@ -29,7 +29,12 @@ const isFullWidthSession = (cell: Cell) =>
         role="grid"
         aria-label={`Agenda for ${currentDay.label}`}
       >
-        <GridHeader dayLabel={currentDay.label} desiredRooms={desiredRooms} />
+        <GridHeader
+          dayLabel={currentDay.label}
+          prevSlug={currentDay.prevSlug}
+          nextSlug={currentDay.nextSlug}
+          desiredRooms={desiredRooms}
+        />
 
         <!-- Grid Body -->
         <div class="grid-body">
