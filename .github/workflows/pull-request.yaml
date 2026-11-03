@@ -47,11 +47,13 @@ jobs:
       - name: Test
         run: yarn test:ci
 
-      # The production build, which the preview build below doesn't cover.
+      # Pull requests from forks don't get secrets, so they can't deploy and
+      # only need to check that the site builds.
       - name: Build
+        if: github.event.pull_request.head.repo.full_name != github.repository
         run: yarn build
 
-      # Pull requests from forks don't get secrets, so they stop at validation.
+      # Builds the site as well, so same-repo pull requests build only once.
       - name: Deploy preview
         id: preview
         if: github.event.pull_request.head.repo.full_name == github.repository
