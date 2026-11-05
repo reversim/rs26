@@ -67,6 +67,10 @@ export const event = {
     // undefined to hide it.
     notice: undefined as string | undefined,
   },
+  agenda: {
+    label: "Go to agenda",
+    url: "/agenda",
+  },
   sponsor: {
     label: "Become a sponsor",
     url: "/sponsors",

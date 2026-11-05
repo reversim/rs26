@@ -47,6 +47,11 @@ import {
           </span>
         )
       }
+      <Button
+        variant="ghost"
+        text={event.agenda.label}
+        href={event.agenda.url}
+      />
     </div>
     <div class="meta-row">
       <span><b>{event.dates}</b></span>
@@ -578,10 +583,16 @@ import {
   }
 
   @media (max-width: $breakpoint-large) {
+    // A floor rather than a fixed height: on short phones the copy and CTAs
+    // need more than one screen, and `overflow: hidden` would clip them.
     .hero {
-      height: calc(100svh - var(--head-h, var(--header-height)));
-      min-height: 520px;
-      max-height: 1000px;
+      display: flex;
+      height: auto;
+      min-height: clamp(
+        520px,
+        calc(100svh - var(--head-h, var(--header-height))),
+        1000px
+      );
     }
 
     .hero-grid-fade {
@@ -593,6 +604,9 @@ import {
     }
 
     .hero-content {
+      flex: 1;
+      min-width: 0;
+      height: auto;
       max-width: none;
       align-items: center;
       text-align: center;
