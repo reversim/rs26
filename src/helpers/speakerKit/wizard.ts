@@ -12,10 +12,30 @@ import {
   quote,
   resolveFonts,
 } from "./draw";
+import {
+  LRM,
+  canShareFiles,
+  daysUntil,
+  esc,
+  fillLivePost,
+  livePost,
+  platformBases,
+  renderSteps,
+  shareBanner,
+  storedMap,
+  toBanner,
+  toast,
+  withWhatsappIcon,
+  xLength,
+  type ActionCtx,
+  type Banner,
+  type Lang,
+  type PlatformBase,
+  type PlatformId,
+} from "./share";
 import { TEMPLATES } from "./templates";
 import type { BannerInfo, Format, KitData, KitSession } from "./types";
 
-type PlatformId = "linkedin" | "x" | "facebook" | "whatsapp" | "story";
 type Step =
   | "kind"
   | "session"
@@ -27,8 +47,6 @@ type Step =
   | "sticker";
 /** What the speaker is making. */
 type Kind = "post" | "sticker";
-/** The post text's language. */
-type Lang = "he" | "en";
 
 /** The wizard's state, read from the URL. */
 interface State {
@@ -47,33 +65,6 @@ interface State {
 /** URL changes for go(): null removes a key. */
 type Changes = Partial<Record<keyof State, string | number | null>>;
 
-interface Banner {
-  canvas: HTMLCanvasElement;
-  blob: Blob | null;
-  blobPromise: Promise<Blob>;
-  fileName: string;
-}
-
-/** What a post step's action gets to work with. */
-interface ActionCtx {
-  I: BannerInfo;
-  banner: Banner;
-  /** The post text (the session link for stories). */
-  text: () => string;
-}
-
-interface Action {
-  label: string;
-  run: (ctx: ActionCtx) => boolean | Promise<boolean>;
-  hint: string;
-  /** Show the link this step sends, read-only, next to its button. (The post
-   * text needs no copy here: it's in the preview beside the steps.) */
-  payload?: "url";
-  /** Offer to copy the post text, in case the platform didn't pick it up. */
-  copyFallback?: boolean;
-}
-type PostStep = Action | { say: string };
-
 /** What the speaker adds in their own words; empty when they skip it. */
 interface OwnWords {
   /** A lesson or angle from the talk. */
@@ -83,20 +74,11 @@ interface OwnWords {
 }
 type OwnField = keyof OwnWords;
 
-interface Platform {
-  label: string;
-  icon: string;
-  format: Format;
-  note: string;
+interface Platform extends PlatformBase {
   /** The suggested post; null for stories, which have no caption. */
   text: ((I: BannerInfo, lang: Lang, own: OwnWords) => string) | null;
   /** Ask the speaker for OwnWords, which text() works in. */
   ownWords?: boolean;
-  /** Character limit, shown as a counter. */
-  limit?: number;
-  /** Lines a feed shows before "…see more" (on mobile); none if it shows it all. */
-  fold?: number;
-  steps: () => PostStep[];
 }
 
 export function startWizard({
@@ -136,34 +118,6 @@ export function startWizard({
 
   // ---------------------------------------------------------------- post texts
 
-  // X weighs most non-Latin code points and emoji as 2, and every URL as 23.
-  function xLength(text: string) {
-    let n = 0;
-    for (const ch of text.replace(/https?:\/\/\S+/g, "x".repeat(23))) {
-      const cp = ch.codePointAt(0)!;
-      const light =
-        cp <= 4351 ||
-        (cp >= 8192 && cp <= 8205) ||
-        (cp >= 8208 && cp <= 8223) ||
-        (cp >= 8242 && cp <= 8247);
-      n += light ? 1 : 2;
-    }
-    return n;
-  }
-
-  // Whole days from today to a "YYYY-MM-DD" date, in the viewer's time zone.
-  function daysUntil(date: string) {
-    const [y, m, d] = date.split("-").map(Number);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return Math.round(
-      (new Date(y, m - 1, d).getTime() - today.getTime()) / 864e5,
-    );
-  }
-
-  // A left-to-right mark: keeps a leading "#" or "@" on its word's left inside Hebrew text.
-  const LRM = "\u200E";
-
   const withNames = (I: BannerInfo, lead: string) =>
     I.others.length ? `${lead}${I.others.map((s) => s.name).join(" & ")}` : "";
 
@@ -171,109 +125,14 @@ export function startWizard({
   const quoteIn = (lang: Lang, title: string) =>
     lang === "he" ? `"${title}"` : quote(title);
 
-  // ---------------------------------------------------------------- actions
-
-  const canCopyImage =
-    typeof ClipboardItem !== "undefined" && !!navigator.clipboard?.write;
-  const canShareFiles = (() => {
-    try {
-      return !!navigator.canShare?.({
-        files: [new File([""], "x.png", { type: "image/png" })],
-      });
-    } catch {
-      return false;
-    }
-  })();
-
-  let toastTimer: ReturnType<typeof setTimeout> | undefined;
-  function toast(msg: string) {
-    const t = $("toast");
-    t.textContent = msg;
-    t.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
-  }
-
-  // Synchronous copy first, so a window.open() right after still counts as part of
-  // the click (popup blockers); the async clipboard API is the fallback.
-  async function copyText(text: string) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.append(ta);
-    ta.select();
-    let ok = false;
-    try {
-      ok = document.execCommand("copy");
-    } catch {}
-    ta.remove();
-    if (ok) return true;
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  function openTab(url: string) {
-    window.open(url, "_blank", "noopener");
-    return true;
-  }
-
-  async function copyBanner(ctx: ActionCtx) {
-    try {
-      // Hand over the promise directly; Safari requires the write to start in the click.
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": ctx.banner.blobPromise }),
-      ]);
-      toast("Banner copied.");
-      return true;
-    } catch {
-      toast("Couldn't copy the banner here. Downloading it instead.");
-      return downloadBanner(ctx);
-    }
-  }
-
-  function downloadBanner(ctx: ActionCtx) {
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(ctx.banner.blob!);
-    a.download = ctx.banner.fileName;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
-    return true;
-  }
-
-  const downloadStep = (hint?: string): Action => ({
-    label: "Download banner",
-    run: downloadBanner,
-    hint: hint ?? "Saves the banner as a PNG.",
-  });
-  // The first step of most platforms: get the banner onto the clipboard, or disk.
-  const bannerStep = (hint?: string): Action =>
-    canCopyImage
-      ? {
-          label: "Copy banner",
-          run: copyBanner,
-          hint: hint ?? "Puts the banner on your clipboard.",
-        }
-      : downloadStep(hint);
-  const pasteIt = canCopyImage
-    ? "Paste the banner into the post (Ctrl/⌘+V)"
-    : "Attach the banner you downloaded";
-
   // ---------------------------------------------------------------- platforms
   // Each platform picks the banner size, writes the post, and lists the actions
   // in the order that platform needs them.
 
+  const BASES = platformBases("session");
   const PLATFORMS: Record<PlatformId, Platform> = {
     linkedin: {
-      label: "LinkedIn",
-      icon: "linkedin",
-      format: "landscape",
-      note: "Landscape banner",
-      fold: 3,
+      ...BASES.linkedin,
       text(I, lang) {
         if (lang === "he")
           return (
@@ -289,37 +148,9 @@ export function startWizard({
           `If you're coming, come say hi.\n\nSession details and the full agenda: ${I.url}\n\n#RS26 #Reversim #ReversimSummit`
         );
       },
-      // LinkedIn's composer doesn't reliably take a pasted image, so the banner is
-      // always downloaded and attached.
-      steps: () => [
-        downloadStep(),
-        {
-          label: "Open LinkedIn",
-          // Unofficial but working pre-fill.
-          run: (ctx) =>
-            openTab(
-              `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(ctx.text())}`,
-            ),
-          hint: "Opens LinkedIn with your post filled in.",
-          // LinkedIn's pre-fill is unofficial, so offer the text by hand too.
-          copyFallback: true,
-        },
-        // The session link brings up a link preview, and while it's there LinkedIn
-        // hides the photo button (a post has a link preview or media, not both).
-        {
-          say: "Close the link preview (×) at the bottom of the post. The photo button shows up.",
-        },
-        // A pre-filled "@..." stays plain text; only LinkedIn's own picker makes a real tag.
-        {
-          say: "Attach the banner you downloaded with the photo button. Tag us (type @Reversim Summit and pick the page from the list), then post.",
-        },
-      ],
     },
     x: {
-      label: "X",
-      icon: "x-twitter",
-      format: "landscape",
-      note: "Landscape banner",
+      ...BASES.x,
       // X is for conversation: a short hook, something to react to, and a question
       // people can actually answer. Title, day and room are on the banner already.
       text(I, lang, own) {
@@ -365,27 +196,10 @@ export function startWizard({
           `${question || "Who else is coming? 👇"}\n\n${I.url}`
         );
       },
-      limit: 280,
       ownWords: true,
-      steps: () => [
-        bannerStep(),
-        {
-          label: "Open X",
-          run: (ctx) =>
-            openTab(
-              `https://x.com/intent/post?text=${encodeURIComponent(ctx.text())}`,
-            ),
-          hint: "Opens X with your post filled in.",
-        },
-        { say: `${pasteIt}, then post.` },
-      ],
     },
     facebook: {
-      label: "Facebook",
-      icon: "facebook",
-      format: "landscape",
-      note: "Landscape banner",
-      fold: 5,
+      ...BASES.facebook,
       text(I, lang) {
         if (lang === "he")
           return (
@@ -397,81 +211,24 @@ export function startWizard({
           `Coming to RS26? Come say hi 👋\n${I.url}\n\n#RS26 #Reversim`
         );
       },
-      // Facebook doesn't allow pre-filled post text, so the text goes via the clipboard first.
-      steps: () => [
-        {
-          label: "Copy text & open Facebook",
-          run: async (ctx) => {
-            const ok = await copyText(ctx.text());
-            openTab("https://www.facebook.com/");
-            return ok;
-          },
-          hint: "Facebook doesn't let other sites fill in a post, so this copies it. Start a new post and paste.",
-        },
-        bannerStep(
-          canCopyImage
-            ? "Then paste it into the same post."
-            : "Then attach it to the same post.",
-        ),
-        { say: "Post." },
-      ],
     },
     whatsapp: {
-      label: "WhatsApp",
-      icon: "whatsapp",
-      format: "square",
-      note: "Square banner",
+      ...BASES.whatsapp,
       // No emoji: WhatsApp Web/Desktop can turn emoji passed in a share link into "�".
       text(I, lang) {
         if (lang === "he")
           return `אני מרצה ב-*Reversim Summit 2026*${withNames(I, " יחד עם ")}!\n\n*${I.title}*\n${I.dayLongHe} · ${I.room}\n\n${I.url}`;
         return `I'm speaking at *Reversim Summit 2026*${withNames(I, " together with ")}!\n\n*${I.title}*\n${I.dayLong} · ${I.room}\n\n${I.url}`;
       },
-      steps: () => [
-        bannerStep(),
-        {
-          label: "Open WhatsApp",
-          run: (ctx) =>
-            openTab(
-              // Not wa.me: its redirect is the usual culprit for mangled characters.
-              `https://api.whatsapp.com/send?text=${encodeURIComponent(ctx.text())}`,
-            ),
-          hint: "Opens WhatsApp with your message filled in. You pick the chat.",
-        },
-        { say: `${pasteIt}, then send.` },
-      ],
     },
     story: {
-      label: "Story",
-      icon: "instagram",
-      format: "story",
-      note: "Instagram · WhatsApp Status",
+      ...BASES.story,
       // Stories have no caption; the link goes on a sticker instead.
       text: null,
-      steps: () => [
-        {
-          label: "Download banner",
-          run: downloadBanner,
-          hint: "A story-sized PNG.",
-        },
-        {
-          label: "Copy session link",
-          run: async (ctx) =>
-            (await copyText(ctx.I.url)) && (toast("Link copied."), true),
-          hint: "For Instagram's Link sticker:",
-          payload: "url",
-        },
-        { say: "Post it to your story." },
-      ],
     },
   };
 
-  // Generic chat bubble: the site's icon set has no WhatsApp glyph.
-  const ICONS: Record<string, string> = {
-    ...icons,
-    whatsapp:
-      '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1C4.13 1 1 3.69 1 7c0 1.62.75 3.09 1.97 4.17L2.3 15l3.73-1.86c.62.15 1.28.23 1.97.23 3.87 0 7-2.69 7-6S11.87 1 8 1z"/></svg>',
-  };
+  const ICONS: Record<string, string> = withWhatsappIcon(icons);
 
   // The "I'm a speaker" stickers, in public/speaker-kit/stickers: the same image for
   // everyone, so they need no session. Only the platforms with a sticker size.
@@ -546,22 +303,10 @@ export function startWizard({
           logo: logoImg,
           photos,
         });
-        const rendered: Banner = {
+        return toBanner(
           canvas,
-          blob: null,
-          blobPromise: new Promise((resolve, reject) =>
-            canvas.toBlob(
-              (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
-              "image/png",
-            ),
-          ),
-          fileName: `rs26-${I.session.slug.slice(0, 60)}-${templateId}-${fmt}.png`,
-        };
-        rendered.blobPromise.then(
-          (b) => (rendered.blob = b),
-          () => {},
+          `rs26-${I.session.slug.slice(0, 60)}-${templateId}-${fmt}.png`,
         );
-        return rendered;
       })();
       banners.set(key, banner);
     }
@@ -575,30 +320,6 @@ export function startWizard({
   // Every id the wizard looks up (main, progress, toast) is in the page's static markup.
   const $ = (id: string) => document.getElementById(id)!;
   const main = $("main");
-  // A Map kept in sessionStorage, so a reload doesn't lose what's in it.
-  function storedMap(storageKey: string) {
-    const map = new Map<string, string>(
-      (() => {
-        try {
-          return JSON.parse(sessionStorage.getItem(storageKey) ?? "[]");
-        } catch {
-          return [];
-        }
-      })(),
-    );
-    return {
-      get: (k: string) => map.get(k),
-      has: (k: string) => map.has(k),
-      // null removes the entry.
-      set(k: string, value: string | null) {
-        if (value === null) map.delete(k);
-        else map.set(k, value);
-        try {
-          sessionStorage.setItem(storageKey, JSON.stringify([...map]));
-        } catch {}
-      },
-    };
-  }
   // Edited post texts and the speaker's own words, per session + speaker + platform + language.
   const edited = storedMap("rs26-speaker-kit-edits");
   const ownWords = storedMap("rs26-speaker-kit-own-words");
@@ -622,32 +343,6 @@ export function startWizard({
     edited.set(textKey(st), value);
   let renderToken = 0;
   let previewUrl: string | null = null;
-
-  const ENTITIES: Record<string, string> = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-  };
-  function esc(s: string) {
-    return String(s).replace(/[&<>"]/g, (c) => ENTITIES[c]);
-  }
-
-  // A post's text as a feed shows it: each line sets its own direction, like the
-  // platforms do, and links, hashtags and mentions are highlighted.
-  function postHtml(text: string) {
-    return text
-      .split("\n")
-      .map((line) =>
-        line.trim()
-          ? `<div dir="auto">${esc(line).replace(
-              /https?:\/\/[^\s<]+|[#@][\w-]+/g,
-              (m) => `<span class="lp-link">${m}</span>`,
-            )}</div>`
-          : `<div class="lp-gap"></div>`,
-      )
-      .join("");
-  }
 
   function readState(): State {
     const p = new URLSearchParams(location.search);
@@ -1072,47 +767,16 @@ export function startWizard({
       <input id="own-${field}" class="own" data-field="${field}" dir="auto" lang="${lang}" maxlength="140" placeholder="${esc(placeholder)}" />`;
   }
 
-  // The post as a feed would show it: speaker, text, banner. See postHtml().
-  // Whatever's in footer goes under it.
-  function livePost(st: State, I: BannerInfo, footer = "") {
-    const p = platformOf(st);
-    return `<aside class="livepost" aria-label="Post preview">
-      <div class="fieldlabel"><span>Preview</span><span>Approximate · on mobile</span></div>
-      <div class="lp" data-platform="${st.platform}">
-        <div class="lp-head">
-          <img class="lp-avatar" src="${esc(I.speakers[0].photo)}" alt="" crossorigin="anonymous" />
-          <span class="lp-name">${esc(I.speakers[0].name)}</span>
-          <span class="lp-icon">${ICONS[p.icon] ?? ""}</span>
-        </div>
-        <div class="lp-text"></div>
-        <button class="lp-more" hidden>…see more</button>
-        <img class="lp-banner" src="${previewUrl}" alt="Your banner" />
-      </div>
-      ${footer}
-    </aside>`;
-  }
-
-  // Wires the livePost() on the page; the returned function shows a text in it.
-  // Feeds that fold long posts show the fold, until "…see more" is clicked, like
-  // the real thing.
-  function fillLivePost(p: Platform) {
-    const lpText = main.querySelector<HTMLElement>(".lp-text")!;
-    const more = main.querySelector<HTMLElement>(".lp-more")!;
-    let expanded = false;
-    let shown = "";
-    const show = (text: string) => {
-      shown = text;
-      lpText.innerHTML = postHtml(text);
-      if (!p.fold) return;
-      lpText.style.maxHeight = expanded ? "" : `${p.fold * 1.4}em`;
-      more.hidden = expanded || lpText.scrollHeight <= lpText.clientHeight + 1;
-    };
-    more.onclick = () => {
-      expanded = true;
-      show(shown);
-    };
-    return show;
-  }
+  // The post as a feed would show it, posted by this speaker. See share.ts.
+  const speakerPost = (st: State, I: BannerInfo, footer = "") =>
+    livePost({
+      platform: st.platform!,
+      icon: ICONS[platformOf(st).icon] ?? "",
+      avatar: I.speakers[0].photo,
+      name: I.speakers[0].name,
+      bannerUrl: previewUrl!,
+      footer,
+    });
 
   async function renderText(st: State, token: number) {
     const p = platformOf(st);
@@ -1144,13 +808,13 @@ export function startWizard({
              <button class="ghost reset">Reset to our suggestion</button>
            </div>
          </div>
-         ${livePost(st, I, `<div class="row end"><button class="next">Looks good →</button></div>`)}
+         ${speakerPost(st, I, `<div class="row end"><button class="next">Looks good →</button></div>`)}
        </div>`,
     );
     const ta = main.querySelector("textarea")!;
     const count = main.querySelector(".count")!;
     // The preview follows the text as it changes.
-    const renderPreview = fillLivePost(p);
+    const renderPreview = fillLivePost(main, p.fold);
     const update = () => {
       renderPreview(ta.value);
       if (!p.limit) return;
@@ -1210,7 +874,7 @@ export function startWizard({
     const banner = await bannerPreview(st, token);
     if (!banner) return;
     const text = p.text ? postText(st, I) : null;
-    const ctx: ActionCtx = { I, banner, text: () => text ?? I.url };
+    const ctx: ActionCtx = { url: I.url, banner, text: () => text ?? I.url };
 
     main.append(
       p.text ? backButton({ ready: null }) : backButton({ design: null }),
@@ -1230,71 +894,19 @@ export function startWizard({
            }
            <ol class="steps"></ol>
          </div>
-         ${text === null ? "" : livePost(st, I)}
+         ${text === null ? "" : speakerPost(st, I)}
        </div>
        <div class="more">
          <button class="other">↻ Post on another platform too</button>
          <button class="other to-sticker">Get an “I'm a speaker” sticker too</button>
        </div>`,
     );
-    if (text !== null) fillLivePost(p)(text);
+    if (text !== null) fillLivePost(main, p.fold)(text);
 
-    const ol = main.querySelector(".steps")!;
-    for (const s of p.steps()) {
-      const li = document.createElement("li");
-      if ("say" in s) {
-        li.innerHTML = `<span class="say">${esc(s.say)}</span>`;
-        ol.append(li);
-        continue;
-      }
-      const b = document.createElement("button");
-      b.className = "act";
-      b.textContent = s.label;
-      b.onclick = async () => {
-        if (await s.run(ctx)) li.classList.add("done");
-      };
-      // Button and hint share the column next to the step number. A step that
-      // sends the link shows it, read-only, in the same card.
-      const body = document.createElement("div");
-      if (s.payload) body.className = "carry";
-      body.append(b);
-      body.insertAdjacentHTML(
-        "beforeend",
-        `<span class="hint">${esc(s.hint)}</span>`,
-      );
-      if (s.copyFallback) {
-        body.insertAdjacentHTML(
-          "beforeend",
-          `<div class="row"><button class="ghost copy">Text didn't show up? Copy it</button></div>`,
-        );
-        body.querySelector<HTMLElement>(".copy")!.onclick = async () => {
-          if (await copyText(ctx.text()))
-            toast(`Text copied. Paste it into ${p.label}.`);
-        };
-      }
-      if (s.payload === "url") {
-        body.insertAdjacentHTML(
-          "beforeend",
-          `<div class="payload url">${esc(I.url)}</div>`,
-        );
-      }
-      li.append(body);
-      ol.append(li);
-    }
-
-    main.querySelector(".share")?.addEventListener("click", async () => {
-      const file = new File([banner.blob!], banner.fileName, {
-        type: "image/png",
-      });
-      try {
-        await navigator.share(
-          text ? { files: [file], text } : { files: [file] },
-        );
-      } catch (err) {
-        if ((err as Error).name !== "AbortError")
-          toast("Sharing didn't work here. Use the steps below.");
-      }
-    });
+    renderSteps(main.querySelector(".steps")!, p.steps(), ctx, p.label);
+    main
+      .querySelector(".share")
+      ?.addEventListener("click", () => shareBanner(banner, text));
     main.querySelector<HTMLElement>(".other")!.onclick = () =>
       go({ platform: null, design: null, ready: null });
     main.querySelector<HTMLElement>(".to-sticker")!.onclick = () =>

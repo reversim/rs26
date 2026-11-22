@@ -1,0 +1,75 @@
+---
+// Moderator kit: moderators pick themselves and get ready-made banners of their
+// track's lineup plus a post, for any platform. Shared with moderators directly:
+// it's kept out of search engines and AI crawlers (noindex here, an X-Robots-Tag
+// header in firebase.json, robots.txt, and excluded from the sitemap).
+//
+// This is only the page shell: the wizard builds every step at runtime
+// (src/helpers/moderatorKit/wizard.ts), so its styles are global: the speaker kit's,
+// src/styles/speakerKit.scss.
+import { Font } from "astro:assets";
+import { getModKitData } from "../../helpers/moderatorKit/data";
+import logo from "../../assets/logo-white.png";
+import "../../styles/speakerKit.scss";
+
+const data = await getModKitData();
+// Escape "<" so session text can never end the inline JSON block early.
+// (Don't spell out the tag name in comments here: Vite's dependency scan finds
+// script tags with a plain-text search of this file.)
+const json = JSON.stringify(data).replace(/</g, "\\u003c");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Moderator Kit · Reversim Summit 2026</title>
+    <meta
+      name="description"
+      content="Make a banner and a post for the Reversim Summit 2026 track you moderate."
+    />
+    <link rel="icon" type="image/png" href="/favicon-dark-mode.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/favicon-light-mode.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <Font cssVariable="--font-space-grotesk" preload />
+    <Font cssVariable="--font-hanken-grotesk" preload />
+    <Font cssVariable="--font-jetbrains-mono" preload />
+    <!-- Fallbacks for Hebrew titles and emoji, used only on this page. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Noto+Color+Emoji&display=block"
+    />
+    <script type="application/json" id="moderator-kit-data" set:html={json} />
+  </head>
+  <body>
+    <header class="top">
+      <img
+        src={logo.src}
+        width={logo.width}
+        height={logo.height}
+        alt="RS26 · Reversim Winter Summit"
+      />
+      <span class="tag">Moderator kit</span>
+      <nav aria-label="Progress">
+        <ol class="progress" id="progress"></ol>
+      </nav>
+    </header>
+    <main id="main"></main>
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      import { startModeratorWizard } from "../../helpers/moderatorKit/wizard";
+
+      const data = document.getElementById("moderator-kit-data")!.textContent!;
+      startModeratorWizard(JSON.parse(data));
+    </script>
+  </body>
+</html>

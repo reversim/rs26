@@ -1,4 +1,4 @@
-# AI crawlers: keep out of the speaker kit (shared with speakers directly).
+# AI crawlers: keep out of the speaker and moderator kits (shared directly).
 User-agent: GPTBot
 User-agent: ChatGPT-User
 User-agent: OAI-SearchBot
@@ -16,6 +16,7 @@ User-agent: meta-externalagent
 User-agent: Amazonbot
 User-agent: cohere-ai
 Disallow: /speaker-kit
+Disallow: /moderator-kit
 
 # Everyone else, including search engines: the kit page itself says noindex,
 # which they can only see if they're allowed to fetch it.
