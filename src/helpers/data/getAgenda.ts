@@ -4,6 +4,7 @@ import type {
   Cell,
   RawGridDay,
 } from "../../types/agenda";
+import { roomLabel } from "../../config/rooms";
 import { resolveTrack } from "../agenda/resolveTrack";
 
 const AGENDA_URL = "https://sessionize.com/api/v2/1saptwag/view/GridSmart";
@@ -35,11 +36,19 @@ export async function getAgendaDays(): Promise<AgendaDay[]> {
 
   const days: AgendaDay[] = raw.map((day) => ({
     ...day,
-    rooms: [...day.rooms].sort((a, b) => {
-      const ai = orderIndex.get(a.name) ?? ROOM_ORDER.length + a.id;
-      const bi = orderIndex.get(b.name) ?? ROOM_ORDER.length + b.id;
-      return ai - bi;
-    }),
+    rooms: [...day.rooms]
+      .sort((a, b) => {
+        const ai = orderIndex.get(a.name) ?? ROOM_ORDER.length + a.id;
+        const bi = orderIndex.get(b.name) ?? ROOM_ORDER.length + b.id;
+        return ai - bi;
+      })
+      .map((room) => ({
+        ...room,
+        name: roomLabel(room.name),
+        sessions: room.sessions.map((s) =>
+          s.room ? { ...s, room: roomLabel(s.room) } : s,
+        ),
+      })),
     slug: dateSlug(day.date),
     label: formatDayLabel(day.date),
   }));

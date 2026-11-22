@@ -4,12 +4,13 @@ import {
   getSessionDuration,
 } from "../../../helpers/agenda/agendaHelpers";
 import { getTrackName } from "../../../helpers/data/getAgenda";
+import { MAIN_HALL } from "../../../config/rooms";
 import type { Cell, CurrentDay } from "../../../types/agenda";
 import AgendaCell from "./agendaCell.astro";
 import FullWidthRow from "./fullWidthRow.astro";
 import GridHeader from "./gridHeader.astro";
 import TimeColumn from "./timeColumn.astro";
-const desiredRooms = ["Main hall", "A2+A3", "A4+A5"];
+const desiredRooms = [MAIN_HALL, "A2+A3", "A4+A5"];
 
 interface Props {
   currentDay: CurrentDay;

@@ -1,5 +1,6 @@
 import type { SessionGroup, Talk } from "../../types/session";
 import speakersDay from "../../data/speakersDay.json";
+import { roomLabel } from "../../config/rooms";
 
 export async function getSessions() {
   const result = await fetch(
@@ -15,7 +16,7 @@ export async function getSessions() {
         speakersDay.find(
           (s: { talkId: number }) => String(s.talkId) === talk.id,
         ) || talk;
-      rawSessionsList.push({ ...talk, day });
+      rawSessionsList.push({ ...talk, day, room: roomLabel(talk.room) });
     });
   });
   return { rawData: data, rawSessionsList };
