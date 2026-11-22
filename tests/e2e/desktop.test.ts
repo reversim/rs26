@@ -18,6 +18,7 @@ import {
   win,
 } from "./support/agenda";
 import { feed } from "./support/feed";
+import { roomLabel } from "../../src/config/rooms";
 
 // Smoke tests for the desktop grid; the other files cover behaviour in full on
 // mobile, the main target.
@@ -147,7 +148,9 @@ describe("agenda on desktop", () => {
   it("the Ignites block's event has the room its talks share", async () => {
     await openAgenda(path);
     const url = await openedUrl(IGNITES);
-    expect(url.searchParams.get("location")).toBe(day.ignites[0].room);
+    expect(url.searchParams.get("location")).toBe(
+      roomLabel(day.ignites[0].room),
+    );
   });
 
   it("What's on now? scrolls to the current slot", async () => {

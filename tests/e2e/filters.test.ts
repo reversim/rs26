@@ -12,12 +12,14 @@ import {
   win,
 } from "./support/agenda";
 import { feed, type FeedDay } from "./support/feed";
+import { MAIN_HALL, roomLabel } from "../../src/config/rooms";
 
 const DIMMED = 0.2;
 const SHOWN = 1;
 
 interface Selection {
   themes?: string[];
+  // Rooms as the site labels them, which is what the filter options show.
   rooms?: string[];
 }
 
@@ -26,7 +28,7 @@ function matches(day: FeedDay, id: string, selection: Selection): boolean {
   const { room, track } = factsFor(day, id);
   return (
     (themes.length === 0 || (track !== null && themes.includes(track))) &&
-    (rooms.length === 0 || rooms.includes(room))
+    (rooms.length === 0 || rooms.includes(roomLabel(room)))
   );
 }
 
@@ -62,7 +64,9 @@ describe.for(feed.map((day) => [day.slug, day] as const))(
             `#${group}-filters input`,
           ),
         ].map((el) => el.value);
-      const rooms = [...new Set(day.sessions.map((s) => s.room))].sort();
+      const rooms = [
+        ...new Set(day.sessions.map((s) => roomLabel(s.room))),
+      ].sort();
       expect(values("theme")).toEqual(tracksOf(day));
       expect(values("room")).toEqual(rooms);
       expect(values("favorite")).toEqual(["favorite"]);
@@ -118,8 +122,8 @@ describe("agenda filters", () => {
     await openAgenda(path);
     await filtersButton().click();
     await filter(sampleTheme).click();
-    await filter("Main hall").click();
-    await expectFiltered(day, { themes: [sampleTheme], rooms: ["Main hall"] });
+    await filter(MAIN_HALL).click();
+    await expectFiltered(day, { themes: [sampleTheme], rooms: [MAIN_HALL] });
     await expect.element(filtersButton("(2) Filters")).toBeVisible();
   });
 
