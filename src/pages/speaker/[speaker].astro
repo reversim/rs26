@@ -12,6 +12,8 @@ import { formatTime } from "../../helpers/agenda/agendaHelpers";
 import { supportedSocials } from "../../config/socials";
 import Layout from "../../layouts/Layout.astro";
 import { SITE_NAME, ogCardPath, withDirectionMark } from "../../helpers/meta";
+import { speakerSchema } from "../../helpers/agents/schema";
+import type { Talk } from "../../types/session";
 import slugify from "slug";
 import {
   AnalyticsEvent,
@@ -50,7 +52,18 @@ export const getStaticPaths = (async () => {
       params: {
         speaker: speaker.slug,
       },
-      props: { ...speaker, talks },
+      props: {
+        ...speaker,
+        talks,
+        // Built here, where the full sessions are in scope: `talks` above is a
+        // trimmed shape for rendering and lacks the title and room.
+        schema: speakerSchema({
+          speaker,
+          talks: (speaker.sessions || [])
+            .map((talk) => sessionsById.get(String(talk.id)))
+            .filter((session): session is Talk => Boolean(session)),
+        }),
+      },
     };
   });
 }) satisfies GetStaticPaths;
@@ -68,6 +81,7 @@ const {
   links,
   talks,
   day,
+  schema,
 } = Astro.props;
 
 const socialLinks: Record<string, string> = {};
@@ -111,6 +125,7 @@ const shareDescription = [
 
 <Layout
   havePaddingBottom={true}
+  schema={schema}
   share={{
     title: shareTitle,
     description: shareDescription,

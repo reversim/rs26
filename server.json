@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.reversim.summit2026/agenda",
+  "title": "Reversim Summit 2026 agenda",
+  "description": "Plan your two days at Reversim Summit 2026 (Nov 30 – Dec 1, 2026, Tel Aviv): search the agenda, get talks ranked against your interests, build a clash-free schedule and export it to your calendar. Read-only, free, no login.",
+  "version": "1.0.0",
+  "websiteUrl": "https://summit2026.reversim.com/mcp-guide",
+  "repository": {
+    "url": "https://github.com/reversim/rs26",
+    "source": "github",
+    "subfolder": "functions"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://summit2026.reversim.com/mcp"
+    }
+  ]
+}

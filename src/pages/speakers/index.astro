@@ -6,8 +6,11 @@ import FilterTabs from "../../components/shared/filterTabs.astro";
 import PageTitle from "../../components/shared/pageTitle.astro";
 import type { TeamMember } from "../../types/team";
 import { event } from "../../config/event";
+import { speakerListSchema } from "../../helpers/agents/schema";
 
 const speakers = await getSpeakers();
+
+const schema = speakerListSchema(speakers);
 
 const speakerCards: TeamMember[] = speakers.map((speaker) => ({
   id: speaker.id.toString(),
@@ -21,7 +24,7 @@ const speakerCards: TeamMember[] = speakers.map((speaker) => ({
 }));
 ---
 
-<Layout havePaddingBottom={true}>
+<Layout havePaddingBottom={true} schema={schema}>
   <PageTitle
     eyebrow="Who's speaking"
     title="Our Speakers"
