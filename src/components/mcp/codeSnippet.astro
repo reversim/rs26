@@ -1,0 +1,151 @@
+---
+import {
+  AnalyticsEvent,
+  ButtonId,
+  analyticsAttrs,
+} from "../../config/analytics";
+
+interface Props {
+  /** The text shown, and the exact text the copy button puts on the clipboard. */
+  code: string;
+  /** Names what is being copied, for the button's accessible label. */
+  label: string;
+  /** `address` highlights the one snippet visitors must copy: the endpoint. */
+  variant?: "address";
+}
+
+const { code, label, variant } = Astro.props;
+---
+
+<div class:list={["snippet", variant]}>
+  <pre><code>{code}</code></pre>
+  <!--
+    Hidden until the script confirms the Clipboard API is usable, so a visitor
+    without JS (or on a browser that blocks it) never sees a dead button — the
+    text stays selectable either way.
+  -->
+  <button
+    class="copy"
+    type="button"
+    hidden
+    aria-label={`Copy ${label}`}
+    {...analyticsAttrs(AnalyticsEvent.ButtonClick, {
+      button_id: ButtonId.McpCopySnippet,
+    })}
+  >
+    <span class="copy-label" aria-live="polite">Copy</span>
+  </button>
+</div>
+
+<style lang="scss">
+  .snippet {
+    position: relative;
+    margin: 12px 0 0;
+  }
+
+  pre {
+    margin: 0;
+    // Room for the button, so a long first line never runs under it.
+    padding: 14px 84px 14px 16px;
+    overflow-x: auto;
+    background: var(--rs26-navy-3);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: var(--rs26-r-sm);
+  }
+
+  code {
+    font-family: var(--rs26-mono);
+    font-size: 0.86rem;
+    color: var(--rs26-white);
+    // Wrap rather than scroll: these are things to copy, and a command running
+    // off the edge of a phone screen reads as truncated. Indentation is kept.
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .copy {
+    position: absolute;
+    top: 8px;
+    inset-inline-end: 8px;
+    padding: 6px 12px;
+    font-family: var(--rs26-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--rs26-text);
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: var(--rs26-r-sm);
+    cursor: pointer;
+    transition: color 0.15s var(--rs26-ease);
+
+    &:hover {
+      color: var(--rs26-white);
+      border-color: var(--rs26-blue);
+    }
+
+    &[hidden] {
+      display: none;
+    }
+
+    &[data-state="copied"] {
+      color: var(--rs26-mint);
+      border-color: var(--rs26-mint);
+    }
+
+    &[data-state="failed"] {
+      color: var(--rs26-pink);
+      border-color: var(--rs26-pink);
+    }
+  }
+
+  .address {
+    pre {
+      background: var(--rs26-panel-2);
+      border-color: var(--rs26-blue);
+    }
+
+    code {
+      font-size: clamp(0.8rem, 2.6vw, 1rem);
+      // The one string people copy, so make it easy to select by hand too.
+      user-select: all;
+    }
+  }
+</style>
+
+<script>
+  // How long the button reports the outcome before going back to "Copy".
+  const FEEDBACK_MS = 2000;
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    ".snippet .copy",
+  )) {
+    const code = button.parentElement?.querySelector("code");
+    // Without a usable clipboard the button would do nothing, so leave it hidden.
+    if (!code || !navigator.clipboard) continue;
+
+    const label = button.querySelector<HTMLElement>(".copy-label");
+    let timer: ReturnType<typeof setTimeout>;
+
+    const report = (state: "copied" | "failed", text: string) => {
+      button.dataset.state = state;
+      if (label) label.textContent = text;
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        delete button.dataset.state;
+        if (label) label.textContent = "Copy";
+      }, FEEDBACK_MS);
+    };
+
+    button.hidden = false;
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(code.textContent ?? "");
+        report("copied", "Copied");
+      } catch {
+        // Permission denied or an insecure context: say so rather than
+        // claiming success. The text is still there to select by hand.
+        report("failed", "Press ⌘C");
+      }
+    });
+  }
+</script>

@@ -45,6 +45,7 @@ export const ButtonId = {
   NavMenuToggle: "nav_menu_toggle",
   CarouselPrev: "carousel_prev",
   CarouselNext: "carousel_next",
+  McpCopySnippet: "mcp_copy_snippet",
 } as const;
 
 type ValueOf<T> = T[keyof T];

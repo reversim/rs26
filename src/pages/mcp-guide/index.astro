@@ -1,0 +1,367 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CodeSnippet from "../../components/mcp/codeSnippet.astro";
+import { event } from "../../config/event";
+
+// The MCP endpoint is served by the Cloud Function in `functions/`, which
+// `firebase.json` rewrites onto this same domain. Keep this in step with that
+// rewrite: it is the one string visitors copy into their AI client.
+const ENDPOINT = "https://summit2026.reversim.com/mcp";
+
+const TOOLS = [
+  {
+    name: "recommend_sessions",
+    what: "Ranks talks against your interests and role, with abstracts, so your assistant can pick the ones that actually fit.",
+  },
+  {
+    name: "build_schedule",
+    what: "Builds a clash-free plan for both days: your must-sees first, the gaps filled by interest, with alternatives and conflicts listed.",
+  },
+  {
+    name: "search_sessions",
+    what: "Free-text search over titles, abstracts, tracks and speakers, filtered by day, track, room or time window.",
+  },
+  {
+    name: "get_sessions",
+    what: "Full details for specific talks: abstract, link and speaker bios.",
+  },
+  {
+    name: "find_speakers",
+    what: "Finds speakers by name, or by words in their bio — handy for spotting everyone from one company.",
+  },
+  {
+    name: "whats_on",
+    what: "What is running right now and what starts next, in venue time. Most useful during the conference itself.",
+  },
+  {
+    name: "get_conference_info",
+    what: "Dates, tracks with talk counts, rooms and the registration link.",
+  },
+  {
+    name: "export_calendar",
+    what: "Turns your plan into an .ics file for Google Calendar, Outlook or Apple Calendar.",
+  },
+];
+
+const EXAMPLES = [
+  "I'm a backend engineer into LLM agents and observability. What should I see on day 1?",
+  "Build me a schedule for both days, I don't want to miss the keynotes.",
+  "Is anyone from my company speaking?",
+  "What's on right now?",
+  "Add my plan to my calendar.",
+];
+
+const JSON_CONFIG = `{
+  "mcpServers": {
+    "reversim": {
+      "url": "${ENDPOINT}"
+    }
+  }
+}`;
+---
+
+<Layout
+  share={{
+    title: "Reversim 2026 in your AI assistant",
+    description:
+      "Connect Claude, Cursor or any MCP client to the Reversim Summit 2026 agenda and plan your two days by chatting.",
+  }}
+>
+  <article class="mcp">
+    <header class="intro">
+      <p class="eyebrow">For attendees</p>
+      <h2>{event.shortName} in your AI assistant</h2>
+      <p class="lede">
+        Reversim Summit 2026 runs an <a
+          href="https://modelcontextprotocol.io"
+          target="_blank"
+          rel="noopener">MCP</a
+        > server: a small service that lets your AI assistant read the agenda. Connect
+        it once, then plan your two days by chatting — ask what fits your work, get
+        a clash-free schedule, and export it to your calendar.
+      </p>
+      <p class="note">
+        Free, no account, and read-only: it can look things up, never change
+        anything. The talks are in Hebrew; this server and its answers are in
+        English.
+      </p>
+    </header>
+
+    <section>
+      <h3>The address</h3>
+      <p>This is the only thing you need. Copy it:</p>
+      <CodeSnippet
+        code={ENDPOINT}
+        label="the server address"
+        variant="address"
+      />
+    </section>
+
+    <section>
+      <h3>Connecting</h3>
+
+      <div class="card">
+        <h4>Claude — web or desktop</h4>
+        <ol>
+          <li>Open <strong>Settings → Connectors</strong>.</li>
+          <li>Click <strong>Add custom connector</strong>.</li>
+          <li>
+            Paste the address above, give it a name like <em>Reversim</em>, and
+            save.
+          </li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h4>Claude Code</h4>
+        <p>One command:</p>
+        <CodeSnippet
+          code={`claude mcp add --transport http reversim ${ENDPOINT}`}
+          label="the Claude Code command"
+        />
+      </div>
+
+      <div class="card">
+        <h4>Cursor, VS Code and other clients</h4>
+        <p>
+          Add the server to your client's MCP configuration file. Most clients
+          accept this shape:
+        </p>
+        <CodeSnippet code={JSON_CONFIG} label="the configuration" />
+        <p class="hint">
+          The exact file and wording differ between clients — check your
+          client's own MCP documentation if it expects something slightly
+          different. Any client that speaks MCP over HTTP will work.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h3>What to ask</h3>
+      <p>Once it is connected, talk to your assistant normally:</p>
+      <ul class="examples">
+        {EXAMPLES.map((example) => <li>{example}</li>)}
+      </ul>
+      <p class="hint">
+        Your assistant decides which tools to call. You never need to name them.
+      </p>
+    </section>
+
+    <section>
+      <h3>What it can do</h3>
+      <dl class="tools">
+        {
+          TOOLS.map((tool) => (
+            <div class="tool">
+              <dt>{tool.name}</dt>
+              <dd>{tool.what}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="hint">
+        It also publishes the whole agenda as a single document, and a
+        ready-made prompt that interviews you briefly and then builds your plan.
+      </p>
+    </section>
+
+    <section>
+      <h3>Good to know</h3>
+      <ul class="facts">
+        <li>
+          <strong>The agenda is live.</strong> It comes from the same source as this
+          website, so a change to a talk or a room shows up within minutes.
+        </li>
+        <li>
+          <strong>Nothing about you is stored.</strong> The server keeps no accounts
+          and no history. It only counts which tools get used, and never records
+          what you typed.
+        </li>
+        <li>
+          <strong>Only public information.</strong> Exactly what is on this website
+          — talks, speakers, rooms and times. Nothing else is reachable through it.
+        </li>
+        <li>
+          <strong>Treat suggestions as suggestions.</strong> Rankings come from keyword
+          matching, and your assistant reads the abstracts to decide. Check the <a
+            href="/agenda">agenda</a
+          > before you commit to a plan.
+        </li>
+      </ul>
+    </section>
+
+    <footer class="outro">
+      <p>
+        Something not working, or an idea for it? Find us on the <a
+          href="/about">team page</a
+        >. If you would rather plan the old-fashioned way, the <a href="/agenda"
+          >full agenda</a
+        > is right here.
+      </p>
+    </footer>
+  </article>
+</Layout>
+
+<style lang="scss">
+  @use "../../styles/breakpoints" as *;
+
+  .mcp {
+    max-width: 760px;
+    margin-inline: auto;
+    padding-block: 24px 64px;
+    color: var(--rs26-text);
+    line-height: 1.65;
+  }
+
+  .eyebrow {
+    font-family: var(--rs26-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rs26-mint);
+    margin: 0 0 8px;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    color: var(--rs26-white);
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    color: var(--rs26-white);
+    margin: 0 0 12px;
+  }
+
+  h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--rs26-white);
+    margin: 0 0 10px;
+  }
+
+  p {
+    margin: 12px 0;
+  }
+
+  a {
+    color: var(--rs26-blue-bright);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: var(--rs26-white);
+    }
+  }
+
+  .lede {
+    font-size: clamp(1.02rem, 2.4vw, 1.18rem);
+    margin-top: 14px;
+  }
+
+  .note,
+  .hint {
+    color: var(--rs26-muted);
+    font-size: 0.92rem;
+  }
+
+  section {
+    margin-top: 44px;
+  }
+
+  .card {
+    margin-top: 18px;
+    padding: 20px;
+    background: var(--rs26-panel-2);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: var(--rs26-r-md);
+
+    p:first-of-type {
+      margin-top: 0;
+    }
+
+    ol {
+      margin: 0;
+      padding-inline-start: 20px;
+
+      li + li {
+        margin-top: 6px;
+      }
+    }
+  }
+
+  .examples {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      position: relative;
+      margin-top: 10px;
+      padding: 12px 16px;
+      background: var(--rs26-panel);
+      border-inline-start: 2px solid var(--rs26-mint);
+      border-radius: 0 var(--rs26-r-sm) var(--rs26-r-sm) 0;
+      font-style: italic;
+      color: var(--rs26-white);
+    }
+  }
+
+  .tools {
+    margin: 0;
+    display: grid;
+    gap: 2px;
+    background: var(--rs26-navy-line);
+    border: 1px solid var(--rs26-navy-line);
+    border-radius: var(--rs26-r-md);
+    overflow: hidden;
+  }
+
+  .tool {
+    padding: 14px 16px;
+    background: var(--rs26-panel);
+
+    dt {
+      font-family: var(--rs26-mono);
+      font-size: 0.84rem;
+      color: var(--rs26-mint);
+    }
+
+    dd {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+    }
+  }
+
+  .facts {
+    margin: 12px 0 0;
+    padding-inline-start: 20px;
+
+    li + li {
+      margin-top: 10px;
+    }
+
+    strong {
+      color: var(--rs26-white);
+    }
+  }
+
+  .outro {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rs26-navy-line);
+    font-size: 0.95rem;
+  }
+
+  // Wide enough for the name and its description to sit side by side.
+  @media (min-width: $breakpoint-medium) {
+    .tool {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 16px;
+      align-items: baseline;
+    }
+  }
+</style>
