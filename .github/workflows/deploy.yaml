@@ -55,8 +55,83 @@ jobs:
           mkdir -p dist
           echo "{\"builtAt\":\"$(date -u)\"}" > dist/build-metadata.json
 
-      # Deploy to Firebase Hosting
+      # Hosting only. The MCP function is deployed by the `functions` job below, which
+      # runs only when functions/ changes — otherwise the nightly cron would publish a
+      # new Cloud Run revision (and a cold start) every night for no code change.
       - name: Deploy to Firebase Hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: firebase deploy
+        run: firebase deploy --only hosting
+
+  functions:
+    name: Deploy MCP function
+    runs-on: ubuntu-latest
+    # Only a push carries new code: the nightly cron has nothing to ship.
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Full history, so the "what changed" diff below always resolves.
+          fetch-depth: 0
+
+      - name: Check whether the function changed
+        id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          # When the range cannot be resolved (first push, force push, shallow clone)
+          # deploy rather than skip: a missed deploy is worse than a redundant one.
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "Cannot resolve the previous commit — deploying to be safe."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BEFORE" "${{ github.sha }}" \
+            | grep -qE '^(functions/|firebase\.json$)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Nothing changed under functions/ — skipping the function deploy."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
+        with:
+          # Must match the runtime in firebase.json.
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: functions/package-lock.json
+
+      - name: Install dependencies
+        if: steps.changed.outputs.run == 'true'
+        working-directory: functions
+        run: npm ci
+
+      - name: Set timezone
+        if: steps.changed.outputs.run == 'true'
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: Asia/Jerusalem
+
+      - name: Lint
+        if: steps.changed.outputs.run == 'true'
+        working-directory: functions
+        run: npm run lint
+
+      - name: Check types
+        if: steps.changed.outputs.run == 'true'
+        working-directory: functions
+        run: npm run typecheck
+
+      # A broken server must never reach the connector, so the tests gate the deploy.
+      - name: Test
+        if: steps.changed.outputs.run == 'true'
+        working-directory: functions
+        run: npm test
+
+      - name: Deploy the function
+        if: steps.changed.outputs.run == 'true'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npx -y firebase-tools deploy --only functions:mcp

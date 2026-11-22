@@ -1,2 +1,5 @@
 # generated reports (automation/cfp-insights) — published as-is
 public/reports/
+
+# the MCP server is its own package with its own toolchain (oxfmt/oxlint)
+functions/

@@ -1,8 +1,30 @@
 {
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "mcp",
+      "runtime": "nodejs22",
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" ci",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ],
+      "ignore": ["node_modules", ".git", "test", "scripts", "lint", "*.local"]
+    }
+  ],
   "hosting": {
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "/mcp",
+        "function": {
+          "functionId": "mcp",
+          "region": "us-central1",
+          "pinTag": false
+        }
+      }
+    ],
     "headers": [
       {
         "source": "**",
@@ -13,6 +35,13 @@
             "key": "Referrer-Policy",
             "value": "strict-origin-when-cross-origin"
           }
+        ]
+      },
+      {
+        "source": "/mcp",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-store" },
+          { "key": "Referrer-Policy", "value": "no-referrer" }
         ]
       },
       {
