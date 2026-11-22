@@ -1,0 +1,13 @@
+{
+  // The deploy build: compiles src/ only, so the output keeps lib/index.js as the entry
+  // point that package.json `main` and firebase.json's predeploy expect.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "sourceMap": true,
+    "noEmit": false
+  },
+  "include": ["src"],
+  "exclude": ["lib", "node_modules", "src/dev-server.ts"]
+}

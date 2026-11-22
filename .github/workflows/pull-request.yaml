@@ -24,6 +24,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Full history, so the "what changed" diff below always resolves.
+          fetch-depth: 0
 
       - name: Check whether the function changed
         id: changed
@@ -31,7 +34,13 @@ jobs:
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
-          if git diff --name-only "$BASE" "$HEAD" | grep -qE '^(functions/|firebase\.json$)'; then
+          # When the range cannot be resolved (shallow clone, force-pushed base) run the
+          # checks rather than skip: a redundant run is worse than an unvalidated merge.
+          if [ -z "$BASE" ] || ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            echo "Cannot resolve the base commit — running the checks to be safe."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BASE" "$HEAD" \
+            | grep -qE '^(functions/|firebase\.json$)'; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "Nothing changed under functions/ — skipping."
