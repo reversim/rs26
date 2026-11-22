@@ -1,4 +1,5 @@
 import type { AgendaSession } from "../../types/agenda";
+import { MAIN_HALL } from "../../config/rooms";
 import { getTrackColor } from "../../config/trackColors";
 import { resolveTrack } from "./resolveTrack";
 import slugify from "slug";
@@ -130,7 +131,7 @@ export function findSessionById(
   if (sessionId.startsWith("lightning-")) {
     return {
       id: sessionId,
-      room: "Main hall",
+      room: MAIN_HALL,
       isIgnites: true,
     };
   }

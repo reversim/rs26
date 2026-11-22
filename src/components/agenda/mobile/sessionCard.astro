@@ -6,6 +6,7 @@ import {
   getTalkCategoryColor,
 } from "../../../helpers/agenda/agendaHelpers";
 import { getTrackName } from "../../../helpers/data/getAgenda";
+import { MAIN_HALL } from "../../../config/rooms";
 import type { AgendaSession, Cell } from "../../../types/agenda";
 import Category from "../category.astro";
 import SessionCategoryIndicator from "../sessionCategoryIndicator.astro";
@@ -25,7 +26,7 @@ const { session: sessions } = Astro.props;
       .map((cell, cellIndex) => {
         const session = cell.session! as AgendaSession;
         const isSession =
-          !session.isServiceSession || session.room === "Main hall";
+          !session.isServiceSession || session.room === MAIN_HALL;
 
         const duration = getSessionDuration(session.startsAt, session.endsAt);
 
