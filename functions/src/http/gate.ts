@@ -66,11 +66,13 @@ function forwardedChain(request: IncomingMessage): string[] {
  * the peer it heard from, so the caller's real address is the entry the outermost proxy we
  * control added, and we count in from the right to find it.
  *
- * TRUSTED_PROXY_HOPS is how many entries were appended *after* that one: 1 behind the Hosting
- * rewrite (Hosting appends the client, Cloud Run then appends Hosting), 0 when the function's
- * own URL is called directly. Every request logs `xff_depth` so the real chain can be read
- * from Cloud Logging after deploying and this set to match. Too small a value is spoofable;
- * too large collapses every caller onto one key and rate-limits them together.
+ * TRUSTED_PROXY_HOPS is how many entries were appended *after* that one, and is 0 for this
+ * deployment: measured against the live server, a request through the Hosting rewrite that
+ * sends no X-Forwarded-For arrives with a single entry, which is the caller's own address.
+ * So the last entry is always the trustworthy one, and anything a caller prepends is
+ * ignored. Every request logs `xff_depth`, so re-check it in Cloud Logging if the hops in
+ * front change. Too small a value is spoofable; too large collapses every caller onto one
+ * key and rate-limits them together.
  */
 function clientIp(request: IncomingMessage): string {
   const chain = forwardedChain(request);

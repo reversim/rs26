@@ -142,9 +142,11 @@ uses only CRLF, so a malicious title can't inject extra calendar properties
       the in-code limiter only sees its own instance, so the bound on a flood is
       `maxInstances` (10) times the per-instance limit, and the bound on spend is
       `maxInstances` itself. Raise the limit only together with it.
-- [ ] **Verify `TRUSTED_PROXY_HOPS` after the first deploy.** Read `xff_depth` from Cloud
-      Logging and set the variable so the rate-limit key is the caller's real address:
-      too low is spoofable, too high rate-limits every caller as one. See "Known limitations".
+- [x] **`TRUSTED_PROXY_HOPS` verified against the live server.** A request through the
+      Hosting rewrite that sends no `X-Forwarded-For` arrives with `xff_depth: 1`, so the
+      single entry is the caller's own address and nothing follows it: the value is `0`.
+      Re-measure `xff_depth` in Cloud Logging if the hops in front ever change — too low
+      is spoofable, too high rate-limits every caller as one.
 - [ ] Keep `invoker: "public"` — the Hosting rewrite needs it — and keep the function's own
       `cors: false`, so `src/http/gate.ts` stays the only thing deciding origins.
 - [ ] Optional: set `MCP_AUTH_TOKEN` (via Secret Manager, `firebase functions:secrets:set`)
@@ -159,7 +161,7 @@ uses only CRLF, so a malicious title can't inject extra calendar properties
 | `MCP_AUTH_TOKEN`        | unset (public) | When set, requires `Authorization: Bearer <token>`         |
 | `ALLOWED_ORIGINS`       | empty          | Comma-separated browser origins allowed to call `/mcp`     |
 | `RATE_LIMIT_PER_MINUTE` | `60`           | Per-IP, per-instance request limit                         |
-| `TRUSTED_PROXY_HOPS`    | `1`            | Trailing `X-Forwarded-For` entries added by our own hops   |
+| `TRUSTED_PROXY_HOPS`    | `0`            | `X-Forwarded-For` entries after the caller's own address   |
 | `REVERSIM_OFFLINE`      | unset          | `1` = use only the bundled snapshot, never call Sessionize |
 | `METRICS_LOG`           | on             | `off` = no JSON metric lines in the logs                   |
 
@@ -170,12 +172,13 @@ uses only CRLF, so a malicious title can't inject extra calendar properties
 - **The in-memory rate limiter is per instance.** With `maxInstances: 10` the effective
   limit is up to 10× the configured one, and it resets whenever an instance is recycled.
   There is no platform rate-limit rule behind it; `maxInstances` is what bounds the damage.
-- **The rate-limit key depends on `TRUSTED_PROXY_HOPS` being right.** Google's front end
-  _appends_ to `X-Forwarded-For` instead of replacing it, so the leftmost entries are
-  caller-supplied. The code counts in from the right to skip them, but the correct depth
-  depends on how many proxies sit in front. The default (`1`) is for the Hosting rewrite;
-  confirm it against `xff_depth` in Cloud Logging. If it is too low a caller can rotate the
-  header to get a fresh budget; too high and every caller shares one bucket.
+- **The rate-limit key depends on `TRUSTED_PROXY_HOPS` matching the hops in front.**
+  Google's front end _appends_ to `X-Forwarded-For` instead of replacing it, so the leftmost
+  entries are caller-supplied and the code counts in from the right to skip them. Measured
+  against the live server the chain is one entry deep, so the value is `0` and the last
+  entry — the one Google added — is always the key. If a proxy is ever added in front, this
+  must be raised to match: too low and a caller can rotate the header for a fresh budget
+  (regression-tested in `test/security.test.ts`), too high and every caller shares one bucket.
 - **The 32 KB body limit rejects, it does not prevent buffering.** Cloud Functions reads the
   body before the handler runs, so a large request is already in memory (up to the
   platform's own 32 MB cap) by the time we return `413`.

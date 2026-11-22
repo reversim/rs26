@@ -22,8 +22,13 @@ export const FETCH_TIMEOUT_MS = 4000;
 export const MAX_FEED_BYTES = 3 * 1024 * 1024;
 
 /**
- * How many trailing X-Forwarded-For entries were added by infrastructure we control, and so
- * cannot be forged by the caller. Used to pick the rate-limit key; see `clientIp` in
- * `src/http/gate.ts`. Override with TRUSTED_PROXY_HOPS once the real chain is known.
+ * How many X-Forwarded-For entries sit *after* the caller's own address, added by
+ * infrastructure we control and so impossible for the caller to forge. Used to pick the
+ * rate-limit key; see `clientIp` in `src/http/gate.ts`. Override with TRUSTED_PROXY_HOPS.
+ *
+ * Measured against the deployed server: a request through the Hosting rewrite that sends
+ * no X-Forwarded-For of its own arrives with `xff_depth: 1`, i.e. the single entry *is*
+ * the caller's address, appended by Google's front end. Nothing follows it, so this is 0.
+ * Re-check `xff_depth` in Cloud Logging if the hops in front ever change.
  */
-export const TRUSTED_PROXY_HOPS = 1;
+export const TRUSTED_PROXY_HOPS = 0;

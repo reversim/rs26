@@ -109,14 +109,14 @@ break-glass option, so that what is deployed always matches `main`.
 
 Every variable is optional; the defaults are what production runs.
 
-| Variable                | Default | What it does                                                          |
-| ----------------------- | ------- | --------------------------------------------------------------------- |
-| `MCP_AUTH_TOKEN`        | unset   | When set, requests must carry `Authorization: Bearer <token>`         |
-| `ALLOWED_ORIGINS`       | unset   | Comma-separated browser origins allowed to call the server            |
-| `RATE_LIMIT_PER_MINUTE` | `60`    | Per-instance, per-IP limit                                            |
-| `TRUSTED_PROXY_HOPS`    | `1`     | How many `X-Forwarded-For` entries our own hops add (see SECURITY.md) |
-| `METRICS_LOG`           | on      | `off` silences the structured log                                     |
-| `REVERSIM_OFFLINE`      | unset   | `1` serves the bundled snapshot and never calls Sessionize (tests)    |
+| Variable                | Default | What it does                                                       |
+| ----------------------- | ------- | ------------------------------------------------------------------ |
+| `MCP_AUTH_TOKEN`        | unset   | When set, requests must carry `Authorization: Bearer <token>`      |
+| `ALLOWED_ORIGINS`       | unset   | Comma-separated browser origins allowed to call the server         |
+| `RATE_LIMIT_PER_MINUTE` | `60`    | Per-instance, per-IP limit                                         |
+| `TRUSTED_PROXY_HOPS`    | `0`     | `X-Forwarded-For` entries after the caller's own (see SECURITY.md) |
+| `METRICS_LOG`           | on      | `off` silences the structured log                                  |
+| `REVERSIM_OFFLINE`      | unset   | `1` serves the bundled snapshot and never calls Sessionize (tests) |
 
 Non-secret values go in `functions/.env.reversim-26`, which Firebase reads at deploy time.
 Put `MCP_AUTH_TOKEN` in Secret Manager instead (`firebase functions:secrets:set`) if you

@@ -146,18 +146,37 @@ it("rate limiter blocks after the limit and resets after the window", () => {
 
 it("rate limiter keys on a forwarded address the caller cannot forge", async () => {
   process.env.RATE_LIMIT_PER_MINUTE = "2";
-  process.env.TRUSTED_PROXY_HOPS = "1";
   try {
-    // With one trusted hop the chain is [caller-supplied…, real client, our hop], so the key
-    // is 203.0.113.9. Rotating the part the caller controls must not win a fresh budget.
+    // The shape this deployment actually sees (xff_depth 1, measured in Cloud Logging):
+    // Google appends the caller's address, so the last entry is ours and anything to the
+    // left of it is whatever the caller sent. Rotating that prefix must not win a fresh
+    // budget — otherwise one caller can spend everyone else's by varying a header.
     const spoofing = (claimed: string) =>
-      post({ body: toolsList(), extra: { "x-forwarded-for": `${claimed}, 203.0.113.9, 198.51.100.1` } });
+      post({ body: toolsList(), extra: { "x-forwarded-for": `${claimed}, 203.0.113.9` } });
     const statuses = [
       (await spoofing("10.0.0.1")).status,
       (await spoofing("10.0.0.2")).status,
       (await spoofing("10.0.0.3")).status,
     ];
     expect(statuses).toEqual([200, 200, 429]);
+  } finally {
+    delete process.env.RATE_LIMIT_PER_MINUTE;
+  }
+});
+
+it("rate limiter still separates callers when a trusted hop is configured", async () => {
+  process.env.RATE_LIMIT_PER_MINUTE = "2";
+  process.env.TRUSTED_PROXY_HOPS = "1";
+  try {
+    // One extra trusted hop shifts the key one entry left, so the chain reads
+    // [caller-supplied…, real client, our hop] and 198.51.100.x is what counts.
+    const from = (client: string) =>
+      post({ body: toolsList(), extra: { "x-forwarded-for": `10.0.0.9, ${client}, 203.0.113.9` } });
+    expect((await from("198.51.100.1")).status).toBe(200);
+    expect((await from("198.51.100.1")).status).toBe(200);
+    expect((await from("198.51.100.1")).status).toBe(429);
+    // A genuinely different caller keeps its own budget.
+    expect((await from("198.51.100.2")).status).toBe(200);
   } finally {
     delete process.env.RATE_LIMIT_PER_MINUTE;
     delete process.env.TRUSTED_PROXY_HOPS;
