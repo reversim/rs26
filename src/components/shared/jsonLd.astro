@@ -1,0 +1,19 @@
+---
+// Emits one `application/ld+json` block. Several schemas are wrapped in a
+// `@graph` so the page carries a single script tag either way.
+interface Props {
+  schema: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { schema } = Astro.props;
+
+const payload = Array.isArray(schema)
+  ? { "@context": "https://schema.org", "@graph": schema }
+  : { "@context": "https://schema.org", ...schema };
+---
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(payload)}
+/>

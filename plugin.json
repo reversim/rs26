@@ -1,0 +1,22 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "reversim-summit-2026",
+  "version": "1.0.0",
+  "description": "Plan your two days at Reversim Summit 2026 (Nov 30 – Dec 1, 2026, Tel Aviv): search the agenda, get talks ranked against your interests, build a clash-free schedule and export it to your calendar.",
+  "author": {
+    "name": "Reversim",
+    "email": "rivka@reversim.com",
+    "url": "https://summit2026.reversim.com"
+  },
+  "homepage": "https://summit2026.reversim.com/mcp-guide",
+  "repository": "https://github.com/reversim/rs26",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "conference",
+    "agenda",
+    "scheduling",
+    "reversim",
+    "israel"
+  ]
+}

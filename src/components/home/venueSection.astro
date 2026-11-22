@@ -1,12 +1,7 @@
 ---
 import Button from "../shared/button.astro";
 import HeadingLink from "../shared/headingLink.astro";
-
-const VENUE_LAT = 32.106411;
-const VENUE_LNG = 34.810085;
-
-const wazeHref = `https://waze.com/ul?ll=${VENUE_LAT},${VENUE_LNG}&navigate=yes`;
-const googleMapsHref = `https://www.google.com/maps/dir/?api=1&destination=${VENUE_LAT},${VENUE_LNG}`;
+import { googleMapsHref, venue, wazeHref } from "../../config/venue";
 ---
 
 <section class="block" id="venue">
@@ -22,11 +17,11 @@ const googleMapsHref = `https://www.google.com/maps/dir/?api=1&destination=${VEN
       <div class="venue-info">
         <div class="vrow">
           <span class="vk">Location</span>
-          <span class="vv">Expo Tel Aviv · Pavilion 10</span>
+          <span class="vv">{venue.name}</span>
         </div>
         <div class="vrow">
           <span class="vk">Address</span>
-          <span class="vv">Rokach Blvd 101, Tel Aviv-Yafo</span>
+          <span class="vv">{`${venue.street}, ${venue.city}`}</span>
         </div>
         <div class="vrow">
           <span class="vk">Get there</span>

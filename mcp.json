@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "reversim": {
+      "type": "http",
+      "url": "https://summit2026.reversim.com/mcp"
+    }
+  }
+}

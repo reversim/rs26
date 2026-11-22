@@ -4,13 +4,20 @@ import RegistrationBar from "../components/registrationBar.astro";
 import { Font } from "astro:assets";
 import { getRedirectTarget, isPreview } from "../config/redirects";
 import GoogleAnalytics from "../components/shared/googleAnalytics.astro";
+import JsonLd from "../components/shared/jsonLd.astro";
 import { OG_CARD } from "../helpers/meta";
+import { markdownTwin } from "../config/agentResources";
 import "../styles/global.scss";
 
 interface Props {
   havePadding?: boolean;
   havePaddingBottom?: boolean;
   displayHeader?: boolean;
+  /**
+   * JSON-LD describing what this page is about (helpers/agents/schema.ts).
+   * One object or several, which are emitted as a `@graph`.
+   */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
   /**
    * Page-specific link preview. When set, the page is shared under its own
    * URL with this title and description instead of the homepage's, and
@@ -28,12 +35,16 @@ const {
   havePaddingBottom = false,
   displayHeader = true,
   share,
+  schema,
 } = Astro.props;
 
 // Public URLs have no trailing slash; see `trailingSlash` in astro.config.mjs.
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const canonicalUrl = new URL(pathname, Astro.site);
 const isNotFound = pathname === "/404";
+// Agents that would rather read markdown than parse this page; see
+// src/helpers/agents/markdown.ts.
+const markdownUrl = markdownTwin(pathname);
 const redirectTarget = getRedirectTarget(pathname);
 const isBlocked = redirectTarget !== undefined;
 // Redirect stubs aren't real page views, and dev/preview traffic stays out of GA.
@@ -74,6 +85,22 @@ const ogUrl = share ? canonicalUrl : "https://summit2026.reversim.com/";
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <!--
+      The machine-readable side of the site: a markdown twin of this page, the
+      llms.txt index, and the ARD catalog that points at our MCP server.
+    -->
+    {
+      markdownUrl && (
+        <link
+          rel="alternate"
+          type="text/markdown"
+          href={markdownUrl}
+          title="Markdown version of this page"
+        />
+      )
+    }
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+    <link rel="ard" type="application/json" href="/.well-known/ard.json" />
     <Font cssVariable="--font-space-grotesk" preload />
     <Font cssVariable="--font-hanken-grotesk" preload />
     <Font cssVariable="--font-jetbrains-mono" />
@@ -128,6 +155,8 @@ const ogUrl = share ? canonicalUrl : "https://summit2026.reversim.com/";
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImage.url} />
     <meta name="twitter:image:alt" content={ogImage.alt} />
+
+    {schema && !isBlocked && !isNotFound && <JsonLd schema={schema} />}
 
     {loadAnalytics && <GoogleAnalytics />}
     <script>
