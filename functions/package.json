@@ -1,0 +1,40 @@
+{
+  "name": "reversim-2026-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP server that helps Reversim Summit 2026 attendees find the best sessions for them and plan their schedule.",
+  "author": "Inbar Danieli",
+  "type": "module",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/dev-server.ts",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "typecheck": "tsc --noEmit -p tsconfig.dev.json",
+    "lint": "oxlint --deny-warnings",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "test": "vitest run",
+    "update-snapshot": "tsx scripts/update-snapshot.ts",
+    "audit": "npm audit --omit=dev"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "firebase-functions": "7.4.0",
+    "slug": "10.0.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/slug": "5.0.9",
+    "oxfmt": "0.76.0",
+    "oxlint": "1.91.0",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.1.1"
+  },
+  "engines": {
+    "node": "22"
+  }
+}

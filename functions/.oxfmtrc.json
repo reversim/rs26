@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "sortImports": {
+    "groups": ["builtin", "external", ["parent", "sibling", "index"]],
+    "newlinesBetween": false
+  },
+  "ignorePatterns": ["src/data/snapshot.ts", "package-lock.json"]
+}

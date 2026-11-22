@@ -1,0 +1,79 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import", "node", "vitest"],
+  "jsPlugins": ["./lint/style-rules.mjs"],
+  "categories": { "correctness": "error" },
+  "ignorePatterns": ["src/data/snapshot.ts", "node_modules"],
+  "rules": {
+    "curly": ["error", "all"],
+    "no-nested-ternary": "error",
+    "complexity": ["error", 15],
+    "max-depth": ["error", 3],
+    "max-params": ["error", 4],
+    "max-lines": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "max-lines-per-function": ["error", { "max": 120, "skipBlankLines": true, "skipComments": true }],
+    "id-length": ["error", { "min": 2, "exceptions": ["i", "z", "_"], "properties": "never" }],
+    "no-console": ["error", { "allow": ["error"] }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "vitest",
+            "importNames": ["describe", "suite"],
+            "message": "Tests are flat: no describe. Start the title with the topic instead."
+          }
+        ]
+      }
+    ],
+    "typescript/no-explicit-any": "error",
+    "typescript/consistent-type-imports": "error",
+    "typescript/consistent-type-definitions": ["error", "type"],
+    "unicorn/prefer-node-protocol": "error",
+    "unicorn/filename-case": ["error", { "case": "kebabCase" }],
+    "import/no-default-export": "error",
+    "import/extensions": ["error", "ignorePackages", { "js": "always", "ts": "never" }],
+    "vitest/prefer-importing-vitest-globals": "error",
+    "vitest/no-restricted-vi-methods": [
+      "error",
+      {
+        "fn": "Fake the outside world with a recording fake in test/fakes/ instead.",
+        "spyOn": "Fake the outside world with a recording fake in test/fakes/ instead.",
+        "mock": "Run the real module; fake only the outside world (test/fakes/).",
+        "doMock": "Run the real module; fake only the outside world (test/fakes/)."
+      }
+    ],
+    "vitest/prefer-each": "error",
+    "vitest/consistent-each-for": ["error", { "test": "for", "it": "for" }],
+    "style/blank-line-after-if": "error",
+    "style/blank-line-before-return": "error",
+    "style/max-files-per-folder": "error",
+    "style/named-nested-types": "error",
+    "style/no-file-comment": "error",
+    "style/no-typeof-type": "error",
+    "style/object-params": "error",
+    "style/types-in-types-file": "error"
+  },
+  "overrides": [
+    {
+      "files": ["vitest.config.ts"],
+      "rules": { "import/no-default-export": "off" }
+    },
+    {
+      "files": ["src/dev-server.ts", "scripts/**", "src/metrics/health-log.ts", "test/fakes/**"],
+      "rules": { "no-console": "off" }
+    },
+    {
+      "files": ["src/dev-server.ts", "scripts/**"],
+      "rules": { "style/no-file-comment": "off" }
+    },
+    {
+      "files": ["test/**"],
+      "rules": { "max-lines-per-function": "off" }
+    },
+    {
+      "files": ["lint/**"],
+      "rules": { "style/no-file-comment": "off", "style/object-params": "off" }
+    }
+  ]
+}
