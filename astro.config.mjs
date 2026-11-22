@@ -60,7 +60,10 @@ export default defineConfig({
     },
   ],
   integrations: [
-    // The speaker kit is shared with speakers directly and kept out of search.
-    sitemap({ filter: (page) => !page.includes("/speaker-kit") }),
+    // The speaker and moderator kits are shared directly and kept out of search.
+    sitemap({
+      filter: (page) =>
+        !page.includes("/speaker-kit") && !page.includes("/moderator-kit"),
+    }),
   ],
 });
