@@ -13,6 +13,7 @@ export const navLinks: NavLink[] = [
   { href: "/agenda", label: "Agenda" },
   { href: "/#venue", label: "Venue" },
   { href: "/about", label: "Team" },
+  { href: "/mcp-guide", label: "MCP" },
 ];
 
 // Marks the drawer link for the section the visitor is currently in.
