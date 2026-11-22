@@ -1,9 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import { event } from "../../config/event";
 import { sponsorTiers } from "../../config/sponsorTiers";
 import { getSponsors } from "../../helpers/data/getSponsors";
-import Button from "../shared/button.astro";
 import HeadingLink from "../shared/headingLink.astro";
 import SponsorDialog from "./sponsorDialog.astro";
 
@@ -66,11 +64,6 @@ const tierMark: Record<string, string> = {
         <p class="eyebrow">Powered by</p>
         <h2><HeadingLink href="/#sponsors">Our sponsors</HeadingLink></h2>
       </div>
-      <Button
-        variant="orange"
-        text={event.sponsor.label}
-        href={event.sponsor.url}
-      />
     </div>
 
     {

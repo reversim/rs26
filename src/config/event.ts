@@ -71,10 +71,6 @@ export const event = {
     label: "Go to agenda",
     url: "/agenda",
   },
-  sponsor: {
-    label: "Become a sponsor",
-    url: "/sponsors",
-  },
   days: {
     options: [
       { value: "all", label: "All" },

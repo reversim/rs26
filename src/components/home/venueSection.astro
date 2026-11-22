@@ -1,5 +1,6 @@
 ---
 import Button from "../shared/button.astro";
+import HeadingLink from "../shared/headingLink.astro";
 
 const VENUE_LAT = 32.106411;
 const VENUE_LNG = 34.810085;
@@ -13,7 +14,7 @@ const googleMapsHref = `https://www.google.com/maps/dir/?api=1&destination=${VEN
     <div class="section-head">
       <div>
         <p class="eyebrow">Where it happens</p>
-        <h2>Venue</h2>
+        <h2><HeadingLink href="/#venue">Venue</HeadingLink></h2>
       </div>
     </div>
 

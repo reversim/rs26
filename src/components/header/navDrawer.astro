@@ -42,7 +42,7 @@ const pathname = Astro.url.pathname;
   <div class="drawer-foot">
     <span class="head-date">{event.dates}</span>
     {
-      event.registration.display ? (
+      event.registration.display && (
         <Button
           text={event.registration.label}
           href={event.registration.url}
@@ -51,8 +51,6 @@ const pathname = Astro.url.pathname;
             registration_href: event.registration.url,
           })}
         />
-      ) : (
-        <Button text={event.sponsor.label} href={event.sponsor.url} />
       )
     }
   </div>
