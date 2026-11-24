@@ -7,15 +7,15 @@
 export const mcpTools = [
   {
     name: "recommend_sessions",
-    what: "Ranks talks against your interests and role, with abstracts, so your assistant can pick the ones that actually fit.",
+    what: "Ranks talks by how well they match your interests and role, with abstracts included so your assistant can pick the ones that truly fit.",
   },
   {
     name: "build_schedule",
-    what: "Builds a clash-free plan for both days: your must-sees first, the gaps filled by interest, with alternatives and conflicts listed.",
+    what: "Builds a clash-free plan for both days: your must-sees first, remaining slots filled by interest, with alternatives and conflicts noted.",
   },
   {
     name: "search_sessions",
-    what: "Free-text search over titles, abstracts, tracks and speakers, filtered by day, track, room or time window.",
+    what: "Searches titles, abstracts, tracks and speakers by free text, with filters for day, track, room or time window.",
   },
   {
     name: "get_sessions",
@@ -23,11 +23,11 @@ export const mcpTools = [
   },
   {
     name: "find_speakers",
-    what: "Finds speakers by name, or by words in their bio — handy for spotting everyone from one company.",
+    what: "Finds speakers by name or by words in their bio — handy for finding everyone from a given company.",
   },
   {
     name: "whats_on",
-    what: "What is running right now and what starts next, in venue time. Most useful during the conference itself.",
+    what: "Shows what's on right now and what starts next, in venue time. Most useful during the conference itself.",
   },
   {
     name: "get_conference_info",
@@ -42,7 +42,7 @@ export const mcpTools = [
 /** Prompts that show an agent what this server is good for. */
 export const mcpExamples = [
   "I'm a backend engineer into LLM agents and observability. What should I see on day 1?",
-  "Build me a schedule for both days, I don't want to miss the keynotes.",
+  "Build me a schedule for both days — I don't want to miss the keynotes.",
   "Is anyone from my company speaking?",
   "What's on right now?",
   "Add my plan to my calendar.",

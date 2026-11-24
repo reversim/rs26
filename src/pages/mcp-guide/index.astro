@@ -25,7 +25,7 @@ const JSON_CONFIG = `{
   share={{
     title: "Reversim 2026 in your AI assistant",
     description:
-      "Connect Claude, Cursor or any MCP client to the Reversim Summit 2026 agenda and plan your two days by chatting.",
+      "Connect Claude, Cursor or any MCP client to the Reversim Summit 2026 agenda and plan your two days in conversation.",
   }}
 >
   <article class="mcp">
@@ -37,20 +37,21 @@ const JSON_CONFIG = `{
           href="https://modelcontextprotocol.io"
           target="_blank"
           rel="noopener">MCP</a
-        > server: a small service that lets your AI assistant read the agenda. Connect
-        it once, then plan your two days by chatting — ask what fits your work, get
-        a clash-free schedule, and export it to your calendar.
+        > server — a small service that gives your AI assistant access to the conference
+        agenda. Connect it once, then plan your two days in conversation: ask which
+        talks fit your work, get a schedule with no clashes, and send it to your
+        calendar.
       </p>
       <p class="note">
-        Free, no account, and read-only: it can look things up, never change
-        anything. The talks are in Hebrew; this server and its answers are in
-        English.
+        It's free, needs no account and is read-only: it can look things up but
+        never change anything. Talks are given in Hebrew; the server and its
+        answers are in English.
       </p>
     </header>
 
     <section>
-      <h3>The address</h3>
-      <p>This is the only thing you need. Copy it:</p>
+      <h3>Server address</h3>
+      <p>This is all you need. Copy it:</p>
       <CodeSnippet
         code={ENDPOINT}
         label="the server address"
@@ -67,15 +68,15 @@ const JSON_CONFIG = `{
           <li>Open <strong>Settings → Connectors</strong>.</li>
           <li>Click <strong>Add custom connector</strong>.</li>
           <li>
-            Paste the address above, give it a name like <em>Reversim</em>, and
-            save.
+            Paste the address above, name it something like <em>Reversim</em>,
+            and save.
           </li>
         </ol>
       </div>
 
       <div class="card">
         <h4>Claude Code</h4>
-        <p>One command:</p>
+        <p>Run one command:</p>
         <CodeSnippet
           code={`claude mcp add --transport http reversim ${ENDPOINT}`}
           label="the Claude Code command"
@@ -85,26 +86,27 @@ const JSON_CONFIG = `{
       <div class="card">
         <h4>Cursor, VS Code and other clients</h4>
         <p>
-          Add the server to your client's MCP configuration file. Most clients
-          accept this shape:
+          Add the server to your client's MCP configuration. Most clients accept
+          this format:
         </p>
         <CodeSnippet code={JSON_CONFIG} label="the configuration" />
         <p class="hint">
-          The exact file and wording differ between clients — check your
-          client's own MCP documentation if it expects something slightly
-          different. Any client that speaks MCP over HTTP will work.
+          File locations and formats vary between clients, so check your
+          client's MCP documentation if this doesn't work as-is. Any client that
+          supports MCP over HTTP will work.
         </p>
       </div>
     </section>
 
     <section>
       <h3>What to ask</h3>
-      <p>Once it is connected, talk to your assistant normally:</p>
+      <p>Once connected, just talk to your assistant as you normally would:</p>
       <ul class="examples">
         {EXAMPLES.map((example) => <li>{example}</li>)}
       </ul>
       <p class="hint">
-        Your assistant decides which tools to call. You never need to name them.
+        Your assistant picks the right tools on its own, so you never need to
+        name them.
       </p>
     </section>
 
@@ -121,8 +123,9 @@ const JSON_CONFIG = `{
         }
       </dl>
       <p class="hint">
-        It also publishes the whole agenda as a single document, and a
-        ready-made prompt that interviews you briefly and then builds your plan.
+        The server also offers the full agenda as a single document, plus a
+        ready-made prompt that asks you a few quick questions and then builds
+        your plan.
       </p>
     </section>
 
@@ -131,22 +134,21 @@ const JSON_CONFIG = `{
       <ul class="facts">
         <li>
           <strong>The agenda is live.</strong> It comes from the same source as this
-          website, so a change to a talk or a room shows up within minutes.
+          website, so changes to talks or rooms appear within minutes.
         </li>
         <li>
-          <strong>Nothing about you is stored.</strong> The server keeps no accounts
-          and no history. It only counts which tools get used, and never records
-          what you typed.
+          <strong>Nothing about you is stored.</strong> The server has no accounts
+          and keeps no history. It only counts which tools are used and never records
+          what you type.
         </li>
         <li>
-          <strong>Only public information.</strong> Exactly what is on this website
-          — talks, speakers, rooms and times. Nothing else is reachable through it.
+          <strong>Public information only.</strong> The server can reach only what's
+          already on this website: talks, speakers, rooms and times.
         </li>
         <li>
-          <strong>Treat suggestions as suggestions.</strong> Rankings come from keyword
-          matching, and your assistant reads the abstracts to decide. Check the <a
-            href="/agenda">agenda</a
-          > before you commit to a plan.
+          <strong>Suggestions are just suggestions.</strong> Rankings are based on
+          keyword matching, and your assistant then reads the abstracts to choose.
+          Check the <a href="/agenda">agenda</a> before you settle on a plan.
         </li>
       </ul>
     </section>
