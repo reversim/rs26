@@ -59,7 +59,7 @@ export const event = {
   // live — until then the hero keeps showing the "opening soon" pill and
   // the bar stays off. Set `url` to the real registration link first.
   registration: {
-    display: true,
+    display: false,
     label: "Register now →",
     url: "https://ti.to/reversim-summit/2026/",
     announcement: "Registration for RS26 is open — grab your spot.",
@@ -68,7 +68,7 @@ export const event = {
     notice: undefined as string | undefined,
   },
   agenda: {
-    label: "Go to agenda",
+    label: "Go to agenda →",
     url: "/agenda",
   },
   days: {

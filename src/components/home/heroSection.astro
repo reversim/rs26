@@ -30,7 +30,7 @@ import {
         )
       }
       {
-        event.registration.display ? (
+        event.registration.display && (
           <Button
             variant="orange"
             text={event.registration.label}
@@ -40,18 +40,14 @@ import {
               registration_href: event.registration.url,
             })}
           />
-        ) : (
-          <span class="reg-soon">
-            <i class="dot" aria-hidden="true" />
-            Registration opening soon
-          </span>
-        )
+        ) 
       }
       <Button
-        variant="ghost"
+        variant="orange"
         text={event.agenda.label}
         href={event.agenda.url}
       />
+      
     </div>
     <div class="meta-row">
       <span><b>{event.dates}</b></span>
@@ -588,11 +584,11 @@ import {
     .hero {
       display: flex;
       height: auto;
-      min-height: clamp(
-        520px,
-        calc(100svh - var(--head-h, var(--header-height))),
-        1000px
-      );
+        min-height: clamp(
+          520px,
+          calc(100svh - var(--head-h, var(--header-height))),
+          1000px
+        );
     }
 
     .hero-grid-fade {
