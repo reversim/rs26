@@ -9,6 +9,7 @@ import SessionCard from "../../components/sessions/sessionCard.astro";
 import type { AgendaSpeaker } from "../../types/agenda";
 import slug from "slug";
 import { event } from "../../config/event";
+import { sessionListSchema } from "../../helpers/agents/schema";
 
 const [sessions, speakers] = await Promise.all([getSessions(), getSpeakers()]);
 const speakersMap = new Map(
@@ -18,9 +19,15 @@ const speakersMap = new Map(
 const sessionsList = sessions.rawSessionsList.filter(
   (session) => session.description,
 );
+
+const schema = sessionListSchema({
+  sessions: sessionsList,
+  page: "/sessions",
+  name: "Reversim Summit 2026 sessions",
+});
 ---
 
-<Layout havePaddingBottom={true}>
+<Layout havePaddingBottom={true} schema={schema}>
   <PageTitle
     eyebrow="The lineup"
     title="Our Sessions"

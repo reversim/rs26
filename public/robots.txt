@@ -23,3 +23,8 @@ User-agent: *
 Allow: /
 
 Sitemap: https://summit2026.reversim.com/sitemap-index.xml
+
+# For agents: /llms.txt indexes everything machine-readable here, every page
+# has a markdown twin at <path>.md, and the agenda is also an MCP server.
+# See /agents.md and /.well-known/ard.json.
+Schemamap: https://summit2026.reversim.com/schemamap.xml

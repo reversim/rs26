@@ -10,9 +10,20 @@ import SponsorsGrid from "../components/home/sponsorsGrid.astro";
 import SpeakersSection from "../components/home/speakersSection.astro";
 import VenueSection from "../components/home/venueSection.astro";
 import Layout from "../layouts/Layout.astro";
+import { getSessions } from "../helpers/data/getSessions";
+import { getSpeakers } from "../helpers/data/getSpeakers";
+import { homeGraph } from "../helpers/agents/schema";
+
+// The homepage carries the whole entity graph (Organization, WebSite, Event);
+// inner pages reference it by @id.
+const [{ rawSessionsList }, speakers] = await Promise.all([
+  getSessions(),
+  getSpeakers(),
+]);
+const schema = homeGraph({ sessions: rawSessionsList, speakers });
 ---
 
-<Layout havePadding={false}>
+<Layout havePadding={false} schema={schema}>
   <HeroSection />
   <AboutSection />
   <SponsorsGrid />

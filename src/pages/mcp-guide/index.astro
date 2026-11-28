@@ -2,54 +2,15 @@
 import Layout from "../../layouts/Layout.astro";
 import CodeSnippet from "../../components/mcp/codeSnippet.astro";
 import { event } from "../../config/event";
+import { MCP_ENDPOINT } from "../../config/agentResources";
+import { mcpExamples, mcpTools } from "../../config/mcpTools";
 
 // The MCP endpoint is served by the Cloud Function in `functions/`, which
-// `firebase.json` rewrites onto this same domain. Keep this in step with that
-// rewrite: it is the one string visitors copy into their AI client.
-const ENDPOINT = "https://summit2026.reversim.com/mcp";
-
-const TOOLS = [
-  {
-    name: "recommend_sessions",
-    what: "Ranks talks against your interests and role, with abstracts, so your assistant can pick the ones that actually fit.",
-  },
-  {
-    name: "build_schedule",
-    what: "Builds a clash-free plan for both days: your must-sees first, the gaps filled by interest, with alternatives and conflicts listed.",
-  },
-  {
-    name: "search_sessions",
-    what: "Free-text search over titles, abstracts, tracks and speakers, filtered by day, track, room or time window.",
-  },
-  {
-    name: "get_sessions",
-    what: "Full details for specific talks: abstract, link and speaker bios.",
-  },
-  {
-    name: "find_speakers",
-    what: "Finds speakers by name, or by words in their bio — handy for spotting everyone from one company.",
-  },
-  {
-    name: "whats_on",
-    what: "What is running right now and what starts next, in venue time. Most useful during the conference itself.",
-  },
-  {
-    name: "get_conference_info",
-    what: "Dates, tracks with talk counts, rooms and the registration link.",
-  },
-  {
-    name: "export_calendar",
-    what: "Turns your plan into an .ics file for Google Calendar, Outlook or Apple Calendar.",
-  },
-];
-
-const EXAMPLES = [
-  "I'm a backend engineer into LLM agents and observability. What should I see on day 1?",
-  "Build me a schedule for both days, I don't want to miss the keynotes.",
-  "Is anyone from my company speaking?",
-  "What's on right now?",
-  "Add my plan to my calendar.",
-];
+// `firebase.json` rewrites onto this same domain; `config/agentResources`
+// holds it because the discovery documents quote the same string.
+const ENDPOINT = MCP_ENDPOINT;
+const TOOLS = mcpTools;
+const EXAMPLES = mcpExamples;
 
 const JSON_CONFIG = `{
   "mcpServers": {

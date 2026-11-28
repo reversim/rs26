@@ -13,7 +13,12 @@
   ],
   "hosting": {
     "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/node_modules/**",
+      "**/.DS_Store",
+      "**/.git/**"
+    ],
     "cleanUrls": true,
     "rewrites": [
       {
@@ -23,6 +28,10 @@
           "region": "us-central1",
           "pinTag": false
         }
+      },
+      {
+        "source": "/mcp/server-card",
+        "destination": "/.well-known/mcp/server-card.json"
       }
     ],
     "headers": [
@@ -34,8 +43,42 @@
           {
             "key": "Referrer-Policy",
             "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "Link",
+            "value": "</sitemap-index.xml>; rel=\"sitemap\"; type=\"application/xml\", </llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms.txt\", </.well-known/ard.json>; rel=\"ard\"; type=\"application/json\", </.well-known/mcp/server-card.json>; rel=\"service-desc\"; type=\"application/mcp-server-card+json\", </agents.md>; rel=\"help\"; type=\"text/markdown\""
           }
         ]
+      },
+      {
+        "source": "**/*.md",
+        "headers": [
+          { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
+          { "key": "Cache-Control", "value": "public, max-age=3600" },
+          { "key": "Access-Control-Allow-Origin", "value": "*" }
+        ]
+      },
+      {
+        "source": "**/*.jsonl",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/jsonl; charset=utf-8"
+          },
+          { "key": "Cache-Control", "value": "public, max-age=3600" },
+          { "key": "Access-Control-Allow-Origin", "value": "*" }
+        ]
+      },
+      {
+        "source": "/.well-known/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=3600" },
+          { "key": "Access-Control-Allow-Origin", "value": "*" }
+        ]
+      },
+      {
+        "source": "/llms.txt",
+        "headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
       },
       {
         "source": "/mcp",

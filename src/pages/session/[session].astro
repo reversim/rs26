@@ -20,6 +20,7 @@ import {
   ogCardPath,
   withDirectionMark,
 } from "../../helpers/meta";
+import { sessionSchema } from "../../helpers/agents/schema";
 
 export const getStaticPaths = (async () => {
   async function getPrevAndNextOfTrack(sessions: Talk[], session: Talk) {
@@ -131,9 +132,12 @@ const shareDescription = [
 ]
   .filter(Boolean)
   .join(". ");
+
+const schema = sessionSchema({ session, speakers });
 ---
 
 <Layout
+  schema={schema}
   share={{
     title: shareTitle,
     description: shareDescription,
